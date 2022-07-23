@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-dartknightssih-staging-92040-authRole",
+      "UnauthRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-dartknightssih-staging-92040-deployment",
+      "UnauthRoleName": "amplify-dartknightssih-staging-92040-unauthRole",
+      "StackName": "amplify-dartknightssih-staging-92040",
+      "StackId": "arn:aws:cloudformation:ap-south-1:312855018916:stack/amplify-dartknightssih-staging-92040/b8bd3e80-0a68-11ed-a24c-02c6031d42fc",
+      "AmplifyAppId": "d3mafaf5pxaj2t"
+    },
+    "categories": {
+      "auth": {
+        "DartKnightsSIH": {}
+      }
+    }
+  }
+}

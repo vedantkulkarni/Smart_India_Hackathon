@@ -1,0 +1,12 @@
+Teacher Console :-
+- Teacher Console Page
+
+Admin Console :-
+- Admin Console Page
+
+Auth :- We will use amplify authenticator
+- SignUp Page
+- Login Page
+
+General Point :-
+- Use Animated FAB.
