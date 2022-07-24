@@ -42,6 +42,8 @@ dependencies:
   flutter_acrylic: ^1.0.0
   window_manager: ^0.2.5
   system_theme: ^2.0.0
+  http: ^0.13.4
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:
