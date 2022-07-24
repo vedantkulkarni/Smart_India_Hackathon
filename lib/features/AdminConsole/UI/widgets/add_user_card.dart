@@ -1,13 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 
-class DashboardCard extends StatelessWidget {
-  String user;
-  String number;
-  Color color;
-  DashboardCard(
-      {required this.user, required this.number, required this.color, Key? key})
-      : super(key: key);
+class AddUserCard extends StatelessWidget {
+  const AddUserCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +23,23 @@ class DashboardCard extends StatelessWidget {
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20), color: color),
+                    borderRadius: BorderRadius.circular(20),
+                    color: secondaryColor),
               ),
               const SizedBox(
                 width: 20,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: const [
                   Text(
-                    user,
-                    style: const TextStyle(
+                    'Students',
+                    style: TextStyle(
                         color: greyColor, fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    number,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    'Add',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
               )

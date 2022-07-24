@@ -1,6 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/add_users.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/database.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/settings.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({Key? key}) : super(key: key);
@@ -14,8 +18,11 @@ class _AdminPanelState extends State<AdminPanel> {
 
   final List<NavigationPaneItem> navItem = [
     PaneItem(
+      selectedTileColor: ButtonState.all(primaryColor.withOpacity(0.2)),
       icon: const Icon(FluentIcons.b_i_dashboard),
-      title: const Text('Dashboard'),
+      title: const Text(
+        'Dashboard',
+      ),
       infoBadge: const InfoBadge(
         source: Text('9'),
       ),
@@ -29,12 +36,16 @@ class _AdminPanelState extends State<AdminPanel> {
       title: const Text('Database'),
     ),
     PaneItem(
+      icon: const Icon(FluentIcons.add_group),
+      title: const Text('Add Users'),
+    ),
+    PaneItem(
       icon: const Icon(FluentIcons.settings),
       title: const Text('Settings'),
     ),
   ];
 
-  List screens = [const Dashboard()];
+  List screens = [const Dashboard(), AttendancePage(),DatabasePage(),AddUsers(),SettingsPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +66,11 @@ class _AdminPanelState extends State<AdminPanel> {
           footerItems: [],
           items: navItem,
           selected: index,
-          onChanged: (value) => index = value,
+          onChanged: (value) {
+            setState(() {
+              index = value;
+            });
+          },
           displayMode: PaneDisplayMode.auto),
     );
   }

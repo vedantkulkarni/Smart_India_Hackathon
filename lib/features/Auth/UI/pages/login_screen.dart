@@ -2,7 +2,7 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/admin_panel.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_panel.dart';
 import 'package:team_dart_knights_sih/main.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,38 +23,38 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<String?> _authUser(LoginData data) async {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
 
-    final userPool = CognitoUserPool(
-      'ap-south-1_TAqXrMNgh',
-      '5r2nk0dcq5gv6813j23289n9m8',
-    );
-    final cognitoUser = CognitoUser(data.name, userPool);
-    final authDetails = AuthenticationDetails(
-      username: data.name,
-      password: data.password,
-    );
-    CognitoUserSession? session;
-    try {
-      session = await cognitoUser.authenticateUser(authDetails);
-    } on CognitoUserNewPasswordRequiredException {
-      // handle New Password challenge
-    } on CognitoUserMfaRequiredException {
-      // handle SMS_MFA challenge
-    } on CognitoUserSelectMfaTypeException {
-      // handle SELECT_MFA_TYPE challenge
-    } on CognitoUserMfaSetupException {
-      // handle MFA_SETUP challenge
-    } on CognitoUserTotpRequiredException {
-      // handle SOFTWARE_TOKEN_MFA challenge
-    } on CognitoUserCustomChallengeException {
-      // handle CUSTOM_CHALLENGE challenge
-    } on CognitoUserConfirmationNecessaryException {
-      // handle User Confirmation Necessary
-    } on CognitoClientException {
-      // handle Wrong Username and Password and Cognito Client
-    } catch (e) {
-      print(e);
-    }
-    print(session!.getAccessToken().getJwtToken());
+    // final userPool = CognitoUserPool(
+    //   'ap-south-1_TAqXrMNgh',
+    //   '5r2nk0dcq5gv6813j23289n9m8',
+    // );
+    // final cognitoUser = CognitoUser(data.name, userPool);
+    // final authDetails = AuthenticationDetails(
+    //   username: data.name,
+    //   password: data.password,
+    // );
+    // CognitoUserSession? session;
+    // try {
+    //   session = await cognitoUser.authenticateUser(authDetails);
+    // } on CognitoUserNewPasswordRequiredException {
+    //   // handle New Password challenge
+    // } on CognitoUserMfaRequiredException {
+    //   // handle SMS_MFA challenge
+    // } on CognitoUserSelectMfaTypeException {
+    //   // handle SELECT_MFA_TYPE challenge
+    // } on CognitoUserMfaSetupException {
+    //   // handle MFA_SETUP challenge
+    // } on CognitoUserTotpRequiredException {
+    //   // handle SOFTWARE_TOKEN_MFA challenge
+    // } on CognitoUserCustomChallengeException {
+    //   // handle CUSTOM_CHALLENGE challenge
+    // } on CognitoUserConfirmationNecessaryException {
+    //   // handle User Confirmation Necessary
+    // } on CognitoClientException {
+    //   // handle Wrong Username and Password and Cognito Client
+    // } catch (e) {
+    //   print(e);
+    // }
+    // print(session!.getAccessToken().getJwtToken());
     return null;
   }
 

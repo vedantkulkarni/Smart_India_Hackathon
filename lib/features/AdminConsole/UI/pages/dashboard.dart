@@ -28,10 +28,22 @@ class _DashboardState extends State<Dashboard> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                DashboardCard(),
-                DashboardCard(),
-                DashboardCard(),
+              children: [
+                DashboardCard(
+                  user: 'Students',
+                  number: '302',
+                  color: primaryColor,
+                ),
+                DashboardCard(
+                  user: 'Teachers',
+                  number: '33',
+                  color: secondaryColor,
+                ),
+                DashboardCard(
+                  user: 'Staff',
+                  number: '28',
+                  color: Colors.yellow,
+                ),
               ],
             )
           ],
