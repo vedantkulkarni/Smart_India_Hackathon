@@ -1,10 +1,14 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/add_users.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/database.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/settings.dart';
+import 'package:team_dart_knights_sih/features/Auth/Logic/auth_bloc/auth_cubit.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({Key? key}) : super(key: key);
@@ -45,33 +49,52 @@ class _AdminPanelState extends State<AdminPanel> {
     ),
   ];
 
-  List screens = [const Dashboard(), AttendancePage(),DatabasePage(),AddUsers(),SettingsPage()];
+  List screens = [
+    const Dashboard(),
+    AttendancePage(),
+    DatabasePage(),
+    AddUsers(),
+    SettingsPage()
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return NavigationView(
-      content: NavigationBody.builder(
-        index: index,
-        itemBuilder: (context, index) {
-          return screens[index];
-        },
-      ),
-      pane: NavigationPane(
-          header: Container(
-            height: 200,
-            width: double.maxFinite,
-            color: primaryColor,
-            child: const Text("Smart Attendance App"),
+    return BlocBuilder<AdminCubit, AdminState>(
+      builder: (context, state) {
+        if (state is AdminInitial) {
+          return const Scaffold(
+            body: SizedBox(
+                child: Center(
+              child: CircularProgressIndicator(),
+            )),
+          );
+        }
+
+        return NavigationView(
+          content: NavigationBody.builder(
+            index: index,
+            itemBuilder: (context, index) {
+              return screens[index];
+            },
           ),
-          footerItems: [],
-          items: navItem,
-          selected: index,
-          onChanged: (value) {
-            setState(() {
-              index = value;
-            });
-          },
-          displayMode: PaneDisplayMode.auto),
+          pane: NavigationPane(
+              header: Container(
+                height: 200,
+                width: double.maxFinite,
+                color: primaryColor,
+                child: const Text("Smart Attendance App"),
+              ),
+              footerItems: [],
+              items: navItem,
+              selected: index,
+              onChanged: (value) {
+                setState(() {
+                  index = value;
+                });
+              },
+              displayMode: PaneDisplayMode.auto),
+        );
+      },
     );
   }
 }

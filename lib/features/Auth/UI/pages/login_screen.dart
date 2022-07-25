@@ -2,7 +2,11 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_panel.dart';
+import 'package:team_dart_knights_sih/core/platform_checker.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_console.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/admin_panel.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/UI/teacher_console.dart';
+import 'package:team_dart_knights_sih/injection_container.dart';
 import 'package:team_dart_knights_sih/main.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -83,11 +87,24 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
 
       onSubmitAnimationCompleted: () {
+
+        if(getIt<PlatformChecker>().isDesktop)
+        {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             // builder: (context) => DashboardScreen(),
-            builder: ((context) => const AdminPanel())));
-      },
+            builder: ((context) =>  AdminConsole())));
+        }
+        else{
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            // builder: (context) => DashboardScreen(),
+            builder: ((context) =>  TeacherConsole())));
+        }
+        }
+
+      ,
       onRecoverPassword: _recoverPassword,
     );
   }
 }
+
+

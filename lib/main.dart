@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:url_launcher/link.dart';
 import 'package:window_manager/window_manager.dart';
+import 'injection_container.dart' as di;
 
 import 'features/Auth/UI/pages/login_screen.dart';
 
@@ -23,7 +24,7 @@ bool get isDesktop {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  di.setup();
   // if it's on the web, windows or android, load the accent color
   if (kIsWeb ||
       [TargetPlatform.windows, TargetPlatform.android]

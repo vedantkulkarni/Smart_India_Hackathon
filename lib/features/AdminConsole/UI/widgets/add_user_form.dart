@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:team_dart_knights_sih/core/constants.dart';
 
 import '../../../../models/Role.dart';
 
@@ -19,8 +19,15 @@ class _AddUserFormState extends State<AddUserForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: primaryColor),
+        automaticallyImplyLeading: true,
+      ),
       body: Container(
         padding: const EdgeInsets.all(30),
+        color: backgroundColor,
         child: Form(
             child: Column(
           children: [
@@ -30,8 +37,15 @@ class _AddUserFormState extends State<AddUserForm> {
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        fillColor: secondaryColor.withOpacity(0.1),
+                        filled: true,
+                        border: const OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: secondaryColor, width: 0.5),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        labelStyle: const TextStyle(color: primaryColor),
                         labelText: 'User Name',
                         hintText: 'Enter Your Name',
                       ),
@@ -148,14 +162,15 @@ class _AddUserFormState extends State<AddUserForm> {
     }
 
     List<CognitoUserAttribute>? attributes;
-try {
-  attributes = await _cognitoUser.getUserAttributes()!;
-} catch (e) {
-  print(e);
-}
-attributes!.forEach((attribute) {
-  print('attribute ${attribute.getName()} has value ${attribute.getValue()}');
-});
+    try {
+      attributes = await _cognitoUser.getUserAttributes();
+    } catch (e) {
+      print(e);
+    }
+    for (var attribute in attributes!) {
+      print(
+          'attribute ${attribute.getName()} has value ${attribute.getValue()}');
+    }
 
     var _identityPoolId = 'ap-south-1:e78b1945-7d3c-4ca7-824a-fc7f9be319cf';
     final _credentials = CognitoCredentials(_identityPoolId, _userPool);
@@ -180,7 +195,7 @@ attributes!.forEach((attribute) {
         headers: {
           'Authorization': 'API_KEY',
           'Content-Type': 'application/json',
-          'x-api-key':'da2-vkgvsw6ydjblzbglkioacaaqy4'
+          'x-api-key': 'da2-vkgvsw6ydjblzbglkioacaaqy4'
         },
         body: json.encode(body),
       );

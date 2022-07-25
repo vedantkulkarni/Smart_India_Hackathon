@@ -1,9 +1,11 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 
+import '../../../models/User.dart';
+
 abstract class AWSApiClient {
   Future<void> authenticateUser({required String email,required String password});
   Future<void> uploadUser();
-  Future<void> getUser();
+  Future<void> getAdminDetails();
   
 }
 
@@ -57,7 +59,7 @@ attributes!.forEach((attribute) {
   }
 
   @override
-  Future<void> getUser() {
+  Future<User> getAdminDetails() {
     // TODO: implement getUser
     throw UnimplementedError();
   }
