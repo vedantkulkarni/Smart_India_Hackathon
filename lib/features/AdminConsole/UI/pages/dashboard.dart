@@ -1,5 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_console.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/dashboard_card.dart';
 
 class Dashboard extends StatefulWidget {
@@ -12,6 +15,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
+    final adminProvider = BlocProvider.of<AdminCubit>(context);
     return ScaffoldPage(
       padding: const EdgeInsets.all(20),
       header: Container(

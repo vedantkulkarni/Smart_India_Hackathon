@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:team_dart_knights_sih/core/constants.dart';
 
 class SideMenu extends StatefulWidget {
-  SideMenu({Key? key}) : super(key: key);
+  const SideMenu({Key? key}) : super(key: key);
 
   @override
   State<SideMenu> createState() => _SideMenuState();
@@ -11,9 +12,12 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: sideMenubg,
       child: Column(
-        children: [
-          ListTile(title: Text("Hello"),)
+        children: const [
+          ListTile(
+            title: Text("Side Menu"),
+          )
         ],
       ),
     );

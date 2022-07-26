@@ -24,3 +24,65 @@ type User @model {
   id:ID
   
 }
+
+type School @model{
+  superAdmin: ID! 
+  schoolName: String!
+  schoolID: ID! @primaryKey
+  address: String
+  contactPhone: AWSPhone
+  contactEmail: AWSEmail
+  studentCount: Int
+  teacherCount: Int
+  location: AWSURL
+  classRooms: [ClassRoom] @hasMany
+
+}
+
+type ClassRoom @model
+{
+  schoolID: ID!
+  classRoomID: ID!
+  classRoomName: String!
+  assignedTeacher: User @hasOne
+  assignedTeacherName: String
+  students: [Student] @hasMany
+
+}
+
+type Student @model
+
+{
+  studentID: ID! @primaryKey
+  studentName: String!
+  assignedClassID: ID!
+  assignedTeacherID: ID!
+  profilePhoto: AWSURL
+  idCardPhoto: AWSURL
+
+}
+
+enum AttendanceStatus{
+  Present
+  Absent
+  OnHold
+}
+
+enum VerificationStatus{
+  FaceVerifiedWithLiveness
+  FaceVerified
+  FaceDetectedAndVerified
+  ManualAttendance
+}
+
+type Attendance @model{
+  studentID: ID! @primaryKey(sortKeyFields:["date"])
+  status: AttendanceStatus!
+  geoLocation: String
+  verification: VerificationStatus!
+  teacherID: ID!
+  teacherName: String!
+  date:  AWSDate!
+  time:  AWSTime!
+
+}

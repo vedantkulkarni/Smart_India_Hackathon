@@ -8,9 +8,16 @@ class AuthCubit extends Cubit<AuthState> {
   AWSApiClient awsApiClient;
   AuthCubit({required this.awsApiClient}) : super(AuthInitial());
 
+  String authUserEmail = '';
+
   Future<void> authenticateUser(
       {required String email, required String password}) async {
     await awsApiClient.authenticateUser(email: email, password: password);
+    authUserEmail = email;
     emit(Authenticated());
+  }
+
+  String get email {
+    return authUserEmail;
   }
 }

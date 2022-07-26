@@ -18,8 +18,7 @@ class _AdminConsoleState extends State<AdminConsole> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-      BlocProvider(create: ((context) => AuthCubit(awsApiClient: getIt<AWSApiClient>()))),
-      BlocProvider(create: ((context) => AdminCubit(awsApiClient: getIt<AWSApiClient>())))
+      BlocProvider(create: ((context) => AdminCubit(awsApiClient: getIt<AWSApiClient>(),userID: BlocProvider.of<AuthCubit>(context).email)))
     ], child: AdminPanel());
 
   }

@@ -1,10 +1,7 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
-import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
-import 'package:url_launcher/link.dart';
 import 'package:window_manager/window_manager.dart';
 import 'injection_container.dart' as di;
 
@@ -67,13 +64,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return isDesktop
-        ? const FluentApp(
-            home: LoginScreen(),
-          )
-        : const MaterialApp(
-            home: LoginScreen(),
-          );
+    return const MaterialApp(
+      home: LoginScreen(),
+    );
   }
 }
 
