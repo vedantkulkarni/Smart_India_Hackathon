@@ -21,6 +21,7 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -35,12 +36,13 @@ class User extends Model {
   final Role? _role;
   final String? _phoneNumber;
   final String? _address;
-  final String? _assignedClass;
+  final List<ClassRoom>? _assignedClass;
   final String? _idCard;
   final String? _photo;
   final String? _shitfInfo;
   final String? _gender;
   final int? _age;
+  final String? _schoolID;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -112,7 +114,7 @@ class User extends Model {
     return _address;
   }
   
-  String? get assignedClass {
+  List<ClassRoom>? get assignedClass {
     return _assignedClass;
   }
   
@@ -136,6 +138,10 @@ class User extends Model {
     return _age;
   }
   
+  String? get schoolID {
+    return _schoolID;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -144,9 +150,9 @@ class User extends Model {
     return _updatedAt;
   }
   
-  const User._internal({required this.id, required email, required name, description, required role, required phoneNumber, address, assignedClass, idCard, photo, shitfInfo, gender, age, createdAt, updatedAt}): _email = email, _name = name, _description = description, _role = role, _phoneNumber = phoneNumber, _address = address, _assignedClass = assignedClass, _idCard = idCard, _photo = photo, _shitfInfo = shitfInfo, _gender = gender, _age = age, _createdAt = createdAt, _updatedAt = updatedAt;
+  const User._internal({required this.id, required email, required name, description, required role, required phoneNumber, address, assignedClass, idCard, photo, shitfInfo, gender, age, schoolID, createdAt, updatedAt}): _email = email, _name = name, _description = description, _role = role, _phoneNumber = phoneNumber, _address = address, _assignedClass = assignedClass, _idCard = idCard, _photo = photo, _shitfInfo = shitfInfo, _gender = gender, _age = age, _schoolID = schoolID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory User({String? id, required String email, required String name, String? description, required Role role, required String phoneNumber, String? address, String? assignedClass, String? idCard, String? photo, String? shitfInfo, String? gender, int? age}) {
+  factory User({String? id, required String email, required String name, String? description, required Role role, required String phoneNumber, String? address, List<ClassRoom>? assignedClass, String? idCard, String? photo, String? shitfInfo, String? gender, int? age, String? schoolID}) {
     return User._internal(
       id: id == null ? UUID.getUUID() : id,
       email: email,
@@ -155,12 +161,13 @@ class User extends Model {
       role: role,
       phoneNumber: phoneNumber,
       address: address,
-      assignedClass: assignedClass,
+      assignedClass: assignedClass != null ? List<ClassRoom>.unmodifiable(assignedClass) : assignedClass,
       idCard: idCard,
       photo: photo,
       shitfInfo: shitfInfo,
       gender: gender,
-      age: age);
+      age: age,
+      schoolID: schoolID);
   }
   
   bool equals(Object other) {
@@ -178,12 +185,13 @@ class User extends Model {
       _role == other._role &&
       _phoneNumber == other._phoneNumber &&
       _address == other._address &&
-      _assignedClass == other._assignedClass &&
+      DeepCollectionEquality().equals(_assignedClass, other._assignedClass) &&
       _idCard == other._idCard &&
       _photo == other._photo &&
       _shitfInfo == other._shitfInfo &&
       _gender == other._gender &&
-      _age == other._age;
+      _age == other._age &&
+      _schoolID == other._schoolID;
   }
   
   @override
@@ -201,12 +209,12 @@ class User extends Model {
     buffer.write("role=" + (_role != null ? enumToString(_role)! : "null") + ", ");
     buffer.write("phoneNumber=" + "$_phoneNumber" + ", ");
     buffer.write("address=" + "$_address" + ", ");
-    buffer.write("assignedClass=" + "$_assignedClass" + ", ");
     buffer.write("idCard=" + "$_idCard" + ", ");
     buffer.write("photo=" + "$_photo" + ", ");
     buffer.write("shitfInfo=" + "$_shitfInfo" + ", ");
     buffer.write("gender=" + "$_gender" + ", ");
     buffer.write("age=" + (_age != null ? _age!.toString() : "null") + ", ");
+    buffer.write("schoolID=" + "$_schoolID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -214,7 +222,7 @@ class User extends Model {
     return buffer.toString();
   }
   
-  User copyWith({String? id, String? email, String? name, String? description, Role? role, String? phoneNumber, String? address, String? assignedClass, String? idCard, String? photo, String? shitfInfo, String? gender, int? age}) {
+  User copyWith({String? id, String? email, String? name, String? description, Role? role, String? phoneNumber, String? address, List<ClassRoom>? assignedClass, String? idCard, String? photo, String? shitfInfo, String? gender, int? age, String? schoolID}) {
     return User._internal(
       id: id ?? this.id,
       email: email ?? this.email,
@@ -228,7 +236,8 @@ class User extends Model {
       photo: photo ?? this.photo,
       shitfInfo: shitfInfo ?? this.shitfInfo,
       gender: gender ?? this.gender,
-      age: age ?? this.age);
+      age: age ?? this.age,
+      schoolID: schoolID ?? this.schoolID);
   }
   
   User.fromJson(Map<String, dynamic> json)  
@@ -239,17 +248,23 @@ class User extends Model {
       _role = enumFromString<Role>(json['role'], Role.values),
       _phoneNumber = json['phoneNumber'],
       _address = json['address'],
-      _assignedClass = json['assignedClass'],
+      _assignedClass = json['assignedClass'] is List
+        ? (json['assignedClass'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => ClassRoom.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null,
       _idCard = json['idCard'],
       _photo = json['photo'],
       _shitfInfo = json['shitfInfo'],
       _gender = json['gender'],
       _age = (json['age'] as num?)?.toInt(),
+      _schoolID = json['schoolID'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'email': _email, 'name': _name, 'description': _description, 'role': enumToString(_role), 'phoneNumber': _phoneNumber, 'address': _address, 'assignedClass': _assignedClass, 'idCard': _idCard, 'photo': _photo, 'shitfInfo': _shitfInfo, 'gender': _gender, 'age': _age, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'email': _email, 'name': _name, 'description': _description, 'role': enumToString(_role), 'phoneNumber': _phoneNumber, 'address': _address, 'assignedClass': _assignedClass?.map((ClassRoom? e) => e?.toJson()).toList(), 'idCard': _idCard, 'photo': _photo, 'shitfInfo': _shitfInfo, 'gender': _gender, 'age': _age, 'schoolID': _schoolID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "user.id");
@@ -259,12 +274,15 @@ class User extends Model {
   static final QueryField ROLE = QueryField(fieldName: "role");
   static final QueryField PHONENUMBER = QueryField(fieldName: "phoneNumber");
   static final QueryField ADDRESS = QueryField(fieldName: "address");
-  static final QueryField ASSIGNEDCLASS = QueryField(fieldName: "assignedClass");
+  static final QueryField ASSIGNEDCLASS = QueryField(
+    fieldName: "assignedClass",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ClassRoom).toString()));
   static final QueryField IDCARD = QueryField(fieldName: "idCard");
   static final QueryField PHOTO = QueryField(fieldName: "photo");
   static final QueryField SHITFINFO = QueryField(fieldName: "shitfInfo");
   static final QueryField GENDER = QueryField(fieldName: "gender");
   static final QueryField AGE = QueryField(fieldName: "age");
+  static final QueryField SCHOOLID = QueryField(fieldName: "schoolID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "User";
     modelSchemaDefinition.pluralName = "Users";
@@ -307,10 +325,11 @@ class User extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: User.ASSIGNEDCLASS,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofModelName: (ClassRoom).toString(),
+      associatedKey: ClassRoom.ASSIGNEDTEACHER
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
@@ -341,6 +360,12 @@ class User extends Model {
       key: User.AGE,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.int)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: User.SCHOOLID,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

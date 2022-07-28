@@ -7,6 +7,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/database.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/settings.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/school_not_found.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/side_menu.dart';
 
 import '../widgets/page_content.dart';
@@ -62,7 +63,7 @@ class _AdminPanelState extends State<AdminPanel> {
   Widget build(BuildContext context) {
     return BlocBuilder<AdminCubit, AdminState>(
       builder: (context, state) {
-        if (state is AdminInitial) {
+        if (state is AdminInitial || state is CreatingSchool) {
           return const Scaffold(
             body: SizedBox(
                 child: Center(
@@ -71,14 +72,18 @@ class _AdminPanelState extends State<AdminPanel> {
           );
         }
 
+        if (state is SchoolNotFound) {
+          return const SchoolNotFoundPage();
+        }
+
         return Scaffold(
           body: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Row(
-              children: [
-                const Flexible(flex: 1, child: SideMenu()),
-                const VerticalDivider(
+              children: const [
+                Flexible(flex: 1, child: SideMenu()),
+                VerticalDivider(
                   thickness: 1,
                   width: 1,
                   color: greyColor,

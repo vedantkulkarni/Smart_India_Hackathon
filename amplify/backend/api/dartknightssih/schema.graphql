@@ -15,13 +15,14 @@ type User @model {
   role: Role!
   phoneNumber: AWSPhone!
   address:String
-  assignedClass:String
+  assignedClass:[ClassRoom] @hasMany
   idCard:AWSURL
   photo:AWSURL
   shitfInfo:String
   gender:String
   age:Int
-  id:ID
+  schoolID: ID #schoolID
+  
   
 }
 
@@ -35,7 +36,15 @@ type School @model{
   studentCount: Int
   teacherCount: Int
   location: AWSURL
+  groups: [Group] @hasMany
+
+}
+
+type Group @model{
+  groupID: ID! @primaryKey
+  createdBy: ID!
   classRooms: [ClassRoom] @hasMany
+  groupName: String!
 
 }
 
@@ -56,9 +65,12 @@ type Student @model
   studentID: ID! @primaryKey
   studentName: String!
   assignedClassID: ID!
+  assignedClassName: String!
   assignedTeacherID: ID!
+  assignedTeacherName: String!
   profilePhoto: AWSURL
   idCardPhoto: AWSURL
+  
 
 }
 

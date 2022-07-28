@@ -1,0 +1,1 @@
+class SchoolNotFoundException implements Exception {}

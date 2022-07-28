@@ -10,3 +10,9 @@ const Color whiteColor = Color(0xffe7e7e7);
 const Color greyColor = Color(0xffb4bbc6);
 const Color blendColor = Color(0xfff3f3f3);
 const Color navPanecolor = Color(0xfffdfdff);
+
+
+//role check conditions
+enum UserRole{
+  CanCreateSchool
+}
