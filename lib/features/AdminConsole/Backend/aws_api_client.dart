@@ -9,9 +9,11 @@ abstract class AWSApiClient {
   //User
   Future<void> authenticateUser(
       {required String email, required String password});
-  Future<User> uploadUser({required User user});
+  Future<User> createUser({required User user});
   Future<User> getAdminDetails();
   Future<User> updateUser({required User updatedUser});
+  Future<User> deleteUser({required String email});
+  Future<List<User>> getListOfUsers({required Role role});
 
   //School
   Future<School> createSchool({required School school});
@@ -168,34 +170,54 @@ query MyQuery {
   }
 
   @override
-  Future<User> uploadUser({required User user}) async {
+  Future<User> createUser({required User user}) async {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createUser(input: {address: "${user.address}", age: 10, assignedClass: "${user.assignedClass}", description: "${user.description}", email: ${user.email}, gender: "${user.gender}", idCard: ${user.idCard}, name: "${user.name}", phoneNumber: "${user.phoneNumber}", photo: ${user.photo}, role: ${user.role}, schoolID: "${user.schoolID}", shitfInfo: "${user.shitfInfo}"}) {
-    updatedAt
-    shitfInfo
-    schoolID
-    role
-    photo
-    phoneNumber
-    name
-    idCard
-    gender
+  createUser(input: {address: "${user.address}", age: ${user.age}, description: "${user.description}", email: "${user.email}", gender: "${user.gender}", idCard: ${user.idCard}, name: "${user.name}", phoneNumber: "${user.phoneNumber}", photo: ${user.photo}, role: ${user.role.name}, schoolID: "${user.schoolID}", shitfInfo: "${user.shitfInfo}"}) {
     email
     description
     createdAt
-    assignedClass
+    gender
+    idCard
+    name
+    phoneNumber
+    photo
+    role
+    schoolID
+    shitfInfo
+    updatedAt
     age
     address
   }
 }
-
 ''',
     };
 
     final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return User.fromJson(json.decode(responseString)['data']['createUser']);
+  }
+
+   @override
+  Future<User> deleteUser({required String email}) async{
+
+     final body = {
+      'operationName': 'MyMutation',
+      'query': '''
+      mutation MyMutation {
+  deleteUser(input: {email: "$email"}) {
+    email
+    name
+    role
+  }
+}
+'''
+    };
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
     return User.fromJson(json.decode(responseString));
+   
   }
 
   @override
@@ -228,6 +250,37 @@ query MyQuery {
     final responseString = await uploadJsonBodyRequest(body);
     print(responseString);
     return User.fromJson(json.decode(responseString));
+  }
+
+  @override
+  Future<List<User>> getListOfUsers({required Role role}) async {
+    final myRole = role.name;
+
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+      query MyQuery {
+  listUsers(filter: {role: {eq: $myRole}}) {
+    items {
+      email
+      gender
+      name
+      phoneNumber
+    }
+  }
+}
+'''
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    
+    final jsonMap = json.decode(responseString);
+    List<User> returnList = [];
+    for (var eachUser in jsonMap['data']['listUsers']['items']) {
+      returnList.add(User.fromJson(eachUser));
+    }
+
+    return returnList;
   }
 
   //School
@@ -375,7 +428,7 @@ query MyQuery {
       'operationName': 'MyQuery',
       'query': '''
      query MyQuery {
-  getClassRoom(id: "${classRoomID}") {
+  getClassRoom(id: "$classRoomID") {
     assignedTeacherName
     classRoomAssignedTeacherId
     classRoomID
@@ -428,22 +481,24 @@ query MyQuery {
   }
 
   //Student
-  
+
   @override
   Future<void> createStudent({required Student student}) {
     // TODO: implement createStudent
     throw UnimplementedError();
   }
-  
+
   @override
   Future<void> getStudent({required String studentID}) {
     // TODO: implement getStudent
     throw UnimplementedError();
   }
-  
+
   @override
   Future<void> updateStudent({required Student updatedStudent}) {
     // TODO: implement updateStudent
     throw UnimplementedError();
   }
+  
+ 
 }

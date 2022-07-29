@@ -7,7 +7,7 @@ import 'custom_textbutton.dart';
 import 'custom_textfield.dart';
 
 class CreateClassRoom extends StatefulWidget {
-  CreateClassRoom({Key? key}) : super(key: key);
+  const CreateClassRoom({Key? key}) : super(key: key);
 
   @override
   State<CreateClassRoom> createState() => _CreateClassRoomState();
@@ -24,23 +24,23 @@ class _CreateClassRoomState extends State<CreateClassRoom> {
             const SizedBox(
               height: 60,
             ),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'Class Name',
                 labelText: 'Give a name to your school',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'Address',
                 labelText: 'Address',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'Contance Phone',
                 labelText: 'Contact',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'Contact email',
                 labelText: 'email',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'location',
                 labelText: 'loaction google maps link',
                 padding: EdgeInsets.all(20)),
@@ -50,10 +50,10 @@ class _CreateClassRoomState extends State<CreateClassRoom> {
             CustomTextButton(
                 onPressed: () async {
                   final classRoom = ClassRoom(
-                      schoolID: adminCubit.school.schoolID,
-                      classRoomID: 'Some classRoom Id',
-                      classRoomName: 'Some classRoom Name',
-                      );
+                    schoolID: adminCubit.school.schoolID,
+                    classRoomID: 'Some classRoom Id',
+                    classRoomName: 'Some classRoom Name',
+                  );
 
                   await adminCubit.createClassRoom(classRoom: classRoom);
                   Navigator.pop(context);

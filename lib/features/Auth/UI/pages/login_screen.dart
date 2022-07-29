@@ -1,4 +1,3 @@
-import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/flutter_login.dart';
@@ -6,11 +5,9 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/platform_checker.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_console.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/admin_panel.dart';
 import 'package:team_dart_knights_sih/features/Auth/Logic/auth_bloc/auth_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/UI/teacher_console.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
-import 'package:team_dart_knights_sih/main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -66,15 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         primaryColor: whiteColor,
         buttonTheme: LoginButtonTheme(
-          splashColor: secondaryColor,
-          backgroundColor: primaryColor,
-          highlightColor: primaryColor,
-          elevation: 9.0,
-          highlightElevation: 6.0,
-          shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
+            splashColor: secondaryColor,
+            backgroundColor: primaryColor,
+            highlightColor: primaryColor,
+            elevation: 9.0,
+            highlightElevation: 6.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
         inputTheme: InputDecorationTheme(
           filled: true,
           fillColor: primaryColor.withOpacity(0.1),
@@ -84,9 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white,
           ),
           labelStyle: const TextStyle(
-              fontSize: 16,
-              color: primaryColor,
-              fontWeight: FontWeight.normal),
+              fontSize: 16, color: primaryColor, fontWeight: FontWeight.normal),
         ),
       ),
 
@@ -95,8 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               // builder: (context) => DashboardScreen(),
               builder: ((ctx) => BlocProvider(
-                    create:(context) =>  AuthCubit(awsApiClient: getIt<AWSApiClient>()),
-                    child: AdminConsole(),
+                    create: (context) =>
+                        AuthCubit(awsApiClient: getIt<AWSApiClient>()),
+                    child: const AdminConsole(),
                   ))));
         } else {
           Navigator.of(context).pushReplacement(MaterialPageRoute(

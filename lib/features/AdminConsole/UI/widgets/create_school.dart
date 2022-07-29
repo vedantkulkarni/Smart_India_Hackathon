@@ -24,23 +24,23 @@ class _CreateSchoolPageState extends State<CreateSchoolPage> {
             const SizedBox(
               height: 60,
             ),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'School Name',
                 labelText: 'Give a name to your school',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'Address',
                 labelText: 'Address',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'Contance Phone',
                 labelText: 'Contact',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'Contact email',
                 labelText: 'email',
                 padding: EdgeInsets.all(20)),
-            const CustomTextField(
+             CustomTextField(
                 hintText: 'location',
                 labelText: 'loaction google maps link',
                 padding: EdgeInsets.all(20)),

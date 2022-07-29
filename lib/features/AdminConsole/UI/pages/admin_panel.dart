@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/add_users.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/management.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/database.dart';

@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/add_user_card.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/management_card.dart';
 
 import '../../../../core/constants.dart';
 
@@ -69,7 +69,8 @@ class _AddUsersState extends State<AddUsers> {
               (index) => AddUserCard(
                   addText: addList[index][0],
                   content: addList[index][1],
-                  imagePath: addList[index][2]),
+                  imagePath: addList[index][2],
+                  index: index,),
             ),
           ),
           const SizedBox(
@@ -82,7 +83,8 @@ class _AddUsersState extends State<AddUsers> {
               (index) => AddUserCard(
                   addText: addList[index + 3][0],
                   content: addList[index + 3][1],
-                  imagePath: addList[index + 3][2]),
+                  imagePath: addList[index + 3][2],
+                  index: index,),
             ),
           )
         ],
