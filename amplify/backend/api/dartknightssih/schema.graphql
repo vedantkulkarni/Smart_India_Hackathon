@@ -59,7 +59,7 @@ type ClassRoom @model
 
 }
 
-type Student @model
+type Student @model #Change this
 
 {
   studentID: ID! @primaryKey
@@ -70,7 +70,7 @@ type Student @model
   assignedTeacherName: String!
   profilePhoto: AWSURL
   idCardPhoto: AWSURL
-  
+   
 
 }
 

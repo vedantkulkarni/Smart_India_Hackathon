@@ -37,7 +37,7 @@ void main() async {
         TitleBarStyle.normal,
         windowButtonVisibility: true,
       );
-      
+
       await windowManager.setPreventClose(true);
       await windowManager.setSkipTaskbar(false);
     });

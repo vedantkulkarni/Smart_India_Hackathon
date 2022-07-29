@@ -14,21 +14,21 @@ packages:
       name: amplify_auth_cognito
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   amplify_auth_cognito_android:
     dependency: transitive
     description:
       name: amplify_auth_cognito_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   amplify_auth_cognito_ios:
     dependency: transitive
     description:
       name: amplify_auth_cognito_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   amplify_authenticator:
     dependency: "direct main"
     description:
@@ -42,35 +42,35 @@ packages:
       name: amplify_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   amplify_datastore_plugin_interface:
     dependency: transitive
     description:
       name: amplify_datastore_plugin_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   amplify_flutter:
     dependency: transitive
     description:
       name: amplify_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   amplify_flutter_android:
     dependency: transitive
     description:
       name: amplify_flutter_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   amplify_flutter_ios:
     dependency: transitive
     description:
       name: amplify_flutter_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.5"
   another_flushbar:
     dependency: transitive
     description:
@@ -99,6 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1"
+  badges:
+    dependency: transitive
+    description:
+      name: badges
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   bloc:
     dependency: transitive
     description:
@@ -162,6 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  easy_sidemenu:
+    dependency: "direct main"
+    description:
+      name: easy_sidemenu
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.1"
   fake_async:
     dependency: transitive
     description:
@@ -176,6 +190,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.12.0"
+  fluentui_system_icons:
+    dependency: "direct main"
+    description:
+      name: fluentui_system_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.176"
   flutter:
     dependency: "direct main"
     description: flutter

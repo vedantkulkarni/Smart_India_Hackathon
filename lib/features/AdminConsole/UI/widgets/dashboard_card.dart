@@ -17,10 +17,10 @@ class DashboardCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
             boxShadow: const [
-              BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
+              BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 5)
             ],
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(6),
           ),
           child: Row(
             children: [
@@ -28,7 +28,14 @@ class DashboardCard extends StatelessWidget {
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20), color: color),
+                  borderRadius: BorderRadius.circular(20),
+                  color: color,
+                ),
+                child: const Center(
+                    child: Icon(
+                  FluentIcons.admin,
+                  color: whiteColor,
+                )),
               ),
               const SizedBox(
                 width: 20,
@@ -39,11 +46,18 @@ class DashboardCard extends StatelessWidget {
                   Text(
                     user,
                     style: const TextStyle(
-                        color: greyColor, fontWeight: FontWeight.w400),
+                        fontWeight: FontWeight.normal,
+                        color: greyColor,
+                        fontFamily: 'Poppins',
+                        fontSize: 14),
                   ),
                   Text(
                     number,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                        fontSize: 18),
                   )
                 ],
               )

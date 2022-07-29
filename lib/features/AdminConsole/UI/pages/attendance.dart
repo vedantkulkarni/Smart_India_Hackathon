@@ -10,10 +10,8 @@ class AttendancePage extends StatefulWidget {
 class _AttendancePageState extends State<AttendancePage> {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-      content: Container(
-        child: Center(child: Text("Attendance Page")),
-      ),
+    return Container(
+      child: Center(child: Text("Attendance Page")),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
@@ -7,10 +8,8 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/database.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/settings.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_sidemenu.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/school_not_found.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/side_menu.dart';
-
-import '../widgets/page_content.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({Key? key}) : super(key: key);
@@ -21,37 +20,9 @@ class AdminPanel extends StatefulWidget {
 
 class _AdminPanelState extends State<AdminPanel> {
   int index = 0;
+  PageController page = PageController();
 
-  // final List<NavigationPaneItem> navItem = [
-  //   PaneItem(
-  //     selectedTileColor: ButtonState.all(primaryColor.withOpacity(0.2)),
-  //     icon: const Icon(FluentIcons.b_i_dashboard),
-  //     title: const Text(
-  //       'Dashboard',
-  //     ),
-  //     infoBadge: const InfoBadge(
-  //       source: Text('9'),
-  //     ),
-  //   ),
-  //   PaneItem(
-  //     icon: const Icon(FluentIcons.graph_symbol),
-  //     title: const Text('Attendance'),
-  //   ),
-  //   PaneItem(
-  //     icon: const Icon(FluentIcons.database),
-  //     title: const Text('Database'),
-  //   ),
-  //   PaneItem(
-  //     icon: const Icon(FluentIcons.add_group),
-  //     title: const Text('Add Users'),
-  //   ),
-  //   PaneItem(
-  //     icon: const Icon(FluentIcons.settings),
-  //     title: const Text('Settings'),
-  //   ),
-  // ];
-
-  List screens = [
+  List<Widget> screens = [
     const Dashboard(),
     AttendancePage(),
     DatabasePage(),
@@ -81,14 +52,19 @@ class _AdminPanelState extends State<AdminPanel> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Row(
-              children: const [
-                Flexible(flex: 1, child: SideMenu()),
-                VerticalDivider(
-                  thickness: 1,
-                  width: 1,
-                  color: greyColor,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CustomSideMenu(
+                  page: page,
                 ),
-                Flexible(flex: 2, child: PageContent()),
+                const VerticalDivider(
+                  thickness: 0.5,
+                  color: greyColor,
+                  width: 0.5,
+                ),
+                Expanded(
+                  child: PageView(controller: page, children: screens),
+                ),
               ],
             ),
           ),

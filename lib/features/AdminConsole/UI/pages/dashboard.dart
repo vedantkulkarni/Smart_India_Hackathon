@@ -16,42 +16,44 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final adminProvider = BlocProvider.of<AdminCubit>(context);
-    return ScaffoldPage(
+    return Container(
+      color: backgroundColor,
       padding: const EdgeInsets.all(20),
-      header: Container(
-        padding: const EdgeInsets.only(left: 30),
-        child: const Text(
-          "Dashboard",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-        ),
-      ),
-      content: Container(
-        color: backgroundColor,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DashboardCard(
-                  user: 'Students',
-                  number: '302',
-                  color: primaryColor,
-                ),
-                DashboardCard(
-                  user: 'Teachers',
-                  number: '33',
-                  color: secondaryColor,
-                ),
-                DashboardCard(
-                  user: 'Staff',
-                  number: '28',
-                  color: Colors.yellow,
-                ),
-              ],
-            )
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "DashBoard",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                fontFamily: 'Poppins',
+                color: Colors.black),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              DashboardCard(
+                user: 'Students',
+                number: '302',
+                color: primaryColor,
+              ),
+              DashboardCard(
+                user: 'Teachers',
+                number: '33',
+                color: secondaryColor,
+              ),
+              DashboardCard(
+                user: 'Staff',
+                number: '28',
+                color: Colors.yellow,
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

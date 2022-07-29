@@ -10,10 +10,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-      content: Container(
-        child: Center(child: Text("Settings Page")),
-      ),
+    return Container(
+      child: Center(child: Text("Settings Page")),
     );
   }
 }

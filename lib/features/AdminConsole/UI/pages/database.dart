@@ -10,10 +10,8 @@ class DatabasePage extends StatefulWidget {
 class _DatabasePageState extends State<DatabasePage> {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-      content: Container(
-        child: Center(child: Text("Database Page")),
-      ),
+    return Container(
+      child: Center(child: Text("Database Page")),
     );
   }
 }

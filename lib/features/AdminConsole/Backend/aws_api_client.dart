@@ -28,6 +28,9 @@ abstract class AWSApiClient {
   Future<void> getClassRoom({required String classRoomID});
 
   //Student
+  Future<void> createStudent({required Student student});
+  Future<void> updateStudent({required Student updatedStudent});
+  Future<void> getStudent({required String studentID});
 }
 
 class AWSApiClientImpl implements AWSApiClient {
@@ -334,7 +337,7 @@ query MyQuery {
   }
 
   @override
-  Future<Group> getGroupDetails({required String groupID})async {
+  Future<Group> getGroupDetails({required String groupID}) async {
     final body = {
       'operationName': 'MyMutation',
       'query': '''query MyQuery {
@@ -422,5 +425,25 @@ query MyQuery {
 
     final responseString = await uploadJsonBodyRequest(body);
     return ClassRoom.fromJson(json.decode(responseString));
+  }
+
+  //Student
+  
+  @override
+  Future<void> createStudent({required Student student}) {
+    // TODO: implement createStudent
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> getStudent({required String studentID}) {
+    // TODO: implement getStudent
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> updateStudent({required Student updatedStudent}) {
+    // TODO: implement updateStudent
+    throw UnimplementedError();
   }
 }
