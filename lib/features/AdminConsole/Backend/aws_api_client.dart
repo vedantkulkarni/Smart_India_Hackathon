@@ -17,6 +17,12 @@ abstract class AWSApiClient {
   Future<School> createSchool({required School school});
   Future<School> getSchoolDetails({required String schoolID});
 
+  //Groups
+  Future<Group> createGroup({required Group group});
+  Future<List<Group>> getGroupsBySchool({required String schoolID});
+  Future<Group> getGroupDetails({required String groupID});
+  Future<Group> updateGroup({required Group updatedGroup});
+
   //Class
   Future<void> createClassRoom({required ClassRoom classRoom});
   Future<void> getClassRoom({required String classRoomID});
@@ -189,6 +195,38 @@ query MyQuery {
     return User.fromJson(json.decode(responseString));
   }
 
+  @override
+  Future<User> updateUser({required User updatedUser}) async {
+    //Updated
+
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''
+      mutation MyMutation {
+  updateUser(input: {address: "${updatedUser.address}", age: 10, description: "${updatedUser.description}", email: "${updatedUser.email}", gender: "${updatedUser.gender}", name: "${updatedUser.name}", role: SuperAdmin, schoolID: "${updatedUser.schoolID}", shitfInfo: "${updatedUser.shitfInfo}", phoneNumber: "${updatedUser.phoneNumber}"}) {
+    email
+    schoolID
+    age
+    address
+    createdAt
+    description
+    gender
+    idCard
+    name
+    phoneNumber
+    photo
+    role
+    shitfInfo
+    updatedAt
+  }
+}
+'''
+    };
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return User.fromJson(json.decode(responseString));
+  }
+
   //School
   @override
   Future<School> createSchool({required School school}) async {
@@ -247,15 +285,16 @@ query MyQuery {
     return School.fromJson(jsonResult);
   }
 
+  //Groups
   @override
-  Future<ClassRoom> createClassRoom({required ClassRoom classRoom}) async {
+  Future<Group> createGroup({required Group group}) async {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createClassRoom(input: {classRoomID: "${classRoom.classRoomID}", classRoomName: "${classRoom.classRoomName}", schoolID: "${classRoom.schoolID}", assignedTeacherName: "${classRoom.assignedTeacherName}", classRoomAssignedTeacherId: "${classRoom.classRoomAssignedTeacherId}", id: "${classRoom.id}", groupClassRoomsId: "${classRoom.groupClassRoomsId}"}) {
-    classRoomID
-    classRoomAssignedTeacherId
-    classRoomName
+  createGroup(input: {groupID: "${group.groupID}", schoolGroupsId: "${group.schoolGroupsId}", groupName: "${group.groupName}", createdBy: "${group.createdBy}"}) {
+    groupID
+    groupName
+    schoolGroupsId
   }
 }
 
@@ -264,11 +303,69 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    return ClassRoom.fromJson(json.decode(responseString));
+    return Group.fromJson(json.decode(responseString));
+  }
+
+  @override
+  Future<List<Group>> getGroupsBySchool({required String schoolID}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''query MyQuery {
+  getSchool(schoolID: "$schoolID") {
+    groups {
+      items {
+        groupName
+        groupID
+      }
+    }
+  }
+}
+''',
+    };
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    List<Group> groupsList = [];
+    for (var everyItem in json.decode(responseString)['data']['getSchool']
+        ['groups']['items']) {
+      groupsList.add(Group.fromJson(everyItem));
+    }
+
+    return groupsList;
+  }
+
+  @override
+  Future<Group> getGroupDetails({required String groupID})async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''query MyQuery {
+  getGroup(groupID: "$groupID") {
+    createdBy
+    groupID
+    groupName
+    schoolGroupsId
+    classRooms {
+      items {
+        classRoomID
+        classRoomName
+        assignedTeacherName
+        classRoomAssignedTeacherId
+      }
+    }
+  }
+}
+''',
+    };
+    final responseString = await uploadJsonBodyRequest(body);
+    return Group.fromJson(json.decode(responseString));
+  }
+
+  @override
+  Future<Group> updateGroup({required Group updatedGroup}) {
+    // TODO: implement updateGroup
+    throw UnimplementedError();
   }
 
   //Class Room
-
   @override
   Future<ClassRoom> getClassRoom({required String classRoomID}) async {
     final body = {
@@ -309,34 +406,21 @@ query MyQuery {
   }
 
   @override
-  Future<User> updateUser({required User updatedUser}) async {
-    //Updated
-
+  Future<ClassRoom> createClassRoom({required ClassRoom classRoom}) async {
     final body = {
       'operationName': 'MyMutation',
-      'query': '''
-      mutation MyMutation {
-  updateUser(input: {address: "${updatedUser.address}", age: 10, description: "${updatedUser.description}", email: "${updatedUser.email}", gender: "${updatedUser.gender}", name: "${updatedUser.name}", role: SuperAdmin, schoolID: "${updatedUser.schoolID}", shitfInfo: "${updatedUser.shitfInfo}", phoneNumber: "${updatedUser.phoneNumber}"}) {
-    email
-    schoolID
-    age
-    address
-    createdAt
-    description
-    gender
-    idCard
-    name
-    phoneNumber
-    photo
-    role
-    shitfInfo
-    updatedAt
+      'query': '''mutation MyMutation {
+  createClassRoom(input: {classRoomName: "${classRoom.classRoomName}", classRoomID: "${classRoom.classRoomName}", groupClassRoomsId: "${classRoom.classRoomName}", schoolID: "${classRoom.classRoomName}", assignedTeacherName: "${classRoom.classRoomName}"}) {
+    classRoomID
+    classRoomName
   }
 }
-'''
+
+
+''',
     };
+
     final responseString = await uploadJsonBodyRequest(body);
-    print(responseString);
-    return User.fromJson(json.decode(responseString));
+    return ClassRoom.fromJson(json.decode(responseString));
   }
 }

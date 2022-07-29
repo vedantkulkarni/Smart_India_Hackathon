@@ -16,3 +16,9 @@ class SchoolDetailsFetched extends AdminState {}
 class SchoolNotFound extends AdminState {}
 class CreatingSchool extends AdminState {}
 class SchoolCreated extends AdminState {}
+
+
+
+//ClassRoom
+class CreatingClassRoom extends AdminState {}
+class ClassRoomCreated extends AdminState {}

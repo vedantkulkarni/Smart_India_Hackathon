@@ -4,8 +4,10 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/errors/exceptions.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/role_checker.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/create_classroom.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
+import '../../../../models/Group.dart';
 import '../../../../models/School.dart';
 import '../../../../models/User.dart';
 
@@ -70,13 +72,19 @@ class AdminCubit extends Cubit<AdminState> {
     emit(SchoolDetailsFetched());
   }
 
-
-  //ClassRoom
-  Future<void> createClassRoom({required ClassRoom classRoom})async
-  {
+  //Groups
+  Future<void> createGroup({required Group group}) async{
     
   }
-       
+
+  //ClassRoom
+  Future<void> createClassRoom({required ClassRoom classRoom}) async {
+    emit(CreatingClassRoom());
+    final createdClassRoom =
+        await awsApiClient.createClassRoom(classRoom: classRoom);
+    emit(ClassRoomCreated());
+  }
+
   //Role Check
   bool checkUserRole(UserRole checkRole) {
     if (checkRole == UserRole.CanCreateSchool) {
