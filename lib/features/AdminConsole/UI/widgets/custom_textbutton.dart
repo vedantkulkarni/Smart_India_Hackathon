@@ -4,8 +4,9 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 class CustomTextButton extends StatefulWidget {
   final Function onPressed;
   final String text;
-  const CustomTextButton(
-      {Key? key, required this.onPressed, required this.text})
+  Color? bgColor;
+   CustomTextButton(
+      {Key? key, required this.onPressed, required this.text,this.bgColor})
       : super(key: key);
 
   @override
@@ -38,7 +39,7 @@ class _CustomTextButtonState extends State<CustomTextButton>
               height: isTapped ? 35 : 40,
               width: isTapped ? 130 : 140,
               decoration: BoxDecoration(
-                color: primaryColor,
+                color: widget.bgColor??primaryColor,
                 borderRadius: const BorderRadius.all(
                   Radius.circular(10),
                 ),
@@ -49,10 +50,10 @@ class _CustomTextButtonState extends State<CustomTextButton>
                   ),
                 ],
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Add Teacher',
-                  style: TextStyle(
+                  widget.text,
+                  style: const TextStyle(
                       fontSize: 14,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal,

@@ -12,6 +12,7 @@ const Color blendColor = Color(0xfff3f3f3);
 const Color navPanecolor = Color(0xfffdfdff);
 const Color navIconsColor = Color(0xff919caa);
 const Color blackColor = Color(0xff1b1e22);
+const Color redColor = Color(0xffff313a);
 
 const Color textFieldFillColor = Color(0xfff6f6fc);
 const Color lightTextColor = Color(0xff9aa3b1);

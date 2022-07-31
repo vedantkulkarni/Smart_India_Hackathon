@@ -66,11 +66,12 @@ class _AddUsersState extends State<AddUsers> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
               3,
-              (index) => AddUserCard(
-                  addText: addList[index][0],
-                  content: addList[index][1],
-                  imagePath: addList[index][2],
-                  index: index,),
+              (index) => ManageMentCard(
+                addText: addList[index][0],
+                content: addList[index][1],
+                imagePath: addList[index][2],
+                index: index,
+              ),
             ),
           ),
           const SizedBox(
@@ -80,11 +81,12 @@ class _AddUsersState extends State<AddUsers> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
               3,
-              (index) => AddUserCard(
-                  addText: addList[index + 3][0],
-                  content: addList[index + 3][1],
-                  imagePath: addList[index + 3][2],
-                  index: index,),
+              (index) => ManageMentCard(
+                addText: addList[index + 3][0],
+                content: addList[index + 3][1],
+                imagePath: addList[index + 3][2],
+                index: index,
+              ),
             ),
           )
         ],

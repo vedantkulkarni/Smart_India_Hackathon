@@ -48,6 +48,8 @@ dependencies:
   easy_sidemenu: ^0.3.1
   fluentui_system_icons: ^1.1.176
   data_table_2: ^2.3.5
+  equatable: ^2.0.3
+  modal_side_sheet: ^0.0.1
 
 dev_dependencies:
   flutter_test:

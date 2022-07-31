@@ -160,7 +160,7 @@ query MyQuery {
       );
 
       final myJsonMap = json.decode(response.body);
-      print(myJsonMap);
+      
       final user = User.fromJson(myJsonMap['data']['getUser']);
       return user;
     } catch (e) {
@@ -266,6 +266,7 @@ query MyQuery {
       gender
       name
       phoneNumber
+      role
     }
   }
 }

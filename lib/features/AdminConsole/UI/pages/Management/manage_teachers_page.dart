@@ -1,16 +1,18 @@
 import 'package:data_table_2/data_table_2.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_teacher.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/teacher_details.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 
 import '../../../../../injection_container.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
 import '../../../Backend/aws_api_client.dart';
+import 'add_teacher.dart';
 
 class MangeTeachersPage extends StatefulWidget {
   const MangeTeachersPage({Key? key}) : super(key: key);
@@ -20,19 +22,18 @@ class MangeTeachersPage extends StatefulWidget {
 }
 
 class _MangeTeachersPageState extends State<MangeTeachersPage> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        automaticallyImplyLeading: true,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: navIconsColor),
-      ),
+      key: _key,
+      endDrawerEnableOpenDragGesture: false,
       body: BlocBuilder<ManagementCubit, ManagementState>(
         builder: (context, state) {
-          print(state);
-          if (state is ManagementInitial || state is FetchingTeachers) {
+          if (state is ManagementInitial ||
+              state is FetchingTeachers ||
+              state is DeletingTeacher) {
             return progressIndicator;
           }
 
@@ -40,22 +41,27 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
               width: double.maxFinite,
               height: double.maxFinite,
               color: backgroundColor,
-              padding: const EdgeInsets.symmetric(horizontal: 80),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                      ),
                       Container(
                         margin: const EdgeInsets.all(10),
                         child: CustomTextField(
                           hintText: 'Search',
-                          labelText: 'Search',
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),
                           width: 400,
                           prefixIcon: const Icon(
-                            FluentIcons.search,
+                            FluentIcons.search_12_filled,
                             size: 16,
                           ),
                         ),
@@ -65,7 +71,7 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
                           width: 200,
                           child: CustomTextButton(
                               onPressed: () async {
-                                Navigator.of(context)
+                                await Navigator.of(context)
                                     .push(MaterialPageRoute(builder: (_) {
                                   return MultiBlocProvider(providers: [
                                     BlocProvider.value(
@@ -78,6 +84,17 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
                                                 ManagementMode.Teachers)),
                                   ], child: const AddTeacherPage());
                                 }));
+
+                                // _key.currentState!.openEndDrawer();
+                                // await showModalSideSheet(
+                                //     transitionDuration:
+                                //         const Duration(milliseconds: 100),
+                                //     context: context,
+                                //     ignoreAppBar: false,
+                                //     body:  TeacherDetailsPage(user: null,));
+
+                                await BlocProvider.of<ManagementCubit>(context)
+                                    .fetchAllTeachers();
                               },
                               text: 'Add Teacher')),
                     ],
@@ -100,6 +117,10 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: DataTable2(
+                        empty: Container(
+                            child: const Center(
+                          child: Text('No Teachers added yet'),
+                        )),
                         dataTextStyle: const TextStyle(
                             fontSize: 14,
                             fontFamily: 'Poppins',
@@ -128,10 +149,43 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
                         rows: List<DataRow>.generate(
                           (state as TeachersFetched).teacherList.length,
                           (index) => DataRow2.byIndex(
-                                            selected: true,
-                              color: null,
+                              selected: true,
+                              color: MaterialStateProperty.all(whiteColor),
                               index: index,
-                              onTap: () {},
+                              onTap: () async {
+                                // await Navigator.of(context)
+                                //     .push(MaterialPageRoute(builder: (_) {
+                                //   return MultiBlocProvider(providers: [
+                                //     BlocProvider.value(
+                                //         value: BlocProvider.of<AdminCubit>(
+                                //             context)),
+                                //     BlocProvider(
+                                //         create: (context) => ManagementCubit(
+                                //             awsApiClient: getIt<AWSApiClient>(),
+                                //             managementMode:
+                                //                 ManagementMode.Teachers)),
+                                //   ], child: const AddTeacherPage());
+                                // }));
+                                // index = 1;
+                                // _key.currentState!.openEndDrawer();
+                                final res = await showModalSideSheet<bool>(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    context: context,
+                                    ignoreAppBar: false,
+                                    body: BlocProvider.value(
+                                      value: BlocProvider.of<ManagementCubit>(
+                                          context),
+                                      child: TeacherDetailsPage(
+                                        user: (state).teacherList[index],
+                                      ),
+                                    ));
+                                if (res != null && res == true) {
+                                  await BlocProvider.of<ManagementCubit>(
+                                          context)
+                                      .fetchAllTeachers();
+                                }
+                              },
                               cells: [
                                 DataCell(
                                   Text(

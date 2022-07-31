@@ -24,26 +24,16 @@ class _CreateClassRoomState extends State<CreateClassRoom> {
             const SizedBox(
               height: 60,
             ),
-             CustomTextField(
-                hintText: 'Class Name',
-                labelText: 'Give a name to your school',
-                padding: EdgeInsets.all(20)),
-             CustomTextField(
-                hintText: 'Address',
-                labelText: 'Address',
-                padding: EdgeInsets.all(20)),
-             CustomTextField(
-                hintText: 'Contance Phone',
-                labelText: 'Contact',
-                padding: EdgeInsets.all(20)),
-             CustomTextField(
-                hintText: 'Contact email',
-                labelText: 'email',
-                padding: EdgeInsets.all(20)),
-             CustomTextField(
-                hintText: 'location',
-                labelText: 'loaction google maps link',
-                padding: EdgeInsets.all(20)),
+            CustomTextField(
+                hintText: 'Class Name', padding: const EdgeInsets.all(20)),
+            CustomTextField(
+                hintText: 'Address', padding: const EdgeInsets.all(20)),
+            CustomTextField(
+                hintText: 'Contance Phone', padding: const EdgeInsets.all(20)),
+            CustomTextField(
+                hintText: 'Contact email', padding: const EdgeInsets.all(20)),
+            CustomTextField(
+                hintText: 'location', padding: const EdgeInsets.all(20)),
             const SizedBox(
               height: 60,
             ),

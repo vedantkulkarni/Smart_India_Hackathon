@@ -1,6 +1,5 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart';
 
 import '../../../../core/constants.dart';
 
@@ -64,13 +63,16 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
         // Will shows on top of all items, it can be a logo or a Title text
         title: Column(
           children: [
+            const SizedBox(
+              height: 40,
+            ),
             Image.asset(
-              'assets/images/attendance_logo.jpg',
-              width: 100,
-              height: 100,
+              'assets/images/class.png',
+              width: 60,
+              height: 60,
             ),
             const SizedBox(
-              height: 100,
+              height: 40,
             )
           ],
         ),

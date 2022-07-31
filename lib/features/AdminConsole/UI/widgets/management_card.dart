@@ -4,32 +4,37 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_classroom.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_teachers_page.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_users_page.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
 
-class AddUserCard extends StatelessWidget {
+class ManageMentCard extends StatelessWidget {
   final String addText;
   final String content;
   final String imagePath;
   final int index;
-  const AddUserCard(
+  ManageMentCard(
       {Key? key,
       required this.addText,
       required this.content,
       required this.imagePath,
       required this.index})
       : super(key: key);
+  List<ManagementMode> modes = [ManagementMode.User, ManagementMode.Teachers];
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-        
           Navigator.of(context).push(MaterialPageRoute(builder: (_) {
             return MultiBlocProvider(providers: [
               BlocProvider.value(value: BlocProvider.of<AdminCubit>(context)),
-              BlocProvider(create: (context)=>ManagementCubit(awsApiClient: getIt<AWSApiClient>(),managementMode: ManagementMode.Teachers)),
+              BlocProvider(
+                  create: (context) => ManagementCubit(
+                      awsApiClient: getIt<AWSApiClient>(),
+                      managementMode: modes[index])),
             ], child: customPushHandlerFunction(index));
           }));
         },
@@ -80,8 +85,12 @@ class AddUserCard extends StatelessWidget {
   }
 
   Widget customPushHandlerFunction(int index) {
-    if (index == 1) {
+    if (index == 0) {
+      return const ManageUsers();
+    } else if (index == 1) {
       return const MangeTeachersPage();
+    } else if (index == 2) {
+      return const ManageClassroom();
     } else {
       return Container();
     }
