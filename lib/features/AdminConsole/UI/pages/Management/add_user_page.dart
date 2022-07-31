@@ -7,14 +7,14 @@ import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../../../core/constants.dart';
 
-class AddTeacherPage extends StatefulWidget {
-  const AddTeacherPage({Key? key}) : super(key: key);
+class AddUserPage extends StatefulWidget {
+  const AddUserPage({Key? key}) : super(key: key);
 
   @override
-  State<AddTeacherPage> createState() => _AddTeacherPageState();
+  State<AddUserPage> createState() => _AddUserPageState();
 }
 
-class _AddTeacherPageState extends State<AddTeacherPage> {
+class _AddUserPageState extends State<AddUserPage> {
   @override
   Widget build(BuildContext context) {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
@@ -40,7 +40,7 @@ class _AddTeacherPageState extends State<AddTeacherPage> {
                   //Sign up the user first
                   //......
                   //Create the User in database
-                  final newTeacher = User(
+                  final newUser = User(
                       email: 'oksrsly@gmail.com',
                       name: 'Vedant Kulkarni',
                       role: Role.SuperAdmin,
@@ -51,8 +51,8 @@ class _AddTeacherPageState extends State<AddTeacherPage> {
                       gender: 'Female',
                       schoolID: adminCubit.admin.schoolID,
                       shitfInfo: 'Some shift info');
-                  await managementCubit.addNewTeacher(newTeacher: newTeacher);
-                  
+                  await managementCubit.addNewUser(newUser: newUser);
+
                   Navigator.pop(context);
                 },
                 text: "Add",

@@ -5,7 +5,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/a
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_classroom.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_teachers_page.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_students_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_users_page.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
 
@@ -88,7 +88,7 @@ class ManageMentCard extends StatelessWidget {
     if (index == 0) {
       return const ManageUsers();
     } else if (index == 1) {
-      return const MangeTeachersPage();
+      return const ManageStudentsPage();
     } else if (index == 2) {
       return const ManageClassroom();
     } else {

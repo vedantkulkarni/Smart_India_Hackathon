@@ -6,19 +6,20 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 
+import '../../../../../models/Role.dart';
 import '../../../../../models/User.dart';
 
-class TeacherDetailsPage extends StatefulWidget {
+class ViewAndEditUser extends StatefulWidget {
   User user;
-  TeacherDetailsPage({Key? key, required this.user}) : super(key: key);
+  ViewAndEditUser({Key? key, required this.user}) : super(key: key);
 
   @override
-  State<TeacherDetailsPage> createState() => _TeacherDetailsPageState(user);
+  State<ViewAndEditUser> createState() => _ViewAndEditUserState(user);
 }
 
-class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
-  User teacher;
-  _TeacherDetailsPageState(this.teacher);
+class _ViewAndEditUserState extends State<ViewAndEditUser> {
+  User user;
+  _ViewAndEditUserState(this.user);
   bool canEdit = false;
   @override
   Widget build(BuildContext context) {
@@ -32,13 +33,32 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  fi.FluentIcons.edit,
-                  size: 16,
-                  color: primaryColor,
-                )),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        canEdit = true;
+                      });
+                    },
+                    icon: const Icon(
+                      fi.FluentIcons.edit,
+                      size: 16,
+                      color: primaryColor,
+                    )),
+                const Spacer(),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      fi.FluentIcons.check_mark,
+                      size: 20,
+                      color: primaryColor,
+                    )),
+              ],
+            ),
             const Align(
               alignment: Alignment.center,
               child: SizedBox(
@@ -55,7 +75,7 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                teacher.gender ?? 'Unknown',
+                user.gender ?? 'Unknown',
                 style: const TextStyle(color: greyColor, fontFamily: 'Poppins'),
               ),
               const SizedBox(
@@ -66,9 +86,53 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
               const SizedBox(
                 width: 10,
               ),
-              Text(teacher.age == null ? 'Unknown' : teacher.age.toString(),
+              Text(user.age == null ? 'Unknown' : user.age.toString(),
                   style:
-                      const TextStyle(color: greyColor, fontFamily: 'Poppins'))
+                      const TextStyle(color: greyColor, fontFamily: 'Poppins')),
+              const SizedBox(
+                width: 10,
+              ),
+              const Text('|',
+                  style: TextStyle(color: primaryColor, fontFamily: 'Poppins')),
+              const SizedBox(
+                width: 10,
+              ),
+              DropdownButton<Role>(
+                icon: null,
+                iconSize: 0.0,
+                alignment: Alignment.center,
+                underline: Container(),
+                borderRadius: fi.BorderRadius.circular(10),
+                value: user.role,
+                onChanged: (value) {
+                  changeRole(value!);
+                  print(user.role);
+                },
+                items: const [
+                  DropdownMenuItem(
+                    child: Text('SuperAdmin',
+                        style: TextStyle(
+                            color: greyColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14)),
+                    value: Role.SuperAdmin,
+                  ),
+                  DropdownMenuItem(
+                      child: Text('Admin',
+                          style: TextStyle(
+                              color: greyColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 14)),
+                      value: Role.Admin),
+                  DropdownMenuItem(
+                      child: Text('Teacher',
+                          style: TextStyle(
+                              color: greyColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 14)),
+                      value: Role.Teacher)
+                ],
+              )
             ]),
             const SizedBox(
               height: 20,
@@ -78,8 +142,8 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
                 Expanded(
                   child: CustomTextField(
                     enabled: canEdit,
-                    value: teacher.name.trim().split(' ')[0],
-                    hintText: teacher.name.trim().split(' ')[0],
+                    value: user.name.trim().split(' ')[0],
+                    hintText: user.name.trim().split(' ')[0],
                     padding: const EdgeInsets.all(5),
                     heading: 'First Name',
                   ),
@@ -90,8 +154,8 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
                 Expanded(
                   child: CustomTextField(
                     enabled: canEdit,
-                    hintText: teacher.name.trim().split(' ')[1],
-                    value: teacher.name.trim().split(' ')[1],
+                    hintText: user.name.trim().split(' ')[1],
+                    value: user.name.trim().split(' ')[1],
                     padding: const EdgeInsets.all(5),
                     heading: 'Last Name',
                   ),
@@ -103,8 +167,8 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
                 Expanded(
                   child: CustomTextField(
                     enabled: canEdit,
-                    hintText: teacher.email,
-                    value: teacher.email,
+                    hintText: user.email,
+                    value: user.email,
                     padding: const EdgeInsets.all(5),
                     heading: 'Email',
                   ),
@@ -115,8 +179,8 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
                 Expanded(
                   child: CustomTextField(
                     enabled: canEdit,
-                    hintText: teacher.phoneNumber,
-                    value: teacher.phoneNumber,
+                    hintText: user.phoneNumber,
+                    value: user.phoneNumber,
                     padding: const EdgeInsets.all(5),
                     heading: 'Phone Number',
                   ),
@@ -125,28 +189,28 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
             ),
             CustomTextField(
               enabled: canEdit,
-              hintText: teacher.address ?? 'Unknown',
-              value: teacher.address ?? 'Unknown',
+              hintText: user.address ?? 'Unknown',
+              value: user.address ?? 'Unknown',
               padding: const EdgeInsets.all(5),
               heading: 'Address',
             ),
             CustomTextField(
               enabled: canEdit,
-              hintText: teacher.description ?? 'Unknown',
-              value: teacher.description ?? 'Unknown',
+              hintText: user.description ?? 'Unknown',
+              value: user.description ?? 'Unknown',
               padding: const EdgeInsets.all(5),
               heading: 'Description',
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 CustomTextButton(
                   onPressed: () async {
-                    await managementCubit.deleteTeacher(email: teacher.email);
-                    Navigator.pop(context,true);
+                    await managementCubit.deleteUser(email: user.email);
+                    Navigator.pop(context, true);
                   },
                   text: 'Delete',
                   bgColor: redColor,
@@ -157,5 +221,12 @@ class _TeacherDetailsPageState extends State<TeacherDetailsPage> {
         ),
       ),
     );
+  }
+
+  void changeRole(Role role) {
+    print(role);
+    setState(() {
+      user = user.copyWith(role: role);
+    });
   }
 }

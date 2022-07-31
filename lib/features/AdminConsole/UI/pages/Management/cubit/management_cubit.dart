@@ -18,7 +18,7 @@ class ManagementCubit extends Cubit<ManagementState> {
     if (managementMode == ManagementMode.Teachers) {
       fetchAllTeachers();
     } else if (managementMode == ManagementMode.User) {
-      getAllUsers();
+      getAllUsers(role: Role.SuperAdmin);
     }
   }
 
@@ -29,30 +29,33 @@ class ManagementCubit extends Cubit<ManagementState> {
     emit(TeachersFetched(teacherList: usersList));
   }
 
-  Future<void> addNewTeacher({required User newTeacher}) async {
-    emit(AddingTeacher());
-    final createdUser = await awsApiClient.createUser(user: newTeacher);
-
-    // await fetchAllTeachers();
-    emit(TeacherAdded());
-  }
-
-  Future<void> deleteTeacher({required String email}) async {
-    emit(DeletingTeacher());
-    final deletedTeacher = await awsApiClient.deleteUser(email: email);
-
-    emit(TeacherDeleted());
-  }
-
-  //ManageMode = users
-  Future<void> getAllUsers() async {
+  //ManagementMode = users
+  Future<void> getAllUsers({required Role role}) async {
     emit(FetchingUsers());
-    final superAdminList =
-        await awsApiClient.getListOfUsers(role: Role.SuperAdmin);
-    final adminList = await awsApiClient.getListOfUsers(role: Role.Admin);
-    _userList = superAdminList + adminList;
+    final _userList = await awsApiClient.getListOfUsers(role: role);
+    // final adminList = await awsApiClient.getListOfUsers(role: Role.Admin);
+    // _userList = superAdminList + adminList;
     print(_userList);
     emit(UsersFetched(userList: _userList));
+  }
+
+  Future<void> addNewUser({required User newUser}) async {
+    emit(AddingUser());
+    final createdUser = await awsApiClient.createUser(user: newUser);
+
+    // await fetchAllTeachers();
+    emit(UserAdded());
+  }
+
+  Future<void> deleteUser({required String email}) async {
+    emit(DeletingUser());
+    final deletedTeacher = await awsApiClient.deleteUser(email: email);
+
+    emit(UserDeleted());
+  }
+
+  void clearUserList() {
+    _userList = [];
   }
 
   //getter

@@ -26,17 +26,7 @@ class FetchingTeachers extends ManagementState {
   List<Object?> get props => [];
 }
 
-class DeletingTeacher extends ManagementState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-}
 
-class TeacherDeleted extends ManagementState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-}
 
 class TeachersFetched extends ManagementState {
   final List<User> teacherList;
@@ -52,7 +42,22 @@ class FetchingUsers extends ManagementState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+class AddingUser extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+class UserAdded extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 class DeletingUser extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+class UserDeleted extends ManagementState {
   @override
   // TODO: implement props
   List<Object?> get props => [];

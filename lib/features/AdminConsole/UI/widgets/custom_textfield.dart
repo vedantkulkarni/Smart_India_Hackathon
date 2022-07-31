@@ -13,7 +13,7 @@ class CustomTextField extends StatelessWidget {
 
   CustomTextField(
       {Key? key,
-       this.value,
+      this.value,
       required this.hintText,
       required this.padding,
       this.heading,
@@ -39,10 +39,10 @@ class CustomTextField extends StatelessWidget {
                       color: lightTextColor),
                 ),
           TextFormField(
-            enabled: enabled??true,
+            enabled: enabled ?? true,
             initialValue: value,
             decoration: InputDecoration(
-                contentPadding: padding,
+                contentPadding: const EdgeInsets.all(0),
                 prefixIcon: prefixIcon,
                 fillColor: textFieldFillColor,
                 filled: true,

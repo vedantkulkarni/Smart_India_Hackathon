@@ -5,23 +5,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/teacher_details.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/view_and_edit_user.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 
 import '../../../../../injection_container.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
 import '../../../Backend/aws_api_client.dart';
-import 'add_teacher.dart';
+import 'add_user_page.dart';
 
-class MangeTeachersPage extends StatefulWidget {
-  const MangeTeachersPage({Key? key}) : super(key: key);
+class ManageStudentsPage extends StatefulWidget {
+  const ManageStudentsPage({Key? key}) : super(key: key);
 
   @override
-  State<MangeTeachersPage> createState() => _MangeTeachersPageState();
+  State<ManageStudentsPage> createState() => _ManageStudentsPageState();
 }
 
-class _MangeTeachersPageState extends State<MangeTeachersPage> {
+class _ManageStudentsPageState extends State<ManageStudentsPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   int index = 0;
   @override
@@ -33,7 +33,7 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
         builder: (context, state) {
           if (state is ManagementInitial ||
               state is FetchingTeachers ||
-              state is DeletingTeacher) {
+              state is DeletingUser) {
             return progressIndicator;
           }
 
@@ -82,7 +82,7 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
                                             awsApiClient: getIt<AWSApiClient>(),
                                             managementMode:
                                                 ManagementMode.Teachers)),
-                                  ], child: const AddTeacherPage());
+                                  ], child: const AddUserPage());
                                 }));
 
                                 // _key.currentState!.openEndDrawer();
@@ -176,7 +176,7 @@ class _MangeTeachersPageState extends State<MangeTeachersPage> {
                                     body: BlocProvider.value(
                                       value: BlocProvider.of<ManagementCubit>(
                                           context),
-                                      child: TeacherDetailsPage(
+                                      child: ViewAndEditUser(
                                         user: (state).teacherList[index],
                                       ),
                                     ));
