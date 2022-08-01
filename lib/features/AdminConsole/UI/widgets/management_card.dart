@@ -90,6 +90,7 @@ class ManageMentCard extends StatelessWidget {
   }
 
   Widget customPushHandlerFunction(int index) {
+    print(index);
     if (index == 0) {
       return const ManageUsers();
     } else if (index == 1) {
@@ -101,6 +102,7 @@ class ManageMentCard extends StatelessWidget {
       return const ManageClassroom();
     } else {
       //Attendacnce
+      print(index);
       return const ManageAttendancePage();
     }
   }

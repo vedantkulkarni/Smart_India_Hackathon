@@ -80,7 +80,7 @@ class _AddUsersState extends State<AddUsers> {
                 addText: addList[index + 2][0],
                 content: addList[index + 2][1],
                 imagePath: addList[index + 2][2],
-                index: index,
+                index: index + 2,
               ),
             ),
           )
