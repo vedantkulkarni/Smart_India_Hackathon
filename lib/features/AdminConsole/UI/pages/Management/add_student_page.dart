@@ -30,7 +30,7 @@ class _AddUserPageState extends State<AddUserPage> {
         color: backgroundColor,
         child: BlocBuilder<ManagementCubit, ManagementState>(
           builder: (context, state) {
-            if (state is AddingUser) {
+            if (state is AddingStudent) {
               return progressIndicator;
             }
 
@@ -40,18 +40,18 @@ class _AddUserPageState extends State<AddUserPage> {
                   //Sign up the user first
                   //......
                   //Create the User in database
-                  final newUser = User(
-                      email: 'oksrsly@gmail.com',
-                      name: 'Vedant Kulkarni',
-                      role: Role.SuperAdmin,
-                      phoneNumber: '+91 9623026654',
-                      address: 'New Address',
-                      age: 5,
-                      description: 'New Description',
-                      gender: 'Female',
-                      schoolID: adminCubit.admin.schoolID,
-                      shitfInfo: 'Some shift info');
-                  await managementCubit.addNewUser(newUser: newUser);
+                  // final newUser = User(
+                  //     email: 'oksrsly@gmail.com',
+                  //     name: 'Vedant Kulkarni',
+                  //     role: Role.SuperAdmin,
+                  //     phoneNumber: '+91 9623026654',
+                  //     address: 'New Address',
+                  //     age: 5,
+                  //     description: 'New Description',
+                  //     gender: 'Female',
+                  //     schoolID: adminCubit.admin.schoolID,
+                  //     shitfInfo: 'Some shift info');
+                  // await managementCubit.addNewUser(newUser: newUser);
 
                   Navigator.pop(context);
                 },

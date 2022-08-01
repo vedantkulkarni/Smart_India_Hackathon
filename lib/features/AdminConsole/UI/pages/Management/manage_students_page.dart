@@ -10,6 +10,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_te
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 
 import '../../../../../injection_container.dart';
+import '../../../../../models/Role.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
 import '../../../Backend/aws_api_client.dart';
 import 'add_user_page.dart';
@@ -32,8 +33,8 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
       body: BlocBuilder<ManagementCubit, ManagementState>(
         builder: (context, state) {
           if (state is ManagementInitial ||
-              state is FetchingTeachers ||
-              state is DeletingUser) {
+              state is FetchingStudents ||
+              state is DeletingStudent) {
             return progressIndicator;
           }
 
@@ -93,10 +94,10 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                 //     ignoreAppBar: false,
                                 //     body:  TeacherDetailsPage(user: null,));
 
-                                await BlocProvider.of<ManagementCubit>(context)
-                                    .fetchAllTeachers();
+                                // await BlocProvider.of<ManagementCubit>(context)
+                                //     .fetchAllTeachers();
                               },
-                              text: 'Add Teacher')),
+                              text: 'Add Student')),
                     ],
                   ),
                   const SizedBox(
@@ -147,7 +148,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                           DataColumn(label: Text('Gender')),
                         ],
                         rows: List<DataRow>.generate(
-                          (state as TeachersFetched).teacherList.length,
+                          (state as StudentsFetched).studentsList.length,
                           (index) => DataRow2.byIndex(
                               selected: true,
                               color: MaterialStateProperty.all(whiteColor),
@@ -177,34 +178,35 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                       value: BlocProvider.of<ManagementCubit>(
                                           context),
                                       child: ViewAndEditUser(
-                                        user: (state).teacherList[index],
+                                        user: (state).studentsList[index],
+                                        currentRole: (state).studentsList[index].role,
                                       ),
                                     ));
                                 if (res != null && res == true) {
                                   await BlocProvider.of<ManagementCubit>(
                                           context)
-                                      .fetchAllTeachers();
+                                      .getAllUsers(role: Role.SuperAdmin);
                                 }
                               },
                               cells: [
                                 DataCell(
                                   Text(
-                                    (state).teacherList[index].name,
+                                    (state).studentsList[index].name,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).teacherList[index].phoneNumber,
+                                    (state).studentsList[index].phoneNumber,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).teacherList[index].email,
+                                    (state).studentsList[index].email,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).teacherList[index].gender!,
+                                    (state).studentsList[index].gender!,
                                   ),
                                 ),
                               ]),

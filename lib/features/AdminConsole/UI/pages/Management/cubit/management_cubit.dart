@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../../../../models/Role.dart';
 import '../../../../../../models/User.dart';
@@ -12,22 +13,18 @@ class ManagementCubit extends Cubit<ManagementState> {
   AWSApiClient awsApiClient;
   ManagementMode managementMode;
   List<User> _userList = [];
+  List<Student> _studentList = [];
 
   ManagementCubit({required this.awsApiClient, required this.managementMode})
       : super(ManagementInitial()) {
-    if (managementMode == ManagementMode.Teachers) {
-      fetchAllTeachers();
+    if (managementMode == ManagementMode.Students) {
+      getAllStudents(limit: 10);
     } else if (managementMode == ManagementMode.User) {
       getAllUsers(role: Role.SuperAdmin);
     }
   }
 
-  //Management mode = teachers
-  Future<void> fetchAllTeachers() async {
-    emit(FetchingTeachers());
-    _userList = await awsApiClient.getListOfUsers(role: Role.Teacher);
-    emit(TeachersFetched(teacherList: usersList));
-  }
+  
 
   //ManagementMode = users
   Future<void> getAllUsers({required Role role}) async {
@@ -43,7 +40,6 @@ class ManagementCubit extends Cubit<ManagementState> {
     emit(AddingUser());
     final createdUser = await awsApiClient.createUser(user: newUser);
 
-    // await fetchAllTeachers();
     emit(UserAdded());
   }
 
@@ -61,5 +57,24 @@ class ManagementCubit extends Cubit<ManagementState> {
   //getter
   List<User> get usersList {
     return _userList;
+  }
+
+
+  //Management mode = Students
+  Future<void> getAllStudents({required int limit}) async {}
+
+  Future<void> getStudent({required String studentID}) async {}
+
+  Future<void> deleteStudent({required String studentID}) async {}
+
+  Future<void> updateStudent({required Student updatedStudent}) async {}
+
+  void clearStudentList() {
+    _studentList = [];
+  }
+
+  //getter
+  List<Student> get studentsList {
+    return _studentList;
   }
 }

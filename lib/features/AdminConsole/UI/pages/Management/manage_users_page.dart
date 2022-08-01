@@ -158,7 +158,7 @@ class _ManageUsersState extends State<ManageUsers> {
                             //     body:  TeacherDetailsPage(user: null,));
 
                             await BlocProvider.of<ManagementCubit>(context)
-                                .fetchAllTeachers();
+                                .getAllUsers(role: role);
                           },
                           text: 'Add User'),
                       Container(

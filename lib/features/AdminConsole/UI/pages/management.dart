@@ -18,14 +18,9 @@ class _AddUsersState extends State<AddUsers> {
       '$commonPath/user.png'
     ],
     [
-      'Teacher',
+      'Students',
       'Teachers are the main interactors for the system.',
-      '$commonPath/teacher.png'
-    ],
-    [
-      'Class Room',
-      'User are the main interactors for the system.',
-      '$commonPath/myClassRoom.png'
+      '$commonPath/students.png'
     ],
     [
       'Groups',
@@ -33,9 +28,9 @@ class _AddUsersState extends State<AddUsers> {
       '$commonPath/box.png'
     ],
     [
-      'Students',
-      'Teachers are the main interactors for the system.',
-      '$commonPath/students.png'
+      'Class Room',
+      'User are the main interactors for the system.',
+      '$commonPath/myClassRoom.png'
     ],
     [
       'Attendance',
@@ -65,7 +60,7 @@ class _AddUsersState extends State<AddUsers> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
-              3,
+              2,
               (index) => ManageMentCard(
                 addText: addList[index][0],
                 content: addList[index][1],
@@ -82,9 +77,9 @@ class _AddUsersState extends State<AddUsers> {
             children: List.generate(
               3,
               (index) => ManageMentCard(
-                addText: addList[index + 3][0],
-                content: addList[index + 3][1],
-                imagePath: addList[index + 3][2],
+                addText: addList[index + 2][0],
+                content: addList[index + 2][1],
+                imagePath: addList[index + 2][2],
                 index: index,
               ),
             ),

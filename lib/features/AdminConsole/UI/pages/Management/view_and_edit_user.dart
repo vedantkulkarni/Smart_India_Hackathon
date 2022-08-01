@@ -11,15 +11,19 @@ import '../../../../../models/User.dart';
 
 class ViewAndEditUser extends StatefulWidget {
   User user;
-  ViewAndEditUser({Key? key, required this.user}) : super(key: key);
+  Role currentRole;
+  ViewAndEditUser({Key? key, required this.user, required this.currentRole})
+      : super(key: key);
 
   @override
-  State<ViewAndEditUser> createState() => _ViewAndEditUserState(user);
+  State<ViewAndEditUser> createState() =>
+      _ViewAndEditUserState(user, currentRole);
 }
 
 class _ViewAndEditUserState extends State<ViewAndEditUser> {
   User user;
-  _ViewAndEditUserState(this.user);
+  Role currentRole;
+  _ViewAndEditUserState(this.user,this.currentRole);
   bool canEdit = false;
   @override
   Widget build(BuildContext context) {
@@ -210,6 +214,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                 CustomTextButton(
                   onPressed: () async {
                     await managementCubit.deleteUser(email: user.email);
+                    await managementCubit.getAllUsers(role: currentRole);
                     Navigator.pop(context, true);
                   },
                   text: 'Delete',

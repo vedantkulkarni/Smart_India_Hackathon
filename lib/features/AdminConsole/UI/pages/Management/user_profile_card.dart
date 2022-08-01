@@ -9,6 +9,7 @@ import 'cubit/management_cubit.dart';
 
 class ProfileTile extends StatelessWidget {
   final User user;
+
   const ProfileTile({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -25,6 +26,7 @@ class ProfileTile extends StatelessWidget {
                 value: BlocProvider.of<ManagementCubit>(context),
                 child: ViewAndEditUser(
                   user: user,
+                  currentRole: user.role,
                 ),
               ));
         },
