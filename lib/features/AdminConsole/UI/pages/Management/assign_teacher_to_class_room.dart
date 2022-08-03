@@ -70,10 +70,11 @@ class _AssignTeacherToClassRoomState extends State<AssignTeacherToClassRoom> {
             child: CustomTextButton(
               onPressed: () async {
                 if (teacher == null) return;
-                widget.classRoom = widget.classRoom
-                    .copyWith(userAssignedClassId: teacher!.id);
+
+                final updateClassRoom = widget.classRoom
+                    .copyWith(userAssignedClassId: teacher!.email);
                 final result = await managementCubit.updateClassRoom(
-                    updatedClassRoom: widget.classRoom);
+                    updatedClassRoom: updateClassRoom);
                 Navigator.pop(context, true);
               },
               text: 'Assign',

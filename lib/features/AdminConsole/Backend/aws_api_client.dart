@@ -564,6 +564,7 @@ query MyQuery {
   updateClassRoom(input: {id: "${classRoom.id}", classRoomName: "${classRoom.classRoomName}", assignedTeacherName: "${classRoom.assignedTeacherName}", attendanceMode: $attendanceMode, currentAttendance: 10, groupClassRoomsId: "${classRoom.groupClassRoomsId}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
     classRoomName
     assignedTeacherName
+    userAssignedClassId
   }
 }
 
