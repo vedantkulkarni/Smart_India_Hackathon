@@ -3,14 +3,14 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/managemen
 
 import '../../../../core/constants.dart';
 
-class AddUsers extends StatefulWidget {
-  const AddUsers({Key? key}) : super(key: key);
+class Management extends StatefulWidget {
+  const Management({Key? key}) : super(key: key);
 
   @override
-  State<AddUsers> createState() => _AddUsersState();
+  State<Management> createState() => _ManagementState();
 }
 
-class _AddUsersState extends State<AddUsers> {
+class _ManagementState extends State<Management> {
   final List<List<String>> addList = [
     [
       'User',

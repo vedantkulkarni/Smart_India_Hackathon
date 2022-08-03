@@ -7,14 +7,14 @@ import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../../../core/constants.dart';
 
-class AddUserPage extends StatefulWidget {
-  const AddUserPage({Key? key}) : super(key: key);
+class AddStudentsPage extends StatefulWidget {
+  const AddStudentsPage({Key? key}) : super(key: key);
 
   @override
-  State<AddUserPage> createState() => _AddUserPageState();
+  State<AddStudentsPage> createState() => _AddStudentsPageState();
 }
 
-class _AddUserPageState extends State<AddUserPage> {
+class _AddStudentsPageState extends State<AddStudentsPage> {
   @override
   Widget build(BuildContext context) {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
@@ -37,21 +37,13 @@ class _AddUserPageState extends State<AddUserPage> {
             return Center(
               child: CustomTextButton(
                 onPressed: () async {
-                  //Sign up the user first
-                  //......
-                  //Create the User in database
-                  // final newUser = User(
-                  //     email: 'oksrsly@gmail.com',
-                  //     name: 'Vedant Kulkarni',
-                  //     role: Role.SuperAdmin,
-                  //     phoneNumber: '+91 9623026654',
-                  //     address: 'New Address',
-                  //     age: 5,
-                  //     description: 'New Description',
-                  //     gender: 'Female',
-                  //     schoolID: adminCubit.admin.schoolID,
-                  //     shitfInfo: 'Some shift info');
-                  // await managementCubit.addNewUser(newUser: newUser);
+                  //Create Student in DB
+                  final student = Student(
+                    studentID: 'someID',
+                    studentName: 'Vedant Dattatray Kulkarni',
+                 
+                  );
+                  final res =await  managementCubit.createStudent(student: student);
 
                   Navigator.pop(context);
                 },

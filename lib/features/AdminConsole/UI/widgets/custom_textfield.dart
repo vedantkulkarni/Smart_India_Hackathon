@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   Icon? prefixIcon;
   double? width;
   bool? enabled;
+  TextEditingController? textEditingController;
 
   CustomTextField(
       {Key? key,
@@ -19,7 +20,8 @@ class CustomTextField extends StatelessWidget {
       this.heading,
       this.width,
       this.prefixIcon,
-      this.enabled})
+      this.enabled,
+      this.textEditingController})
       : super(key: key);
 
   @override
@@ -39,6 +41,7 @@ class CustomTextField extends StatelessWidget {
                       color: lightTextColor),
                 ),
           TextFormField(
+            controller: textEditingController,
             enabled: enabled ?? true,
             initialValue: value,
             decoration: InputDecoration(

@@ -39,7 +39,7 @@ export 'VerificationStatus.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "0aef52b80604b60a659c22f5ace9a755";
+  String version = "be4464c4519f39df4709469f63dd410a";
   @override
   List<ModelSchema> modelSchemas = [Attendance.schema, ClassRoom.schema, Group.schema, School.schema, Student.schema, User.schema];
   static final ModelProvider _instance = ModelProvider();

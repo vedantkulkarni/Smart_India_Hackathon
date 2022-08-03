@@ -40,6 +40,7 @@ class School extends Model {
   final int? _teacherCount;
   final String? _location;
   final List<Group>? _groups;
+  final List<ClassRoom>? _classRooms;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -118,6 +119,10 @@ class School extends Model {
     return _groups;
   }
   
+  List<ClassRoom>? get classRooms {
+    return _classRooms;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -126,9 +131,9 @@ class School extends Model {
     return _updatedAt;
   }
   
-  const School._internal({required this.id, required superAdmin, required schoolName, required schoolID, address, contactPhone, contactEmail, studentCount, teacherCount, location, groups, createdAt, updatedAt}): _superAdmin = superAdmin, _schoolName = schoolName, _schoolID = schoolID, _address = address, _contactPhone = contactPhone, _contactEmail = contactEmail, _studentCount = studentCount, _teacherCount = teacherCount, _location = location, _groups = groups, _createdAt = createdAt, _updatedAt = updatedAt;
+  const School._internal({required this.id, required superAdmin, required schoolName, required schoolID, address, contactPhone, contactEmail, studentCount, teacherCount, location, groups, classRooms, createdAt, updatedAt}): _superAdmin = superAdmin, _schoolName = schoolName, _schoolID = schoolID, _address = address, _contactPhone = contactPhone, _contactEmail = contactEmail, _studentCount = studentCount, _teacherCount = teacherCount, _location = location, _groups = groups, _classRooms = classRooms, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory School({String? id, required String superAdmin, required String schoolName, required String schoolID, String? address, String? contactPhone, String? contactEmail, int? studentCount, int? teacherCount, String? location, List<Group>? groups}) {
+  factory School({String? id, required String superAdmin, required String schoolName, required String schoolID, String? address, String? contactPhone, String? contactEmail, int? studentCount, int? teacherCount, String? location, List<Group>? groups, List<ClassRoom>? classRooms}) {
     return School._internal(
       id: id == null ? UUID.getUUID() : id,
       superAdmin: superAdmin,
@@ -140,7 +145,8 @@ class School extends Model {
       studentCount: studentCount,
       teacherCount: teacherCount,
       location: location,
-      groups: groups != null ? List<Group>.unmodifiable(groups) : groups);
+      groups: groups != null ? List<Group>.unmodifiable(groups) : groups,
+      classRooms: classRooms != null ? List<ClassRoom>.unmodifiable(classRooms) : classRooms);
   }
   
   bool equals(Object other) {
@@ -161,7 +167,8 @@ class School extends Model {
       _studentCount == other._studentCount &&
       _teacherCount == other._teacherCount &&
       _location == other._location &&
-      DeepCollectionEquality().equals(_groups, other._groups);
+      DeepCollectionEquality().equals(_groups, other._groups) &&
+      DeepCollectionEquality().equals(_classRooms, other._classRooms);
   }
   
   @override
@@ -189,7 +196,7 @@ class School extends Model {
     return buffer.toString();
   }
   
-  School copyWith({String? id, String? superAdmin, String? schoolName, String? schoolID, String? address, String? contactPhone, String? contactEmail, int? studentCount, int? teacherCount, String? location, List<Group>? groups}) {
+  School copyWith({String? id, String? superAdmin, String? schoolName, String? schoolID, String? address, String? contactPhone, String? contactEmail, int? studentCount, int? teacherCount, String? location, List<Group>? groups, List<ClassRoom>? classRooms}) {
     return School._internal(
       id: id ?? this.id,
       superAdmin: superAdmin ?? this.superAdmin,
@@ -201,7 +208,8 @@ class School extends Model {
       studentCount: studentCount ?? this.studentCount,
       teacherCount: teacherCount ?? this.teacherCount,
       location: location ?? this.location,
-      groups: groups ?? this.groups);
+      groups: groups ?? this.groups,
+      classRooms: classRooms ?? this.classRooms);
   }
   
   School.fromJson(Map<String, dynamic> json)  
@@ -221,11 +229,17 @@ class School extends Model {
           .map((e) => Group.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
+      _classRooms = json['classRooms'] is List
+        ? (json['classRooms'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => ClassRoom.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'superAdmin': _superAdmin, 'schoolName': _schoolName, 'schoolID': _schoolID, 'address': _address, 'contactPhone': _contactPhone, 'contactEmail': _contactEmail, 'studentCount': _studentCount, 'teacherCount': _teacherCount, 'location': _location, 'groups': _groups?.map((Group? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'superAdmin': _superAdmin, 'schoolName': _schoolName, 'schoolID': _schoolID, 'address': _address, 'contactPhone': _contactPhone, 'contactEmail': _contactEmail, 'studentCount': _studentCount, 'teacherCount': _teacherCount, 'location': _location, 'groups': _groups?.map((Group? e) => e?.toJson()).toList(), 'classRooms': _classRooms?.map((ClassRoom? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "school.id");
@@ -241,6 +255,9 @@ class School extends Model {
   static final QueryField GROUPS = QueryField(
     fieldName: "groups",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Group).toString()));
+  static final QueryField CLASSROOMS = QueryField(
+    fieldName: "classRooms",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ClassRoom).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "School";
     modelSchemaDefinition.pluralName = "Schools";
@@ -306,6 +323,13 @@ class School extends Model {
       isRequired: false,
       ofModelName: (Group).toString(),
       associatedKey: Group.SCHOOLGROUPSID
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+      key: School.CLASSROOMS,
+      isRequired: false,
+      ofModelName: (ClassRoom).toString(),
+      associatedKey: ClassRoom.SCHOOLCLASSROOMSID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

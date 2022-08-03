@@ -31,26 +31,21 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
         onTap: () => page.jumpToPage(1),
         icon: const Icon(FluentIcons.check_list),
       ),
+     
       SideMenuItem(
         priority: 2,
-        title: 'Database',
-        onTap: () => page.jumpToPage(2),
-        icon: const Icon(FluentIcons.database),
-      ),
-      SideMenuItem(
-        priority: 3,
         title: 'Manage',
-        onTap: () => page.jumpToPage(3),
+        onTap: () => page.jumpToPage(2),
         icon: const Icon(FluentIcons.add_group),
       ),
       SideMenuItem(
-        priority: 4,
+        priority: 3,
         title: 'Settings',
-        onTap: () => page.jumpToPage(4),
+        onTap: () => page.jumpToPage(3),
         icon: const Icon(FluentIcons.settings),
       ),
       SideMenuItem(
-        priority: 5,
+        priority: 4,
         title: 'Log Out',
         onTap: () {},
         icon: const Icon(FluentIcons.sign_out),

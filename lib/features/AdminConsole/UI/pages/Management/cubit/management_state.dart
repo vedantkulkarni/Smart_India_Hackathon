@@ -38,10 +38,37 @@ class StudentDeleted extends ManagementState {
   List<Object?> get props => [];
 }
 
+class FetchingStudentDetails extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
+class CreatingStudent extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class StudentCreated extends ManagementState {
+  final Student student;
+  StudentCreated({required this.student});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class StudentDetailsFetched extends ManagementState {
+  Student student;
+  StudentDetailsFetched({required this.student});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [student];
+}
 
 class StudentsFetched extends ManagementState {
-  final List<User> studentsList;
+  final List<Student> studentsList;
   StudentsFetched({required this.studentsList});
 
   @override
@@ -54,21 +81,25 @@ class FetchingUsers extends ManagementState {
   // TODO: implement props
   List<Object?> get props => [];
 }
+
 class AddingUser extends ManagementState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
+
 class UserAdded extends ManagementState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
+
 class DeletingUser extends ManagementState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
+
 class UserDeleted extends ManagementState {
   @override
   // TODO: implement props
@@ -82,3 +113,22 @@ class UsersFetched extends ManagementState {
   // TODO: implement props
   List<Object?> get props => [userList];
 }
+
+
+
+//ClassRooms
+class FetchingClassRooms extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class ClassRoomsFetched extends ManagementState {
+  final List<ClassRoom> classroomList;
+  ClassRoomsFetched({required this.classroomList});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [classroomList];
+}
+
+

@@ -5,7 +5,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/a
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_attendance_page.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_classroom.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_classrooms_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_groups_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_students_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_users_page.dart';
@@ -23,7 +23,7 @@ class ManageMentCard extends StatelessWidget {
       required this.imagePath,
       required this.index})
       : super(key: key);
-  List<ManagementMode> modes = [ManagementMode.User, ManagementMode.Teachers];
+  List<ManagementMode> modes = [ManagementMode.User, ManagementMode.Students,ManagementMode.Students,ManagementMode.ClassRooms];
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +90,7 @@ class ManageMentCard extends StatelessWidget {
   }
 
   Widget customPushHandlerFunction(int index) {
-    print(index);
+    
     if (index == 0) {
       return const ManageUsers();
     } else if (index == 1) {

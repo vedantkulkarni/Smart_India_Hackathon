@@ -6,7 +6,6 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/a
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/management.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/database.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/settings.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_sidemenu.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/school_not_found.dart';
@@ -24,9 +23,8 @@ class _AdminPanelState extends State<AdminPanel> {
 
   List<Widget> screens = [
     const Dashboard(),
-    AttendancePage(),
-    DatabasePage(),
-    AddUsers(),
+    const AttendancePage(),
+    const Management(),
     SettingsPage()
   ];
 

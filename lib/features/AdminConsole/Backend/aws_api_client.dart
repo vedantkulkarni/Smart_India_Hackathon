@@ -27,12 +27,16 @@ abstract class AWSApiClient {
 
   //Class
   Future<void> createClassRoom({required ClassRoom classRoom});
-  Future<void> getClassRoom({required String classRoomID});
-
+  Future<ClassRoom> getClassRoom({required String classRoomID});
+  Future<List<ClassRoom>> getListOfClassrooms();
+  Future<ClassRoom> deleteClassRoom({required String classRoomID});
+  Future<ClassRoom> updateClassRoom({required ClassRoom classRoom});
   //Student
-  Future<void> createStudent({required Student student});
-  Future<void> updateStudent({required Student updatedStudent});
-  Future<void> getStudent({required String studentID});
+  Future<Student> createStudent({required Student student});
+  Future<List<Student>> getListOfStudent({required int limit});
+  Future<Student> deleteStudent({required String studentID});
+  Future<Student> updateStudent({required Student updatedStudent});
+  Future<Student> getStudent({required String studentID});
 }
 
 class AWSApiClientImpl implements AWSApiClient {
@@ -121,8 +125,8 @@ query MyQuery {
     age
     assignedClass {
       items {
-        classRoomID
-        groupClassRoomsId
+       
+        
         classRoomName
       }
     }
@@ -160,7 +164,7 @@ query MyQuery {
       );
 
       final myJsonMap = json.decode(response.body);
-      
+
       final user = User.fromJson(myJsonMap['data']['getUser']);
       return user;
     } catch (e) {
@@ -179,7 +183,7 @@ query MyQuery {
     description
     createdAt
     gender
-    idCard
+    idCard 
     name
     phoneNumber
     photo
@@ -199,10 +203,9 @@ query MyQuery {
     return User.fromJson(json.decode(responseString)['data']['createUser']);
   }
 
-   @override
-  Future<User> deleteUser({required String email}) async{
-
-     final body = {
+  @override
+  Future<User> deleteUser({required String email}) async {
+    final body = {
       'operationName': 'MyMutation',
       'query': '''
       mutation MyMutation {
@@ -217,7 +220,6 @@ query MyQuery {
     final responseString = await uploadJsonBodyRequest(body);
     print(responseString);
     return User.fromJson(json.decode(responseString));
-   
   }
 
   @override
@@ -274,7 +276,7 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    
+
     final jsonMap = json.decode(responseString);
     List<User> returnList = [];
     for (var eachUser in jsonMap['data']['listUsers']['items']) {
@@ -339,7 +341,7 @@ query MyQuery {
     if (jsonResult['data']['getSchool'] == null) {
       throw (SchoolNotFoundException());
     }
-    return School.fromJson(jsonResult);
+    return School.fromJson(jsonResult['data']['getSchool']);
   }
 
   //Groups
@@ -428,47 +430,116 @@ query MyQuery {
     final body = {
       'operationName': 'MyQuery',
       'query': '''
-     query MyQuery {
+    query MyQuery {
   getClassRoom(id: "$classRoomID") {
     assignedTeacherName
-    classRoomAssignedTeacherId
-    classRoomID
+    attendanceMode
     classRoomName
-    createdAt
+    currentAttendance
     groupClassRoomsId
     id
+    importantNotice
+    schoolClassRoomsId
     schoolID
     updatedAt
+    userAssignedClassId
     students {
       items {
+        address
+        email
+        idCardPhoto
+        phoneNumber
         profilePhoto
         studentID
         studentName
       }
     }
-    assignedTeacher {
-      photo
-      name
-      email
-      phoneNumber
-    }
   }
-}
-
+  }
 '''
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    return ClassRoom.fromJson(json.decode(responseString));
+    
+    var classroomResult =
+        ClassRoom.fromJson(json.decode(responseString)['data']['getClassRoom']);
+    final List<Student> studentList = [];
+    for (var everyStudent in json.decode(responseString)['data']['getClassRoom']
+        ['students']['items']) {
+      studentList.add(Student.fromJson(everyStudent));
+    }
+    classroomResult = classroomResult.copyWith(students: studentList);
+    print(classroomResult);
+    return classroomResult;
   }
 
   @override
   Future<ClassRoom> createClassRoom({required ClassRoom classRoom}) async {
+    var attendanceMode = classRoom.attendanceMode.name;
+    attendanceMode ??= VerificationStatus.ManualAttendance.name;
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''
+      mutation MyMutation {
+  createClassRoom(input: {assignedTeacherName: "${classRoom.assignedTeacherName}", attendanceMode: $attendanceMode, classRoomName: "${classRoom.classRoomName}", currentAttendance: 10, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
+    assignedTeacherName
+    attendanceMode
+    classRoomName
+    currentAttendance
+    groupClassRoomsId
+    id
+    importantNotice
+    schoolClassRoomsId
+    schoolID
+    userAssignedClassId
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    return ClassRoom.fromJson(
+        json.decode(responseString)['data']['createClassRoom']);
+  }
+
+  @override
+  Future<List<ClassRoom>> getListOfClassrooms() async {
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+      query MyQuery {
+  listClassRooms {
+    items {
+      assignedTeacherName
+      classRoomName
+      currentAttendance
+      id
+      userAssignedClassId
+    }
+  }
+}
+'''
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<ClassRoom> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['listClassRooms']['items']) {
+      returnList.add(ClassRoom.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
+
+  @override
+  Future<ClassRoom> deleteClassRoom({required String classRoomID}) async {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createClassRoom(input: {classRoomName: "${classRoom.classRoomName}", classRoomID: "${classRoom.classRoomName}", groupClassRoomsId: "${classRoom.classRoomName}", schoolID: "${classRoom.classRoomName}", assignedTeacherName: "${classRoom.classRoomName}"}) {
-    classRoomID
+  deleteClassRoom(input: {id: "$classRoomID"}) {
     classRoomName
   }
 }
@@ -478,28 +549,145 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    return ClassRoom.fromJson(json.decode(responseString));
+    return ClassRoom.fromJson(
+        json.decode(responseString)['data']['deleteClassRoom']);
+  }
+
+  @override
+  Future<ClassRoom> updateClassRoom({required ClassRoom classRoom}) async {
+    var attendanceMode = classRoom.attendanceMode.name;
+    attendanceMode ??= VerificationStatus.ManualAttendance.name;
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''
+      mutation MyMutation {
+  updateClassRoom(input: {id: "${classRoom.id}", classRoomName: "${classRoom.classRoomName}", assignedTeacherName: "${classRoom.assignedTeacherName}", attendanceMode: $attendanceMode, currentAttendance: 10, groupClassRoomsId: "${classRoom.groupClassRoomsId}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
+    classRoomName
+    assignedTeacherName
+  }
+}
+
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return ClassRoom.fromJson(
+        json.decode(responseString)['data']['updateClassRoom']);
   }
 
   //Student
 
   @override
-  Future<void> createStudent({required Student student}) {
-    // TODO: implement createStudent
-    throw UnimplementedError();
+  Future<Student> createStudent({required Student student}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''mutation MyMutation {
+  createStudent(input: { classRoomStudentsId: "${student.classRoomStudentsId}", idCardPhoto: ${student.idCardPhoto}, profilePhoto: ${student.profilePhoto}, studentID: "${student.studentID}", studentName: "${student.studentName}"}) {
+    studentName
+    studentID
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    return Student.fromJson(json.decode(responseString));
   }
 
   @override
-  Future<void> getStudent({required String studentID}) {
-    // TODO: implement getStudent
-    throw UnimplementedError();
+  Future<Student> getStudent({required String studentID}) async {
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+   query MyQuery {
+  getStudent(studentID: "$studentID") {
+    address
+    classRoomStudentsId
+    email
+    idCardPhoto
+    phoneNumber
+    profilePhoto
+    studentID
+    studentName
+  }
+}
+
+'''
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return Student.fromJson(json.decode(responseString)['data']['getStudent']);
   }
 
   @override
-  Future<void> updateStudent({required Student updatedStudent}) {
-    // TODO: implement updateStudent
-    throw UnimplementedError();
+  Future<Student> updateStudent({required Student updatedStudent}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''mutation MyMutation {
+  updateStudent(input: {address: "${updatedStudent.address}", classRoomStudentsId: "${updatedStudent.classRoomStudentsId}", email: "${updatedStudent.email}", idCardPhoto: ${updatedStudent.idCardPhoto}, phoneNumber: "${updatedStudent.phoneNumber}", profilePhoto: ${updatedStudent.profilePhoto}, studentID: "${updatedStudent.studentID}", studentName: "${updatedStudent.studentName}"}) {
+    classRoomStudentsId
+    email
+    profilePhoto
+    studentID
   }
-  
- 
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return Student.fromJson(
+        json.decode(responseString)['data']['updateStudent']);
+  }
+
+  @override
+  Future<Student> deleteStudent({required String studentID}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''mutation MyMutation {
+  deleteStudent(input: {studentID: "$studentID"}) {
+    studentName
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return Student.fromJson(json.decode(responseString));
+  }
+
+  @override
+  Future<List<Student>> getListOfStudent({required int limit}) async {
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+      query MyQuery {
+  listStudents(limit: $limit) {
+    items {
+      studentName
+      studentID
+      profilePhoto
+      classRoomStudentsId
+      
+    }
+  }
+}
+'''
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<Student> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['listStudents']['items']) {
+      returnList.add(Student.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
 }

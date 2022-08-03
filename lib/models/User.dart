@@ -329,7 +329,7 @@ class User extends Model {
       key: User.ASSIGNEDCLASS,
       isRequired: false,
       ofModelName: (ClassRoom).toString(),
-      associatedKey: ClassRoom.ASSIGNEDTEACHER
+      associatedKey: ClassRoom.USERASSIGNEDCLASSID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

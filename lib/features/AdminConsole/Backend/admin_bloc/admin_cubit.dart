@@ -4,7 +4,6 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/errors/exceptions.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/role_checker.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/create_classroom.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
 import '../../../../models/Group.dart';
@@ -33,6 +32,7 @@ class AdminCubit extends Cubit<AdminState> {
     print("User fetched : $adminUser");
     if (adminUser.schoolID == null) {
       emit(SchoolNotFound());
+      print("school id is null");
       return;
     }
     try {
@@ -56,6 +56,7 @@ class AdminCubit extends Cubit<AdminState> {
       emit(NoSchoolSet());
     }
     school = await awsApiClient.getSchoolDetails(schoolID: schoolID);
+    print(school);
     emit(SchoolDetailsFetched());
   }
 
@@ -73,9 +74,7 @@ class AdminCubit extends Cubit<AdminState> {
   }
 
   //Groups
-  Future<void> createGroup({required Group group}) async{
-    
-  }
+  Future<void> createGroup({required Group group}) async {}
 
   //ClassRoom
   Future<void> createClassRoom({required ClassRoom classRoom}) async {

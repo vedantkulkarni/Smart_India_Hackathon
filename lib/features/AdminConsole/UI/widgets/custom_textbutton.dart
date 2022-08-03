@@ -5,8 +5,13 @@ class CustomTextButton extends StatefulWidget {
   final Function onPressed;
   final String text;
   Color? bgColor;
-   CustomTextButton(
-      {Key? key, required this.onPressed, required this.text,this.bgColor})
+  Color? textColor;
+  CustomTextButton(
+      {Key? key,
+      required this.onPressed,
+      required this.text,
+      this.bgColor,
+      this.textColor})
       : super(key: key);
 
   @override
@@ -20,47 +25,25 @@ class _CustomTextButtonState extends State<CustomTextButton>
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      child: Center(
-        child: Material(
-          child: InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onHighlightChanged: (value) {
-              setState(() {
-                isTapped = value;
-              });
-            },
-            onTap: () {
-              widget.onPressed();
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.fastLinearToSlowEaseIn,
-              height: isTapped ? 35 : 40,
-              width: isTapped ? 130 : 140,
-              decoration: BoxDecoration(
-                color: widget.bgColor??primaryColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  widget.text,
-                  style: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.normal,
-                      color: whiteColor),
-                ),
-              ),
+      child: ElevatedButton(
+        clipBehavior: Clip.hardEdge,
+        style: ElevatedButton.styleFrom(
+            shadowColor: primaryColor,
+            onSurface: primaryColor,
+            side: const BorderSide(style: BorderStyle.none),
+            primary: widget.bgColor ?? primaryColor,
+            onPrimary: widget.textColor ?? whiteColor,
+            textStyle: const TextStyle(
+              fontSize: 14,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.normal,
             ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10))),
+        onPressed: () => widget.onPressed(),
+        child: Center(
+          child: Text(
+            widget.text,
           ),
         ),
       ),

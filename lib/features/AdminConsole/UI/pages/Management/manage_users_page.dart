@@ -149,14 +149,6 @@ class _ManageUsersState extends State<ManageUsers> {
                               ], child: const AddUserPage());
                             }));
 
-                            // _key.currentState!.openEndDrawer();
-                            // await showModalSideSheet(
-                            //     transitionDuration:
-                            //         const Duration(milliseconds: 100),
-                            //     context: context,
-                            //     ignoreAppBar: false,
-                            //     body:  TeacherDetailsPage(user: null,));
-
                             await BlocProvider.of<ManagementCubit>(context)
                                 .getAllUsers(role: role);
                           },
@@ -186,8 +178,8 @@ class _ManageUsersState extends State<ManageUsers> {
                       crossAxisCount: 4,
                       children: List.generate(
                           (state as UsersFetched).userList.length,
-                          (index) => ProfileTile(
-                              user: (state as UsersFetched).userList[index]))),
+                          (index) =>
+                              UserProfileCard(user: (state).userList[index]))),
                 ),
               ),
               // const Text('Showing 10 out of 50 items',

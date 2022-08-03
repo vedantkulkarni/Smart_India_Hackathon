@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
-import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
+import '../../../../models/ClassRoom.dart';
+import '../../../../models/VerificationStatus.dart';
 import 'custom_textbutton.dart';
 import 'custom_textfield.dart';
 
@@ -39,9 +40,10 @@ class _CreateClassRoomState extends State<CreateClassRoom> {
             ),
             CustomTextButton(
                 onPressed: () async {
+                  print("Hello : ${adminCubit.school.schoolID}");
                   final classRoom = ClassRoom(
                     schoolID: adminCubit.school.schoolID,
-                    classRoomID: 'Some classRoom Id',
+                    attendanceMode: VerificationStatus.ManualAttendance,
                     classRoomName: 'Some classRoom Name',
                   );
 

@@ -1,19 +1,19 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/view_and_edit_user.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 
 import '../../../../../injection_container.dart';
-import '../../../../../models/Role.dart';
+import '../../../../../models/Student.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
 import '../../../Backend/aws_api_client.dart';
-import 'add_user_page.dart';
 
 class ManageStudentsPage extends StatefulWidget {
   const ManageStudentsPage({Key? key}) : super(key: key);
@@ -83,16 +83,18 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                             awsApiClient: getIt<AWSApiClient>(),
                                             managementMode:
                                                 ManagementMode.Teachers)),
-                                  ], child: const AddUserPage());
+                                  ], child: const AddStudentsPage());
                                 }));
 
+                                await BlocProvider.of<ManagementCubit>(context)
+                                    .getAllStudents(limit: 10);
                                 // _key.currentState!.openEndDrawer();
                                 // await showModalSideSheet(
                                 //     transitionDuration:
                                 //         const Duration(milliseconds: 100),
                                 //     context: context,
                                 //     ignoreAppBar: false,
-                                //     body:  TeacherDetailsPage(user: null,));
+                                //     body:  TeacherDetailsPage(student: null,));
 
                                 // await BlocProvider.of<ManagementCubit>(context)
                                 //     .fetchAllTeachers();
@@ -120,7 +122,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                       child: DataTable2(
                         empty: Container(
                             child: const Center(
-                          child: Text('No Teachers added yet'),
+                          child: Text('No Students added yet'),
                         )),
                         dataTextStyle: const TextStyle(
                             fontSize: 14,
@@ -154,59 +156,38 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                               color: MaterialStateProperty.all(whiteColor),
                               index: index,
                               onTap: () async {
-                                // await Navigator.of(context)
-                                //     .push(MaterialPageRoute(builder: (_) {
-                                //   return MultiBlocProvider(providers: [
-                                //     BlocProvider.value(
-                                //         value: BlocProvider.of<AdminCubit>(
-                                //             context)),
-                                //     BlocProvider(
-                                //         create: (context) => ManagementCubit(
-                                //             awsApiClient: getIt<AWSApiClient>(),
-                                //             managementMode:
-                                //                 ManagementMode.Teachers)),
-                                //   ], child: const AddTeacherPage());
-                                // }));
-                                // index = 1;
-                                // _key.currentState!.openEndDrawer();
-                                final res = await showModalSideSheet<bool>(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.4,
+                                await showDialog(
                                     context: context,
-                                    ignoreAppBar: false,
-                                    body: BlocProvider.value(
-                                      value: BlocProvider.of<ManagementCubit>(
-                                          context),
-                                      child: ViewAndEditUser(
-                                        user: (state).studentsList[index],
-                                        currentRole: (state).studentsList[index].role,
-                                      ),
-                                    ));
-                                if (res != null && res == true) {
-                                  await BlocProvider.of<ManagementCubit>(
-                                          context)
-                                      .getAllUsers(role: Role.SuperAdmin);
-                                }
+                                    builder: (_) {
+                                      return BlocProvider.value(
+                                        value: BlocProvider.of<ManagementCubit>(
+                                            context),
+                                        child: CustomDialogBox(
+                                            widget: StudentDetailsDialog(
+                                          student: (state).studentsList[index],
+                                        )),
+                                      );
+                                    });
                               },
                               cells: [
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].name,
+                                    (state).studentsList[index].studentName,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].phoneNumber,
+                                    (state).studentsList[index].studentID,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].email,
+                                    (state).studentsList[index].studentID,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].gender!,
+                                    (state).studentsList[index].studentID,
                                   ),
                                 ),
                               ]),
@@ -220,6 +201,190 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                 ],
               ));
         },
+      ),
+    );
+  }
+}
+
+class StudentDetailsDialog extends StatefulWidget {
+  Student student;
+  StudentDetailsDialog({Key? key, required this.student}) : super(key: key);
+
+  @override
+  State<StudentDetailsDialog> createState() =>
+      _StudentDetailsDialogState(student);
+}
+
+class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
+  bool canEdit = false;
+  Student student;
+  _StudentDetailsDialogState(this.student);
+  @override
+  Widget build(BuildContext context) {
+    final managementCubit = BlocProvider.of<ManagementCubit>(context);
+    return Container(
+      padding: const EdgeInsets.all(20),
+      width: double.maxFinite,
+      height: double.maxFinite,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      canEdit = true;
+                    });
+                  },
+                  icon: const Icon(
+                    fi.FluentIcons.edit,
+                    size: 16,
+                    color: primaryColor,
+                  )),
+              const Spacer(),
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    fi.FluentIcons.check_mark,
+                    size: 20,
+                    color: primaryColor,
+                  )),
+            ],
+          ),
+          const Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              height: 150,
+              width: 150,
+              child: CircleAvatar(
+                backgroundColor: textFieldFillColor,
+                child: Center(child: Icon(fi.FluentIcons.photo2_add)),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              student.profilePhoto ?? 'Unknown',
+              style: const TextStyle(color: greyColor, fontFamily: 'Poppins'),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            const Text('|',
+                style: TextStyle(color: primaryColor, fontFamily: 'Poppins')),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(student.profilePhoto == null ? 'Unknown' : '23',
+                style:
+                    const TextStyle(color: greyColor, fontFamily: 'Poppins')),
+            const SizedBox(
+              width: 10,
+            ),
+            const Text('|',
+                style: TextStyle(color: primaryColor, fontFamily: 'Poppins')),
+            const SizedBox(
+              width: 10,
+            ),
+          ]),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  enabled: canEdit,
+                  value: student.studentName.trim().split(' ')[0],
+                  hintText: student.studentName.trim().split(' ')[0],
+                  padding: const EdgeInsets.all(5),
+                  heading: 'First Name',
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: CustomTextField(
+                  enabled: canEdit,
+                  hintText: student.studentName.trim().split(' ').length == 2
+                      ? student.studentName.trim().split(' ')[1]
+                      : student.studentName.trim().split(' ')[2],
+                  value: student.studentName.trim().split(' ').length == 2
+                      ? student.studentName.trim().split(' ')[1]
+                      : student.studentName.trim().split(' ')[2],
+                  padding: const EdgeInsets.all(5),
+                  heading: 'Last Name',
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  enabled: canEdit,
+                  hintText: student.email ?? "Email",
+                  value: student.email,
+                  padding: const EdgeInsets.all(5),
+                  heading: 'Email',
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: CustomTextField(
+                  enabled: canEdit,
+                  hintText: student.phoneNumber ?? 'Phone',
+                  value: student.phoneNumber,
+                  padding: const EdgeInsets.all(5),
+                  heading: 'Phone Number',
+                ),
+              ),
+            ],
+          ),
+          CustomTextField(
+            enabled: canEdit,
+            hintText: student.address ?? 'Unknown',
+            value: student.address ?? 'Unknown',
+            padding: const EdgeInsets.all(5),
+            heading: 'Address',
+          ),
+          // CustomTextField(
+          //   enabled: canEdit,
+          //   hintText: student. ?? 'Unknown',
+          //   value: student.description ?? 'Unknown',
+          //   padding: const EdgeInsets.all(5),
+          //   heading: 'Description',
+          // ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CustomTextButton(
+                onPressed: () async {
+                  print(student.id);
+                  await managementCubit.deleteStudent(
+                      studentID: student.studentID);
+                  await managementCubit.getAllStudents(limit: 10);
+                  Navigator.pop(context, true);
+                },
+                text: 'Delete',
+                bgColor: redColor,
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

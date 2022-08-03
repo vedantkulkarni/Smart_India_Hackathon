@@ -7,10 +7,12 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import '../../../../../models/User.dart';
 import 'cubit/management_cubit.dart';
 
-class ProfileTile extends StatelessWidget {
+class UserProfileCard extends StatelessWidget {
   final User user;
+  double? height;
+  double? width;
 
-  const ProfileTile({Key? key, required this.user}) : super(key: key);
+   UserProfileCard({Key? key, required this.user,this.height,this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +110,7 @@ class ProfileTile extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     image: const DecorationImage(
                         image: NetworkImage(
-                            "https://images.pexels.com/photos/220453/pexels-photo-220453"
-                            ".jpeg?auto=compress&cs=tinysrgb&w=600"),
+                            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600"),
                         fit: BoxFit.cover)),
               ),
             ),

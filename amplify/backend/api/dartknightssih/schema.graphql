@@ -23,7 +23,6 @@ type User @model {
   age:Int
   schoolID: ID #schoolID
   
-  
 }
 
 type School @model{
@@ -37,11 +36,12 @@ type School @model{
   teacherCount: Int
   location: AWSURL
   groups: [Group] @hasMany
+  classRooms:[ClassRoom]@hasMany
 
 }
 
 type Group @model{
-  groupID: ID! @primaryKey
+  groupID: ID! @primaryKey    
   createdBy: ID!
   classRooms: [ClassRoom] @hasMany
   groupName: String!
@@ -51,27 +51,25 @@ type Group @model{
 type ClassRoom @model
 {
   schoolID: ID!
-  classRoomID: ID!
+  id:ID!
   classRoomName: String!
-  assignedTeacher: User @hasOne
   assignedTeacherName: String
   students: [Student] @hasMany
+  currentAttendance: Int
+  importantNotice: [String]
+  attendanceMode: VerificationStatus!
 
-}
+}#add 'currentAttendance' field in ClassRoom, which will be updated at the end of every Attendance taking sesison.
 
-type Student @model #Change this
-
+type Student @model
 {
   studentID: ID! @primaryKey
   studentName: String!
-  assignedClassID: ID!
-  assignedClassName: String!
-  assignedTeacherID: ID!
-  assignedTeacherName: String!
+  email:AWSEmail
+  phoneNumber:AWSPhone
+  address:String
   profilePhoto: AWSURL
   idCardPhoto: AWSURL
-   
-
 }
 
 enum AttendanceStatus{

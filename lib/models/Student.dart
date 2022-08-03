@@ -30,10 +30,9 @@ class Student extends Model {
   final String id;
   final String? _studentID;
   final String? _studentName;
-  final String? _assignedClassID;
-  final String? _assignedClassName;
-  final String? _assignedTeacherID;
-  final String? _assignedTeacherName;
+  final String? _email;
+  final String? _phoneNumber;
+  final String? _address;
   final String? _profilePhoto;
   final String? _idCardPhoto;
   final TemporalDateTime? _createdAt;
@@ -74,56 +73,16 @@ class Student extends Model {
     }
   }
   
-  String get assignedClassID {
-    try {
-      return _assignedClassID!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get email {
+    return _email;
   }
   
-  String get assignedClassName {
-    try {
-      return _assignedClassName!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get phoneNumber {
+    return _phoneNumber;
   }
   
-  String get assignedTeacherID {
-    try {
-      return _assignedTeacherID!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  String get assignedTeacherName {
-    try {
-      return _assignedTeacherName!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  String? get address {
+    return _address;
   }
   
   String? get profilePhoto {
@@ -146,17 +105,16 @@ class Student extends Model {
     return _classRoomStudentsId;
   }
   
-  const Student._internal({required this.id, required studentID, required studentName, required assignedClassID, required assignedClassName, required assignedTeacherID, required assignedTeacherName, profilePhoto, idCardPhoto, createdAt, updatedAt, classRoomStudentsId}): _studentID = studentID, _studentName = studentName, _assignedClassID = assignedClassID, _assignedClassName = assignedClassName, _assignedTeacherID = assignedTeacherID, _assignedTeacherName = assignedTeacherName, _profilePhoto = profilePhoto, _idCardPhoto = idCardPhoto, _createdAt = createdAt, _updatedAt = updatedAt, _classRoomStudentsId = classRoomStudentsId;
+  const Student._internal({required this.id, required studentID, required studentName, email, phoneNumber, address, profilePhoto, idCardPhoto, createdAt, updatedAt, classRoomStudentsId}): _studentID = studentID, _studentName = studentName, _email = email, _phoneNumber = phoneNumber, _address = address, _profilePhoto = profilePhoto, _idCardPhoto = idCardPhoto, _createdAt = createdAt, _updatedAt = updatedAt, _classRoomStudentsId = classRoomStudentsId;
   
-  factory Student({String? id, required String studentID, required String studentName, required String assignedClassID, required String assignedClassName, required String assignedTeacherID, required String assignedTeacherName, String? profilePhoto, String? idCardPhoto, String? classRoomStudentsId}) {
+  factory Student({String? id, required String studentID, required String studentName, String? email, String? phoneNumber, String? address, String? profilePhoto, String? idCardPhoto, String? classRoomStudentsId}) {
     return Student._internal(
       id: id == null ? UUID.getUUID() : id,
       studentID: studentID,
       studentName: studentName,
-      assignedClassID: assignedClassID,
-      assignedClassName: assignedClassName,
-      assignedTeacherID: assignedTeacherID,
-      assignedTeacherName: assignedTeacherName,
+      email: email,
+      phoneNumber: phoneNumber,
+      address: address,
       profilePhoto: profilePhoto,
       idCardPhoto: idCardPhoto,
       classRoomStudentsId: classRoomStudentsId);
@@ -173,10 +131,9 @@ class Student extends Model {
       id == other.id &&
       _studentID == other._studentID &&
       _studentName == other._studentName &&
-      _assignedClassID == other._assignedClassID &&
-      _assignedClassName == other._assignedClassName &&
-      _assignedTeacherID == other._assignedTeacherID &&
-      _assignedTeacherName == other._assignedTeacherName &&
+      _email == other._email &&
+      _phoneNumber == other._phoneNumber &&
+      _address == other._address &&
       _profilePhoto == other._profilePhoto &&
       _idCardPhoto == other._idCardPhoto &&
       _classRoomStudentsId == other._classRoomStudentsId;
@@ -193,10 +150,9 @@ class Student extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("studentID=" + "$_studentID" + ", ");
     buffer.write("studentName=" + "$_studentName" + ", ");
-    buffer.write("assignedClassID=" + "$_assignedClassID" + ", ");
-    buffer.write("assignedClassName=" + "$_assignedClassName" + ", ");
-    buffer.write("assignedTeacherID=" + "$_assignedTeacherID" + ", ");
-    buffer.write("assignedTeacherName=" + "$_assignedTeacherName" + ", ");
+    buffer.write("email=" + "$_email" + ", ");
+    buffer.write("phoneNumber=" + "$_phoneNumber" + ", ");
+    buffer.write("address=" + "$_address" + ", ");
     buffer.write("profilePhoto=" + "$_profilePhoto" + ", ");
     buffer.write("idCardPhoto=" + "$_idCardPhoto" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -207,15 +163,14 @@ class Student extends Model {
     return buffer.toString();
   }
   
-  Student copyWith({String? id, String? studentID, String? studentName, String? assignedClassID, String? assignedClassName, String? assignedTeacherID, String? assignedTeacherName, String? profilePhoto, String? idCardPhoto, String? classRoomStudentsId}) {
+  Student copyWith({String? id, String? studentID, String? studentName, String? email, String? phoneNumber, String? address, String? profilePhoto, String? idCardPhoto, String? classRoomStudentsId}) {
     return Student._internal(
       id: id ?? this.id,
       studentID: studentID ?? this.studentID,
       studentName: studentName ?? this.studentName,
-      assignedClassID: assignedClassID ?? this.assignedClassID,
-      assignedClassName: assignedClassName ?? this.assignedClassName,
-      assignedTeacherID: assignedTeacherID ?? this.assignedTeacherID,
-      assignedTeacherName: assignedTeacherName ?? this.assignedTeacherName,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      address: address ?? this.address,
       profilePhoto: profilePhoto ?? this.profilePhoto,
       idCardPhoto: idCardPhoto ?? this.idCardPhoto,
       classRoomStudentsId: classRoomStudentsId ?? this.classRoomStudentsId);
@@ -225,10 +180,9 @@ class Student extends Model {
     : id = json['id'],
       _studentID = json['studentID'],
       _studentName = json['studentName'],
-      _assignedClassID = json['assignedClassID'],
-      _assignedClassName = json['assignedClassName'],
-      _assignedTeacherID = json['assignedTeacherID'],
-      _assignedTeacherName = json['assignedTeacherName'],
+      _email = json['email'],
+      _phoneNumber = json['phoneNumber'],
+      _address = json['address'],
       _profilePhoto = json['profilePhoto'],
       _idCardPhoto = json['idCardPhoto'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
@@ -236,16 +190,15 @@ class Student extends Model {
       _classRoomStudentsId = json['classRoomStudentsId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'studentID': _studentID, 'studentName': _studentName, 'assignedClassID': _assignedClassID, 'assignedClassName': _assignedClassName, 'assignedTeacherID': _assignedTeacherID, 'assignedTeacherName': _assignedTeacherName, 'profilePhoto': _profilePhoto, 'idCardPhoto': _idCardPhoto, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'classRoomStudentsId': _classRoomStudentsId
+    'id': id, 'studentID': _studentID, 'studentName': _studentName, 'email': _email, 'phoneNumber': _phoneNumber, 'address': _address, 'profilePhoto': _profilePhoto, 'idCardPhoto': _idCardPhoto, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'classRoomStudentsId': _classRoomStudentsId
   };
 
   static final QueryField ID = QueryField(fieldName: "student.id");
   static final QueryField STUDENTID = QueryField(fieldName: "studentID");
   static final QueryField STUDENTNAME = QueryField(fieldName: "studentName");
-  static final QueryField ASSIGNEDCLASSID = QueryField(fieldName: "assignedClassID");
-  static final QueryField ASSIGNEDCLASSNAME = QueryField(fieldName: "assignedClassName");
-  static final QueryField ASSIGNEDTEACHERID = QueryField(fieldName: "assignedTeacherID");
-  static final QueryField ASSIGNEDTEACHERNAME = QueryField(fieldName: "assignedTeacherName");
+  static final QueryField EMAIL = QueryField(fieldName: "email");
+  static final QueryField PHONENUMBER = QueryField(fieldName: "phoneNumber");
+  static final QueryField ADDRESS = QueryField(fieldName: "address");
   static final QueryField PROFILEPHOTO = QueryField(fieldName: "profilePhoto");
   static final QueryField IDCARDPHOTO = QueryField(fieldName: "idCardPhoto");
   static final QueryField CLASSROOMSTUDENTSID = QueryField(fieldName: "classRoomStudentsId");
@@ -268,26 +221,20 @@ class Student extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Student.ASSIGNEDCLASSID,
-      isRequired: true,
+      key: Student.EMAIL,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Student.ASSIGNEDCLASSNAME,
-      isRequired: true,
+      key: Student.PHONENUMBER,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Student.ASSIGNEDTEACHERID,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Student.ASSIGNEDTEACHERNAME,
-      isRequired: true,
+      key: Student.ADDRESS,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
