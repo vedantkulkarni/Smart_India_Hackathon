@@ -7,6 +7,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_clie
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_console.dart';
 import 'package:team_dart_knights_sih/features/Auth/Logic/auth_bloc/auth_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/UI/teacher_console.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/screens/homeScreen.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
         } else {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               // builder: (context) => DashboardScreen(),
-              builder: ((context) => TeacherConsole())));
+              builder: ((context) => HomeScreen())));
         }
       },
       onRecoverPassword: _recoverPassword,
