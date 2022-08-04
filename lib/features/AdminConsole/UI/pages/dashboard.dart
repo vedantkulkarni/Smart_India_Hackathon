@@ -2,7 +2,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_console.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/dashboard_card.dart';
 
 class Dashboard extends StatefulWidget {
@@ -22,6 +21,25 @@ class _DashboardState extends State<Dashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            "Hi!",
+            style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 44,
+                fontFamily: 'Poppins',
+                color: primaryColor),
+          ),
+          Text(
+            "${adminProvider.admin.name},",
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 44,
+                fontFamily: 'Poppins',
+                color: Colors.black),
+          ),
+          const SizedBox(
+            height: 60,
+          ),
           const Text(
             "DashBoard",
             style: TextStyle(

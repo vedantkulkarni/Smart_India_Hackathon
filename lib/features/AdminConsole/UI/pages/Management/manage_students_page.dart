@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_details_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
@@ -156,18 +157,30 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                               color: MaterialStateProperty.all(whiteColor),
                               index: index,
                               onTap: () async {
-                                await showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      return BlocProvider.value(
-                                        value: BlocProvider.of<ManagementCubit>(
-                                            context),
-                                        child: CustomDialogBox(
-                                            widget: StudentDetailsDialog(
-                                          student: (state).studentsList[index],
-                                        )),
-                                      );
-                                    });
+                                // await showDialog(
+                                //     context: context,
+                                //     builder: (_) {
+                                //       return BlocProvider.value(
+                                //         value: BlocProvider.of<ManagementCubit>(
+                                //             context),
+                                //         child: CustomDialogBox(
+                                //             widget: StudentDetailsDialog(
+                                //           student: (state).studentsList[index],
+                                //         )),
+                                //       );
+                                //     });
+                                MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: BlocProvider.of<AdminCubit>(context)),
+                BlocProvider.value(
+                    value: BlocProvider.of<ManagementCubit>(context)),
+              
+              ],
+              child: StudentDetailsPage(
+                
+              ),
+            );
+                                
                               },
                               cells: [
                                 DataCell(
@@ -358,13 +371,8 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
             padding: const EdgeInsets.all(5),
             heading: 'Address',
           ),
-          // CustomTextField(
-          //   enabled: canEdit,
-          //   hintText: student. ?? 'Unknown',
-          //   value: student.description ?? 'Unknown',
-          //   padding: const EdgeInsets.all(5),
-          //   heading: 'Description',
-          // ),
+         
+ 
           const SizedBox(
             height: 30,
           ),

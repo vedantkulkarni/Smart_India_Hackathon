@@ -6,9 +6,10 @@ import 'package:team_dart_knights_sih/core/platform_checker.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/admin_console.dart';
 import 'package:team_dart_knights_sih/features/Auth/Logic/auth_bloc/auth_cubit.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/UI/teacher_console.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/homeScreen.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
+
+import '../../../TeacherConsole/screens/teacher_console.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -96,7 +97,10 @@ class _LoginScreenState extends State<LoginScreen> {
         } else {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               // builder: (context) => DashboardScreen(),
-              builder: ((context) => HomeScreen())));
+              builder: ((ctx) => BlocProvider(
+                    create: (context) => AuthCubit(awsApiClient: getIt<AWSApiClient>()),
+                    child: TeacherConsole(userName: 'vedantk60@gmail.com',password: 'Unowho@23',),
+                  ))));
         }
       },
       onRecoverPassword: _recoverPassword,

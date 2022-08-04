@@ -10,7 +10,7 @@ abstract class AWSApiClient {
   Future<void> authenticateUser(
       {required String email, required String password});
   Future<User> createUser({required User user});
-  Future<User> getAdminDetails();
+  Future<User> getAdminDetails({required String userID});
   Future<User> updateUser({required User updatedUser});
   Future<User> deleteUser({required String email});
   Future<List<User>> getListOfUsers({required Role role});
@@ -115,7 +115,7 @@ class AWSApiClientImpl implements AWSApiClient {
   }
 
   @override
-  Future<User> getAdminDetails() async {
+  Future<User> getAdminDetails({required String userID}) async {
     const body = {
       'operationName': 'MyQuery',
       'query': '''
@@ -460,7 +460,7 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    
+
     var classroomResult =
         ClassRoom.fromJson(json.decode(responseString)['data']['getClassRoom']);
     final List<Student> studentList = [];
@@ -476,7 +476,7 @@ query MyQuery {
   @override
   Future<ClassRoom> createClassRoom({required ClassRoom classRoom}) async {
     var attendanceMode = classRoom.attendanceMode.name;
-    attendanceMode ??= VerificationStatus.ManualAttendance.name;
+
     final body = {
       'operationName': 'MyMutation',
       'query': '''
@@ -556,7 +556,7 @@ query MyQuery {
   @override
   Future<ClassRoom> updateClassRoom({required ClassRoom classRoom}) async {
     var attendanceMode = classRoom.attendanceMode.name;
-    attendanceMode ??= VerificationStatus.ManualAttendance.name;
+    VerificationStatus.ManualAttendance.name;
     final body = {
       'operationName': 'MyMutation',
       'query': '''

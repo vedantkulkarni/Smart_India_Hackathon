@@ -11,6 +11,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_te
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
 import '../../../../../core/constants.dart';
+import '../../../../../models/User.dart';
 import 'cubit/management_cubit.dart';
 
 class ClassRoomDetails extends StatefulWidget {
@@ -164,81 +165,101 @@ class AssignedTeacherWidget extends StatelessWidget {
           color: primaryColor,
         ),
         const Spacer(),
+        const VerticalDivider(
+          color: primaryColor,
+        ),
         classRoom.userAssignedClassId == null
             ? Row(
                 children: [
                   Container(
-                    child: const Center(
-                        child: Text(
-                      'No Teacher Assigned',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.normal,
-                          color: blackColor),
-                    )),
-                  ),
-                  Container(
-                    child: TextButton(
-                        onPressed: () async {
-                          final result = await showDialog<bool>(
-                              context: context,
-                              builder: (_) {
-                                return CustomDialogBox(
-                                    widget: BlocProvider.value(
-                                  value:
-                                      BlocProvider.of<ManagementCubit>(context),
-                                  child: Container(
-                                      child: AssignTeacherToClassRoom(
-                                    classRoom: classRoom,
-                                  )),
-                                ));
-                              });
-                          if (result!) {
-                            await classCubit.getFullDetailsOfClassRoom(
-                                classRoomID: classRoom.id);
-                          }
-                        },
-                        child: const Text(
-                          'Add',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor),
-                        )),
+                    child: Center(
+                        child: TextButton(
+                            onPressed: () async {
+                              final result = await showDialog<bool>(
+                                  context: context,
+                                  builder: (_) {
+                                    return CustomDialogBox(
+                                        widget: BlocProvider.value(
+                                      value: BlocProvider.of<ManagementCubit>(
+                                          context),
+                                      child: Container(
+                                          child: AssignTeacherToClassRoom(
+                                        classRoom: classRoom,
+                                      )),
+                                    ));
+                                  });
+                              if (result!) {
+                                await classCubit.getFullDetailsOfClassRoom(
+                                    classRoomID: classRoom.id);
+                              }
+                            },
+                            child: const Text(
+                              'No Teacher Assigned',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.normal,
+                                  color: blackColor),
+                            ))),
                   ),
                 ],
               )
-            : Container(
-                child: Column(children: const [
-                  SizedBox(
-                    child: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(
-                        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
+            // :
+            : FutureBuilder<User>(
+                future: BlocProvider.of<ManagementCubit>(context)
+                    .getUser(userID: classRoom.userAssignedClassId!),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: progressIndicator,
+                    );
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () async {},
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'),
+                              radius: 20,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              snapshot.data!.name.trim(),
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.bold,
+                                  color: blackColor),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Text(
-                    'Vedant Kulkarni',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                        color: blackColor),
-                  ),
-                  Text(
-                    'Assigned Teacher',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.normal,
-                        color: lightTextColor),
-                  ),
-                  Text('Edit')
-                ]),
-              ),
+                      const Text(
+                        'Assigned Teacher',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.normal,
+                            color: blackColor),
+                      ),
+                      Text(
+                        snapshot.data!.email,
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.normal,
+                            color: primaryColor),
+                      )
+                    ],
+                  );
+                },
+              )
       ]),
     );
   }
@@ -411,12 +432,12 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
           const SizedBox(
             height: 10,
           ),
-          const Divider(
-            color: lightTextColor,
-            indent: 10,
-            endIndent: 10,
-            thickness: 0.5,
-          ),
+          // const Divider(
+          //   color: primaryColor,
+          //   indent: 10,
+          //   endIndent: 10,
+          //   thickness: 0.5,
+          // ),
           const SizedBox(
             height: 10,
           ),

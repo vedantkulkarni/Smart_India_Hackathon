@@ -27,7 +27,7 @@ class AdminCubit extends Cubit<AdminState> {
   }
 
   Future<void> getAdminDetails({required String userID}) async {
-    adminUser = await awsApiClient.getAdminDetails();
+    adminUser = await awsApiClient.getAdminDetails(userID: userID);
     roleChecker.setUser(adminUser);
     print("User fetched : $adminUser");
     if (adminUser.schoolID == null) {
