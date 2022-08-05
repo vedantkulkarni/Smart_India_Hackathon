@@ -10,6 +10,11 @@
       "StackName": "amplify-dartknightssih-staging-92040",
       "StackId": "arn:aws:cloudformation:ap-south-1:312855018916:stack/amplify-dartknightssih-staging-92040/b8bd3e80-0a68-11ed-a24c-02c6031d42fc",
       "AmplifyAppId": "d3mafaf5pxaj2t"
+    },
+    "categories": {
+      "auth": {
+        "DartKnightsSIH": {}
+      }
     }
   }
 }

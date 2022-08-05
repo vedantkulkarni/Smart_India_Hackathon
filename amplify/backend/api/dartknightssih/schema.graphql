@@ -1,0 +1,102 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+enum Role{
+  SuperAdmin
+  Admin
+  Teacher
+}
+
+type User @model {
+  email: ID! @primaryKey
+  name: String!
+  description: String
+  role: Role!
+  phoneNumber: AWSPhone!
+  address:String
+  assignedClass:[ClassRoom] @hasMany
+  idCard:AWSURL
+  photo:AWSURL
+  shitfInfo:String
+  gender:String
+  age:Int
+  schoolID: ID #schoolID
+  
+}
+
+type School @model{
+  superAdmin: ID! 
+  schoolName: String!
+  schoolID: ID! @primaryKey
+  address: String
+  contactPhone: AWSPhone
+  contactEmail: AWSEmail
+  studentCount: Int
+  teacherCount: Int
+  location: AWSURL
+  groups: [Group] @hasMany
+  classRooms:[ClassRoom]@hasMany
+
+}
+
+type Group @model{
+  groupID: ID! @primaryKey    
+  createdBy: ID!
+  classRooms: [ClassRoom] @hasMany
+  groupName: String!
+
+}
+
+type ClassRoom @model
+{
+  schoolID: ID!
+  id:ID!
+  classRoomName: String!
+  assignedTeacherName: String
+  students: [Student] @hasMany
+  currentAttendance: Int
+  importantNotice: [String]
+  attendanceMode: VerificationStatus!
+
+}#add 'currentAttendance' field in ClassRoom, which will be updated at the end of every Attendance taking sesison.
+
+type Student @model
+{
+  studentID: ID! @primaryKey
+  studentName: String!
+  email:AWSEmail
+  phoneNumber:AWSPhone
+  address:String
+  profilePhoto: AWSURL
+  idCardPhoto: AWSURL
+  roll:String
+  modelData:[Int]
+}
+
+enum AttendanceStatus{
+  Present
+  Absent
+  OnHold
+  Unsure
+}
+
+enum VerificationStatus{
+  FaceVerifiedWithLiveness
+  FaceVerified
+  FaceDetectedAndVerified
+  ManualAttendance
+  InvolveParent
+}
+
+type Attendance @model{
+  studentID: ID! @primaryKey(sortKeyFields:["date"])
+  status: AttendanceStatus!
+  geoLocation: String
+  verification: VerificationStatus!
+  teacherID: ID!
+  teacherName: String!
+  date:  AWSDate!
+  time:  AWSTime!
+
+}

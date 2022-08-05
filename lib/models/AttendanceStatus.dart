@@ -22,5 +22,6 @@
 enum AttendanceStatus {
   Present,
   Absent,
-  OnHold
+  OnHold,
+  Unsure
 }
