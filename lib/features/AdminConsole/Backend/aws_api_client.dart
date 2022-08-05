@@ -463,13 +463,8 @@ query MyQuery {
 
     var classroomResult =
         ClassRoom.fromJson(json.decode(responseString)['data']['getClassRoom']);
-    final List<Student> studentList = [];
-    for (var everyStudent in json.decode(responseString)['data']['getClassRoom']
-        ['students']['items']) {
-      studentList.add(Student.fromJson(everyStudent));
-    }
-    classroomResult = classroomResult.copyWith(students: studentList);
-    print(classroomResult);
+
+    print(classroomResult.students);
     return classroomResult;
   }
 

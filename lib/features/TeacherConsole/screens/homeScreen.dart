@@ -1,8 +1,12 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
 import '../../../core/constants.dart';
+import '../../../injection_container.dart';
+import '../../AdminConsole/Backend/aws_api_client.dart';
 import '../../AdminConsole/UI/widgets/school_not_found.dart';
 import '../widgets/classTile.dart';
 import '../widgets/teacherInfo.dart';
@@ -16,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+ 
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -24,17 +29,19 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocBuilder<TeacherCubit, TeacherState>(
         builder: (context, state) {
           if (state is TeacherInitial || state is FetchingTeacher) {
-          return const Scaffold(
-            body: SizedBox(
-                child: Center(
-              child: CircularProgressIndicator(),
-            )),
-          );
-        }
+            return const Scaffold(
+              body: SizedBox(
+                  child: Center(
+                child: CircularProgressIndicator(),
+              )),
+            );
+          }
 
-        if (state is SchoolNotFound) {
-          return const SchoolNotFoundPage();
-        }
+          if (state is SchoolNotFound) {
+            return const SchoolNotFoundPage();
+          }
+
+          final teacherCubit = BlocProvider.of<TeacherCubit>(context);
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -84,13 +91,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisCellCount: 2,
                           child: ClassTile(
                             width: w,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ClassDetailScreen(
-                                  className: 'TE-01',
-                                );
-                              }));
+                            onTap: ()  {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+              return MultiBlocProvider(providers: [
+                BlocProvider.value(value: BlocProvider.of<TeacherCubit>(context)),
+                BlocProvider(
+                    create: (context) => TeacherClassCubit(
+                        awsApiClient: getIt<AWSApiClient>(),
+                        school: teacherCubit.school
+                        )),
+              ], child: ClassDetailScreen(className: 'TE',));
+            }));
                             },
                             classNo: 'TE-01',
                             noOfStd: '89',

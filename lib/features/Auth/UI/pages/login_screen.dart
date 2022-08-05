@@ -9,6 +9,7 @@ import 'package:team_dart_knights_sih/features/Auth/Logic/auth_bloc/auth_cubit.d
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/homeScreen.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
 
+import '../../../TeacherConsole/Backend/cubit/teacher_cubit.dart';
 import '../../../TeacherConsole/screens/teacher_console.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,10 +26,12 @@ const users = {
 
 class _LoginScreenState extends State<LoginScreen> {
   Duration get loginTime => const Duration(milliseconds: 2250);
-
+  String userName = '';
+  String password = '';
   Future<String?> _authUser(LoginData data) async {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
-
+    userName = data.name;
+    password = data.password;
     return null;
   }
 
@@ -97,10 +100,17 @@ class _LoginScreenState extends State<LoginScreen> {
         } else {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               // builder: (context) => DashboardScreen(),
-              builder: ((ctx) => BlocProvider(
-                    create: (context) => AuthCubit(awsApiClient: getIt<AWSApiClient>()),
-                    child: TeacherConsole(userName: 'vedantk60@gmail.com',password: 'Unowho@23',),
-                  ))));
+              builder: ((ctx) => MultiBlocProvider(providers: [
+                    // BlocProvider.value(value: BlocProvider.of<AuthCubit>(context)),
+                    BlocProvider(
+                      create: ((_) => TeacherCubit(
+                            awsApiClient: getIt<AWSApiClient>(),
+                            userName: userName,
+                            password: password,
+                            userID: 'vedantk60@gmail.com',
+                          )),
+                    ),
+                  ], child: TeacherConsole(password: password,userName: userName,)))));
         }
       },
       onRecoverPassword: _recoverPassword,

@@ -17,11 +17,10 @@ import '../../Auth/Logic/auth_bloc/auth_cubit.dart';
 
 Future<void> _configureAmplify() async {
   try {
-   
     final auth = AmplifyAuthCognito();
     await Amplify.addPlugin(auth);
 
-     final api = AmplifyAPI(modelProvider: ModelProvider.instance);
+    final api = AmplifyAPI(modelProvider: ModelProvider.instance);
     await Amplify.addPlugin(api);
 
     // call Amplify.configure to use the initialized categories in your app
@@ -34,7 +33,8 @@ Future<void> _configureAmplify() async {
 class TeacherConsole extends StatefulWidget {
   String userName;
   String password;
-   TeacherConsole({Key? key,required this.userName,required this.password}) : super(key: key);
+  TeacherConsole({Key? key, required this.userName, required this.password})
+      : super(key: key);
 
   @override
   State<TeacherConsole> createState() => _TeacherConsoleState();
@@ -43,22 +43,10 @@ class TeacherConsole extends StatefulWidget {
 class _TeacherConsoleState extends State<TeacherConsole> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _configureAmplify(),
-        builder: (context, sp) {
-          if (sp.connectionState == ConnectionState.waiting) {
-            return progressIndicator;
-          }
-          return MultiBlocProvider(providers: [
-            BlocProvider(
-              create: ((context) => TeacherCubit(
-                    awsApiClient: getIt<AWSApiClient>(),
-                    userName:widget.userName,
-                    password:widget.password,
-                    userID: BlocProvider.of<AuthCubit>(context).email,
-                  )),
-            ),
-          ], child: const HomeScreen());
-        });
+    return BlocProvider.value(
+      value: BlocProvider.of<TeacherCubit>(context),
+      child: HomeScreen(),
+    );
   }
 }
+

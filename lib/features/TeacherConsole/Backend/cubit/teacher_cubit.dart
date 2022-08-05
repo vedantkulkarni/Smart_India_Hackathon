@@ -3,6 +3,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/errors/exceptions.dart';
 import '../../../../models/School.dart';
 import '../../../../models/User.dart';
 import '../../../AdminConsole/Backend/admin_bloc/role_checker.dart';
@@ -17,45 +18,39 @@ class TeacherCubit extends Cubit<TeacherState> {
   String userID;
   late School school;
   late User teacher;
+
   TeacherCubit(
       {required this.awsApiClient,
       required this.userID,
       required this.userName,
       required this.password})
       : super(TeacherInitial()) {
-    signInTeacher(userName, password);
+    // signInTeacher(userName, password);
+    getTeacherDetails(userID: userID);
   }
-
   bool isSignedIn = false;
-
-  Future<void> signInTeacher(String username, String password) async {
-    try {
-      await Amplify.Auth.signOut();
-      final result = await Amplify.Auth.signIn(
-        username: username,
-        password: password,
-      );
-
-      isSignedIn = result.isSignedIn;
-      if (isSignedIn) {
-        await getTeacherDetails(userID: userID);
-      }
-    } on AuthException catch (e) {
-      print(e.message);
-    }
-  }
+  Future<void> signInTeacher(String username, String password) async {}
 
   Future<void> getTeacherDetails({required String userID}) async {
     final teacher = await awsApiClient.getAdminDetails(userID: userID);
     print(teacher);
 
-    // try {
-    //   await getSchoolDetails(schoolID: teacher.schoolID!);
-    //   emit(SchoolDetailsFetched());
-    // } on SchoolNotFoundException {
-    //   emit(SchoolNotFound());
-    //   return;
-    // }
+    try {
+      await getSchoolDetails(schoolID: teacher.schoolID!);
+      emit(SchoolFetched());
+    } on SchoolNotFoundException {
+      emit(SchoolNotFound());
+      return;
+    }
     emit(TeacherDetailsFetched());
+  }
+
+  Future<void> getSchoolDetails({required String schoolID}) async {
+    if (schoolID == null) {
+      emit(SchoolNotSet());
+    }
+    school = await awsApiClient.getSchoolDetails(schoolID: schoolID);
+    print(school);
+    emit(SchoolFetched());
   }
 }

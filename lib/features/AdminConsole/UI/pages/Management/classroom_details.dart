@@ -87,7 +87,7 @@ class AssignedTeacherWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
-    print("ehhlloo : ${classRoom.userAssignedClassId}");
+   
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(

@@ -8,5 +8,6 @@
     "amplify/backend/amplify-meta.json": true,
     "amplify/backend/awscloudformation": true
   },
-  "cmake.sourceDirectory": "${workspaceFolder}/windows"
+  "cmake.sourceDirectory": "${workspaceFolder}/windows",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

@@ -4,3 +4,4 @@
 //3. Implement search algos everywhere.
 //4. Replace Custom Button with elevated button.
 //5. Amazon Open Search Service
+//6. Increase lottie speed -  https://lottiefiles.com/animation/scan?page=2

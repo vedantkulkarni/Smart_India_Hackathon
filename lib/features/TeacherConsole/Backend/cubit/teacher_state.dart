@@ -11,3 +11,5 @@ class TeacherInitial extends TeacherState {}
 class FetchingTeacher extends TeacherState {}
 class TeacherDetailsFetched extends TeacherState {}
 class SchoolNotFound extends TeacherState {}
+class SchoolFetched extends TeacherState {}
+class SchoolNotSet extends TeacherState {}
