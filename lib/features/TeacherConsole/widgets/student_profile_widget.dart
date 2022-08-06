@@ -4,7 +4,8 @@ import '../../../core/constants.dart';
 class StudentProfileWidget extends StatelessWidget {
   final String name;
   final VoidCallback onTap;
-  const StudentProfileWidget({required this.name,
+  const StudentProfileWidget({
+    required this.name,
     required this.onTap,
     Key? key,
   }) : super(key: key);
@@ -13,19 +14,32 @@ class StudentProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(5.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.blue,
-            ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          // height: 10,
+          // width: 10,
+          decoration: BoxDecoration(
+              color: greyColor, borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 2,
+              ),
+              const CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.blue,
+              ),
+              Text(
+                name,
+                style: const TextStyle(
+                  color: backgroundColor,
+                  fontSize: 10,
+                ),
+              )
+            ],
           ),
-          Text(name,style: const TextStyle(
-            color: backgroundColor,
-            fontSize: 15,
-          ),)
-        ],
+        ),
       ),
     );
   }

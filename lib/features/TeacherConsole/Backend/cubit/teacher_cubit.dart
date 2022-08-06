@@ -2,6 +2,7 @@ import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../models/School.dart';
@@ -32,7 +33,14 @@ class TeacherCubit extends Cubit<TeacherState> {
   Future<void> signInTeacher(String username, String password) async {}
 
   Future<void> getTeacherDetails({required String userID}) async {
-    final teacher = await awsApiClient.getAdminDetails(userID: userID);
+    // final teacher = await awsApiClient.getAdminDetails(userID: userID);
+    final teacher = User(
+      email: 'vednt@gmail.com ',
+      name: 'Vedant Kulkanir',
+      phoneNumber: '+91 9623026654',
+      schoolID: 'some id',
+      role: Role.Admin,
+    );
     print(teacher);
 
     try {
@@ -49,7 +57,12 @@ class TeacherCubit extends Cubit<TeacherState> {
     if (schoolID == null) {
       emit(SchoolNotSet());
     }
-    school = await awsApiClient.getSchoolDetails(schoolID: schoolID);
+    // school = await awsApiClient.getSchoolDetails(schoolID: schoolID);
+    school = School(
+      schoolID: 'some id',
+      schoolName: 'School Name',
+      superAdmin: 'vedantk60@gmail.com',
+    );
     print(school);
     emit(SchoolFetched());
   }

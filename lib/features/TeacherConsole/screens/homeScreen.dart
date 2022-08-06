@@ -20,7 +20,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
- 
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -80,116 +79,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 // const SizedBox(height: 20,),
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: StaggeredGrid.count(
+                  child: StaggeredGrid.count(
                       crossAxisCount: 4,
                       mainAxisSpacing: 2,
                       crossAxisSpacing: 6,
-                      children: [
-                        StaggeredGridTile.count(
+                      children: List.generate(3, (index) {
+                        return StaggeredGridTile.count(
                           crossAxisCellCount: 2,
                           mainAxisCellCount: 2,
                           child: ClassTile(
                             width: w,
-                            onTap: ()  {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-              return MultiBlocProvider(providers: [
-                BlocProvider.value(value: BlocProvider.of<TeacherCubit>(context)),
-                BlocProvider(
-                    create: (context) => TeacherClassCubit(
-                        awsApiClient: getIt<AWSApiClient>(),
-                        school: teacherCubit.school
-                        )),
-              ], child: ClassDetailScreen(className: 'TE',));
-            }));
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (_) {
+                                return MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider.value(
+                                          value: BlocProvider.of<TeacherCubit>(
+                                              context)),
+                                      BlocProvider(
+                                          create: (context) =>
+                                              TeacherClassCubit(
+                                                  awsApiClient:
+                                                      getIt<AWSApiClient>(),
+                                                  school: teacherCubit.school)),
+                                    ],
+                                    child: ClassDetailScreen(
+                                      className: '',
+                                    ));
+                              }));
                             },
                             classNo: 'TE-01',
                             noOfStd: '89',
                           ),
-                        ),
-                        StaggeredGridTile.count(
-                          crossAxisCellCount: 2,
-                          mainAxisCellCount: 2,
-                          child: ClassTile(
-                            width: w,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ClassDetailScreen(
-                                    className: 'TE-01');
-                              }));
-                            },
-                            classNo: 'TE-02',
-                            noOfStd: '87',
-                          ),
-                        ),
-                        StaggeredGridTile.count(
-                          crossAxisCellCount: 2,
-                          mainAxisCellCount: 2,
-                          child: ClassTile(
-                            width: w,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ClassDetailScreen(
-                                    className: 'TE-01');
-                              }));
-                            },
-                            classNo: 'TE-03',
-                            noOfStd: '98',
-                          ),
-                        ),
-                        StaggeredGridTile.count(
-                          crossAxisCellCount: 2,
-                          mainAxisCellCount: 2,
-                          child: ClassTile(
-                            width: w,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ClassDetailScreen(
-                                    className: 'TE-01');
-                              }));
-                            },
-                            classNo: 'TE-04',
-                            noOfStd: '85',
-                          ),
-                        ),
-                        StaggeredGridTile.count(
-                          crossAxisCellCount: 2,
-                          mainAxisCellCount: 2,
-                          child: ClassTile(
-                            width: w,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ClassDetailScreen(
-                                    className: 'TE-01');
-                              }));
-                            },
-                            classNo: 'TE-03',
-                            noOfStd: '98',
-                          ),
-                        ),
-                        StaggeredGridTile.count(
-                          crossAxisCellCount: 2,
-                          mainAxisCellCount: 2,
-                          child: ClassTile(
-                            width: w,
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const ClassDetailScreen(
-                                    className: 'TE-01');
-                              }));
-                            },
-                            classNo: 'TE-04',
-                            noOfStd: '85',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      })),
                 )
               ],
             ),

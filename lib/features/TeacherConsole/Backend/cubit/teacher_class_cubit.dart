@@ -5,7 +5,6 @@ import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
 import '../../../../models/School.dart';
 import '../../../AdminConsole/Backend/aws_api_client.dart';
-
 part 'teacher_class_state.dart';
 
 class TeacherClassCubit extends Cubit<TeacherClassState> {
