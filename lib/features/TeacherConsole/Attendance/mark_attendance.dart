@@ -14,12 +14,12 @@ import 'ml_service.dart';
 
 class MarkAttendnacePage extends StatefulWidget {
   MLService mlService;
-  List<CameraDescription> cameras;
-  MarkAttendnacePage({Key? key, required this.cameras, required this.mlService})
+ 
+  MarkAttendnacePage({Key? key,  required this.mlService})
       : super(key: key);
 
   @override
-  State<MarkAttendnacePage> createState() => _MarkAttendnacePageState(cameras);
+  State<MarkAttendnacePage> createState() => _MarkAttendnacePageState();
 }
 
 class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
@@ -39,8 +39,7 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
   final FaceDetectorService _faceDetectorService = getIt<FaceDetectorService>();
   final CameraService _cameraService = getIt<CameraService>();
 
-  final _cameras;
-  _MarkAttendnacePageState(this._cameras);
+
 
   @override
   void initState() {

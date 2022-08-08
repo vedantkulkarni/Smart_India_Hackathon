@@ -7,8 +7,10 @@ class ClassTile extends StatelessWidget {
   final String classNo;
   final String noOfStd;
   final VoidCallback onTap;
-  const ClassTile({required this.width,required this.onTap,
-  required this.classNo,
+  const ClassTile({
+    required this.width,
+    required this.onTap,
+    required this.classNo,
     required this.noOfStd,
     Key? key,
   }) : super(key: key);
@@ -17,66 +19,70 @@ class ClassTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          //height : 30,
-          decoration:  BoxDecoration(
-              color: primaryColor.withOpacity(0.5),
-               borderRadius:const BorderRadius.all(Radius.
-              circular(10)),
-            border: Border.all(color: greyColor)
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text('Class',
-                      style: TextStyle(
-                          color: backgroundColor,
-                          fontSize: width*0.05,
-                          fontFamily:'Poppins',
-                          fontWeight: FontWeight.bold
-                      ),),
-                    const Spacer(),
-                    Text(classNo,
-                      style: TextStyle(
-                          color: navIconsColor,
-                          fontSize: width*0.05,
-                          fontFamily:'Poppins',
-                          fontWeight: FontWeight.bold
-                      ),),
-                    const SizedBox(width: 5,),
-                  ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+          boxShadow: const [
+            BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
+          ],
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Class',
+                  style: TextStyle(
+                      color: primaryColor,
+                      fontSize: width * 0.05,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Text('No Of \nStudents',
-                      style: TextStyle(
-                          color: backgroundColor,
-                          fontSize: width*0.05,
-                          fontFamily:'Poppins',
-                          fontWeight: FontWeight.bold
-                      ),),
-                    const Spacer(),
-                    Text(noOfStd,
-                      style: TextStyle(
-                          color: navIconsColor,
-                          fontSize: width*0.05,
-                          fontFamily:'Poppins',
-                          fontWeight: FontWeight.bold
-                      ),),
-                    const SizedBox(width: 5,),
-                  ],
+                const Spacer(),
+                Text(
+                  classNo,
+                  style: TextStyle(
+                      color: navIconsColor,
+                      fontSize: width * 0.05,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(
+                  width: 5,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Text(
+                  'Students',
+                  style: TextStyle(
+                      color: primaryColor,
+                      fontSize: width * 0.05,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text(
+                  noOfStd,
+                  style: TextStyle(
+                      color: navIconsColor,
+                      fontSize: width * 0.05,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

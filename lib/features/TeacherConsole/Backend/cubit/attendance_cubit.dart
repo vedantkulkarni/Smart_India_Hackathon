@@ -23,7 +23,8 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   final FaceDetectorService faceDetectorService;
   final MLService mlService;
   final CameraService cameraService;
-
+  List<Student>? studList;
+  Map<String, bool> attendanceMap = {};
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
@@ -31,10 +32,10 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   bool _detectingFaces = false;
   bool pictureTaken = false;
 
-  bool _initializing = false;
+  final bool _initializing = false;
 
-  bool _saving = true;
-  bool _bottomSheetVisible = false;
+  final bool _saving = true;
+  final bool _bottomSheetVisible = false;
 
   // final ClassRoom classRoom;
   AttendanceCubit(
@@ -42,10 +43,15 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       required this.faceDetectorService,
       required this.mlService,
       required this.cameraService,
-      required this.mode})
+      required this.mode,
+      this.studList})
       : super(AttendanceInitial()) {
-    faceDetectorService.initialize();
-    initializeInterPreter();
+    if (mode == VerificationStatus.ManualAttendance) {
+      initAttendance(studList!);
+    } else {
+      faceDetectorService.initialize();
+      initializeInterPreter();
+    }
   }
 
   Future<void> initializeInterPreter() async {
@@ -110,5 +116,16 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     final result =
         await apiClient.updateStudent(updatedStudent: updatedStudent);
     print(result);
+  }
+
+  void toggleAttendance(String id) {
+    attendanceMap[id] = !attendanceMap[id]!;
+    emit(AttendanceToggled(attendance: attendanceMap));
+  }
+
+  Future<void> initAttendance(List<Student> studentList) async {
+    for (var everyStudent in studentList) {
+      attendanceMap.putIfAbsent(everyStudent.studentID, () => true);
+    }
   }
 }

@@ -2,20 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify_with_profile_image.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/liveness.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/manual_attendance.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mark_attendance.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/student_detail_screen.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/screens/teacher_console_student_card.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../core/constants.dart';
-import '../widgets/student_profile_widget.dart';
 
 class ClassDetailScreen extends StatefulWidget {
   final String className;
@@ -47,53 +50,37 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             children: [
               Container(
                 height: h * 0.15,
-                decoration: BoxDecoration(
-                    color: primaryColor.withOpacity(0.5),
-                    borderRadius: const BorderRadius.only(
-                        bottomRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20)),
-                    border: Border.all(color: greyColor)),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: h * 0.05,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(
-                          Icons.arrow_back,
-                          size: 25,
-                          color: backgroundColor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Class',
-                          style: TextStyle(
-                              color: backgroundColor,
-                              fontSize: w * 0.1,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          widget.className,
-                          style: TextStyle(
-                              color: backgroundColor,
-                              fontSize: w * 0.1,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: const BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10)),
+                ),
+                child: Row(
+                  children: const [
+                    // SizedBox(
+                    //   height: h * 0.05,
+                    // ),
+
+                    Text(
+                      'Class',
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 35,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(),
+                    Text(
+                      'TE-11',
+                      style: TextStyle(
+                          color: blackColor,
+                          fontSize: 24,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -104,145 +91,136 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                 child: Text(
                   'Students',
                   style: TextStyle(
-                      color: navIconsColor,
-                      fontSize: 45,
+                      color: blackColor,
+                      fontSize: 24,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Container(
                   height: h * 0.5,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: navIconsColor,
-                            blurRadius: 2,
-                            spreadRadius: 2)
-                      ],
-                      border: Border.all(color: Colors.black)),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: blendColor, blurRadius: 15, spreadRadius: 10)
+                    ],
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: StaggeredGrid.count(
-                      crossAxisCount: 10,
+                      crossAxisCount: 4,
                       mainAxisSpacing: 1,
                       crossAxisSpacing: 6,
                       children: [
                         StaggeredGridTile.count(
-                          crossAxisCellCount: 2,
-                          mainAxisCellCount: 2,
-                          child: StudentProfileWidget(
-                            name: 'Harsh',
-                            onTap: () {
-                              final student =
-                                  BlocProvider.of<TeacherClassCubit>(context)
-                                      .classRoom
-                                      .students![0];
-                              final mlService = MLService(
-                                  students:
+                            crossAxisCellCount: 1,
+                            mainAxisCellCount: 1,
+                            child: TeacherConsoleStudentCard(
+                                onTap: () {
+                                  final student =
                                       BlocProvider.of<TeacherClassCubit>(
                                               context)
                                           .classRoom
-                                          .students!);
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (_) {
-                                return BlocProvider(
-                                  create: (context) => AttendanceCubit(
-                                    mode: classCubit.classRoom.attendanceMode,
-                                      apiClient: getIt<AWSApiClient>(),
-                                      faceDetectorService:
-                                          getIt<FaceDetectorService>(),
-                                      mlService: mlService,
-                                      cameraService: getIt<CameraService>()),
-                                  child: StudentDetailScreen(
-                                      name: 'Harsh',
-                                      email: 'atk@gmail.com',
-                                      address: 'Pune',
-                                      attendance: '89%',
-                                      student: student,
-                                      cameras:
+                                          .students![0];
+                                  final mlService = MLService(
+                                      students:
                                           BlocProvider.of<TeacherClassCubit>(
                                                   context)
+                                              .classRoom
+                                              .students!);
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (_) {
+                                    return BlocProvider(
+                                      create: (context) => AttendanceCubit(
+                                          mode: classCubit
+                                              .classRoom.attendanceMode,
+                                          apiClient: getIt<AWSApiClient>(),
+                                          faceDetectorService:
+                                              getIt<FaceDetectorService>(),
+                                          mlService: mlService,
+                                          cameraService:
+                                              getIt<CameraService>()),
+                                      child: StudentDetailScreen(
+                                          name: 'Harsh',
+                                          email: 'atk@gmail.com',
+                                          address: 'Pune',
+                                          attendance: '89%',
+                                          student: student,
+                                          cameras: BlocProvider.of<
+                                                  TeacherClassCubit>(context)
                                               .camerasList),
-                                );
-                              }));
-                            },
-                          ),
-                        ),
+                                    );
+                                  }));
+                                },
+                                student: classCubit.classRoom.students![0])),
                       ]),
                 ),
               ),
               const SizedBox(
                 height: 25,
               ),
-              GestureDetector(
-                onTap: () async {
-                  if (classCubit.classRoom.students == null || classCubit.classRoom.students!.isEmpty) {
-                    print("student list is empty");
-                    return;
-                  }
-                  print(classCubit.classRoom.students);
-                  final mlService =
-                      MLService(students: classCubit.classRoom.students!);
-                  await Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) {
-                    return MultiBlocProvider(
-                        providers: [
-                          BlocProvider.value(
-                            value: teacherCubit,
-                          ),
-                          BlocProvider.value(
-                            value: BlocProvider.of<TeacherClassCubit>(context),
-                          ),
-                          BlocProvider(
-                              create: (context) => AttendanceCubit(
-                                  apiClient: getIt<AWSApiClient>(),
-                                  faceDetectorService:
-                                      getIt<FaceDetectorService>(),
-                                      cameraService: getIt<CameraService>(),
-                                      mode: classCubit.classRoom.attendanceMode,
-                                  mlService: mlService))
-                        ],
-                        // child: MarkAttendnacePage(
-                        //   cameras: BlocProvider.of<TeacherClassCubit>(context)
-                        //       .camerasList,
-                        //       mlService: mlService,
-                        // ));
-                        // child: LivenessDetectionScreen());
-                        child: FaceVerifyWithProfileImage());
-                  }));
-                },
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Container(
-                      height: h * 0.1,
-                      decoration: BoxDecoration(
-                          color: secondaryColor,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.black)),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            'Mark Attendance',
-                            style: TextStyle(
-                                color: backgroundColor,
-                                fontSize: 25,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
+              CustomTextButton(
+                  onPressed: () async {
+                    if (classCubit.classRoom.students == null ||
+                        classCubit.classRoom.students!.isEmpty) {
+                      print("student list is empty");
+                      return;
+                    }
+                    print(classCubit.classRoom.students);
+                    final mlService =
+                        MLService(students: classCubit.classRoom.students!);
+                    Widget attendanceMode = await Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) {
+                      return MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(
+                              value: teacherCubit,
+                            ),
+                            BlocProvider.value(
+                              value:
+                                  BlocProvider.of<TeacherClassCubit>(context),
+                            ),
+                            BlocProvider(
+                                create: (context) => AttendanceCubit(
+                                    apiClient: getIt<AWSApiClient>(),
+                                    faceDetectorService:
+                                        getIt<FaceDetectorService>(),
+                                    cameraService: getIt<CameraService>(),
+                                    mode: classCubit.classRoom.attendanceMode,
+                                    studList: classCubit.classRoom.students,
+                                    mlService: mlService))
+                          ],
+                          child: getAttendanceWidget(
+                              classCubit.classRoom.attendanceMode, mlService));
+                    }));
+                  },
+                  text: 'Mark Attendance')
             ],
           );
         },
       ),
     );
+  }
+
+  Widget getAttendanceWidget(
+      VerificationStatus verificationStatus, MLService mlService) {
+    switch (verificationStatus) {
+      case VerificationStatus.FaceDetectedAndVerified:
+        return MarkAttendnacePage(mlService: mlService);
+      case VerificationStatus.FaceVerified:
+        return const FaceVerifyWithProfileImage();
+      case VerificationStatus.FaceVerifiedWithLiveness:
+        return LivenessDetectionScreen();
+      case VerificationStatus.ManualAttendance:
+        return const ManualAttendance();
+
+      default:
+        return Container();
+    }
   }
 }
