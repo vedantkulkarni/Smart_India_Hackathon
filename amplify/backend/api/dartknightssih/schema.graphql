@@ -59,7 +59,7 @@ type ClassRoom @model
   importantNotice: [String]
   attendanceMode: VerificationStatus!
 
-}#add 'currentAttendance' field in ClassRoom, which will be updated at the end of every Attendance taking sesison.
+}# 'currentAttendance' field in ClassRoom, which will be updated at the end of every Attendance taking sesison.
 
 type Student @model
 {
@@ -71,7 +71,8 @@ type Student @model
   profilePhoto: AWSURL
   idCardPhoto: AWSURL
   roll:String
-  modelData:[Int]
+  modelData:[Float]
+  latestAttendance: Attendance @hasOne
 }
 
 enum AttendanceStatus{

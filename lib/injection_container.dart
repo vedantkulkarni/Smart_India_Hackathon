@@ -14,5 +14,6 @@ void setup() {
   getIt.registerLazySingleton(() => RoleChecker());
   getIt.registerLazySingleton<AWSApiClient>(() => AWSApiClientImpl());
   getIt.registerLazySingleton<CameraService>(() => CameraService());
+  
   getIt.registerLazySingleton<FaceDetectorService>(() => FaceDetectorService());
 }

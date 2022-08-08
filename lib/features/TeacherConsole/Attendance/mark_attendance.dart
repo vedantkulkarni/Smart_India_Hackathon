@@ -1,80 +1,156 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 
+import '../../../injection_container.dart';
+import 'camera_service.dart';
+import 'face_detector.dart';
+import 'ml_algo.dart';
+
 class MarkAttendnacePage extends StatefulWidget {
+  MLService mlService;
   List<CameraDescription> cameras;
-  MarkAttendnacePage({Key? key, required this.cameras}) : super(key: key);
+  MarkAttendnacePage({Key? key, required this.cameras, required this.mlService})
+      : super(key: key);
 
   @override
   State<MarkAttendnacePage> createState() => _MarkAttendnacePageState(cameras);
 }
 
 class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
-  late CameraController controller;
+  String? imagePath;
+  Face? faceDetected;
+  Size? imageSize;
+
+  bool _detectingFaces = false;
+  bool pictureTaken = false;
+
+  bool _initializing = false;
+
+  bool _saving = false;
+  bool _bottomSheetVisible = false;
+
+  // service injection
+  FaceDetectorService _faceDetectorService = getIt<FaceDetectorService>();
+  CameraService _cameraService = getIt<CameraService>();
+
   final _cameras;
   _MarkAttendnacePageState(this._cameras);
+
   @override
   void initState() {
     super.initState();
+    _start();
+  }
 
-    controller = CameraController(_cameras[0], ResolutionPreset.veryHigh);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            print('User denied camera access.');
-            break;
-          default:
-            print('Handle other errors.');
-            break;
+  @override
+  void dispose() {
+    _cameraService.dispose();
+    super.dispose();
+  }
+
+  _start() async {
+    setState(() => _initializing = true);
+    await _cameraService.initialize();
+    _faceDetectorService.initialize();
+    await widget.mlService.initialize();
+    setState(() => _initializing = false);
+
+    _frameFaces();
+  }
+
+  Future<bool> onShot() async {
+    if (faceDetected == null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('No face detected!'),
+          );
+        },
+      );
+
+      return false;
+    } else {
+      _saving = true;
+      await Future.delayed(Duration(milliseconds: 500));
+      // await _cameraService.cameraController?.stopImageStream();
+      await Future.delayed(Duration(milliseconds: 200));
+      XFile? file = await _cameraService.takePicture();
+      imagePath = file?.path;
+
+      setState(() {
+        _bottomSheetVisible = true;
+        pictureTaken = true;
+      });
+
+      return true;
+    }
+  }
+
+  _frameFaces() {
+    imageSize = _cameraService.getImageSize();
+
+    _cameraService.cameraController?.startImageStream((image) async {
+      if (_cameraService.cameraController != null) {
+        if (_detectingFaces) return;
+
+        _detectingFaces = true;
+
+        try {
+          await _faceDetectorService.detectFacesFromImage(image);
+
+          if (_faceDetectorService.faces.isNotEmpty) {
+            setState(() {
+              faceDetected = _faceDetectorService.faces[0];
+            });
+            if (_saving) {
+              widget.mlService.setCurrentPrediction(image, faceDetected);
+              setState(() {
+                _saving = false;
+              });
+            }
+          } else {
+            setState(() {
+              faceDetected = null;
+            });
+          }
+
+          _detectingFaces = false;
+        } catch (e) {
+          print(e);
+          _detectingFaces = false;
         }
       }
     });
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = controller;
-    print("hello");
-    // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController.value.isInitialized) {
-      return;
-    }
-
-    if (state == AppLifecycleState.inactive) {
-      cameraController.dispose();
-    } else if (state == AppLifecycleState.resumed) {}
+  _onBackPressed() {
+    Navigator.of(context).pop();
   }
 
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
+  _reload() {
+    setState(() {
+      _bottomSheetVisible = false;
+      pictureTaken = false;
+    });
+    this._start();
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      CameraPreview(controller),
-      // Scaffold(
-      //   body: Container(
-      //     color: blackColor,
-      //     height: MediaQuery.of(context).size.height,
-      //     width: MediaQuery.of(context).size.width,
-      //   ),
-      // ),
-
-      CameraUIOverlay(
-        cameraController: controller,
+      _cameraService.cameraController == null
+          ? Container()
+          : CameraPreview(_cameraService.cameraController!),
+      _cameraService.cameraController == null?Container(
+        
+      ):CameraUIOverlay(
+        cameraController: _cameraService.cameraController!,
       )
     ]);
   }
@@ -92,6 +168,7 @@ class CameraUIOverlay extends StatefulWidget {
 class _CameraUIOverlayState extends State<CameraUIOverlay> {
   @override
   Widget build(BuildContext context) {
+    final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -100,11 +177,7 @@ class _CameraUIOverlayState extends State<CameraUIOverlay> {
           const Spacer(),
           FloatingActionButton(
             backgroundColor: backgroundColor,
-            onPressed: () async {
-              XFile? studentCapture =
-                  await widget.cameraController.takePicture();
-              widget.cameraController.pausePreview();
-            },
+            onPressed: () async {},
             child: const Icon(
               Icons.camera_alt,
               size: 25,

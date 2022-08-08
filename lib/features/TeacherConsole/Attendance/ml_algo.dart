@@ -4,24 +4,22 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/image_converter.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
-import '';
 import 'package:image/image.dart' as imglib;
 
-import '../../../models/Student.dart';
-import '../../../models/Student.dart';
+import 'image_converter.dart';
 
 class MLService {
   Interpreter? _interpreter;
   double threshold = 0.5;
-  List<Student> studentList;
-
+  List<Student> students;
   List _predictedData = [];
   List get predictedData => _predictedData;
-  MLService({required this.studentList});
-
+  MLService({required this.students});
   Future initialize() async {
+    students.removeWhere(
+        (element) => element.modelData == null || element.modelData!.isEmpty);
     late Delegate delegate;
     try {
       if (Platform.isAndroid) {
@@ -110,12 +108,11 @@ class MLService {
   }
 
   Future<Student?> _searchResult(List predictedData) async {
-    
     double minDist = 999;
     double currDist = 0.0;
     Student? predictedResult;
 
-    for (Student u in studentList) {
+    for (Student u in students) {
       currDist = _euclideanDistance(u.modelData, predictedData);
       if (currDist <= threshold && currDist < minDist) {
         minDist = currDist;
