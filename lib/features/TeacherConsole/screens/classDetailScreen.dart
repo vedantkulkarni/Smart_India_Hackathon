@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify_with_profile_image.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/liveness.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
@@ -10,6 +14,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mark_at
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/student_detail_screen.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
 
+import '../../../core/constants.dart';
 import '../widgets/student_profile_widget.dart';
 
 class ClassDetailScreen extends StatefulWidget {
@@ -27,6 +32,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     final teacherCubit = BlocProvider.of<TeacherCubit>(context);
+    final classCubit = BlocProvider.of<TeacherClassCubit>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocBuilder<TeacherClassCubit, TeacherClassState>(
@@ -119,6 +125,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       ],
                       border: Border.all(color: Colors.black)),
                   child: StaggeredGrid.count(
+<<<<<<< HEAD
                     crossAxisCount: 10,
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 6,
@@ -144,6 +151,54 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       ),
                     ),
                   ),
+=======
+                      crossAxisCount: 10,
+                      mainAxisSpacing: 1,
+                      crossAxisSpacing: 6,
+                      children: [
+                        StaggeredGridTile.count(
+                          crossAxisCellCount: 2,
+                          mainAxisCellCount: 2,
+                          child: StudentProfileWidget(
+                            name: 'Harsh',
+                            onTap: () {
+                              final student =
+                                  BlocProvider.of<TeacherClassCubit>(context)
+                                      .classRoom
+                                      .students![0];
+                              final mlService = MLService(
+                                  students:
+                                      BlocProvider.of<TeacherClassCubit>(
+                                              context)
+                                          .classRoom
+                                          .students!);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
+                                return BlocProvider(
+                                  create: (context) => AttendanceCubit(
+                                    mode: classCubit.classRoom.attendanceMode,
+                                      apiClient: getIt<AWSApiClient>(),
+                                      faceDetectorService:
+                                          getIt<FaceDetectorService>(),
+                                      mlService: mlService,
+                                      cameraService: getIt<CameraService>()),
+                                  child: StudentDetailScreen(
+                                      name: 'Harsh',
+                                      email: 'atk@gmail.com',
+                                      address: 'Pune',
+                                      attendance: '89%',
+                                      student: student,
+                                      cameras:
+                                          BlocProvider.of<TeacherClassCubit>(
+                                                  context)
+                                              .camerasList),
+                                );
+                              }));
+                            },
+                          ),
+                        ),
+                      ]),
+>>>>>>> master
                 ),
               ),
               const SizedBox(
@@ -151,6 +206,16 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               ),
               GestureDetector(
                 onTap: () async {
+<<<<<<< HEAD
+=======
+                  if (classCubit.classRoom.students == null || classCubit.classRoom.students!.isEmpty) {
+                    print("student list is empty");
+                    return;
+                  }
+                  print(classCubit.classRoom.students);
+                  final mlService =
+                      MLService(students: classCubit.classRoom.students!);
+>>>>>>> master
                   await Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) {
                     return MultiBlocProvider(
@@ -163,12 +228,20 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                           ),
                           BlocProvider(
                               create: (context) => AttendanceCubit(
-                                  apiClient: getIt<AWSApiClient>()))
+                                  apiClient: getIt<AWSApiClient>(),
+                                  faceDetectorService:
+                                      getIt<FaceDetectorService>(),
+                                      cameraService: getIt<CameraService>(),
+                                      mode: classCubit.classRoom.attendanceMode,
+                                  mlService: mlService))
                         ],
-                        child: MarkAttendnacePage(
-                          cameras: BlocProvider.of<TeacherClassCubit>(context)
-                              .camerasList,
-                        ));
+                        // child: MarkAttendnacePage(
+                        //   cameras: BlocProvider.of<TeacherClassCubit>(context)
+                        //       .camerasList,
+                        //       mlService: mlService,
+                        // ));
+                        // child: LivenessDetectionScreen());
+                        child: FaceVerifyWithProfileImage());
                   }));
                 },
                 child: Center(

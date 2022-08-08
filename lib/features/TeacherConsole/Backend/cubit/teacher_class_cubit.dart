@@ -14,7 +14,6 @@ class TeacherClassCubit extends Cubit<TeacherClassState> {
   late List<CameraDescription> _cameras;
   TeacherClassCubit({required this.school, required this.awsApiClient})
       : super(TeacherClassInitial()) {
-    print('hello vai');
     fetchClassRoomDetailsForTeacher(
         classRoomID: '29d318a3-f09b-4675-bfb0-a73eb7c5dbbd');
   }
@@ -22,8 +21,9 @@ class TeacherClassCubit extends Cubit<TeacherClassState> {
   Future<void> fetchClassRoomDetailsForTeacher(
       {required String classRoomID}) async {
     classRoom = await awsApiClient.getClassRoom(classRoomID: classRoomID);
-    print(classRoomID);
-    print(classRoom);
+    print('here');
+    print(classRoom.students);
+
     _cameras = await availableCameras();
     emit(ClassDetailsFetched());
   }

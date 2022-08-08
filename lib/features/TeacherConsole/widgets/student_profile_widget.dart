@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import '../../../core/constants.dart';
 
 class StudentProfileWidget extends StatelessWidget {
@@ -39,7 +40,16 @@ class StudentProfileWidget extends StatelessWidget {
               )
             ],
           ),
+<<<<<<< HEAD
         ),
+=======
+          Text(name,style: const TextStyle(
+            color: backgroundColor,
+            fontSize: 15,
+          ),),
+    
+        ],
+>>>>>>> master
       ),
     );
   }

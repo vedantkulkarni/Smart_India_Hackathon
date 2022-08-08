@@ -33,14 +33,14 @@ class TeacherCubit extends Cubit<TeacherState> {
   Future<void> signInTeacher(String username, String password) async {}
 
   Future<void> getTeacherDetails({required String userID}) async {
-    // final teacher = await awsApiClient.getAdminDetails(userID: userID);
-    final teacher = User(
-      email: 'vednt@gmail.com ',
-      name: 'Vedant Kulkanir',
-      phoneNumber: '+91 9623026654',
-      schoolID: 'some id',
-      role: Role.Admin,
-    );
+     final teacher = await awsApiClient.getAdminDetails(userID: userID);
+    // final teacher = User(
+    //   email: 'vednt@gmail.com ',
+    //   name: 'Vedant Kulkanir',
+    //   phoneNumber: '+91 9623026654',
+    //   schoolID: 'some id',
+    //   role: Role.Admin,
+    // );
     print(teacher);
 
     try {
@@ -57,12 +57,12 @@ class TeacherCubit extends Cubit<TeacherState> {
     if (schoolID == null) {
       emit(SchoolNotSet());
     }
-    // school = await awsApiClient.getSchoolDetails(schoolID: schoolID);
-    school = School(
-      schoolID: 'some id',
-      schoolName: 'School Name',
-      superAdmin: 'vedantk60@gmail.com',
-    );
+    school = await awsApiClient.getSchoolDetails(schoolID: schoolID);
+    // school = School(
+    //   schoolID: 'some id',
+    //   schoolName: 'School Name',
+    //   superAdmin: 'vedantk60@gmail.com',
+    // );
     print(school);
     emit(SchoolFetched());
   }

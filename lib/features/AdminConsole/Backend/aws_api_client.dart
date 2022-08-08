@@ -430,19 +430,14 @@ query MyQuery {
     final body = {
       'operationName': 'MyQuery',
       'query': '''
-    query MyQuery {
-  getClassRoom(id: "$classRoomID") {
+   query MyQuery {
+  getClassRoom(id: "29d318a3-f09b-4675-bfb0-a73eb7c5dbbd") {
     assignedTeacherName
     attendanceMode
     classRoomName
     currentAttendance
     groupClassRoomsId
     id
-    importantNotice
-    schoolClassRoomsId
-    schoolID
-    updatedAt
-    userAssignedClassId
     students {
       items {
         address
@@ -452,10 +447,17 @@ query MyQuery {
         profilePhoto
         studentID
         studentName
+        modelData
       }
     }
+    importantNotice
+    schoolClassRoomsId
+    schoolID
+    updatedAt
+    userAssignedClassId
+    
   }
-  }
+}
 '''
     };
 
@@ -464,7 +466,13 @@ query MyQuery {
     var classroomResult =
         ClassRoom.fromJson(json.decode(responseString)['data']['getClassRoom']);
 
-    print(classroomResult.students);
+    List<Student> studentList = [];
+    for (var student in json.decode(responseString)['data']['getClassRoom']
+        ['students']['items']) {
+      studentList.add(Student.fromJson(student));
+    }
+    classroomResult = classroomResult.copyWith(students: studentList);
+
     return classroomResult;
   }
 
@@ -579,7 +587,7 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createStudent(input: { classRoomStudentsId: "${student.classRoomStudentsId}", idCardPhoto: ${student.idCardPhoto}, profilePhoto: ${student.profilePhoto}, studentID: "${student.studentID}", studentName: "${student.studentName}"}) {
+  createStudent(input: { classRoomStudentsId: "${student.classRoomStudentsId}", idCardPhoto: ${student.idCardPhoto}, profilePhoto: ${student.profilePhoto}, studentID: "${student.studentID}", studentName: "${student.studentName}",roll: "${student.roll}",modelData: "${student.modelData}"}) {
     studentName
     studentID
   }
@@ -606,6 +614,8 @@ query MyQuery {
     profilePhoto
     studentID
     studentName
+    roll
+    modelData
   }
 }
 
@@ -613,7 +623,7 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    print(responseString);
+  
     return Student.fromJson(json.decode(responseString)['data']['getStudent']);
   }
 
@@ -622,18 +632,25 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  updateStudent(input: {address: "${updatedStudent.address}", classRoomStudentsId: "${updatedStudent.classRoomStudentsId}", email: "${updatedStudent.email}", idCardPhoto: ${updatedStudent.idCardPhoto}, phoneNumber: "${updatedStudent.phoneNumber}", profilePhoto: ${updatedStudent.profilePhoto}, studentID: "${updatedStudent.studentID}", studentName: "${updatedStudent.studentName}"}) {
-    classRoomStudentsId
+  updateStudent(input: {address: "${updatedStudent.address}", classRoomStudentsId: "${updatedStudent.classRoomStudentsId}", email: "${updatedStudent.email}", idCardPhoto: ${updatedStudent.idCardPhoto}, modelData: ${updatedStudent.modelData}, phoneNumber: "${updatedStudent.phoneNumber}", profilePhoto: ${updatedStudent.profilePhoto}, roll: "${updatedStudent.roll}", studentID: "${updatedStudent.studentID}",studentName: "${updatedStudent.studentName}"}) {
     email
+    classRoomStudentsId
+    modelData
+    phoneNumber
     profilePhoto
+    roll
     studentID
+    studentLatestAttendanceDate
+    studentLatestAttendanceId
+    studentName
+    idCardPhoto
   }
 }
 ''',
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    print(responseString);
+  
     return Student.fromJson(
         json.decode(responseString)['data']['updateStudent']);
   }
@@ -667,6 +684,7 @@ query MyQuery {
       studentID
       profilePhoto
       classRoomStudentsId
+      modelData
       
     }
   }
