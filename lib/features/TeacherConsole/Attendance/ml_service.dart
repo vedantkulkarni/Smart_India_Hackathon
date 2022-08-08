@@ -14,7 +14,7 @@ class MLService {
   Interpreter? _interpreter;
   double threshold = 0.5;
   List<Student> students;
-  List _predictedData = [];
+  List<double> _predictedData = [];
   List get predictedData => _predictedData;
   MLService({required this.students});
   Future initialize() async {
@@ -111,9 +111,10 @@ class MLService {
     double minDist = 999;
     double currDist = 0.0;
     Student? predictedResult;
-
+    print(students);
     for (Student u in students) {
       currDist = _euclideanDistance(u.modelData, predictedData);
+      print("curre dist is : $currDist");
       if (currDist <= threshold && currDist < minDist) {
         minDist = currDist;
         predictedResult = u;

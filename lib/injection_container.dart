@@ -5,7 +5,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_clie
 
 import 'features/TeacherConsole/Attendance/camera_service.dart';
 import 'features/TeacherConsole/Attendance/face_detector.dart';
-import 'features/TeacherConsole/Attendance/ml_algo.dart';
+import 'features/TeacherConsole/Attendance/ml_service.dart';
 
 final getIt = GetIt.instance;
 

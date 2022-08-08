@@ -83,9 +83,9 @@ enum AttendanceStatus{
 }
 
 enum VerificationStatus{
-  FaceVerifiedWithLiveness
-  FaceVerified
-  FaceDetectedAndVerified
+  FaceVerifiedWithLiveness #done
+  FaceVerified 
+  FaceDetectedAndVerified #done
   ManualAttendance
   InvolveParent
 }

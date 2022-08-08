@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_algo.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify_with_profile_image.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/liveness.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
@@ -146,10 +149,12 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                   MaterialPageRoute(builder: (_) {
                                 return BlocProvider(
                                   create: (context) => AttendanceCubit(
+                                    mode: classCubit.classRoom.attendanceMode,
                                       apiClient: getIt<AWSApiClient>(),
                                       faceDetectorService:
                                           getIt<FaceDetectorService>(),
-                                      mlService: mlService),
+                                      mlService: mlService,
+                                      cameraService: getIt<CameraService>()),
                                   child: StudentDetailScreen(
                                       name: 'Harsh',
                                       email: 'atk@gmail.com',
@@ -195,13 +200,17 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                   apiClient: getIt<AWSApiClient>(),
                                   faceDetectorService:
                                       getIt<FaceDetectorService>(),
+                                      cameraService: getIt<CameraService>(),
+                                      mode: classCubit.classRoom.attendanceMode,
                                   mlService: mlService))
                         ],
-                        child: MarkAttendnacePage(
-                          cameras: BlocProvider.of<TeacherClassCubit>(context)
-                              .camerasList,
-                              mlService: mlService,
-                        ));
+                        // child: MarkAttendnacePage(
+                        //   cameras: BlocProvider.of<TeacherClassCubit>(context)
+                        //       .camerasList,
+                        //       mlService: mlService,
+                        // ));
+                        // child: LivenessDetectionScreen());
+                        child: FaceVerifyWithProfileImage());
                   }));
                 },
                 child: Center(

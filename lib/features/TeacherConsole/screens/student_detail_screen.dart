@@ -134,7 +134,7 @@ class StudentDetailScreen extends StatelessWidget {
                         builder: (ctx) => BlocProvider.value(
                               value: BlocProvider.of<AttendanceCubit>(context),
                               child: AddStudentFacialData(
-                                  cameras: cameras, student: student!),
+                                  cameras: cameras, student: student!,mlService: BlocProvider.of<AttendanceCubit>(context).mlService,),
                             )));
                   },
                   text: 'Add Face Data')

@@ -1,14 +1,22 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/cam_detection_preview.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
+
+import '../../../injection_container.dart';
 
 class AddStudentFacialData extends StatefulWidget {
   List<CameraDescription> cameras;
   Student student;
-  AddStudentFacialData({Key? key, required this.cameras, required this.student})
+  MLService mlService;
+  AddStudentFacialData({Key? key, required this.cameras, required this.student,required this.mlService})
       : super(key: key);
 
   @override
@@ -17,66 +25,53 @@ class AddStudentFacialData extends StatefulWidget {
 }
 
 class _AddStudentFacialDataState extends State<AddStudentFacialData> {
-  late CameraController controller;
+  
   final _cameras;
+  final _cameraService = getIt<CameraService>();
+  final FaceDetectorService _faceDetectorService = getIt<FaceDetectorService>();
+  String? imagePath;
+  Face? faceDetected;
+  Size? imageSize;
+
+  final bool _detectingFaces = false;
+  bool pictureTaken = false;
+
+  bool _initializing = false;
+
+  bool _saving = true;
+  bool _bottomSheetVisible = false;
   _AddStudentFacialDataState(this._cameras);
+
   @override
   void initState() {
     super.initState();
-
-    controller = CameraController(_cameras[0], ResolutionPreset.veryHigh);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            print('User denied camera access.');
-            break;
-          default:
-            print('Handle other errors.');
-            break;
-        }
-      }
-    });
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = controller;
-    print("hello");
-    // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController.value.isInitialized) {
-      return;
-    }
-
-    if (state == AppLifecycleState.inactive) {
-      cameraController.dispose();
-    } else if (state == AppLifecycleState.resumed) {}
+    _start();
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _cameraService.dispose();
     super.dispose();
+  }
+
+  _start() async {
+    setState(() => _initializing = true);
+    await _cameraService.initialize();
+    _faceDetectorService.initialize();
+    await widget.mlService.initialize();
+    setState(() => _initializing = false);
+
+    // _frameFaces();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container( 
+      body: Container(
           child: Stack(children: [
-        CameraPreview(controller),
-        // Container(
-        //   color: blackColor,
-        //   height: double.maxFinite,
-        //   width: double.maxFinite,
-        // ),
+        CameraDetectionPreview(),
         AddFaceCamOverLay(
-          cameraController: controller,
+          cameraController: _cameraService.cameraController!,
           student: widget.student,
         )
       ])),
@@ -99,19 +94,38 @@ class _AddFaceCamOverLayState extends State<AddFaceCamOverLay> {
   @override
   Widget build(BuildContext context) {
     final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
-    return Container(
-      color: Colors.transparent,
-      child: Column(
-        children: [
-          const Spacer(),
-          FloatingActionButton(onPressed: () async {
-            XFile? studentCapture = await widget.cameraController.takePicture();
-            widget.cameraController.pausePreview();
-            // await attendanceCubit.addFaceDataToStudent(
-            //     captureImage: studentCapture, student: widget.student);
-          })
-        ],
-      ),
+    return BlocBuilder<AttendanceCubit, AttendanceState>(
+      builder: (context, state) {
+        if (state is ComparingResults) {
+          return progressIndicator;
+        } else if (state is StudentNotRecognized) {
+          return Container(
+            child: const Center(child: Text('Student not recognized')),
+          );
+        }
+        return Container(
+          color: Colors.transparent,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Spacer(),
+              FloatingActionButton(
+                onPressed: () {
+                  attendanceCubit.addStudentFacialDataToDatabase(
+                      student: widget.student);
+                },
+                child: Icon(Icons.add),
+              ),
+              FloatingActionButton(onPressed: () async {
+                attendanceCubit.startPredicting();
+
+                // await attendanceCubit.addFaceDataToStudent(
+                //     captureImage: studentCapture, student: widget.student);
+              })
+            ],
+          ),
+        );
+      },
     );
   }
 }
