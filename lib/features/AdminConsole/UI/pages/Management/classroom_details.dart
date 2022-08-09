@@ -538,7 +538,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
             ),
           ),
           const Spacer(),
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomTextButton(
@@ -601,6 +601,9 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 text: 'Delete Class',
                 bgColor: whiteColor,
                 textColor: blackColor,
+              ),
+              const SizedBox(
+                height: 10,
               ),
             ],
           ),
