@@ -87,7 +87,7 @@ class AssignedTeacherWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
-   
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
@@ -567,7 +567,23 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 height: 10,
               ),
               CustomTextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final result = await showModalSideSheet<bool>(
+                      context: context,
+                      body: MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(
+                                value:
+                                    BlocProvider.of<ManagementCubit>(context))
+                          ],
+                          child: AssignTeacherToClassRoom(
+                            classRoom: widget.classRoom,
+                          )));
+                  if (result!) {
+                    await classCubit.getFullDetailsOfClassRoom(
+                        classRoomID: widget.classRoom.id);
+                  }
+                },
                 text: 'Assign Teacher',
                 bgColor: whiteColor,
                 textColor: primaryColor,
@@ -597,17 +613,17 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
   }
 }
 
-class SearchForTeacherToAssign extends StatefulWidget {
-  const SearchForTeacherToAssign({Key? key}) : super(key: key);
+// class SearchForTeacherToAssign extends StatefulWidget {
+//   const SearchForTeacherToAssign({Key? key}) : super(key: key);
 
-  @override
-  State<SearchForTeacherToAssign> createState() =>
-      SearchForTeacherToAssignState();
-}
+//   @override
+//   State<SearchForTeacherToAssign> createState() =>
+//       SearchForTeacherToAssignState();
+// }
 
-class SearchForTeacherToAssignState extends State<SearchForTeacherToAssign> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
+// class SearchForTeacherToAssignState extends State<SearchForTeacherToAssign> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container();
+//   }
+// }
