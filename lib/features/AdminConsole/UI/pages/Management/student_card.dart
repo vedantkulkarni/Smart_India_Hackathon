@@ -20,7 +20,7 @@ class StudentCard extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () async {
-        final res = await showDialog(
+          final res = await showDialog(
               context: context,
               builder: (_) {
                 return BlocProvider.value(
@@ -31,10 +31,9 @@ class StudentCard extends StatelessWidget {
                   )),
                 );
               });
-          if(res!)
-          {
+          if (res!) {
             await classCubit.getFullDetailsOfClassRoom(
-              classRoomID: classCubit.classRoomId);
+                classRoomID: classCubit.classRoomId);
           }
         },
         child: Container(
@@ -50,10 +49,7 @@ class StudentCard extends StatelessWidget {
                 backgroundImage: NetworkImage(
                   'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
                 ),
-                radius: 35,
-              ),
-              const SizedBox(
-                height: 5,
+                radius: 20,
               ),
               FittedBox(
                 child: Text(student.studentName.trim().split(' ')[0],
@@ -94,7 +90,7 @@ class _StudentCardDetailsState extends State<StudentCardDetails> {
                 await managementCubit.updateStudent(
                     updatedStudent: updatedStudent);
                 print("Student updated");
-                Navigator.pop(context,true);
+                Navigator.pop(context, true);
               },
               text: 'Remove from this class'),
           CustomTextButton(

@@ -25,6 +25,7 @@ class _CustomTextButtonState extends State<CustomTextButton>
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
+      height: 30,
       child: ElevatedButton(
         clipBehavior: Clip.hardEdge,
         style: ElevatedButton.styleFrom(
