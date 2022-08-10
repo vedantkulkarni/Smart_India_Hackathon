@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
@@ -21,6 +22,7 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     return Container(
       color: backgroundColor,
@@ -43,8 +45,34 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
             ),
           ),
           addList.isEmpty
-              ? Container(
-                  child: const Center(child: Text('Dotted add space area')),
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DottedBorder(
+                          dashPattern: [8, 4],
+                          strokeWidth: 2,
+                          radius: Radius.circular(20),
+                          color: greyColor,
+                          child: Container(
+                            height: 420,
+                            width: 250,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: const Center(
+                                child: Text(
+                              'Add Students',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.normal,
+                              ),
+                            )),
+                            //color: Colors.red,
+                          )),
+                    )
+                  ],
                 )
               : Row(
                   children: List.generate(
@@ -54,31 +82,36 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                                 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'),
                           )),
                 ),
-          Container(
-              child: Center(
-            child: CustomTextButton(
-              onPressed: () async {
-                final searchedStudent =
-                    await managementCubit.getStudent(studentID: textEditingController.text);
-                setState(() {
-                  addList.add(searchedStudent);
-                });
-              },
-              text: 'Search',
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 5),
+            child: Center(
+              child: CustomTextButton(
+                onPressed: () async {
+                  final searchedStudent = await managementCubit.getStudent(
+                      studentID: textEditingController.text);
+                  setState(() {
+                    addList.add(searchedStudent);
+                  });
+                },
+                text: 'Search',
+              ),
             ),
-          )),
-          Container(
-              child: Center(
-            child: CustomTextButton(
-              onPressed: () async {
-                await managementCubit.bulkUpdateStudents(
-                    bulkList: addList, classRoomID: widget.classRoom.id);
-               
-                Navigator.pop(context,true);
-              },
-              text: 'Add',
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 50),
+            child: Center(
+              child: CustomTextButton(
+                onPressed: () async {
+                  await managementCubit.bulkUpdateStudents(
+                      bulkList: addList, classRoomID: widget.classRoom.id);
+                  Navigator.pop(context, true);
+                },
+                text: 'Add',
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );
