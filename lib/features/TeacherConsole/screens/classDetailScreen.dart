@@ -50,7 +50,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             children: [
               Container(
                 height: h * 0.15,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
                 decoration: const BoxDecoration(
                   color: backgroundColor,
                   borderRadius: BorderRadius.only(
@@ -58,28 +59,26 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       bottomLeft: Radius.circular(10)),
                 ),
                 child: Row(
-                  children: const [
-                    // SizedBox(
-                    //   height: h * 0.05,
-                    // ),
-
-                    Text(
-                      'Class',
-                      style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 35,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    Text(
+                  children: [
+                    const Text(
                       'TE-11',
                       style: TextStyle(
                           color: blackColor,
-                          fontSize: 24,
+                          fontSize: 34,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.bold),
                     ),
+                    const Spacer(),
+                    Column(
+                      children: const [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              'https://avatars.githubusercontent.com/u/24658039?v=4'),
+                          radius: 15,
+                        ),
+                        Text('Vedant Kulkarni')
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -91,7 +90,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                 child: Text(
                   'Students',
                   style: TextStyle(
-                      color: blackColor,
+                      color: greyColor,
                       fontSize: 24,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold),
