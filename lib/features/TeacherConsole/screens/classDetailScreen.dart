@@ -82,8 +82,81 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                   ],
                 ),
               ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                                color: blendColor,
+                                blurRadius: 15,
+                                spreadRadius: 10)
+                          ],
+                          gradient: const LinearGradient(
+                              colors: [primaryColor, secondaryColor],
+                              begin: Alignment.bottomLeft,
+                              end: Alignment.topRight),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '79%',
+                              style: TextStyle(
+                                  color: whiteColor.withOpacity(0.7),
+                                  fontSize: 26,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            Text(
+                              'Attendance',
+                              style: TextStyle(
+                                  color: whiteColor.withOpacity(0.7),
+                                  fontSize: 14,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.normal),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: backgroundColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            '34',
+                            style: TextStyle(
+                                color: blackColor,
+                                fontSize: 26,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.normal),
+                          ),
+                          Text(
+                            'present out of 45',
+                            style: TextStyle(
+                                color: greyColor,
+                                fontSize: 14,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.normal),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -96,68 +169,76 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  height: h * 0.5,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                          color: blendColor, blurRadius: 15, spreadRadius: 10)
-                    ],
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(10),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    // height: h * 0.5,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                            color: blendColor, blurRadius: 15, spreadRadius: 10)
+                      ],
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: StaggeredGrid.count(
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 6,
+                        children: List.generate(
+                            BlocProvider.of<TeacherClassCubit>(context)
+                                .classRoom
+                                .students!
+                                .length, (index) {
+                          return StaggeredGridTile.count(
+                              crossAxisCellCount: 1,
+                              mainAxisCellCount: 1,
+                              child: TeacherConsoleStudentCard(
+                                  onTap: () {
+                                    final student =
+                                        BlocProvider.of<TeacherClassCubit>(
+                                                context)
+                                            .classRoom
+                                            .students![index];
+                                    final mlService = MLService(
+                                        students:
+                                            BlocProvider.of<TeacherClassCubit>(
+                                                    context)
+                                                .classRoom
+                                                .students!);
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (_) {
+                                      return BlocProvider(
+                                        create: (context) => AttendanceCubit(
+                                            teacher: teacherCubit.teacher,
+                                            mode: classCubit
+                                                .classRoom.attendanceMode,
+                                            apiClient: getIt<AWSApiClient>(),
+                                            faceDetectorService:
+                                                getIt<FaceDetectorService>(),
+                                            mlService: mlService,
+                                            cameraService:
+                                                getIt<CameraService>()),
+                                        child: StudentDetailScreen(
+                                            name: 'Harsh',
+                                            email: 'atk@gmail.com',
+                                            address: 'Pune',
+                                            attendance: '89%',
+                                            student: student,
+                                            cameras: BlocProvider.of<
+                                                    TeacherClassCubit>(context)
+                                                .camerasList),
+                                      );
+                                    }));
+                                  },
+                                  student:
+                                      classCubit.classRoom.students![index]));
+                        })),
                   ),
-                  child: StaggeredGrid.count(
-                      crossAxisCount: 4,
-                      mainAxisSpacing: 1,
-                      crossAxisSpacing: 6,
-                      children: [
-                        StaggeredGridTile.count(
-                            crossAxisCellCount: 1,
-                            mainAxisCellCount: 1,
-                            child: TeacherConsoleStudentCard(
-                                onTap: () {
-                                  final student =
-                                      BlocProvider.of<TeacherClassCubit>(
-                                              context)
-                                          .classRoom
-                                          .students![0];
-                                  final mlService = MLService(
-                                      students:
-                                          BlocProvider.of<TeacherClassCubit>(
-                                                  context)
-                                              .classRoom
-                                              .students!);
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (_) {
-                                    return BlocProvider(
-                                      create: (context) => AttendanceCubit(
-                                          mode: classCubit
-                                              .classRoom.attendanceMode,
-                                          apiClient: getIt<AWSApiClient>(),
-                                          faceDetectorService:
-                                              getIt<FaceDetectorService>(),
-                                          mlService: mlService,
-                                          cameraService:
-                                              getIt<CameraService>()),
-                                      child: StudentDetailScreen(
-                                          name: 'Harsh',
-                                          email: 'atk@gmail.com',
-                                          address: 'Pune',
-                                          attendance: '89%',
-                                          student: student,
-                                          cameras: BlocProvider.of<
-                                                  TeacherClassCubit>(context)
-                                              .camerasList),
-                                    );
-                                  }));
-                                },
-                                student: classCubit.classRoom.students![0])),
-                      ]),
                 ),
               ),
               const SizedBox(
@@ -191,6 +272,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                         getIt<FaceDetectorService>(),
                                     cameraService: getIt<CameraService>(),
                                     mode: classCubit.classRoom.attendanceMode,
+                                    teacher: teacherCubit.teacher,
                                     studList: classCubit.classRoom.students,
                                     mlService: mlService))
                           ],

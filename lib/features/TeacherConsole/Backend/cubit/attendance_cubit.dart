@@ -1,6 +1,7 @@
 // import 'dar:ffi';
 import 'dart:io';
 
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
@@ -20,6 +21,7 @@ part 'attendance_state.dart';
 class AttendanceCubit extends Cubit<AttendanceState> {
   final AWSApiClient apiClient;
   final VerificationStatus mode;
+  final User teacher;
   final FaceDetectorService faceDetectorService;
   final MLService mlService;
   final CameraService cameraService;
@@ -44,6 +46,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       required this.mlService,
       required this.cameraService,
       required this.mode,
+      required this.teacher,
       this.studList})
       : super(AttendanceInitial()) {
     if (mode == VerificationStatus.ManualAttendance) {
@@ -127,5 +130,40 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     for (var everyStudent in studentList) {
       attendanceMap.putIfAbsent(everyStudent.studentID, () => true);
     }
+  }
+
+  Future<void> uploadManualAttendance() async {
+    emit(UploadingAttendance());
+    for (var everyStudent in attendanceMap.entries) {
+      var status = attendanceMap[everyStudent] == true
+          ? AttendanceStatus.Present
+          : AttendanceStatus.Absent;
+      var verificationStatus = mode;
+      final attendance = _createAttendanceObj(
+          studentID: everyStudent.key,
+          status: status,
+          verificationStatus: verificationStatus);
+      final uploadedAttendance =
+          await apiClient.createAttendance(attendance: attendance);
+      print(uploadedAttendance);
+    }
+    emit(AttendanceUploaded());
+  }
+
+  Attendance _createAttendanceObj(
+      {required String studentID,
+      required AttendanceStatus status,
+      required VerificationStatus verificationStatus}) {
+    final attendance = Attendance(
+        studentID: studentID,
+        date: TemporalDate(DateTime.now()),
+        status: status,
+        time: TemporalTime(DateTime.now()),
+        verification: verificationStatus,
+        geoLocation: 'https://goo.gl/maps/KDFc2gjvhfSxKPK47',
+        teacherID: teacher.email,
+        teacherName: teacher.name);
+
+    return attendance;
   }
 }

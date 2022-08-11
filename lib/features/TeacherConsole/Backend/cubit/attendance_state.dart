@@ -22,6 +22,9 @@ class NoFacesDetected extends AttendanceState {}
 class StudentNotRecognized extends AttendanceState {}
 
 class FacesDetected extends AttendanceState {}
+class UploadingAttendance extends AttendanceState {}
+class AttendanceUploaded extends AttendanceState {}
+
 
 class AttendanceMarked extends AttendanceState {
   Student student;

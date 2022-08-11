@@ -92,6 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: ClassTile(
                               width: w,
                               onTap: () {
+                                print(BlocProvider.of<TeacherCubit>(context)
+                                    .teacher);
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(builder: (_) {
                                   return MultiBlocProvider(

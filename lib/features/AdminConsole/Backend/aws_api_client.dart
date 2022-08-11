@@ -37,6 +37,10 @@ abstract class AWSApiClient {
   Future<Student> deleteStudent({required String studentID});
   Future<Student> updateStudent({required Student updatedStudent});
   Future<Student> getStudent({required String studentID});
+
+  //Attendance
+  Future<Attendance> createAttendance({required Attendance attendance});
+  // Future<Attendance> getAttendance({required })
 }
 
 class AWSApiClientImpl implements AWSApiClient {
@@ -623,7 +627,7 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-  
+
     return Student.fromJson(json.decode(responseString)['data']['getStudent']);
   }
 
@@ -650,7 +654,7 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-  
+
     return Student.fromJson(
         json.decode(responseString)['data']['updateStudent']);
   }
@@ -703,5 +707,26 @@ query MyQuery {
     }
 
     return returnList;
+  }
+
+  @override
+  Future<Attendance> createAttendance({required Attendance attendance}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''mutation MyMutation {
+  createAttendance(input: {date: "${attendance.date}" , geoLocation: "${attendance.geoLocation}", status: ${attendance.status.name}, studentID: "${attendance.studentID}", teacherID: "${attendance.teacherID}", teacherName: "${attendance.teacherName}", time: "${attendance.time}", verification: ${attendance.verification.name}}) {
+    date
+    studentID
+    time
+    status
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return Attendance.fromJson(
+        json.decode(responseString)['data']['createAttendance']);
   }
 }

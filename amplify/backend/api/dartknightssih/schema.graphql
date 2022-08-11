@@ -55,7 +55,7 @@ type ClassRoom @model
   classRoomName: String!
   assignedTeacherName: String
   students: [Student] @hasMany
-  currentAttendance: Int
+  currentAttendanceDate: AWSDate
   importantNotice: [String]
   attendanceMode: VerificationStatus!
 
@@ -91,7 +91,7 @@ enum VerificationStatus{
 }
 
 type Attendance @model{
-  studentID: ID! @primaryKey(sortKeyFields:["date"])
+  studentID: ID! @primaryKey(sortKeyFields:["classID","date"])
   status: AttendanceStatus!
   geoLocation: String
   verification: VerificationStatus!
@@ -99,5 +99,6 @@ type Attendance @model{
   teacherName: String!
   date:  AWSDate!
   time:  AWSTime!
+  classID:ID!
 
 }

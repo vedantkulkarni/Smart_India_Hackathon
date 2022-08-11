@@ -32,7 +32,7 @@ class TeacherCubit extends Cubit<TeacherState> {
   Future<void> signInTeacher(String username, String password) async {}
 
   Future<void> getTeacherDetails({required String userID}) async {
-    final teacher = await awsApiClient.getAdminDetails(userID: userID);
+     teacher = await awsApiClient.getAdminDetails(userID: userID);
     print(teacher);
 
     try {
