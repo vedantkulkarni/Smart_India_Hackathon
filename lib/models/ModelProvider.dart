@@ -21,6 +21,7 @@
 
 import 'package:amplify_core/amplify_core.dart';
 import 'Attendance.dart';
+import 'ClassAttendance.dart';
 import 'ClassRoom.dart';
 import 'Group.dart';
 import 'School.dart';
@@ -29,6 +30,7 @@ import 'User.dart';
 
 export 'Attendance.dart';
 export 'AttendanceStatus.dart';
+export 'ClassAttendance.dart';
 export 'ClassRoom.dart';
 export 'Group.dart';
 export 'Role.dart';
@@ -39,9 +41,9 @@ export 'VerificationStatus.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "a88750f326d12f2002e9f19a09ab5881";
+  String version = "61a6825d8ee798050a2be763361a3e5d";
   @override
-  List<ModelSchema> modelSchemas = [Attendance.schema, ClassRoom.schema, Group.schema, School.schema, Student.schema, User.schema];
+  List<ModelSchema> modelSchemas = [Attendance.schema, ClassAttendance.schema, ClassRoom.schema, Group.schema, School.schema, Student.schema, User.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [];
@@ -52,6 +54,8 @@ class ModelProvider implements ModelProviderInterface {
     switch(modelName) {
       case "Attendance":
         return Attendance.classType;
+      case "ClassAttendance":
+        return ClassAttendance.classType;
       case "ClassRoom":
         return ClassRoom.classType;
       case "Group":

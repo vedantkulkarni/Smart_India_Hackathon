@@ -32,7 +32,7 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
             height: 40,
           ),
           Container(
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: CustomTextField(
               textEditingController: textEditingController,
               hintText: 'Search',
@@ -44,35 +44,32 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 30,
+          ),
           addList.isEmpty
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DottedBorder(
-                          dashPattern: [8, 4],
-                          strokeWidth: 2,
-                          radius: Radius.circular(20),
-                          color: greyColor,
-                          child: Container(
-                            height: 420,
-                            width: 250,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: const Center(
-                                child: Text(
-                              'Add Students',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.normal,
-                              ),
-                            )),
-                            //color: Colors.red,
-                          )),
-                    )
-                  ],
+              ? Expanded(
+                  child: DottedBorder(
+                      dashPattern: const [4, 4],
+                      strokeWidth: 1,
+                      radius: const Radius.circular(20),
+                      color: lightTextColor,
+                      child: Container(
+                        // height: 420,
+                        width: 300,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Center(
+                            child: Text(
+                          'Add Students',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.normal,
+                          ),
+                        )),
+                        //color: Colors.red,
+                      )),
                 )
               : Row(
                   children: List.generate(
@@ -82,9 +79,15 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                                 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'),
                           )),
                 ),
-          Spacer(),
+          const SizedBox(
+            height: 40,
+          ),
           Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 5),
+            padding: const EdgeInsets.only(
+              left: 15,
+              right: 15,
+              bottom: 5,
+            ),
             child: Center(
               child: CustomTextButton(
                 onPressed: () async {

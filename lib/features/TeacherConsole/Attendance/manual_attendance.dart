@@ -137,11 +137,20 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                           ),
                         ),
                   const Spacer(),
-                  CustomTextButton(
-                      onPressed: () async {
-                        await attendanceCubit.uploadManualAttendance();
-                      },
-                      text: 'Submit')
+                  Center(
+                    child: SizedBox(
+                      height: 40,
+                      width: 170,
+                      child: CustomTextButton(
+                          onPressed: () async {
+                            await attendanceCubit.uploadManualAttendance();
+                          },
+                          text: 'Submit'),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  )
                 ],
               ));
         },

@@ -32,9 +32,8 @@ class ClassRoom extends Model {
   final String id;
   final String? _schoolID;
   final String? _classRoomName;
-  final String? _assignedTeacherName;
   final List<Student>? _students;
-  final int? _currentAttendance;
+  final TemporalDate? _currentAttendanceDate;
   final List<String>? _importantNotice;
   final VerificationStatus? _attendanceMode;
   final TemporalDateTime? _createdAt;
@@ -77,16 +76,12 @@ class ClassRoom extends Model {
     }
   }
   
-  String? get assignedTeacherName {
-    return _assignedTeacherName;
-  }
-  
   List<Student>? get students {
     return _students;
   }
   
-  int? get currentAttendance {
-    return _currentAttendance;
+  TemporalDate? get currentAttendanceDate {
+    return _currentAttendanceDate;
   }
   
   List<String>? get importantNotice {
@@ -126,16 +121,15 @@ class ClassRoom extends Model {
     return _groupClassRoomsId;
   }
   
-  const ClassRoom._internal({required this.id, required schoolID, required classRoomName, assignedTeacherName, students, currentAttendance, importantNotice, required attendanceMode, createdAt, updatedAt, userAssignedClassId, schoolClassRoomsId, groupClassRoomsId}): _schoolID = schoolID, _classRoomName = classRoomName, _assignedTeacherName = assignedTeacherName, _students = students, _currentAttendance = currentAttendance, _importantNotice = importantNotice, _attendanceMode = attendanceMode, _createdAt = createdAt, _updatedAt = updatedAt, _userAssignedClassId = userAssignedClassId, _schoolClassRoomsId = schoolClassRoomsId, _groupClassRoomsId = groupClassRoomsId;
+  const ClassRoom._internal({required this.id, required schoolID, required classRoomName, students, currentAttendanceDate, importantNotice, required attendanceMode, createdAt, updatedAt, userAssignedClassId, schoolClassRoomsId, groupClassRoomsId}): _schoolID = schoolID, _classRoomName = classRoomName, _students = students, _currentAttendanceDate = currentAttendanceDate, _importantNotice = importantNotice, _attendanceMode = attendanceMode, _createdAt = createdAt, _updatedAt = updatedAt, _userAssignedClassId = userAssignedClassId, _schoolClassRoomsId = schoolClassRoomsId, _groupClassRoomsId = groupClassRoomsId;
   
-  factory ClassRoom({String? id, required String schoolID, required String classRoomName, String? assignedTeacherName, List<Student>? students, int? currentAttendance, List<String>? importantNotice, required VerificationStatus attendanceMode, String? userAssignedClassId, String? schoolClassRoomsId, String? groupClassRoomsId}) {
+  factory ClassRoom({String? id, required String schoolID, required String classRoomName, List<Student>? students, TemporalDate? currentAttendanceDate, List<String>? importantNotice, required VerificationStatus attendanceMode, String? userAssignedClassId, String? schoolClassRoomsId, String? groupClassRoomsId}) {
     return ClassRoom._internal(
       id: id == null ? UUID.getUUID() : id,
       schoolID: schoolID,
       classRoomName: classRoomName,
-      assignedTeacherName: assignedTeacherName,
       students: students != null ? List<Student>.unmodifiable(students) : students,
-      currentAttendance: currentAttendance,
+      currentAttendanceDate: currentAttendanceDate,
       importantNotice: importantNotice != null ? List<String>.unmodifiable(importantNotice) : importantNotice,
       attendanceMode: attendanceMode,
       userAssignedClassId: userAssignedClassId,
@@ -154,9 +148,8 @@ class ClassRoom extends Model {
       id == other.id &&
       _schoolID == other._schoolID &&
       _classRoomName == other._classRoomName &&
-      _assignedTeacherName == other._assignedTeacherName &&
       DeepCollectionEquality().equals(_students, other._students) &&
-      _currentAttendance == other._currentAttendance &&
+      _currentAttendanceDate == other._currentAttendanceDate &&
       DeepCollectionEquality().equals(_importantNotice, other._importantNotice) &&
       _attendanceMode == other._attendanceMode &&
       _userAssignedClassId == other._userAssignedClassId &&
@@ -175,8 +168,7 @@ class ClassRoom extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("schoolID=" + "$_schoolID" + ", ");
     buffer.write("classRoomName=" + "$_classRoomName" + ", ");
-    buffer.write("assignedTeacherName=" + "$_assignedTeacherName" + ", ");
-    buffer.write("currentAttendance=" + (_currentAttendance != null ? _currentAttendance!.toString() : "null") + ", ");
+    buffer.write("currentAttendanceDate=" + (_currentAttendanceDate != null ? _currentAttendanceDate!.format() : "null") + ", ");
     buffer.write("importantNotice=" + (_importantNotice != null ? _importantNotice!.toString() : "null") + ", ");
     buffer.write("attendanceMode=" + (_attendanceMode != null ? enumToString(_attendanceMode)! : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -189,14 +181,13 @@ class ClassRoom extends Model {
     return buffer.toString();
   }
   
-  ClassRoom copyWith({String? id, String? schoolID, String? classRoomName, String? assignedTeacherName, List<Student>? students, int? currentAttendance, List<String>? importantNotice, VerificationStatus? attendanceMode, String? userAssignedClassId, String? schoolClassRoomsId, String? groupClassRoomsId}) {
+  ClassRoom copyWith({String? id, String? schoolID, String? classRoomName, List<Student>? students, TemporalDate? currentAttendanceDate, List<String>? importantNotice, VerificationStatus? attendanceMode, String? userAssignedClassId, String? schoolClassRoomsId, String? groupClassRoomsId}) {
     return ClassRoom._internal(
       id: id ?? this.id,
       schoolID: schoolID ?? this.schoolID,
       classRoomName: classRoomName ?? this.classRoomName,
-      assignedTeacherName: assignedTeacherName ?? this.assignedTeacherName,
       students: students ?? this.students,
-      currentAttendance: currentAttendance ?? this.currentAttendance,
+      currentAttendanceDate: currentAttendanceDate ?? this.currentAttendanceDate,
       importantNotice: importantNotice ?? this.importantNotice,
       attendanceMode: attendanceMode ?? this.attendanceMode,
       userAssignedClassId: userAssignedClassId ?? this.userAssignedClassId,
@@ -208,14 +199,13 @@ class ClassRoom extends Model {
     : id = json['id'],
       _schoolID = json['schoolID'],
       _classRoomName = json['classRoomName'],
-      _assignedTeacherName = json['assignedTeacherName'],
       _students = json['students'] is List
         ? (json['students'] as List)
           .where((e) => e?['serializedData'] != null)
           .map((e) => Student.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
-      _currentAttendance = (json['currentAttendance'] as num?)?.toInt(),
+      _currentAttendanceDate = json['currentAttendanceDate'] != null ? TemporalDate.fromString(json['currentAttendanceDate']) : null,
       _importantNotice = json['importantNotice']?.cast<String>(),
       _attendanceMode = enumFromString<VerificationStatus>(json['attendanceMode'], VerificationStatus.values),
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
@@ -225,17 +215,16 @@ class ClassRoom extends Model {
       _groupClassRoomsId = json['groupClassRoomsId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'schoolID': _schoolID, 'classRoomName': _classRoomName, 'assignedTeacherName': _assignedTeacherName, 'students': _students?.map((Student? e) => e?.toJson()).toList(), 'currentAttendance': _currentAttendance, 'importantNotice': _importantNotice, 'attendanceMode': enumToString(_attendanceMode), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'userAssignedClassId': _userAssignedClassId, 'schoolClassRoomsId': _schoolClassRoomsId, 'groupClassRoomsId': _groupClassRoomsId
+    'id': id, 'schoolID': _schoolID, 'classRoomName': _classRoomName, 'students': _students?.map((Student? e) => e?.toJson()).toList(), 'currentAttendanceDate': _currentAttendanceDate?.format(), 'importantNotice': _importantNotice, 'attendanceMode': enumToString(_attendanceMode), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'userAssignedClassId': _userAssignedClassId, 'schoolClassRoomsId': _schoolClassRoomsId, 'groupClassRoomsId': _groupClassRoomsId
   };
 
   static final QueryField ID = QueryField(fieldName: "classRoom.id");
   static final QueryField SCHOOLID = QueryField(fieldName: "schoolID");
   static final QueryField CLASSROOMNAME = QueryField(fieldName: "classRoomName");
-  static final QueryField ASSIGNEDTEACHERNAME = QueryField(fieldName: "assignedTeacherName");
   static final QueryField STUDENTS = QueryField(
     fieldName: "students",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Student).toString()));
-  static final QueryField CURRENTATTENDANCE = QueryField(fieldName: "currentAttendance");
+  static final QueryField CURRENTATTENDANCEDATE = QueryField(fieldName: "currentAttendanceDate");
   static final QueryField IMPORTANTNOTICE = QueryField(fieldName: "importantNotice");
   static final QueryField ATTENDANCEMODE = QueryField(fieldName: "attendanceMode");
   static final QueryField USERASSIGNEDCLASSID = QueryField(fieldName: "userAssignedClassId");
@@ -259,12 +248,6 @@ class ClassRoom extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: ClassRoom.ASSIGNEDTEACHERNAME,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: ClassRoom.STUDENTS,
       isRequired: false,
@@ -273,9 +256,9 @@ class ClassRoom extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: ClassRoom.CURRENTATTENDANCE,
+      key: ClassRoom.CURRENTATTENDANCEDATE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: ModelFieldType(ModelFieldTypeEnum.date)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

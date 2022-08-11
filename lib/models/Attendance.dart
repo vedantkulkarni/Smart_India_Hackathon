@@ -37,6 +37,7 @@ class Attendance extends Model {
   final String? _teacherName;
   final TemporalDate? _date;
   final TemporalTime? _time;
+  final String? _classID;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -143,6 +144,19 @@ class Attendance extends Model {
     }
   }
   
+  String get classID {
+    try {
+      return _classID!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -151,9 +165,9 @@ class Attendance extends Model {
     return _updatedAt;
   }
   
-  const Attendance._internal({required this.id, required studentID, required status, geoLocation, required verification, required teacherID, required teacherName, required date, required time, createdAt, updatedAt}): _studentID = studentID, _status = status, _geoLocation = geoLocation, _verification = verification, _teacherID = teacherID, _teacherName = teacherName, _date = date, _time = time, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Attendance._internal({required this.id, required studentID, required status, geoLocation, required verification, required teacherID, required teacherName, required date, required time, required classID, createdAt, updatedAt}): _studentID = studentID, _status = status, _geoLocation = geoLocation, _verification = verification, _teacherID = teacherID, _teacherName = teacherName, _date = date, _time = time, _classID = classID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Attendance({String? id, required String studentID, required AttendanceStatus status, String? geoLocation, required VerificationStatus verification, required String teacherID, required String teacherName, required TemporalDate date, required TemporalTime time}) {
+  factory Attendance({String? id, required String studentID, required AttendanceStatus status, String? geoLocation, required VerificationStatus verification, required String teacherID, required String teacherName, required TemporalDate date, required TemporalTime time, required String classID}) {
     return Attendance._internal(
       id: id == null ? UUID.getUUID() : id,
       studentID: studentID,
@@ -163,7 +177,8 @@ class Attendance extends Model {
       teacherID: teacherID,
       teacherName: teacherName,
       date: date,
-      time: time);
+      time: time,
+      classID: classID);
   }
   
   bool equals(Object other) {
@@ -182,7 +197,8 @@ class Attendance extends Model {
       _teacherID == other._teacherID &&
       _teacherName == other._teacherName &&
       _date == other._date &&
-      _time == other._time;
+      _time == other._time &&
+      _classID == other._classID;
   }
   
   @override
@@ -202,6 +218,7 @@ class Attendance extends Model {
     buffer.write("teacherName=" + "$_teacherName" + ", ");
     buffer.write("date=" + (_date != null ? _date!.format() : "null") + ", ");
     buffer.write("time=" + (_time != null ? _time!.format() : "null") + ", ");
+    buffer.write("classID=" + "$_classID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -209,7 +226,7 @@ class Attendance extends Model {
     return buffer.toString();
   }
   
-  Attendance copyWith({String? id, String? studentID, AttendanceStatus? status, String? geoLocation, VerificationStatus? verification, String? teacherID, String? teacherName, TemporalDate? date, TemporalTime? time}) {
+  Attendance copyWith({String? id, String? studentID, AttendanceStatus? status, String? geoLocation, VerificationStatus? verification, String? teacherID, String? teacherName, TemporalDate? date, TemporalTime? time, String? classID}) {
     return Attendance._internal(
       id: id ?? this.id,
       studentID: studentID ?? this.studentID,
@@ -219,7 +236,8 @@ class Attendance extends Model {
       teacherID: teacherID ?? this.teacherID,
       teacherName: teacherName ?? this.teacherName,
       date: date ?? this.date,
-      time: time ?? this.time);
+      time: time ?? this.time,
+      classID: classID ?? this.classID);
   }
   
   Attendance.fromJson(Map<String, dynamic> json)  
@@ -232,11 +250,12 @@ class Attendance extends Model {
       _teacherName = json['teacherName'],
       _date = json['date'] != null ? TemporalDate.fromString(json['date']) : null,
       _time = json['time'] != null ? TemporalTime.fromString(json['time']) : null,
+      _classID = json['classID'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'studentID': _studentID, 'status': enumToString(_status), 'geoLocation': _geoLocation, 'verification': enumToString(_verification), 'teacherID': _teacherID, 'teacherName': _teacherName, 'date': _date?.format(), 'time': _time?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'studentID': _studentID, 'status': enumToString(_status), 'geoLocation': _geoLocation, 'verification': enumToString(_verification), 'teacherID': _teacherID, 'teacherName': _teacherName, 'date': _date?.format(), 'time': _time?.format(), 'classID': _classID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "attendance.id");
@@ -248,6 +267,7 @@ class Attendance extends Model {
   static final QueryField TEACHERNAME = QueryField(fieldName: "teacherName");
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField TIME = QueryField(fieldName: "time");
+  static final QueryField CLASSID = QueryField(fieldName: "classID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Attendance";
     modelSchemaDefinition.pluralName = "Attendances";
@@ -300,6 +320,12 @@ class Attendance extends Model {
       key: Attendance.TIME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.time)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Attendance.CLASSID,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

@@ -28,7 +28,7 @@ abstract class AWSApiClient {
   //Class
   Future<void> createClassRoom({required ClassRoom classRoom});
   Future<ClassRoom> getClassRoom({required String classRoomID});
-  Future<List<ClassRoom>> getListOfClassrooms();
+  Future<List<ClassRoom>> getListOfClassrooms({required int limit});
   Future<ClassRoom> deleteClassRoom({required String classRoomID});
   Future<ClassRoom> updateClassRoom({required ClassRoom classRoom});
   //Student
@@ -45,7 +45,7 @@ abstract class AWSApiClient {
 
 class AWSApiClientImpl implements AWSApiClient {
   final _endpoint = Uri.parse(
-      'https://4pz4owy3grhoxm3dfszqo2fhie.appsync-api.ap-south-1.amazonaws.com/graphql');
+      'https://viwnyvetl5huzp44ma2ejqidju.appsync-api.ap-south-1.amazonaws.com/graphql');
 
   //Helper
 
@@ -57,7 +57,7 @@ class AWSApiClientImpl implements AWSApiClient {
         headers: {
           'Authorization': 'API_KEY',
           'Content-Type': 'application/json',
-          'x-api-key': 'da2-vkgvsw6ydjblzbglkioacaaqy4'
+          'x-api-key': 'da2-4kmbndiaprgwxnfjtpbqsnjlqa'
         },
         body: json.encode(body),
       );
@@ -151,23 +151,11 @@ query MyQuery {
 '''
     };
 
-    http.Response response;
-
-    final _endpoint = Uri.parse(
-        'https://4pz4owy3grhoxm3dfszqo2fhie.appsync-api.ap-south-1.amazonaws.com/graphql');
-
-    try {
-      response = await http.post(
-        _endpoint,
-        headers: {
-          'Authorization': 'API_KEY',
-          'Content-Type': 'application/json',
-          'x-api-key': 'da2-vkgvsw6ydjblzbglkioacaaqy4'
-        },
-        body: json.encode(body),
-      );
-
-      final myJsonMap = json.decode(response.body);
+    
+    try{
+    
+      final responseString = await uploadJsonBodyRequest(body);
+      final myJsonMap = json.decode(responseString);
 
       final user = User.fromJson(myJsonMap['data']['getUser']);
       return user;
@@ -434,39 +422,37 @@ query MyQuery {
     final body = {
       'operationName': 'MyQuery',
       'query': '''
-   query MyQuery {
-  getClassRoom(id: "29d318a3-f09b-4675-bfb0-a73eb7c5dbbd") {
-    assignedTeacherName
+query MyQuery {
+  getClassRoom(id: "904814e7-2d27-4a9f-9de3-43145ab51d55") {
     attendanceMode
     classRoomName
-    currentAttendance
+    createdAt
+    currentAttendanceDate
     groupClassRoomsId
     id
-    students {
-      items {
-        address
-        email
-        idCardPhoto
-        phoneNumber
-        profilePhoto
-        studentID
-        studentName
-        modelData
-      }
-    }
     importantNotice
     schoolClassRoomsId
     schoolID
     updatedAt
     userAssignedClassId
-    
+    students {
+      items {
+        address
+        modelData
+        profilePhoto
+        roll
+        studentID
+        studentName
+      }
+    }
   }
 }
+
 '''
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-
+    print(responseString);
     var classroomResult =
         ClassRoom.fromJson(json.decode(responseString)['data']['getClassRoom']);
 
@@ -488,11 +474,11 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
       mutation MyMutation {
-  createClassRoom(input: {assignedTeacherName: "${classRoom.assignedTeacherName}", attendanceMode: $attendanceMode, classRoomName: "${classRoom.classRoomName}", currentAttendance: 10, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
-    assignedTeacherName
+  createClassRoom(input: {attendanceMode: $attendanceMode, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: ${classRoom.userAssignedClassId}}) {
+   
     attendanceMode
     classRoomName
-    currentAttendance
+    currentAttendanceDate
     groupClassRoomsId
     id
     importantNotice
@@ -505,23 +491,28 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
     return ClassRoom.fromJson(
         json.decode(responseString)['data']['createClassRoom']);
   }
 
   @override
-  Future<List<ClassRoom>> getListOfClassrooms() async {
+  Future<List<ClassRoom>> getListOfClassrooms({required int limit}) async {
     final body = {
       'operationName': 'MyQuery',
       'query': '''
-      query MyQuery {
-  listClassRooms {
+     query MyQuery {
+  listClassRooms(limit: ${limit.toString()}) {
     items {
-      assignedTeacherName
+      attendanceMode
       classRoomName
-      currentAttendance
-      id
+      currentAttendanceDate
+      groupClassRoomsId
+      importantNotice
+      schoolClassRoomsId
+      schoolID
       userAssignedClassId
+      id
     }
   }
 }
@@ -568,9 +559,9 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
       mutation MyMutation {
-  updateClassRoom(input: {id: "${classRoom.id}", classRoomName: "${classRoom.classRoomName}", assignedTeacherName: "${classRoom.assignedTeacherName}", attendanceMode: $attendanceMode, currentAttendance: 10, groupClassRoomsId: "${classRoom.groupClassRoomsId}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
+  updateClassRoom(input: {id: "${classRoom.id}", classRoomName: "${classRoom.classRoomName}" attendanceMode: $attendanceMode, currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
     classRoomName
-    assignedTeacherName
+  
     userAssignedClassId
   }
 }
@@ -591,7 +582,7 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createStudent(input: { classRoomStudentsId: "${student.classRoomStudentsId}", idCardPhoto: ${student.idCardPhoto}, profilePhoto: ${student.profilePhoto}, studentID: "${student.studentID}", studentName: "${student.studentName}",roll: "${student.roll}",modelData: "${student.modelData}"}) {
+  createStudent(input: { classRoomStudentsId: "${student.classRoomStudentsId}",email: ${student.email}, address: "${student.address}" ,idCardPhoto: ${student.idCardPhoto}, profilePhoto: ${student.profilePhoto}, studentID: "${student.studentID}", studentName: "${student.studentName}",roll: ${student.roll},modelData: ${student.modelData}}) {
     studentName
     studentID
   }
@@ -600,7 +591,9 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-    return Student.fromJson(json.decode(responseString));
+
+    return Student.fromJson(
+        json.decode(responseString)['data']['createStudent']);
   }
 
   @override
@@ -636,7 +629,7 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  updateStudent(input: {address: "${updatedStudent.address}", classRoomStudentsId: "${updatedStudent.classRoomStudentsId}", email: "${updatedStudent.email}", idCardPhoto: ${updatedStudent.idCardPhoto}, modelData: ${updatedStudent.modelData}, phoneNumber: "${updatedStudent.phoneNumber}", profilePhoto: ${updatedStudent.profilePhoto}, roll: "${updatedStudent.roll}", studentID: "${updatedStudent.studentID}",studentName: "${updatedStudent.studentName}"}) {
+  updateStudent(input: {address: "${updatedStudent.address}", classRoomStudentsId: "${updatedStudent.classRoomStudentsId}", email: ${updatedStudent.email}, idCardPhoto: ${updatedStudent.idCardPhoto}, modelData: ${updatedStudent.modelData}, phoneNumber: ${updatedStudent.phoneNumber}, profilePhoto: ${updatedStudent.profilePhoto}, roll: ${updatedStudent.roll}, studentID: "${updatedStudent.studentID}",studentName: "${updatedStudent.studentName}"}) {
     email
     classRoomStudentsId
     modelData
@@ -644,8 +637,6 @@ query MyQuery {
     profilePhoto
     roll
     studentID
-    studentLatestAttendanceDate
-    studentLatestAttendanceId
     studentName
     idCardPhoto
   }

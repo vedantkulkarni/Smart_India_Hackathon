@@ -1,19 +1,31 @@
 {
   "staging": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-dartknightssih-staging-92040-authRole",
-      "UnauthRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-authRole",
+      "AuthRoleName": "amplify-grandfinale-staging-101118-authRole",
+      "UnauthRoleArn": "arn:aws:iam::312855018916:role/amplify-grandfinale-staging-101118-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::312855018916:role/amplify-grandfinale-staging-101118-authRole",
       "Region": "ap-south-1",
-      "DeploymentBucketName": "amplify-dartknightssih-staging-92040-deployment",
-      "UnauthRoleName": "amplify-dartknightssih-staging-92040-unauthRole",
-      "StackName": "amplify-dartknightssih-staging-92040",
-      "StackId": "arn:aws:cloudformation:ap-south-1:312855018916:stack/amplify-dartknightssih-staging-92040/b8bd3e80-0a68-11ed-a24c-02c6031d42fc",
-      "AmplifyAppId": "d3mafaf5pxaj2t"
+      "DeploymentBucketName": "amplify-grandfinale-staging-101118-deployment",
+      "UnauthRoleName": "amplify-grandfinale-staging-101118-unauthRole",
+      "StackName": "amplify-grandfinale-staging-101118",
+      "StackId": "arn:aws:cloudformation:ap-south-1:312855018916:stack/amplify-grandfinale-staging-101118/f15dc260-195d-11ed-a628-028d9ccf0a8e",
+      "AmplifyAppId": "d1jznfu051y1yy"
     },
     "categories": {
       "auth": {
-        "DartKnightsSIH": {}
+        "grandfinale": {
+          "userPoolId": "ap-south-1_TAqXrMNgh",
+          "userPoolName": "DartKnightsSIH-staging",
+          "webClientId": "5r2nk0dcq5gv6813j23289n9m8",
+          "nativeClientId": "5r2nk0dcq5gv6813j23289n9m8",
+          "identityPoolId": "ap-south-1:e78b1945-7d3c-4ca7-824a-fc7f9be319cf",
+          "identityPoolName": "testAuthIdentityPool__staging",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-authRole",
+          "authRoleName": "amplify-dartknightssih-staging-92040-authRole",
+          "unauthRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-unauthRole",
+          "unauthRoleName": "amplify-dartknightssih-staging-92040-unauthRole"
+        }
       }
     }
   }

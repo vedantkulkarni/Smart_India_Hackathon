@@ -139,31 +139,32 @@ class AttendanceCubit extends Cubit<AttendanceState> {
           ? AttendanceStatus.Present
           : AttendanceStatus.Absent;
       var verificationStatus = mode;
-      final attendance = _createAttendanceObj(
-          studentID: everyStudent.key,
-          status: status,
-          verificationStatus: verificationStatus);
-      final uploadedAttendance =
-          await apiClient.createAttendance(attendance: attendance);
-      print(uploadedAttendance);
+      // final attendance = _createAttendanceObj(
+      //     studentID: everyStudent.key,
+      //     status: status,
+      // //     verificationStatus: verificationStatus);
+      // final uploadedAttendance =
+      //     await apiClient.createAttendance(attendance: attendance);
+      // print(uploadedAttendance);
     }
     emit(AttendanceUploaded());
   }
 
-  Attendance _createAttendanceObj(
-      {required String studentID,
-      required AttendanceStatus status,
-      required VerificationStatus verificationStatus}) {
-    final attendance = Attendance(
-        studentID: studentID,
-        date: TemporalDate(DateTime.now()),
-        status: status,
-        time: TemporalTime(DateTime.now()),
-        verification: verificationStatus,
-        geoLocation: 'https://goo.gl/maps/KDFc2gjvhfSxKPK47',
-        teacherID: teacher.email,
-        teacherName: teacher.name);
+//   Attendance _createAttendanceObj(
+//       {required String studentID,
+//       required AttendanceStatus status,
+//       required VerificationStatus verificationStatus}) {
+//     // final attendance = Attendance(
+//     //   classID: ,
+//     //     studentID: studentID,
+//     //     date: TemporalDate(DateTime.now()),
+//     //     status: status,
+//     //     time: TemporalTime(DateTime.now()),
+//     //     verification: verificationStatus,
+//     //     geoLocation: 'https://goo.gl/maps/KDFc2gjvhfSxKPK47',
+//     //     teacherID: teacher.email,
+//     //     teacherName: teacher.name);
 
-    return attendance;
-  }
+//     return attendance;
+//   }
 }

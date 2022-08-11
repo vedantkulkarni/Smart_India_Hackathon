@@ -122,7 +122,7 @@ class _ManageClassroomState extends State<ManageClassroom> {
                                 }));
 
                                 await BlocProvider.of<ManagementCubit>(context)
-                                    .getAllClassRooms();
+                                    .getAllClassRooms(limit: 10);
                               },
                               text: 'Add Classroom'),
                           Container(

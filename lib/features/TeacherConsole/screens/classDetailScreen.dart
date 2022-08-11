@@ -244,43 +244,54 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               const SizedBox(
                 height: 25,
               ),
-              CustomTextButton(
-                  onPressed: () async {
-                    if (classCubit.classRoom.students == null ||
-                        classCubit.classRoom.students!.isEmpty) {
-                      print("student list is empty");
-                      return;
-                    }
-                    print(classCubit.classRoom.students);
-                    final mlService =
-                        MLService(students: classCubit.classRoom.students!);
-                    Widget attendanceMode = await Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) {
-                      return MultiBlocProvider(
-                          providers: [
-                            BlocProvider.value(
-                              value: teacherCubit,
-                            ),
-                            BlocProvider.value(
-                              value:
-                                  BlocProvider.of<TeacherClassCubit>(context),
-                            ),
-                            BlocProvider(
-                                create: (context) => AttendanceCubit(
-                                    apiClient: getIt<AWSApiClient>(),
-                                    faceDetectorService:
-                                        getIt<FaceDetectorService>(),
-                                    cameraService: getIt<CameraService>(),
-                                    mode: classCubit.classRoom.attendanceMode,
-                                    teacher: teacherCubit.teacher,
-                                    studList: classCubit.classRoom.students,
-                                    mlService: mlService))
-                          ],
-                          child: getAttendanceWidget(
-                              classCubit.classRoom.attendanceMode, mlService));
-                    }));
-                  },
-                  text: 'Mark Attendance')
+              Center(
+                child: SizedBox(
+                  width: 170,
+                  height: 40,
+                  child: CustomTextButton(
+                      onPressed: () async {
+                        if (classCubit.classRoom.students == null ||
+                            classCubit.classRoom.students!.isEmpty) {
+                          print("student list is empty");
+                          return;
+                        }
+                        print(classCubit.classRoom.students);
+                        final mlService =
+                            MLService(students: classCubit.classRoom.students!);
+                        Widget attendanceMode = await Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (_) {
+                          return MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                  value: teacherCubit,
+                                ),
+                                BlocProvider.value(
+                                  value: BlocProvider.of<TeacherClassCubit>(
+                                      context),
+                                ),
+                                BlocProvider(
+                                    create: (context) => AttendanceCubit(
+                                        apiClient: getIt<AWSApiClient>(),
+                                        faceDetectorService:
+                                            getIt<FaceDetectorService>(),
+                                        cameraService: getIt<CameraService>(),
+                                        mode:
+                                            classCubit.classRoom.attendanceMode,
+                                        teacher: teacherCubit.teacher,
+                                        studList: classCubit.classRoom.students,
+                                        mlService: mlService))
+                              ],
+                              child: getAttendanceWidget(
+                                  classCubit.classRoom.attendanceMode,
+                                  mlService));
+                        }));
+                      },
+                      text: 'Mark Attendance'),
+                ),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
             ],
           );
         },

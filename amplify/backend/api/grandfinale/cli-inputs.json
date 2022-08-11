@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "grandfinale",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "C:\\Users\\Vedant\\Desktop\\grandfinale\\amplify\\backend\\api\\grandfinale\\schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 7
+    }
+  }
+}

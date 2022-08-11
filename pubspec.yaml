@@ -67,6 +67,7 @@ dependencies:
   flutter_face_api: ^3.0.0
   bitmap: ^0.1.2
   dotted_border: ^2.0.0+2
+  fab_circular_menu: ^1.0.2
 
 dev_dependencies:
   flutter_test:

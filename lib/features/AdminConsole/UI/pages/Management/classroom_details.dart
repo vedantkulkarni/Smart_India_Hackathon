@@ -168,7 +168,8 @@ class AssignedTeacherWidget extends StatelessWidget {
         const VerticalDivider(
           color: primaryColor,
         ),
-        classRoom.userAssignedClassId == null
+        classRoom.userAssignedClassId == null ||
+                classRoom.userAssignedClassId == 'null'
             ? Row(
                 children: [
                   Container(
@@ -568,20 +569,22 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
               ),
               CustomTextButton(
                 onPressed: () async {
-                  final result = await showModalSideSheet<bool>(
+                  var classRoom = classCubit.classRoom;
+                  final result = await showDialog<bool>(
                       context: context,
-                      body: MultiBlocProvider(
-                          providers: [
-                            BlocProvider.value(
-                                value:
-                                    BlocProvider.of<ManagementCubit>(context))
-                          ],
-                          child: AssignTeacherToClassRoom(
-                            classRoom: widget.classRoom,
-                          )));
+                      builder: (_) {
+                        return CustomDialogBox(
+                            widget: BlocProvider.value(
+                          value: BlocProvider.of<ManagementCubit>(context),
+                          child: Container(
+                              child: AssignTeacherToClassRoom(
+                            classRoom: classRoom,
+                          )),
+                        ));
+                      });
                   if (result!) {
                     await classCubit.getFullDetailsOfClassRoom(
-                        classRoomID: widget.classRoom.id);
+                        classRoomID: classRoom.id);
                   }
                 },
                 text: 'Assign Teacher',
@@ -595,7 +598,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 onPressed: () async {
                   await managementCubit.deleteClassRoom(
                       classRoomID: widget.classRoom.id);
-                  await managementCubit.getAllClassRooms();
+                  await managementCubit.getAllClassRooms(limit: 10);
                   Navigator.pop(context);
                 },
                 text: 'Delete Class',

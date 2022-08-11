@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/fab.dart';
 import '../../../core/constants.dart';
 import '../../../injection_container.dart';
 import '../../AdminConsole/Backend/aws_api_client.dart';
@@ -24,6 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
+      floatingActionButton: Builder(builder: (context) {
+        return Fab();
+      }),
       body: BlocBuilder<TeacherCubit, TeacherState>(
         builder: (context, state) {
           if (state is TeacherInitial || state is FetchingTeacher) {

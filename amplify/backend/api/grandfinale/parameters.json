@@ -1,5 +1,5 @@
 {
-  "AppSyncApiName": "dartknightssih",
+  "AppSyncApiName": "grandfinale",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false
 }

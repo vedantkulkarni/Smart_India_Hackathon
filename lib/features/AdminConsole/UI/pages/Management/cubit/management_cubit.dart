@@ -24,7 +24,7 @@ class ManagementCubit extends Cubit<ManagementState> {
     } else if (managementMode == ManagementMode.User) {
       getAllUsers(role: Role.SuperAdmin);
     } else if (managementMode == ManagementMode.ClassRooms) {
-      getAllClassRooms();
+      getAllClassRooms(limit: 10);
     }
   }
 
@@ -113,9 +113,9 @@ class ManagementCubit extends Cubit<ManagementState> {
   }
 
   //ManagementMode = ClassRooms
-  Future<void> getAllClassRooms() async {
+  Future<void> getAllClassRooms({required int limit}) async {
     emit(FetchingClassRooms());
-    _classroomList = await awsApiClient.getListOfClassrooms();
+    _classroomList = await awsApiClient.getListOfClassrooms(limit: limit);
     emit(ClassRoomsFetched(classroomList: _classroomList));
   }
 
