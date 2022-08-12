@@ -6,10 +6,11 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teac
 
 import '../../../../../core/constants.dart';
 import '../../../../../models/Student.dart';
+import '../../../models/AttendanceStatus.dart';
 
 class AttendanceCard extends StatelessWidget {
   Student student;
-  bool isPresent;
+  AttendanceStatus isPresent;
   VoidCallback onTap;
   AttendanceCard(
       {Key? key,
@@ -56,10 +57,12 @@ class AttendanceCard extends StatelessWidget {
           alignment: Alignment.topRight,
           child: Chip(
               label: Text(
-                isPresent == true ? 'P' : 'A',
+                isPresent == AttendanceStatus.Present ? 'P' : 'A',
                 style: const TextStyle(color: whiteColor),
               ),
-              backgroundColor: isPresent == true ? primaryColor : redColor),
+              backgroundColor: isPresent == AttendanceStatus.Present
+                  ? primaryColor
+                  : redColor),
         )
       ]),
     );

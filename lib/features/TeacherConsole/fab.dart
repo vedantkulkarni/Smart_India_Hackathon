@@ -1,43 +1,6 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
-
-// class MyCustomWidget extends StatelessWidget {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final primaryColor = Theme.of(context).primaryColor;
-
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Scaffold(
-//         body: Container(
-//           color: Color(0xFF192A56),
-//           child: Center(
-//             child: RaisedButton(
-//               onPressed: () {
-//                 // The menu can be handled programatically using a key
-//                 if (fabKey.currentState!.isOpen) {
-//                   fabKey.currentState!.close();
-//                 } else {
-//                   fabKey.currentState!.open();
-//                 }
-//               },
-//               color: Colors.white,
-//               child: Text('Toggle menu programatically',
-//                   style: TextStyle(color: primaryColor)),
-//             ),
-//           ),
-//         ),
-//         floatingActionButton: Builder(
-//           builder: (context) => Fab()
-//         ),
-//       ),
-//     );
-//   }
-
-// }
-
 class Fab extends StatefulWidget {
   const Fab({Key? key}) : super(key: key);
 

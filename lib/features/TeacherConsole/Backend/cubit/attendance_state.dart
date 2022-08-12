@@ -32,7 +32,7 @@ class AttendanceMarked extends AttendanceState {
 }
 
 class AttendanceToggled extends AttendanceState {
-  Map<String, bool> attendance;
+  Map<String, AttendanceStatus> attendance;
   AttendanceToggled({required this.attendance});
 }
 

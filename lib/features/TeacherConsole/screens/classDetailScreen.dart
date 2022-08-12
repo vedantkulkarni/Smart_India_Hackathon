@@ -59,8 +59,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       bottomLeft: Radius.circular(10)),
                 ),
                 child: Row(
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       'TE-11',
                       style: TextStyle(
                           color: blackColor,
@@ -68,16 +68,19 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.bold),
                     ),
-                    const Spacer(),
-                    Column(
-                      children: const [
-                        CircleAvatar(
+                    Spacer(),
+                    CircleAvatar(
+                      backgroundColor: primaryColor,
+                      radius: 22,
+                      child: CircleAvatar(
+                        backgroundColor: whiteColor,
+                        radius: 20,
+                        child: CircleAvatar(
                           backgroundImage: NetworkImage(
                               'https://avatars.githubusercontent.com/u/24658039?v=4'),
-                          radius: 15,
+                          radius: 18,
                         ),
-                        Text('Vedant Kulkarni')
-                      ],
+                      ),
                     )
                   ],
                 ),

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "team_dart_knights_sih" "\0"
+            VALUE "FileDescription", "grand_finale_sih" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "team_dart_knights_sih" "\0"
+            VALUE "InternalName", "grand_finale_sih" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "team_dart_knights_sih.exe" "\0"
-            VALUE "ProductName", "team_dart_knights_sih" "\0"
+            VALUE "OriginalFilename", "grand_finale_sih.exe" "\0"
+            VALUE "ProductName", "grand_finale_sih" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

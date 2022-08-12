@@ -39,7 +39,6 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   amazon_cognito_identity_dart_2: ^3.0.0
   fluent_ui: ^3.12.0
-  flutter_acrylic: ^1.0.0
   window_manager: ^0.2.5
   system_theme: ^2.0.0
   http: ^0.13.4

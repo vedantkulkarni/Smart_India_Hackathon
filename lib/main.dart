@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
+// import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'injection_container.dart' as di;
@@ -18,7 +18,7 @@ bool get isDesktop {
     TargetPlatform.macOS,
   ].contains(defaultTargetPlatform);
 }
-
+ 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.setup();
@@ -30,7 +30,7 @@ void main() async {
   }
 
   if (isDesktop) {
-    await flutter_acrylic.Window.initialize();
+    // await flutter_acrylic.Window.initialize();
     await WindowManager.instance.ensureInitialized();
     windowManager.waitUntilReadyToShow().then((_) async {
       await windowManager.setTitleBarStyle(

@@ -4,6 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/attendance_card.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/attendance_dialog.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 
@@ -24,19 +25,7 @@ class _ManualAttendanceState extends State<ManualAttendance> {
       body: BlocConsumer<AttendanceCubit, AttendanceState>(
         listener: (context, state) async {
           if (state is AttendanceUploaded) {
-            // await showDialog(
-            //     context: context,
-            //     builder: (context) => Column(
-            //           children: [
-            //             const Text("Attendance Uploaded"),
-            //             CustomTextButton(
-            //                 onPressed: () {
-            //                   Navigator.popUntil(context,
-            //                       (route) => route.hasActiveRouteBelow);
-            //                 },
-            //                 text: 'Ok')
-            //           ],
-            //         ));
+            print("Uloaded attendance successfull");
           }
         },
         builder: (context, state) {
@@ -67,6 +56,9 @@ class _ManualAttendanceState extends State<ManualAttendance> {
           } else if (state is UploadingAttendance) {
             return progressIndicator;
           }
+
+          var presentStudents = attendanceCubit.presentStudents;
+          var totalStudents = attendanceCubit.attendanceMap.length;
           return Container(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -82,6 +74,13 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Poppins',
                     ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  FinalAttendanceDetails(
+                    presentStudents: presentStudents,
+                    totalStudents: totalStudents,
                   ),
                   classCubit.classRoom.students == null ||
                           classCubit.classRoom.students!.isEmpty
@@ -143,7 +142,17 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                       width: 170,
                       child: CustomTextButton(
                           onPressed: () async {
-                            await attendanceCubit.uploadManualAttendance();
+                            final res = await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AttendanceDialog(
+                                    presentStudents: presentStudents,
+                                    totalStudents: totalStudents,
+                                  );
+                                });
+                            if (res) {
+                              await attendanceCubit.uploadManualAttendance();
+                            }
                           },
                           text: 'Submit'),
                     ),
@@ -156,5 +165,94 @@ class _ManualAttendanceState extends State<ManualAttendance> {
         },
       ),
     );
+  }
+}
+
+class FinalAttendanceDetails extends StatelessWidget {
+  final int presentStudents;
+  final int totalStudents;
+  const FinalAttendanceDetails(
+      {Key? key, required this.presentStudents, required this.totalStudents})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var percent = (presentStudents / totalStudents) * 100;
+    var absentStudents = (totalStudents - presentStudents);
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.15,
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(
+                colors: [primaryColor, secondaryColor],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight),
+            boxShadow: const [
+              BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
+            ],
+            borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text(
+                  'Attendance',
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                Text(
+                  '${percent.toInt().toString()}%',
+                  style: const TextStyle(
+                    color: whiteColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  'Present : ${presentStudents.toString()}',
+                  style: TextStyle(
+                    color: whiteColor.withOpacity(0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                Text(
+                  'Absent : ${absentStudents.toString()}',
+                  style: TextStyle(
+                    color: whiteColor.withOpacity(0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                Text(
+                  'Total : ${totalStudents.toString()}',
+                  style: TextStyle(
+                    color: whiteColor.withOpacity(0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                )
+              ],
+            ),
+          ],
+        ));
   }
 }

@@ -26,7 +26,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   final MLService mlService;
   final CameraService cameraService;
   List<Student>? studList;
-  Map<String, bool> attendanceMap = {};
+  Map<String, AttendanceStatus> attendanceMap = {};
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
@@ -122,13 +122,16 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   }
 
   void toggleAttendance(String id) {
-    attendanceMap[id] = !attendanceMap[id]!;
+   attendanceMap[id] =  attendanceMap[id] == AttendanceStatus.Absent
+        ? AttendanceStatus.Present
+        : AttendanceStatus.Absent;
+    
     emit(AttendanceToggled(attendance: attendanceMap));
   }
 
   Future<void> initAttendance(List<Student> studentList) async {
     for (var everyStudent in studentList) {
-      attendanceMap.putIfAbsent(everyStudent.studentID, () => true);
+      attendanceMap.putIfAbsent(everyStudent.studentID, () => AttendanceStatus.Present);
     }
   }
 
@@ -139,32 +142,20 @@ class AttendanceCubit extends Cubit<AttendanceState> {
           ? AttendanceStatus.Present
           : AttendanceStatus.Absent;
       var verificationStatus = mode;
-      // final attendance = _createAttendanceObj(
-      //     studentID: everyStudent.key,
-      //     status: status,
-      // //     verificationStatus: verificationStatus);
-      // final uploadedAttendance =
-      //     await apiClient.createAttendance(attendance: attendance);
-      // print(uploadedAttendance);
+    
     }
     emit(AttendanceUploaded());
   }
 
-//   Attendance _createAttendanceObj(
-//       {required String studentID,
-//       required AttendanceStatus status,
-//       required VerificationStatus verificationStatus}) {
-//     // final attendance = Attendance(
-//     //   classID: ,
-//     //     studentID: studentID,
-//     //     date: TemporalDate(DateTime.now()),
-//     //     status: status,
-//     //     time: TemporalTime(DateTime.now()),
-//     //     verification: verificationStatus,
-//     //     geoLocation: 'https://goo.gl/maps/KDFc2gjvhfSxKPK47',
-//     //     teacherID: teacher.email,
-//     //     teacherName: teacher.name);
 
-//     return attendance;
-//   }
+
+  int get presentStudents {
+    var count = 0;
+    var present = attendanceMap.entries.forEach((element) {
+      if (element.value == AttendanceStatus.Present) {
+        count++;
+      }
+    });
+    return count;
+  }
 }
