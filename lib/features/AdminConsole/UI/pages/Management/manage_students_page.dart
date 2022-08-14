@@ -6,6 +6,7 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/common_search.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_details_screen_admin_console.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 
@@ -204,11 +205,18 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                 //               value: BlocProvider.of<
                                 //                   ManagementCubit>(context)),
                                 //         ],
-                                //         child: StudentDetailsDialog(
-                                //           student: state.studentsList[index],
+                                //         child: CustomDialogBox(
+                                //           widget: StudentDetailsDialog(
+                                //             student: state.studentsList[index],
+                                //           ),
                                 //         ),
                                 //       );
                                 //     });
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) {
+                                    return const StudentDetailScreenPartAdmin();
+                                  },
+                                ));
                               },
                               cells: [
                                 DataCell(

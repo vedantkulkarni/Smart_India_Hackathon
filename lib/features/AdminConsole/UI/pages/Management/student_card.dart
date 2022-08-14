@@ -20,21 +20,22 @@ class StudentCard extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () async {
-          final res = await showDialog(
-              context: context,
-              builder: (_) {
-                return BlocProvider.value(
-                  value: BlocProvider.of<ManagementCubit>(context),
-                  child: CustomDialogBox(
-                      widget: StudentCardDetails(
-                    student: student,
-                  )),
-                );
-              });
-          if (res!) {
-            await classCubit.getFullDetailsOfClassRoom(
-                classRoomID: classCubit.classRoomId);
-          }
+          // final res = await showDialog(
+          //     context: context,
+          //     builder: (_) {
+          //       return BlocProvider.value(
+          //         value: BlocProvider.of<ManagementCubit>(context),
+          //         child: CustomDialogBox(
+          //             widget: StudentCardDetails(
+          //           student: student,
+          //         )),
+          //       );
+          //     });
+          // final res = Navigator.of(context).push(route)
+          // if (res!) {
+          //   await classCubit.getFullDetailsOfClassRoom(
+          //       classRoomID: classCubit.classRoomId);
+          // }
         },
         child: Container(
           padding: const EdgeInsets.all(10),
