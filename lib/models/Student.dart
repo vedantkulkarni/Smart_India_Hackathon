@@ -19,6 +19,7 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
+import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -38,6 +39,8 @@ class Student extends Model {
   final String? _idCardPhoto;
   final String? _roll;
   final List<double>? _modelData;
+  final Gender? _gender;
+  final TemporalDate? _dob;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
   final String? _classRoomStudentsId;
@@ -104,6 +107,14 @@ class Student extends Model {
     return _modelData;
   }
   
+  Gender? get gender {
+    return _gender;
+  }
+  
+  TemporalDate? get dob {
+    return _dob;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -116,9 +127,9 @@ class Student extends Model {
     return _classRoomStudentsId;
   }
   
-  const Student._internal({required this.id, required studentID, required studentName, email, phoneNumber, address, profilePhoto, idCardPhoto, roll, modelData, createdAt, updatedAt, classRoomStudentsId}): _studentID = studentID, _studentName = studentName, _email = email, _phoneNumber = phoneNumber, _address = address, _profilePhoto = profilePhoto, _idCardPhoto = idCardPhoto, _roll = roll, _modelData = modelData, _createdAt = createdAt, _updatedAt = updatedAt, _classRoomStudentsId = classRoomStudentsId;
+  const Student._internal({required this.id, required studentID, required studentName, email, phoneNumber, address, profilePhoto, idCardPhoto, roll, modelData, gender, dob, createdAt, updatedAt, classRoomStudentsId}): _studentID = studentID, _studentName = studentName, _email = email, _phoneNumber = phoneNumber, _address = address, _profilePhoto = profilePhoto, _idCardPhoto = idCardPhoto, _roll = roll, _modelData = modelData, _gender = gender, _dob = dob, _createdAt = createdAt, _updatedAt = updatedAt, _classRoomStudentsId = classRoomStudentsId;
   
-  factory Student({String? id, required String studentID, required String studentName, String? email, String? phoneNumber, String? address, String? profilePhoto, String? idCardPhoto, String? roll, List<double>? modelData, String? classRoomStudentsId}) {
+  factory Student({String? id, required String studentID, required String studentName, String? email, String? phoneNumber, String? address, String? profilePhoto, String? idCardPhoto, String? roll, List<double>? modelData, Gender? gender, TemporalDate? dob, String? classRoomStudentsId}) {
     return Student._internal(
       id: id == null ? UUID.getUUID() : id,
       studentID: studentID,
@@ -130,6 +141,8 @@ class Student extends Model {
       idCardPhoto: idCardPhoto,
       roll: roll,
       modelData: modelData != null ? List<double>.unmodifiable(modelData) : modelData,
+      gender: gender,
+      dob: dob,
       classRoomStudentsId: classRoomStudentsId);
   }
   
@@ -151,6 +164,8 @@ class Student extends Model {
       _idCardPhoto == other._idCardPhoto &&
       _roll == other._roll &&
       DeepCollectionEquality().equals(_modelData, other._modelData) &&
+      _gender == other._gender &&
+      _dob == other._dob &&
       _classRoomStudentsId == other._classRoomStudentsId;
   }
   
@@ -172,6 +187,8 @@ class Student extends Model {
     buffer.write("idCardPhoto=" + "$_idCardPhoto" + ", ");
     buffer.write("roll=" + "$_roll" + ", ");
     buffer.write("modelData=" + (_modelData != null ? _modelData!.toString() : "null") + ", ");
+    buffer.write("gender=" + (_gender != null ? enumToString(_gender)! : "null") + ", ");
+    buffer.write("dob=" + (_dob != null ? _dob!.format() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
     buffer.write("classRoomStudentsId=" + "$_classRoomStudentsId");
@@ -180,7 +197,7 @@ class Student extends Model {
     return buffer.toString();
   }
   
-  Student copyWith({String? id, String? studentID, String? studentName, String? email, String? phoneNumber, String? address, String? profilePhoto, String? idCardPhoto, String? roll, List<double>? modelData, String? classRoomStudentsId}) {
+  Student copyWith({String? id, String? studentID, String? studentName, String? email, String? phoneNumber, String? address, String? profilePhoto, String? idCardPhoto, String? roll, List<double>? modelData, Gender? gender, TemporalDate? dob, String? classRoomStudentsId}) {
     return Student._internal(
       id: id ?? this.id,
       studentID: studentID ?? this.studentID,
@@ -192,6 +209,8 @@ class Student extends Model {
       idCardPhoto: idCardPhoto ?? this.idCardPhoto,
       roll: roll ?? this.roll,
       modelData: modelData ?? this.modelData,
+      gender: gender ?? this.gender,
+      dob: dob ?? this.dob,
       classRoomStudentsId: classRoomStudentsId ?? this.classRoomStudentsId);
   }
   
@@ -206,12 +225,14 @@ class Student extends Model {
       _idCardPhoto = json['idCardPhoto'],
       _roll = json['roll'],
       _modelData = (json['modelData'] as List?)?.map((e) => (e as num).toDouble()).toList(),
+      _gender = enumFromString<Gender>(json['gender'], Gender.values),
+      _dob = json['dob'] != null ? TemporalDate.fromString(json['dob']) : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
       _classRoomStudentsId = json['classRoomStudentsId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'studentID': _studentID, 'studentName': _studentName, 'email': _email, 'phoneNumber': _phoneNumber, 'address': _address, 'profilePhoto': _profilePhoto, 'idCardPhoto': _idCardPhoto, 'roll': _roll, 'modelData': _modelData, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'classRoomStudentsId': _classRoomStudentsId
+    'id': id, 'studentID': _studentID, 'studentName': _studentName, 'email': _email, 'phoneNumber': _phoneNumber, 'address': _address, 'profilePhoto': _profilePhoto, 'idCardPhoto': _idCardPhoto, 'roll': _roll, 'modelData': _modelData, 'gender': enumToString(_gender), 'dob': _dob?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'classRoomStudentsId': _classRoomStudentsId
   };
 
   static final QueryField ID = QueryField(fieldName: "student.id");
@@ -224,6 +245,8 @@ class Student extends Model {
   static final QueryField IDCARDPHOTO = QueryField(fieldName: "idCardPhoto");
   static final QueryField ROLL = QueryField(fieldName: "roll");
   static final QueryField MODELDATA = QueryField(fieldName: "modelData");
+  static final QueryField GENDER = QueryField(fieldName: "gender");
+  static final QueryField DOB = QueryField(fieldName: "dob");
   static final QueryField CLASSROOMSTUDENTSID = QueryField(fieldName: "classRoomStudentsId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Student";
@@ -284,6 +307,18 @@ class Student extends Model {
       isRequired: false,
       isArray: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.double))
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Student.GENDER,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Student.DOB,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.date)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

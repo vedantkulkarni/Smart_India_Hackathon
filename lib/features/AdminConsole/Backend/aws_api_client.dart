@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:http/http.dart' as http;
+import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/errors/exceptions.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
@@ -40,7 +41,23 @@ abstract class AWSApiClient {
 
   //Attendance
   Future<Attendance> createAttendance({required Attendance attendance});
+  Future<ClassAttendance> createClassAttendance(
+      {required ClassAttendance classAttendance});
+
   // Future<Attendance> getAttendance({required })
+
+  //Elastic Search
+  // Future<List<Student>> globalSearch(
+  //     {required String searchQuery, required StudentSearchMode mode});//Implement User search also
+  Future<List<Student>> searchStudent(
+      {required String searchQuery, required StudentSearchMode mode});
+  Future<List<Attendance>> searchAttendance(
+      {required String searchQuery,
+      required AttendanceSearchMode mode,
+      required int limit});
+
+  // Future<List<Student>> searchAttendance(
+  //     {required String searchQuery, required StudentSearchMode mode});
 }
 
 class AWSApiClientImpl implements AWSApiClient {
@@ -151,9 +168,7 @@ query MyQuery {
 '''
     };
 
-    
-    try{
-    
+    try {
       final responseString = await uploadJsonBodyRequest(body);
       final myJsonMap = json.decode(responseString);
 
@@ -423,7 +438,7 @@ query MyQuery {
       'operationName': 'MyQuery',
       'query': '''
 query MyQuery {
-  getClassRoom(id: "904814e7-2d27-4a9f-9de3-43145ab51d55") {
+  getClassRoom(id: "$classRoomID") {
     attendanceMode
     classRoomName
     createdAt
@@ -437,12 +452,18 @@ query MyQuery {
     userAssignedClassId
     students {
       items {
+         dob
+        classRoomStudentsId
         address
+        email
+        gender
         modelData
-        profilePhoto
+        phoneNumber
         roll
+        profilePhoto
         studentID
         studentName
+        idCardPhoto
       }
     }
   }
@@ -474,17 +495,9 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
       mutation MyMutation {
-  createClassRoom(input: {attendanceMode: $attendanceMode, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: ${classRoom.userAssignedClassId}}) {
-   
-    attendanceMode
-    classRoomName
-    currentAttendanceDate
-    groupClassRoomsId
-    id
-    importantNotice
-    schoolClassRoomsId
+  createClassRoom(input: {attendanceMode: $attendanceMode, classRoomName: "${classRoom.classRoomName}", schoolID: "${classRoom.schoolID}", currentAttendanceDate: ${f(classRoom.currentAttendanceDate)}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", importantNotice: ${classRoom.importantNotice}, schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
     schoolID
-    userAssignedClassId
+    classRoomName
   }
 }
 ''',
@@ -558,14 +571,16 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''
-      mutation MyMutation {
-  updateClassRoom(input: {id: "${classRoom.id}", classRoomName: "${classRoom.classRoomName}" attendanceMode: $attendanceMode, currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
-    classRoomName
-  
+     mutation MyMutation {
+  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${f(classRoom.currentAttendanceDate.toString())}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
     userAssignedClassId
+    currentAttendanceDate
+    classRoomName
+    id
+    schoolID
+    schoolClassRoomsId
   }
 }
-
 ''',
     };
 
@@ -582,15 +597,17 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createStudent(input: { classRoomStudentsId: "${student.classRoomStudentsId}",email: ${student.email}, address: "${student.address}" ,idCardPhoto: ${student.idCardPhoto}, profilePhoto: ${student.profilePhoto}, studentID: "${student.studentID}", studentName: "${student.studentName}",roll: ${student.roll},modelData: ${student.modelData}}) {
-    studentName
+  createStudent(input: {address: ${f(student.address)}, classRoomStudentsId: ${f(student.classRoomStudentsId)}, email: ${f(student.email)}, idCardPhoto: ${f(student.idCardPhoto)} modelData: ${student.modelData}, phoneNumber: ${f(student.phoneNumber)}, profilePhoto: ${f(student.profilePhoto)}, roll: ${f(student.roll)}, studentID: ${f(student.studentID)}, studentName: ${f(student.studentName)}}) {
     studentID
+    studentName
+    roll
   }
 }
 ''',
     };
 
     final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
 
     return Student.fromJson(
         json.decode(responseString)['data']['createStudent']);
@@ -705,11 +722,12 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createAttendance(input: {date: "${attendance.date}" , geoLocation: "${attendance.geoLocation}", status: ${attendance.status.name}, studentID: "${attendance.studentID}", teacherID: "${attendance.teacherID}", teacherName: "${attendance.teacherName}", time: "${attendance.time}", verification: ${attendance.verification.name}}) {
+  createAttendance(input: {date: "${attendance.date}", classID: "${attendance.classID}" , geoLatitude: ${attendance.geoLatitude.toString()}, geoLongitude: ${attendance.geoLongitude}, status: ${attendance.status.name}, studentID: "${attendance.studentID}", className: "${attendance.className}", studentName: "${attendance.studentName}", teacherID: "${attendance.teacherID}", teacherName: "${attendance.teacherName}", time: "${attendance.time}", verification: ${attendance.verification.name}}) {
     date
     studentID
     time
     status
+    classID
   }
 }
 ''',
@@ -720,4 +738,149 @@ query MyQuery {
     return Attendance.fromJson(
         json.decode(responseString)['data']['createAttendance']);
   }
+
+  @override
+  Future<ClassAttendance> createClassAttendance(
+      {required ClassAttendance classAttendance}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''mutation MyMutation {
+  createClassAttendance(input: {classID: "${classAttendance.classID}", date: "${classAttendance.date}", presentPercent: ${classAttendance.presentPercent}, teacherEmail: "${classAttendance.teacherEmail}"}) {
+    classID
+    presentPercent
+    teacherEmail
+  }
+}
+
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return ClassAttendance.fromJson(
+        json.decode(responseString)['data']['createClassAttendance']);
+  }
+
+  //Elastic Search
+  @override
+  Future<List<Student>> searchStudent(
+      {required String searchQuery, required StudentSearchMode mode}) async {
+    String searchFilter = '';
+    switch (mode) {
+      case StudentSearchMode.email:
+        searchFilter = 'email';
+        break;
+      case StudentSearchMode.name:
+        searchFilter = 'studentName';
+        break;
+      case StudentSearchMode.roll:
+        searchFilter = 'roll';
+        break;
+      case StudentSearchMode.studentID:
+        searchFilter = 'studentID';
+        break;
+      default:
+    }
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+      query MyQuery {
+  searchStudents(filter: {$searchFilter: {match: "$searchQuery"}}) {
+    items {
+      roll
+      studentID
+      studentName
+      profilePhoto
+      classRoomStudentsId
+    }
+  }
+}
+'''
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<Student> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['searchStudents']['items']) {
+      returnList.add(Student.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
+
+  @override
+  Future<List<Attendance>> searchAttendance(
+      {required String searchQuery,
+      required AttendanceSearchMode mode,
+      required int limit}) async {
+    String searchFilter = '';
+    switch (mode) {
+      case AttendanceSearchMode.date:
+        searchFilter = 'date';
+        break;
+      case AttendanceSearchMode.status:
+        searchFilter = 'status';
+        break;
+      case AttendanceSearchMode.teacherID:
+        searchFilter = 'teacherID';
+        break;
+      case AttendanceSearchMode.teacherName:
+        searchFilter = 'teacherName';
+        break;
+      case AttendanceSearchMode.studentID:
+        searchFilter = 'studentID';
+        break;
+      case AttendanceSearchMode.verification:
+        searchFilter = 'verification';
+        break;
+      default:
+    }
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+     query MyQuery {
+  searchAttendances(filter: {$searchFilter: {match: "$searchQuery"}}, limit: $limit) {
+    items {
+      classID
+      geoLatitude
+      geoLongitude
+      date
+      status
+      studentID
+      teacherID
+      verification
+      time
+      className
+      studentName
+
+    }
+  }
+}
+'''
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<Attendance> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['searchAttendances']['items']) {
+      returnList.add(Attendance.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
+}
+
+String f(var val) {
+  if (val == null ) {
+    return null.toString();
+  }
+
+  var ans = '''"$val"''';
+  return ans;
 }

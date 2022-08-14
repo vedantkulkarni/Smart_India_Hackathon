@@ -35,4 +35,25 @@ enum ManagementMode {
   ClassRooms,
 }
 
+enum SearchMode {
+  Attendance,
+  Student
+}
+enum StudentSearchMode {
+  name,
+  roll,
+  email,
+  studentID
+}
+
+enum AttendanceSearchMode {
+  date,
+  status,
+  studentID,
+  teacherID,
+  teacherName,
+  verification,
+  classID
+}
+
 const String commonPath = 'assets/images';

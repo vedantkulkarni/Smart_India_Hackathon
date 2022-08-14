@@ -5,5 +5,11 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
+    },
+    "storage": {
+        "sihimages": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }

@@ -23,6 +23,7 @@ class FaceDetectorService {
       FaceDetectorOptions(
         performanceMode: FaceDetectorMode.fast,
         enableTracking: true
+        
       ),
     );
 

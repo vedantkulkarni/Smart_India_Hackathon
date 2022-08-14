@@ -1,6 +1,7 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+
 class Fab extends StatefulWidget {
   const Fab({Key? key}) : super(key: key);
 
@@ -24,7 +25,11 @@ class _FabState extends State<Fab> {
       fabIconBorder: const CircleBorder(),
 
       fabColor: Colors.white,
-      fabOpenIcon: const Icon(Icons.menu, color: primaryColor),
+      fabOpenIcon: const Icon(
+        Icons.list,
+        color: primaryColor,
+        size: 30,
+      ),
       fabCloseIcon: const Icon(Icons.close, color: primaryColor),
       fabMargin: const EdgeInsets.all(16.0),
       animationDuration: const Duration(milliseconds: 800),

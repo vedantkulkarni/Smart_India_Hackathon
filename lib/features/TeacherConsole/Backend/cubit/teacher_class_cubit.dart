@@ -21,6 +21,7 @@ class TeacherClassCubit extends Cubit<TeacherClassState> {
 
   Future<void> fetchClassRoomDetailsForTeacher(
       {required String classRoomID}) async {
+    emit(TeacherClassInitial());
     classRoom = await awsApiClient.getClassRoom(classRoomID: classRoomID);
     print('here');
     print(classRoom.students);

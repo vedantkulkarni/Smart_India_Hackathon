@@ -56,8 +56,17 @@ class ClassAttendance extends Model {
     }
   }
   
-  TemporalDate? get date {
-    return _date;
+  TemporalDate get date {
+    try {
+      return _date!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   double? get presentPercent {
@@ -76,9 +85,9 @@ class ClassAttendance extends Model {
     return _updatedAt;
   }
   
-  const ClassAttendance._internal({required this.id, required classID, date, presentPercent, teacherEmail, createdAt, updatedAt}): _classID = classID, _date = date, _presentPercent = presentPercent, _teacherEmail = teacherEmail, _createdAt = createdAt, _updatedAt = updatedAt;
+  const ClassAttendance._internal({required this.id, required classID, required date, presentPercent, teacherEmail, createdAt, updatedAt}): _classID = classID, _date = date, _presentPercent = presentPercent, _teacherEmail = teacherEmail, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory ClassAttendance({String? id, required String classID, TemporalDate? date, double? presentPercent, String? teacherEmail}) {
+  factory ClassAttendance({String? id, required String classID, required TemporalDate date, double? presentPercent, String? teacherEmail}) {
     return ClassAttendance._internal(
       id: id == null ? UUID.getUUID() : id,
       classID: classID,
@@ -163,7 +172,7 @@ class ClassAttendance extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: ClassAttendance.DATE,
-      isRequired: false,
+      isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.date)
     ));
     

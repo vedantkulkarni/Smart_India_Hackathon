@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/classroom_card.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 
 import '../../../../../core/constants.dart';
 import '../../../../../injection_container.dart';
@@ -107,22 +108,29 @@ class _ManageClassroomState extends State<ManageClassroom> {
                           const Spacer(),
                           CustomTextButton(
                               onPressed: () async {
-                                await Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (_) {
-                                  return MultiBlocProvider(providers: [
-                                    BlocProvider.value(
-                                        value: BlocProvider.of<AdminCubit>(
-                                            context)),
-                                    BlocProvider(
-                                        create: (context) => ManagementCubit(
-                                            awsApiClient: getIt<AWSApiClient>(),
-                                            managementMode:
-                                                ManagementMode.Teachers)),
-                                  ], child: const CreateClassRoom());
-                                }));
+                              
+                                final classRoom = await showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return MultiBlocProvider(providers: [
+                                      BlocProvider.value(
+                                          value: BlocProvider.of<AdminCubit>(
+                                              context)),
+                                      BlocProvider(
+                                          create: (context) => ManagementCubit(
+                                              awsApiClient:
+                                                  getIt<AWSApiClient>(),
+                                              managementMode:
+                                                  ManagementMode.Teachers)),
+                                    ], child: CustomDialogBox(widget: const CreateClassRoom()));
+                                  },
+                                );
 
-                                await BlocProvider.of<ManagementCubit>(context)
+                                if(classRoom!=null)
+                                {
+                                  await BlocProvider.of<ManagementCubit>(context)
                                     .getAllClassRooms(limit: 10);
+                                }
                               },
                               text: 'Add Classroom'),
                           Container(

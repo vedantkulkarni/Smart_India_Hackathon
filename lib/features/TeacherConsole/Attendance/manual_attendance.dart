@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -16,7 +17,7 @@ class ManualAttendance extends StatefulWidget {
 }
 
 class _ManualAttendanceState extends State<ManualAttendance> {
-  Map<String, bool> attendanceMap = {};
+  // Map<String, bool> attendanceMap = {};
   @override
   Widget build(BuildContext context) {
     final classCubit = BlocProvider.of<TeacherClassCubit>(context);
@@ -32,25 +33,39 @@ class _ManualAttendanceState extends State<ManualAttendance> {
           final attendance = attendanceCubit.attendanceMap;
           if (state is AttendanceUploaded) {
             return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 80,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: FinalAttendanceDetails(
+                      presentStudents: attendanceCubit.presentStudents,
+                      totalStudents: attendanceCubit.attendanceMap.length),
+                ),
                 const Text(
-                  'Attendance Successfull uploaded',
+                  'Attendance successfully uploaded !!',
                   style: TextStyle(
-                    color: primaryColor,
-                    fontSize: 26,
+                    color: blackColor,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Poppins',
                   ),
                 ),
+                const Spacer(),
+                SizedBox(
+                  height: 40,
+                  width: 140,
+                  child: CustomTextButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      text: 'Go back to class'),
+                ),
                 const SizedBox(
                   height: 60,
                 ),
-                CustomTextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    text: 'Go back to class')
               ],
             );
           } else if (state is UploadingAttendance) {
@@ -150,8 +165,10 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                                     totalStudents: totalStudents,
                                   );
                                 });
+                            print(res);
                             if (res) {
-                              await attendanceCubit.uploadManualAttendance();
+                              await attendanceCubit.uploadManualAttendance(
+                                  classRoom: classCubit.classRoom);
                             }
                           },
                           text: 'Submit'),
@@ -252,6 +269,29 @@ class FinalAttendanceDetails extends StatelessWidget {
                 )
               ],
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  '${DateTime.now().weekday}, ${DateTime.now().day} ${DateTime.now().month}, ${DateTime.now().year}',
+                  style: TextStyle(
+                    color: whiteColor.withOpacity(0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                Spacer(),
+                Text(
+                  '${DateTime.now().hour} : ${DateTime.now().minute}',
+                  style: TextStyle(
+                    color: whiteColor.withOpacity(0.7),
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+              ],
+            )
           ],
         ));
   }

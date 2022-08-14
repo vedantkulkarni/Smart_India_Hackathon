@@ -1,0 +1,14 @@
+{
+  "resourceName": "sihimages",
+  "policyUUID": "e2726951",
+  "bucketName": "grandfinale4eb33be56aa4404e8544507a94058c9f",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

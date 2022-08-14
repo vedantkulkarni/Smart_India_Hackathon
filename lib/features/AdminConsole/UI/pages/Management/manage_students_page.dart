@@ -1,18 +1,20 @@
 import 'package:data_table_2/data_table_2.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_page.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/common_search.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 
+import '../../../../../core/cubit/search_cubit.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/Student.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
 import '../../../Backend/aws_api_client.dart';
+import '../../widgets/custom_dialog_box.dart';
 
 class ManageStudentsPage extends StatefulWidget {
   const ManageStudentsPage({Key? key}) : super(key: key);
@@ -53,20 +55,42 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                         },
                         icon: const Icon(Icons.arrow_back),
                       ),
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        child: CustomTextField(
-                          hintText: 'Search',
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
-                          width: 400,
-                          prefixIcon: const Icon(
-                            FluentIcons.search_12_filled,
-                            size: 16,
-                          ),
-                        ),
+                      // Container(
+                      //   margin: const EdgeInsets.all(10),
+                      //   child: CustomTextField(
+                      //     hintText: 'Search',
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 10, vertical: 15),
+                      //     width: 400,
+                      //     prefixIcon: const Icon(
+                      //       FluentIcons.search_12_filled,
+                      //       size: 16,
+                      //     ),
+                      //   ),
+                      // ),
+                      const Spacer(),
+                      SizedBox(
+                          width: 200,
+                          child: CustomTextButton(
+                              onPressed: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return BlocProvider(
+                                        create: (_) => SearchCubit(
+                                            apiClient: getIt<AWSApiClient>(),
+                                            searchMode: SearchMode.Student),
+                                        child: CustomDialogBox(
+                                            widget: CommonSearch(
+                                          searchMode: SearchMode.Student,
+                                        )),
+                                      );
+                                    });
+                              },
+                              text: 'Search')),
+                      const SizedBox(
+                        width: 40,
                       ),
-                      // const Spacer(),
                       SizedBox(
                           width: 200,
                           child: CustomTextButton(
@@ -146,7 +170,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                           DataColumn(
                             label: Text('Email'),
                           ),
-                          DataColumn(label: Text('Gender')),
+                          DataColumn(label: Text('Profile')),
                         ],
                         rows: List<DataRow>.generate(
                           (state as StudentsFetched).studentsList.length,
@@ -194,19 +218,26 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].studentID,
+                                    (state).studentsList[index].phoneNumber ??
+                                        '-',
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].studentID,
+                                    (state).studentsList[index].email ?? '-',
                                   ),
                                 ),
-                                DataCell(
-                                  Text(
-                                    (state).studentsList[index].studentID,
-                                  ),
-                                ),
+                                DataCell(CircleAvatar(
+                                    backgroundImage: (state)
+                                                .studentsList[index]
+                                                .profilePhoto ==
+                                            null
+                                        ? Image.asset(
+                                                'assets/images/studentManagement.png')
+                                            .image
+                                        : NetworkImage((state)
+                                            .studentsList[index]
+                                            .profilePhoto!))),
                               ]),
                         ),
                       ),

@@ -1,10 +1,20 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/select_date_dialog.dart';
 
+import '../../../../core/cubit/search_cubit.dart';
+import '../../../../injection_container.dart';
+import '../../../../models/Student.dart';
+import '../../Backend/aws_api_client.dart';
+import '../widgets/attendance_search.dart';
 import '../widgets/custom_textfield.dart';
+import 'Management/common_search.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -32,122 +42,37 @@ class _AttendancePageState extends State<AttendancePage> {
           thickness: 1,
         ),
         Container(
-          width: w * 0.16,
-          color: navPanecolor,
-          padding: const EdgeInsets.all(10),
-          child: TableCalendar(
-            pageAnimationEnabled: true,
-            availableCalendarFormats: const {
-              CalendarFormat.month: 'Month',
-              CalendarFormat.week: 'Week',
-            },
-            focusedDay: focusedDay,
-            firstDay: DateTime(1999),
-            lastDay: DateTime(2050),
-            calendarFormat: format,
-            onFormatChanged: (CalendarFormat _format) {
-              setState(() {
-                format = _format;
-              });
-            },
-            startingDayOfWeek: StartingDayOfWeek.sunday,
-            daysOfWeekVisible: true,
-            onDayLongPressed: (DateTime selectedDay, DateTime focusDay) {},
-            onDaySelected: (DateTime selectDay, DateTime focusDay) {
-              setState(() {
-                selectedDay = selectDay;
-                focusedDay = focusDay;
-              });
-            },
-            selectedDayPredicate: (DateTime date) {
-              return isSameDay(selectedDay, date);
-            },
-            calendarStyle: CalendarStyle(
-              isTodayHighlighted: true,
-              selectedDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: primaryColor,
+            width: w * 0.3,
+            color: navPanecolor,
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              child: const Center(
+                child: Text('Detials'),
               ),
-              selectedTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.normal,
-                  color: whiteColor),
-              todayDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: primaryColor,
-              ),
-              todayTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.normal,
-                  color: blackColor),
-              defaultDecoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              defaultTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.normal,
-                  color: blackColor),
-              weekendDecoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              weekendTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.normal,
-                  color: blackColor),
-            ),
-            headerStyle: HeaderStyle(
-              leftChevronIcon: const FaIcon(
-                FontAwesomeIcons.chevronLeft,
-                color: primaryColor,
-                size: 16,
-              ),
-              rightChevronIcon: const FaIcon(
-                FontAwesomeIcons.chevronRight,
-                color: primaryColor,
-                size: 16,
-              ),
-              headerMargin: const EdgeInsets.only(bottom: 20),
-              // decoration: BoxDecoration(
-              //   color: const Color(0xFFAB47BC).withOpacity(0.0),
-              //   borderRadius: BorderRadius.circular(16),
-              // ),
-              titleTextStyle: const TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.normal,
-                  color: blackColor),
-              formatButtonVisible: true,
-              titleCentered: true,
-              formatButtonShowsNext: false,
-              formatButtonDecoration: BoxDecoration(
-                color: const Color(0xFFBBDEFB),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              formatButtonTextStyle: const TextStyle(
-                color: Color(0xFF1A237E),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
+            )),
       ]),
     );
   }
 }
 
-class AttendanceWidget extends StatelessWidget {
+class AttendanceWidget extends StatefulWidget {
   const AttendanceWidget({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<AttendanceWidget> createState() => _AttendanceWidgetState();
+}
+
+class _AttendanceWidgetState extends State<AttendanceWidget> {
+  final TextEditingController textEditingController = TextEditingController();
+
+  AttendanceSearchMode attendanceSearchMode = AttendanceSearchMode.date;
+  bool showCalender = true;
+  String hintText = 'YYYY-MM-DD';
+  @override
   Widget build(BuildContext context) {
+    final searchCubit = BlocProvider.of<SearchCubit>(context);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Container(
@@ -157,74 +82,159 @@ class AttendanceWidget extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: CustomTextField(
-              hintText: 'Search',
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              prefixIcon: const Icon(
-                FluentIcons.search,
-                size: 16,
-              ),
-            ),
-          ),
-          /*DataTable2(
-            dataTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.normal,
-                color: blackColor),
-            headingTextStyle: const TextStyle(
-                fontSize: 16,
-                color: blackColor,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold),
-            columns: const [
-              DataColumn2(
-                label: Text(
-                  'Name',
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.all(10),
+                  child: CustomTextField(
+                    textEditingController: textEditingController,
+                    hintText: hintText,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
+                    prefixIcon: const Icon(
+                      fi.FluentIcons.search,
+                      size: 16,
+                    ),
+                  ),
                 ),
-                size: ColumnSize.L,
               ),
-              DataColumn(
-                label: Text('Phone'),
+              const SizedBox(
+                width: 20,
               ),
-              DataColumn(
-                label: Text('Email'),
+              showCalender == false
+                  ? Container()
+                  : IconButton(
+                      icon: const Icon(
+                        fi.FluentIcons.calendar,
+                        size: 22,
+                        color: primaryColor,
+                      ),
+                      onPressed: () async {
+                        var value = await showDialog<DateTime>(
+                          context: context,
+                          builder: (context) {
+                            return CustomDialogBox(
+                                widget: const SelectDateDialog());
+                          },
+                        );
+                        if (value != null) {
+                          textEditingController.text =
+                              TemporalDate(value).toString();
+                        }
+                      },
+                    ),
+              DropdownButton<AttendanceSearchMode>(
+                icon: null,
+                iconSize: 14,
+                alignment: Alignment.center,
+                underline: Container(),
+                borderRadius: BorderRadius.circular(10),
+                value: attendanceSearchMode,
+                onChanged: (value) async {
+                  // managementCubit.clearUserList();
+                  if (value == AttendanceSearchMode.date) {
+                    textEditingController.clear();
+                    hintText = 'YYYY-MM-DD';
+                    showCalender = true;
+                  } else {
+                    textEditingController.clear();
+                    showCalender = false;
+                    hintText = 'Search by ${value!.name}';
+                  }
+
+                  if (value == AttendanceSearchMode.studentID) {
+                    var student = await showDialog<Student>(
+                        context: context,
+                        builder: (_) {
+                          return BlocProvider(
+                            create: (_) => SearchCubit(
+                                apiClient: getIt<AWSApiClient>(),
+                                searchMode: SearchMode.Student),
+                            child: CustomDialogBox(
+                                widget: CommonSearch(
+                              searchMode: SearchMode.Student,
+                            )),
+                          );
+                        });
+                    if (student != null) {
+                      textEditingController.clear();
+                      textEditingController.text = student.studentName;
+                      searchCubit.searchAttendance(
+                          searchQuery: student.studentName,
+                          mode: attendanceSearchMode);
+                    }
+                  }
+
+                  setState(() {
+                    attendanceSearchMode = value!;
+                  });
+                  // managementCubit.getAllUsers(role: value);
+                },
+                items: const [
+                  DropdownMenuItem(
+                    child: Text('Search by Date',
+                        style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14)),
+                    value: AttendanceSearchMode.date,
+                  ),
+                  DropdownMenuItem(
+                      child: Text('Search by Attendance Status',
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 14)),
+                      value: AttendanceSearchMode.status),
+                  DropdownMenuItem(
+                      child: Text('Search by Student',
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 14)),
+                      value: AttendanceSearchMode.studentID),
+                  DropdownMenuItem(
+                      child: Text('Search by Teacher Name',
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 14)),
+                      value: AttendanceSearchMode.teacherName),
+                  DropdownMenuItem(
+                      child: Text('Search by Teacher Email',
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 14)),
+                      value: AttendanceSearchMode.teacherID),
+                ],
               ),
-              DataColumn(label: Text('Gender')),
+              const SizedBox(
+                width: 40,
+              ),
+              SizedBox(
+                  height: 45,
+                  width: 150,
+                  child: CustomTextButton(
+                      onPressed: () {
+                        searchCubit.searchAttendance(
+                            searchQuery: textEditingController.text,
+                            mode: attendanceSearchMode);
+                      },
+                      text: 'Search')),
+              const SizedBox(
+                width: 20,
+              )
             ],
-            rows: List<DataRow>.generate(
-              4,
-                  (index) => DataRow2.byIndex(
-                  selected: true,
-                  color: null,
-                  index: index,
-                  onTap: () {},
-                  cells: [
-                    DataCell(
-                      Text(
-                        'Harsh',
-                      ),
-                    ),
-                    DataCell(
-                      Text(
-                        '9922929',
-                      ),
-                    ),
-                    DataCell(
-                      Text(
-                        'ahah@gmail.com',
-                      ),
-                    ),
-                    DataCell(
-                      Text(
-                        'Male',
-                      ),
-                    ),
-                  ]),
-            )
-          ),*/
+          ),
+          const Divider(
+            color: greyColor,
+            thickness: 0.5,
+          ),
+          const Expanded(
+            child: AttendanceSearch(),
+          ),
         ],
       ),
     );

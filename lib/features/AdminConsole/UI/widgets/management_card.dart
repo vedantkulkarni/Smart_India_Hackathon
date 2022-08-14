@@ -23,7 +23,12 @@ class ManageMentCard extends StatelessWidget {
       required this.imagePath,
       required this.index})
       : super(key: key);
-  List<ManagementMode> modes = [ManagementMode.User, ManagementMode.Students,ManagementMode.Students,ManagementMode.ClassRooms];
+  List<ManagementMode> modes = [
+    ManagementMode.User,
+    ManagementMode.Students,
+    ManagementMode.Students,
+    ManagementMode.ClassRooms
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -90,11 +95,10 @@ class ManageMentCard extends StatelessWidget {
   }
 
   Widget customPushHandlerFunction(int index) {
-    
     if (index == 0) {
       return const ManageUsers();
     } else if (index == 1) {
-      return const ManageStudentsPage();
+      return ManageStudentsPage();
     } else if (index == 2) {
       //manage groups
       return ManageGroupsPage();

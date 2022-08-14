@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -215,17 +216,16 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                                 .students!);
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (_) {
-                                      return BlocProvider(
-                                        create: (context) => AttendanceCubit(
-                                            teacher: teacherCubit.teacher,
-                                            mode: classCubit
-                                                .classRoom.attendanceMode,
-                                            apiClient: getIt<AWSApiClient>(),
-                                            faceDetectorService:
-                                                getIt<FaceDetectorService>(),
-                                            mlService: mlService,
-                                            cameraService:
-                                                getIt<CameraService>()),
+                                      return MultiBlocProvider(
+                                        providers: [
+                                          BlocProvider.value(
+                                              value:
+                                                  BlocProvider.of<TeacherCubit>(
+                                                      context)),
+                                          BlocProvider.value(
+                                              value: BlocProvider.of<
+                                                  TeacherClassCubit>(context)),
+                                        ],
                                         child: StudentDetailScreen(
                                             name: 'Harsh',
                                             email: 'atk@gmail.com',
@@ -247,51 +247,72 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               const SizedBox(
                 height: 25,
               ),
-              Center(
-                child: SizedBox(
-                  width: 170,
-                  height: 40,
-                  child: CustomTextButton(
-                      onPressed: () async {
-                        if (classCubit.classRoom.students == null ||
-                            classCubit.classRoom.students!.isEmpty) {
-                          print("student list is empty");
-                          return;
-                        }
-                        print(classCubit.classRoom.students);
-                        final mlService =
-                            MLService(students: classCubit.classRoom.students!);
-                        Widget attendanceMode = await Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (_) {
-                          return MultiBlocProvider(
-                              providers: [
-                                BlocProvider.value(
-                                  value: teacherCubit,
-                                ),
-                                BlocProvider.value(
-                                  value: BlocProvider.of<TeacherClassCubit>(
-                                      context),
-                                ),
-                                BlocProvider(
-                                    create: (context) => AttendanceCubit(
-                                        apiClient: getIt<AWSApiClient>(),
-                                        faceDetectorService:
-                                            getIt<FaceDetectorService>(),
-                                        cameraService: getIt<CameraService>(),
-                                        mode:
-                                            classCubit.classRoom.attendanceMode,
-                                        teacher: teacherCubit.teacher,
-                                        studList: classCubit.classRoom.students,
-                                        mlService: mlService))
-                              ],
-                              child: getAttendanceWidget(
-                                  classCubit.classRoom.attendanceMode,
-                                  mlService));
-                        }));
-                      },
-                      text: 'Mark Attendance'),
-                ),
-              ),
+              classCubit.classRoom.currentAttendanceDate == null ||
+                      classCubit.classRoom.currentAttendanceDate !=
+                          TemporalDate(DateTime.now())
+                  ? Center(
+                      child: SizedBox(
+                        width: 170,
+                        height: 40,
+                        child: CustomTextButton(
+                            onPressed: () async {
+                              if (classCubit.classRoom.students == null ||
+                                  classCubit.classRoom.students!.isEmpty) {
+                                print("student list is empty");
+                                return;
+                              }
+                              print(classCubit.classRoom.students);
+                              final mlService = MLService(
+                                  students: classCubit.classRoom.students!);
+                              bool? isMarkSuccessfull =
+                                  await Navigator.of(context).push<bool>(
+                                      MaterialPageRoute(builder: (_) {
+                                return MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider.value(
+                                        value: teacherCubit,
+                                      ),
+                                      BlocProvider.value(
+                                        value:
+                                            BlocProvider.of<TeacherClassCubit>(
+                                                context),
+                                      ),
+                                      BlocProvider(
+                                          create: (context) => AttendanceCubit(
+                                              apiClient: getIt<AWSApiClient>(),
+                                              faceDetectorService:
+                                                  getIt<FaceDetectorService>(),
+                                              cameraService:
+                                                  getIt<CameraService>(),
+                                              mode: classCubit
+                                                  .classRoom.attendanceMode,
+                                              teacher: teacherCubit.teacher,
+                                              studList:
+                                                  classCubit.classRoom.students,
+                                              mlService: mlService))
+                                    ],
+                                    child: getAttendanceWidget(
+                                        classCubit.classRoom.attendanceMode,
+                                        mlService));
+                              }));
+                              if (isMarkSuccessfull == null ||
+                                  isMarkSuccessfull == false) {
+                                print("Attendance Not marked");
+                              } else {
+                                classCubit.fetchClassRoomDetailsForTeacher(
+                                    classRoomID: classCubit.classRoom.id);
+                              }
+                            },
+                            text: 'Mark Attendance'),
+                      ),
+                    )
+                  : const Center(
+                      child: Text('Attendance Already marked for today !',
+                          style: TextStyle(
+                              color: lightTextColor,
+                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.normal))),
               const SizedBox(
                 height: 40,
               ),

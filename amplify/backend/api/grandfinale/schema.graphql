@@ -37,6 +37,7 @@ type School @model{
   location: AWSURL
   groups: [Group] @hasMany
   classRooms:[ClassRoom]@hasMany
+  
 
 }
 
@@ -48,7 +49,7 @@ type Group @model{
 
 }
 
-type ClassRoom @model @searchable
+type ClassRoom @model
 {
   schoolID: ID!
   id:ID!
@@ -60,19 +61,7 @@ type ClassRoom @model @searchable
 
 }# 'currentAttendance' field in ClassRoom, which will be updated at the end of every Attendance taking sesison.
 
-type Student @model @searchable
-{
-  studentID: ID! @primaryKey
-  studentName: String!
-  email:AWSEmail
-  phoneNumber:AWSPhone
-  address:String
-  profilePhoto: AWSURL
-  idCardPhoto: AWSURL
-  roll:String
-  modelData:[Float]
-  
-}
+
 
 enum AttendanceStatus{
   Present
@@ -91,22 +80,49 @@ enum VerificationStatus{
 
 type ClassAttendance @model{
     classID: ID! @primaryKey
-    date: AWSDate
+    date: AWSDate!
     presentPercent:Float
     teacherEmail:AWSEmail
     
 
 }
 
-type Attendance @model{
+type Student @model @searchable
+{
+  studentID: ID! @primaryKey
+  studentName: String!
+  email:AWSEmail
+  phoneNumber:AWSPhone
+  address:String
+  profilePhoto: AWSURL
+  idCardPhoto: AWSURL
+  roll:String
+  modelData:[Float]
+  gender:Gender
+  dob:AWSDate
+
+
+  
+}
+
+enum Gender{
+  Male
+  Female
+  Other
+}
+
+type Attendance @model @searchable{
   studentID: ID! 
+  studentName: String!
   status: AttendanceStatus!
-  geoLocation: String
+  geoLatitude: Float
+  geoLongitude: Float
   verification: VerificationStatus!
   teacherID: ID!
   teacherName: String!
   date:  AWSDate!
   time:  AWSTime!
   classID:ID! @primaryKey(sortKeyFields:["studentID","date"])
+  className:String!
 
-}
+} 

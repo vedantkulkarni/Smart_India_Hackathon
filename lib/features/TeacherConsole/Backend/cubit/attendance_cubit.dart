@@ -8,6 +8,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image/image.dart' as img;
+import 'package:team_dart_knights_sih/core/location_service.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
@@ -49,6 +50,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       required this.teacher,
       this.studList})
       : super(AttendanceInitial()) {
+    print(mode);
     if (mode == VerificationStatus.ManualAttendance) {
       initAttendance(studList!);
     } else {
@@ -122,32 +124,89 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   }
 
   void toggleAttendance(String id) {
-   attendanceMap[id] =  attendanceMap[id] == AttendanceStatus.Absent
+    attendanceMap[id] = attendanceMap[id] == AttendanceStatus.Absent
         ? AttendanceStatus.Present
         : AttendanceStatus.Absent;
-    
+
     emit(AttendanceToggled(attendance: attendanceMap));
   }
 
   Future<void> initAttendance(List<Student> studentList) async {
     for (var everyStudent in studentList) {
-      attendanceMap.putIfAbsent(everyStudent.studentID, () => AttendanceStatus.Present);
+      attendanceMap.putIfAbsent(
+          everyStudent.studentID, () => AttendanceStatus.Present);
     }
   }
 
-  Future<void> uploadManualAttendance() async {
+  Future<void> uploadManualAttendance({required ClassRoom classRoom}) async {
     emit(UploadingAttendance());
-    for (var everyStudent in attendanceMap.entries) {
-      var status = attendanceMap[everyStudent] == true
+    final position = await determinePosition();
+    final double latitude = position.latitude;
+    final double longitude = position.longitude;
+    print(latitude);
+    print(longitude);
+
+    for (var studentID in attendanceMap.entries) {
+      var sutdentName = studList!
+          .firstWhere((element) => element.studentID == studentID.key)
+          .studentName;
+      
+      var status = attendanceMap[studentID.value] == AttendanceStatus.Present
           ? AttendanceStatus.Present
           : AttendanceStatus.Absent;
-      var verificationStatus = mode;
-    
+      final attendance = getAttendanceObj(
+          studentName: sutdentName,
+          className: classRoom.classRoomName,
+          mode: mode,
+          attendanceStatus: status,
+          latitude: latitude,
+          longitude: longitude,
+          classID: classRoom.id,
+          studentID: studentID.key);
+      final uploadedAttendance =
+          await apiClient.createAttendance(attendance: attendance);
+      // print(attendance);
     }
+    final percent = (presentStudents / attendanceMap.length) * 100;
+    final classAttendance = ClassAttendance(
+        classID: classRoom.id,
+        date: TemporalDate(DateTime.now()),
+        presentPercent: presentStudents.toDouble(),
+        teacherEmail: teacher.email);
+    final uploadedClassAttendance =
+        await apiClient.createClassAttendance(classAttendance: classAttendance);
+    // print(classAttendance);
+    final updatedClassRoom =
+        classRoom.copyWith(currentAttendanceDate: TemporalDate(DateTime.now()));
+    final res = await apiClient.updateClassRoom(classRoom: updatedClassRoom);
     emit(AttendanceUploaded());
   }
 
-
+  Attendance getAttendanceObj(
+      {required VerificationStatus mode,
+      required AttendanceStatus attendanceStatus,
+      required double latitude,
+      required double longitude,
+      required String classID,
+      required String className,
+      required String studentName,
+      required String studentID}) {
+    final Attendance attendance = Attendance(
+      geoLatitude: latitude,
+      geoLongitude: longitude,
+      studentName: studentName,
+      className: className,
+      classID: classID,
+      date: TemporalDate(DateTime.now()),
+      status: attendanceStatus,
+      studentID: studentID,
+      teacherID: teacher.email,
+      teacherName: teacher.name,
+      time: TemporalTime(DateTime.now()),
+      verification: mode,
+    );
+    return attendance;
+  }
 
   int get presentStudents {
     var count = 0;

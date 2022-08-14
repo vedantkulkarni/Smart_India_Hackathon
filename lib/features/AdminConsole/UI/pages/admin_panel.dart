@@ -2,13 +2,17 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/management.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/settings.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_sidemenu.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/school_not_found.dart';
+
+import '../../../../injection_container.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({Key? key}) : super(key: key);
@@ -23,7 +27,9 @@ class _AdminPanelState extends State<AdminPanel> {
 
   List<Widget> screens = [
     const Dashboard(),
-    const AttendancePage(),
+    BlocProvider(
+      create: (context) => SearchCubit(searchMode: SearchMode.Attendance, apiClient: getIt<AWSApiClient>()),
+      child: const AttendancePage()),
     const Management(),
     SettingsPage()
   ];

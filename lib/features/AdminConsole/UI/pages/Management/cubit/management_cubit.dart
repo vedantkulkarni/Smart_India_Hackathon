@@ -113,6 +113,10 @@ class ManagementCubit extends Cubit<ManagementState> {
   }
 
   //ManagementMode = ClassRooms
+  Future<void> createClassRoom({required ClassRoom classRoom}) async {
+    await awsApiClient.createClassRoom(classRoom: classRoom);
+  }
+
   Future<void> getAllClassRooms({required int limit}) async {
     emit(FetchingClassRooms());
     _classroomList = await awsApiClient.getListOfClassrooms(limit: limit);

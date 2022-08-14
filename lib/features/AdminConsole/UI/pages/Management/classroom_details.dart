@@ -555,7 +555,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           child: AddStudentToClassRoom(
                             classRoom: widget.classRoom,
                           )));
-                  if (result!) {
+                  if (result!=null) {
                     await classCubit.getFullDetailsOfClassRoom(
                         classRoomID: widget.classRoom.id);
                   }

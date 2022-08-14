@@ -30,14 +30,17 @@ class Attendance extends Model {
   static const classType = const _AttendanceModelType();
   final String id;
   final String? _studentID;
+  final String? _studentName;
   final AttendanceStatus? _status;
-  final String? _geoLocation;
+  final double? _geoLatitude;
+  final double? _geoLongitude;
   final VerificationStatus? _verification;
   final String? _teacherID;
   final String? _teacherName;
   final TemporalDate? _date;
   final TemporalTime? _time;
   final String? _classID;
+  final String? _className;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -62,6 +65,19 @@ class Attendance extends Model {
     }
   }
   
+  String get studentName {
+    try {
+      return _studentName!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
   AttendanceStatus get status {
     try {
       return _status!;
@@ -75,8 +91,12 @@ class Attendance extends Model {
     }
   }
   
-  String? get geoLocation {
-    return _geoLocation;
+  double? get geoLatitude {
+    return _geoLatitude;
+  }
+  
+  double? get geoLongitude {
+    return _geoLongitude;
   }
   
   VerificationStatus get verification {
@@ -157,6 +177,19 @@ class Attendance extends Model {
     }
   }
   
+  String get className {
+    try {
+      return _className!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -165,20 +198,23 @@ class Attendance extends Model {
     return _updatedAt;
   }
   
-  const Attendance._internal({required this.id, required studentID, required status, geoLocation, required verification, required teacherID, required teacherName, required date, required time, required classID, createdAt, updatedAt}): _studentID = studentID, _status = status, _geoLocation = geoLocation, _verification = verification, _teacherID = teacherID, _teacherName = teacherName, _date = date, _time = time, _classID = classID, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Attendance._internal({required this.id, required studentID, required studentName, required status, geoLatitude, geoLongitude, required verification, required teacherID, required teacherName, required date, required time, required classID, required className, createdAt, updatedAt}): _studentID = studentID, _studentName = studentName, _status = status, _geoLatitude = geoLatitude, _geoLongitude = geoLongitude, _verification = verification, _teacherID = teacherID, _teacherName = teacherName, _date = date, _time = time, _classID = classID, _className = className, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Attendance({String? id, required String studentID, required AttendanceStatus status, String? geoLocation, required VerificationStatus verification, required String teacherID, required String teacherName, required TemporalDate date, required TemporalTime time, required String classID}) {
+  factory Attendance({String? id, required String studentID, required String studentName, required AttendanceStatus status, double? geoLatitude, double? geoLongitude, required VerificationStatus verification, required String teacherID, required String teacherName, required TemporalDate date, required TemporalTime time, required String classID, required String className}) {
     return Attendance._internal(
       id: id == null ? UUID.getUUID() : id,
       studentID: studentID,
+      studentName: studentName,
       status: status,
-      geoLocation: geoLocation,
+      geoLatitude: geoLatitude,
+      geoLongitude: geoLongitude,
       verification: verification,
       teacherID: teacherID,
       teacherName: teacherName,
       date: date,
       time: time,
-      classID: classID);
+      classID: classID,
+      className: className);
   }
   
   bool equals(Object other) {
@@ -191,14 +227,17 @@ class Attendance extends Model {
     return other is Attendance &&
       id == other.id &&
       _studentID == other._studentID &&
+      _studentName == other._studentName &&
       _status == other._status &&
-      _geoLocation == other._geoLocation &&
+      _geoLatitude == other._geoLatitude &&
+      _geoLongitude == other._geoLongitude &&
       _verification == other._verification &&
       _teacherID == other._teacherID &&
       _teacherName == other._teacherName &&
       _date == other._date &&
       _time == other._time &&
-      _classID == other._classID;
+      _classID == other._classID &&
+      _className == other._className;
   }
   
   @override
@@ -211,14 +250,17 @@ class Attendance extends Model {
     buffer.write("Attendance {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("studentID=" + "$_studentID" + ", ");
+    buffer.write("studentName=" + "$_studentName" + ", ");
     buffer.write("status=" + (_status != null ? enumToString(_status)! : "null") + ", ");
-    buffer.write("geoLocation=" + "$_geoLocation" + ", ");
+    buffer.write("geoLatitude=" + (_geoLatitude != null ? _geoLatitude!.toString() : "null") + ", ");
+    buffer.write("geoLongitude=" + (_geoLongitude != null ? _geoLongitude!.toString() : "null") + ", ");
     buffer.write("verification=" + (_verification != null ? enumToString(_verification)! : "null") + ", ");
     buffer.write("teacherID=" + "$_teacherID" + ", ");
     buffer.write("teacherName=" + "$_teacherName" + ", ");
     buffer.write("date=" + (_date != null ? _date!.format() : "null") + ", ");
     buffer.write("time=" + (_time != null ? _time!.format() : "null") + ", ");
     buffer.write("classID=" + "$_classID" + ", ");
+    buffer.write("className=" + "$_className" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -226,48 +268,57 @@ class Attendance extends Model {
     return buffer.toString();
   }
   
-  Attendance copyWith({String? id, String? studentID, AttendanceStatus? status, String? geoLocation, VerificationStatus? verification, String? teacherID, String? teacherName, TemporalDate? date, TemporalTime? time, String? classID}) {
+  Attendance copyWith({String? id, String? studentID, String? studentName, AttendanceStatus? status, double? geoLatitude, double? geoLongitude, VerificationStatus? verification, String? teacherID, String? teacherName, TemporalDate? date, TemporalTime? time, String? classID, String? className}) {
     return Attendance._internal(
       id: id ?? this.id,
       studentID: studentID ?? this.studentID,
+      studentName: studentName ?? this.studentName,
       status: status ?? this.status,
-      geoLocation: geoLocation ?? this.geoLocation,
+      geoLatitude: geoLatitude ?? this.geoLatitude,
+      geoLongitude: geoLongitude ?? this.geoLongitude,
       verification: verification ?? this.verification,
       teacherID: teacherID ?? this.teacherID,
       teacherName: teacherName ?? this.teacherName,
       date: date ?? this.date,
       time: time ?? this.time,
-      classID: classID ?? this.classID);
+      classID: classID ?? this.classID,
+      className: className ?? this.className);
   }
   
   Attendance.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _studentID = json['studentID'],
+      _studentName = json['studentName'],
       _status = enumFromString<AttendanceStatus>(json['status'], AttendanceStatus.values),
-      _geoLocation = json['geoLocation'],
+      _geoLatitude = (json['geoLatitude'] as num?)?.toDouble(),
+      _geoLongitude = (json['geoLongitude'] as num?)?.toDouble(),
       _verification = enumFromString<VerificationStatus>(json['verification'], VerificationStatus.values),
       _teacherID = json['teacherID'],
       _teacherName = json['teacherName'],
       _date = json['date'] != null ? TemporalDate.fromString(json['date']) : null,
       _time = json['time'] != null ? TemporalTime.fromString(json['time']) : null,
       _classID = json['classID'],
+      _className = json['className'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'studentID': _studentID, 'status': enumToString(_status), 'geoLocation': _geoLocation, 'verification': enumToString(_verification), 'teacherID': _teacherID, 'teacherName': _teacherName, 'date': _date?.format(), 'time': _time?.format(), 'classID': _classID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'studentID': _studentID, 'studentName': _studentName, 'status': enumToString(_status), 'geoLatitude': _geoLatitude, 'geoLongitude': _geoLongitude, 'verification': enumToString(_verification), 'teacherID': _teacherID, 'teacherName': _teacherName, 'date': _date?.format(), 'time': _time?.format(), 'classID': _classID, 'className': _className, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "attendance.id");
   static final QueryField STUDENTID = QueryField(fieldName: "studentID");
+  static final QueryField STUDENTNAME = QueryField(fieldName: "studentName");
   static final QueryField STATUS = QueryField(fieldName: "status");
-  static final QueryField GEOLOCATION = QueryField(fieldName: "geoLocation");
+  static final QueryField GEOLATITUDE = QueryField(fieldName: "geoLatitude");
+  static final QueryField GEOLONGITUDE = QueryField(fieldName: "geoLongitude");
   static final QueryField VERIFICATION = QueryField(fieldName: "verification");
   static final QueryField TEACHERID = QueryField(fieldName: "teacherID");
   static final QueryField TEACHERNAME = QueryField(fieldName: "teacherName");
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField TIME = QueryField(fieldName: "time");
   static final QueryField CLASSID = QueryField(fieldName: "classID");
+  static final QueryField CLASSNAME = QueryField(fieldName: "className");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Attendance";
     modelSchemaDefinition.pluralName = "Attendances";
@@ -281,15 +332,27 @@ class Attendance extends Model {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Attendance.STUDENTNAME,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Attendance.STATUS,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Attendance.GEOLOCATION,
+      key: Attendance.GEOLATITUDE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Attendance.GEOLONGITUDE,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.double)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
@@ -324,6 +387,12 @@ class Attendance extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Attendance.CLASSID,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Attendance.CLASSNAME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
