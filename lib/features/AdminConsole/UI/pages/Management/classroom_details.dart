@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_to_class_room.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/assign_teacher_to_class_room.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/download_attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_card.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -13,6 +15,8 @@ import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../models/User.dart';
 import 'cubit/management_cubit.dart';
+import '../../../../../injection_container.dart';
+import '../../../Backend/admin_bloc/admin_cubit.dart';
 
 class ClassRoomDetails extends StatefulWidget {
   final ClassRoom classRoom;
@@ -544,6 +548,29 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
             children: [
               CustomTextButton(
                 onPressed: () async {
+                  await classCubit.getAttendanceListDateWise(
+                      classRoomID: widget.classRoom.id);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                    return MultiBlocProvider(providers: [
+                      BlocProvider.value(
+                          value: BlocProvider.of<AdminCubit>(context)),
+                      BlocProvider.value(
+                          value: BlocProvider.of<ClassDetailsCubit>(context))
+                    ], child: DownloadAttedance());
+                  }));
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  //   return DownloadAttedance();
+                  // }));
+                },
+                text: 'Download Attendance',
+                bgColor: whiteColor,
+                textColor: primaryColor,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomTextButton(
+                onPressed: () async {
                   final result = await showModalSideSheet<bool>(
                       context: context,
                       body: MultiBlocProvider(
@@ -555,7 +582,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           child: AddStudentToClassRoom(
                             classRoom: widget.classRoom,
                           )));
-                  if (result!=null) {
+                  if (result != null) {
                     await classCubit.getFullDetailsOfClassRoom(
                         classRoomID: widget.classRoom.id);
                   }
