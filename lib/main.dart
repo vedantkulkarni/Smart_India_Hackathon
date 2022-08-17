@@ -18,7 +18,7 @@ bool get isDesktop {
     TargetPlatform.macOS,
   ].contains(defaultTargetPlatform);
 }
- 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.setup();

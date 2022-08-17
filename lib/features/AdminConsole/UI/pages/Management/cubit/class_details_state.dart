@@ -1,6 +1,6 @@
 part of 'class_details_cubit.dart';
 
-abstract class ClassDetailsState extends Equatable {
+abstract class ClassDetailsState {
   const ClassDetailsState();
 
   @override
@@ -8,5 +8,11 @@ abstract class ClassDetailsState extends Equatable {
 }
 
 class ClassDetailsInitial extends ClassDetailsState {}
+
 class LoadingClassDetails extends ClassDetailsState {}
+
 class ClassRoomDetialsFetched extends ClassDetailsState {}
+
+class FectingAttendanceByDate extends ClassDetailsState {}
+
+class AttendanceByDateFetched extends ClassDetailsState {}
