@@ -105,23 +105,13 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (BlocProvider.of<AttendanceCubit>(context)
-            .cameraService
-            .cameraController ==
-        null) {
-      return Container();
-    }
-    _ratio = MediaQuery.of(context).size.width /
-        BlocProvider.of<AttendanceCubit>(context)
-            .cameraService
-            .cameraController!
-            .value
-            .previewSize!
-            .height;
-    final bbox =
-        BlocProvider.of<AttendanceCubit>(context).inferenceResults?['bbox'];
+
+
+   
     return BlocBuilder<AttendanceCubit, AttendanceState>(
       builder: (context, state) {
+        
+
         return Stack(children: [
           CameraDetectionPreview(),
           // CameraUIOverlay(cameraController: _cameraService.cameraController)

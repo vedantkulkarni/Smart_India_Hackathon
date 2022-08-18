@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mediapipe/model_inference_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
@@ -10,7 +9,6 @@ import 'package:team_dart_knights_sih/injection_container.dart';
 import '../../../core/constants.dart';
 import 'camera_service.dart';
 import 'face_detector.dart';
-import 'face_painter.dart';
 import 'mediapipe/face_detection_painter.dart';
 
 class CameraDetectionPreview extends StatelessWidget {
@@ -25,7 +23,7 @@ class CameraDetectionPreview extends StatelessWidget {
     final modelInferenceService = getIt<ModelInferenceService>();
     return BlocBuilder<AttendanceCubit, AttendanceState>(
       builder: (context, state) {
-        if (state is InitializingCamera) {
+        if (state is InitializingCamera || state is InitializingMLModel) {
           return Scaffold(
             backgroundColor: backgroundColor,
             body: Container(
@@ -38,25 +36,35 @@ class CameraDetectionPreview extends StatelessWidget {
             child: const Center(child: Text('Only a few steps left !')),
           );
         }
-
+        if (BlocProvider.of<AttendanceCubit>(context)
+                .cameraService
+                .cameraController!
+                .value
+                .previewSize
+                 ==
+            null) {
+          return Container(
+            child: const Text("Not"),
+          );
+        }
         var bbox =
             BlocProvider.of<AttendanceCubit>(context).inferenceResults?['bbox'];
-        var _ratio =  
-            MediaQuery.of(context).size.width/
-        BlocProvider.of<AttendanceCubit>(context)
-            .cameraService
-            .cameraController!
-            .value.previewSize!.height ;
-        if (BlocProvider.of<AttendanceCubit>(context).isPredicting == false) {
-          BlocProvider.of<AttendanceCubit>(context)
-              .startPredictingMediaPipe(context);
-        }
+        var _ratio = MediaQuery.of(context).size.width /
+            BlocProvider.of<AttendanceCubit>(context)
+                .cameraService
+                .cameraController!
+                .value
+                .previewSize!
+                .height;
+        // if (BlocProvider.of<AttendanceCubit>(context).isPredicting == false) {
+        //   BlocProvider.of<AttendanceCubit>(context)
+        //       .startPredictingMediaPipe(context);
+        // }
 
         if (state is FacesDetected) {
           Rect? face = (state).rect;
 
           return Stack(
-            
             children: <Widget>[
               CameraPreview(_cameraService.cameraController!),
               if (modelInferenceService.inferenceResults != null)

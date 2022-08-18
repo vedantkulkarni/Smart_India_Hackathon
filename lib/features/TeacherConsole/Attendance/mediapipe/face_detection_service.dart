@@ -146,15 +146,23 @@ class FaceDetection extends AiModel {
     for (var detection in detections) {
       Rect? bbox;
       final score = detection.score;
+      print(detection.yMin);
+      double left = inputImage.width * (detection.xMin - 0.115);
+      double top = inputImage.height * (detection.yMin - 0.17);
+      double right = inputImage.width *
+          ((detection.width - 0.4) + (detection.xMin - 0.115));
+      double bottom = inputImage.height *
+          ((detection.height - 0.6) + (detection.yMin - 0.17));
       if (score > threshold) {
         bbox = Rect.fromLTRB(
-          inputImage.width * detection.xMin,
-          inputImage.height * detection.yMin,
-          inputImage.width * detection.width,
-          inputImage.height * detection.height,
+          left,
+          top,
+          right,
+          bottom,
         );
 
-        bbox = _imageProcessor.inverseTransformRect(bbox, image.height, image.width);
+        bbox = _imageProcessor.inverseTransformRect(
+            bbox, image.height, image.width);
       }
       rectFaces.add({'bbox': bbox, 'score': score});
     }

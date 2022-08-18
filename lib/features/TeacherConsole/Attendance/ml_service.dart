@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 
-import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as imglib;
@@ -41,7 +41,7 @@ class MLService {
       }
       var interpreterOptions = InterpreterOptions()..addDelegate(delegate);
 
-      this._interpreter = await Interpreter.fromAsset('mobilefacenet.tflite',
+      _interpreter = await Interpreter.fromAsset('mobilefacenet.tflite',
           options: interpreterOptions);
     } catch (e) {
       print('Failed to load model.');
@@ -49,7 +49,10 @@ class MLService {
     }
   }
 
-  void setCurrentPrediction(CameraImage cameraImage, Face? face) {
+  void setCurrentPrediction(CameraImage cameraImage, Rect? face) {
+    if (face == null) {
+      return;
+    }
     if (_interpreter == null) throw Exception('Interpreter is null');
     if (face == null) throw Exception('Face is null');
     List input = _preProcess(cameraImage, face);
@@ -57,17 +60,17 @@ class MLService {
     input = input.reshape([1, 112, 112, 3]);
     List output = List.generate(1, (index) => List.filled(192, 0));
 
-    this._interpreter?.run(input, output);
+    _interpreter?.run(input, output);
     output = output.reshape([192]);
 
-    this._predictedData = List.from(output);
+    _predictedData = List.from(output);
   }
 
   Future<Student?> predict() async {
-    return _searchResult(this._predictedData);
+    return _searchResult(_predictedData);
   }
 
-  List _preProcess(CameraImage image, Face faceDetected) {
+  List _preProcess(CameraImage image, Rect faceDetected) {
     imglib.Image croppedImage = _cropFace(image, faceDetected);
     imglib.Image img = imglib.copyResizeCropSquare(croppedImage, 112);
 
@@ -75,12 +78,12 @@ class MLService {
     return imageAsList;
   }
 
-  imglib.Image _cropFace(CameraImage image, Face faceDetected) {
+  imglib.Image _cropFace(CameraImage image, Rect faceDetected) {
     imglib.Image convertedImage = _convertCameraImage(image);
-    double x = faceDetected.boundingBox.left - 10.0;
-    double y = faceDetected.boundingBox.top - 10.0;
-    double w = faceDetected.boundingBox.width + 10.0;
-    double h = faceDetected.boundingBox.height + 10.0;
+    double x = faceDetected.left - 10.0;
+    double y = faceDetected.top - 10.0;
+    double w = faceDetected.width + 10.0;
+    double h = faceDetected.height + 10.0;
     return imglib.copyCrop(
         convertedImage, x.round(), y.round(), w.round(), h.round());
   }
@@ -111,8 +114,9 @@ class MLService {
     double minDist = 999;
     double currDist = 0.0;
     Student? predictedResult;
-    print(students);
+    print(students.length);
     for (Student u in students) {
+      print(predictedData);
       currDist = _euclideanDistance(u.modelData, predictedData);
       print("curre dist is : $currDist");
       if (currDist <= threshold && currDist < minDist) {
@@ -134,7 +138,7 @@ class MLService {
   }
 
   void setPredictedData(value) {
-    this._predictedData = value;
+    _predictedData = value;
   }
 
   dispose() {}

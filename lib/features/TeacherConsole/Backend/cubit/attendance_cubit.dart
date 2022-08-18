@@ -57,13 +57,13 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       this.studList})
       : super(AttendanceInitial()) {
     print(mode);
+    initializeInterPreter();
     if (mode == VerificationStatus.ManualAttendance) {
       initAttendance(studList!);
     } else if (mode == VerificationStatus.FaceVerified) {
       initCamera();
     } else if (mode == VerificationStatus.FaceDetectedAndVerified) {
       initCamera();
-      initializeMediapipe();
     } else {
       faceDetectorService.initialize();
       initializeInterPreter();
@@ -80,8 +80,9 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   Future<void> initializeInterPreter() async {
     emit(InitializingMLModel());
     faceDetectorService.initialize();
-    await cameraService.initialize();
+
     await mlService.initialize();
+    await initializeMediapipe();
     print("model initializedb");
     emit(MLModelInitialized());
   }
@@ -102,7 +103,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
             faceDetected = faceDetectorService.faces[0];
             emit(FacesDetected(Rect.zero));
 
-            mlService.setCurrentPrediction(image, faceDetected);
+            // mlService.setCurrentPrediction(image, faceDetected);
 
             emit(CurrentPredictionSet());
           } else {
@@ -242,40 +243,6 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
   //Mediapipe
   Future<void> initializeMediapipe() async {
-    print("init mediapipe");
-    optionsFace = OptionsFace(
-        numClasses: 1,
-        numBoxes: 896,
-        numCoords: 16,
-        keypointCoordOffset: 4,
-        ignoreClasses: [],
-        scoreClippingThresh: 100.0,
-        minScoreThresh: 0.75,
-        numKeypoints: 6,
-        numValuesPerKeypoint: 2,
-        reverseOutputOrder: false,
-        boxCoordOffset: 0,
-        xScale: 128,
-        yScale: 128,
-        hScale: 128,
-        wScale: 128);
-
-    anchor = AnchorOption(
-        inputSizeHeight: 128,
-        inputSizeWidth: 128,
-        minScale: 0.1484375,
-        maxScale: 0.75,
-        anchorOffsetX: 0.5,
-        anchorOffsetY: 0.5,
-        numLayers: 4,
-        featureMapHeight: [],
-        featureMapWidth: [],
-        strides: [8, 16, 16, 16],
-        aspectRatios: [1.0],
-        reduceBoxesInLowestLayer: false,
-        interpolatedScaleAspectRatio: 1.0,
-        fixedAnchorSize: true);
-
     await _isolateUtils.initIsolate();
     _modelInferenceService.setModelConfig(0);
 
@@ -296,28 +263,76 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     cameraService.cameraController?.startImageStream((cameraImage) async {
       if (cameraService.cameraController != null) {
         if (_detectingFaces) return;
-       
+
         _detectingFaces = true;
         await _inference(cameraImage: cameraImage);
 
-        // try {
-        //   await faceDetectorService.detectFacesFromImage(image);
-        //   if (faceDetectorService.faces.isNotEmpty) {
-        //     faceDetected = faceDetectorService.faces[0];
-        //     emit(FacesDetected());
+        try {
+          // await faceDetectorService.detectFacesFromImage(image);
+          // if (faceDetectorService.faces.isNotEmpty) {
+          //   faceDetected = faceDetectorService.faces[0];
+          if (_modelInferenceService.inferenceResults != null) {
+            emit(FacesDetected(
+                _modelInferenceService.inferenceResults!['bbox']));
 
-        //     mlService.setCurrentPrediction(image, faceDetected);
+            mlService.setCurrentPrediction(
+                cameraImage, _modelInferenceService.inferenceResults!['bbox']);
 
-        //     emit(CurrentPredictionSet());
-        //   } else {
-        //     emit(NoFacesDetected());
-        //   }
+            await mlService.predict();
+            print(mlService.predictedData);
 
-        //   _detectingFaces = false;
-        // } catch (e) {
-        //   print(e);
-        //   _detectingFaces = false;
-        // }
+            emit(CurrentPredictionSet());
+          } else {
+            emit(NoFacesDetected());
+          }
+
+          _detectingFaces = false;
+        } catch (e) {
+          print(e);
+          _detectingFaces = false;
+        }
+      }
+    });
+  }
+
+  void facialDataMediapipeUpload(BuildContext context) {
+     isPredicting = true;
+    imageSize = cameraService.getImageSize();
+
+    print(imageSize);
+    emit(ScanningAttendance());
+    print("started image stream");
+    cameraService.cameraController?.startImageStream((cameraImage) async {
+      if (cameraService.cameraController != null) {
+        if (_detectingFaces) return;
+
+        _detectingFaces = true;
+        await _inference(cameraImage: cameraImage);
+
+        try {
+          // await faceDetectorService.detectFacesFromImage(image);
+          // if (faceDetectorService.faces.isNotEmpty) {
+          //   faceDetected = faceDetectorService.faces[0];
+          if (_modelInferenceService.inferenceResults != null) {
+            emit(FacesDetected(
+                _modelInferenceService.inferenceResults!['bbox']));
+
+            mlService.setCurrentPrediction(
+                cameraImage, _modelInferenceService.inferenceResults!['bbox']);
+
+           
+            print(mlService.predictedData);
+
+            emit(CurrentPredictionSet());
+          } else {
+            emit(NoFacesDetected());
+          }
+
+          _detectingFaces = false;
+        } catch (e) {
+          print(e);
+          _detectingFaces = false;
+        }
       }
     });
   }

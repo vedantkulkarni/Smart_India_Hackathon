@@ -59,7 +59,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
     var updatedStudent = widget.student!.copyWith(profilePhoto: dURL);
     widget.student = await BlocProvider.of<TeacherClassCubit>(context)
         .updateStudent(student: updatedStudent);
-    await  BlocProvider.of<TeacherClassCubit>(context)
+    await BlocProvider.of<TeacherClassCubit>(context)
         .fetchClassRoomDetailsForTeacher(
             classRoomID: widget.student!.classRoomStudentsId!);
     setState(() {});
@@ -218,7 +218,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
 
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (ctx) => BlocProvider(
-                                      create: (context) => AttendanceCubit(
+                                      create: (_) => AttendanceCubit(
                                           teacher: teacherCubit.teacher,
                                           mode: classCubit
                                               .classRoom.attendanceMode,
@@ -231,10 +231,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                                       child: AddStudentFacialData(
                                         cameras: widget.cameras,
                                         student: widget.student!,
-                                        mlService:
-                                            BlocProvider.of<AttendanceCubit>(
-                                                    context)
-                                                .mlService,
+                                        mlService: mlService,
                                       ),
                                     )));
                           },

@@ -133,7 +133,7 @@ class _AddFaceCamOverLayState extends State<AddFaceCamOverLay> {
                 width: 140,
                 child: CustomTextButton(
                     onPressed: () {
-                      attendanceCubit.startPredicting();
+                      attendanceCubit.startPredictingMediaPipe(context);
                     },
                     text: 'Start'),
               ),
