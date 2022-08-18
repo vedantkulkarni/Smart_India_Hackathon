@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:async/async.dart';
 import 'package:http/http.dart' as http;
@@ -67,17 +68,7 @@ class Policy {
 }
 
 Future<void> uploadFile({required File file}) async {
-  // const _awsUserPoolId = 'ap-southeast-xxxxxxxxxxx';
-  // const _awsClientId = 'xxxxxxxxxxxxxxxxxxxxxxxxxx';
 
-  // const _identityPoolId = 'ap-south-1:d66b5fb5-dd9d-4e9a-a0b3-ccc2bfcf29af';
-  // final _userPool = CognitoUserPool(_awsUserPoolId, _awsClientId);
-
-  // final _cognitoUser = CognitoUser('+60100000000', _userPool);
-  // final authDetails =
-  //     AuthenticationDetails(username: '+60100000000', password: 'p&ssW0RD');
-
-  // CognitoUserSession? _session;
   const _identityPoolId = 'ap-south-1:e78b1945-7d3c-4ca7-824a-fc7f9be319cf';
   final _userPool = CognitoUserPool(
     'ap-south-1_TAqXrMNgh',
@@ -131,7 +122,7 @@ Future<void> uploadFile({required File file}) async {
 
   req.files.add(multipartFile);
   req.fields['key'] = policy.key;
-  // req.fields['Connection'] = 'keep-alive';
+  // req.fields['Connection'] = 'Keep-alive';
   // req.fields['acl'] =
   //     'public-read'; // Safe to remove this if your bucket has no ACL permissions
   req.fields['X-Amz-Credential'] = policy.credential;
@@ -173,4 +164,84 @@ Future<void> uploadFile({required File file}) async {
     print('inside err');
     print(e.toString());
   }
+}
+
+Future<Image> getObjectFromS3() async {
+  const _identityPoolId = 'ap-south-1:e78b1945-7d3c-4ca7-824a-fc7f9be319cf';
+  final _userPool = CognitoUserPool(
+    'ap-south-1_TAqXrMNgh',
+    '5r2nk0dcq5gv6813j23289n9m8',
+  );
+  final _cognitoUser = CognitoUser('vedantk60@gmail.com', _userPool);
+  final authDetails = AuthenticationDetails(
+    username: 'vedantk60@gmail.com',
+    password: 'Unowho@23',
+  );
+  CognitoUserSession? _session;
+  try {
+    _session = await _cognitoUser.authenticateUser(authDetails);
+  } catch (e) {
+    print(e);
+  }
+
+  final _credentials = CognitoCredentials(_identityPoolId, _userPool);
+  await _credentials.getAwsCredentials(_session!.getIdToken().getJwtToken());
+  print("credentials : ${_credentials.accessKeyId}");
+  const host = 's3.ap-south-1.amazonaws.com';
+  const region = 'ap-south-1';
+  const service = 's3';
+  const key = 'grandfinaleimages101118-staging/1653508157792.jpg';
+  final payload = SigV4.hashCanonicalRequest('');
+  final datetime = SigV4.generateDatetime();
+  final canonicalRequest = '''GET
+${'/$key'.split('/').map((s) => Uri.encodeComponent(s)).join('/')}
+
+host:$host
+x-amz-content-sha256:$payload
+x-amz-date:$datetime
+x-amz-security-token:${_credentials.sessionToken}
+
+host;x-amz-content-sha256;x-amz-date;x-amz-security-token
+$payload''';
+  final credentialScope = SigV4.buildCredentialScope(datetime, region, service);
+  final stringToSign = SigV4.buildStringToSign(
+      datetime, credentialScope, SigV4.hashCanonicalRequest(canonicalRequest));
+  final signingKey = SigV4.calculateSigningKey(
+      _credentials.secretAccessKey!, datetime, region, service);
+  final signature = SigV4.calculateSignature(signingKey, stringToSign);
+
+  final authorization = [
+    'AWS4-HMAC-SHA256 Credential=${_credentials.accessKeyId}/$credentialScope',
+    'SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token',
+    'Signature=$signature',
+  ].join(',');
+
+  final uri = Uri.https(host, key);
+  http.Response response;
+  try {
+    response = await http.get(uri, headers: {
+      'Authorization': authorization,
+      'x-amz-content-sha256': payload,
+      'x-amz-date': datetime,
+      'x-amz-security-token': _credentials.sessionToken!,
+    });
+    print(response.bodyBytes);
+    var image = Image.memory(response.bodyBytes);
+    return image;
+  } catch (e) {
+    print(e);
+  }
+  return Image.network('');
+  // final file = File(path.join(
+  //     '/path/to/my/folder',
+  //     'square-cinnamon-downloaded.jpg'));
+
+  // try {
+  //   await file.writeAsBytes(response.bodyBytes);
+  // } catch (e) {
+  //   print(e.toString());
+  //   return;
+  // }
+
+  print('complete!');
 }

@@ -6,7 +6,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_clie
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify_with_profile_image.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/liveness.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/manual_attendance.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
@@ -14,6 +14,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/atte
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mark_attendance.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify_with_profile_image.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/student_detail_screen.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/teacher_console_student_card.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
@@ -259,6 +260,50 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                               if (classCubit.classRoom.students == null ||
                                   classCubit.classRoom.students!.isEmpty) {
                                 print("student list is empty");
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible:
+                                      false, // user must tap button!
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      titleTextStyle: const TextStyle(
+                                          color: primaryColor,
+                                          fontSize: 24,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.bold),
+                                      contentTextStyle: const TextStyle(
+                                          color: lightTextColor,
+                                          fontSize: 16,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.normal),
+                                      title: const Text('No Students !'),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: const <Widget>[
+                                            Text('The student list is empty.'),
+                                            Text(
+                                                'Please ask your admin to assign students to your class.'),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text(
+                                            'Ok',
+                                            style: TextStyle(
+                                                color: blackColor,
+                                                fontSize: 18,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                                 return;
                               }
                               print(classCubit.classRoom.students);
@@ -329,7 +374,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
       case VerificationStatus.FaceDetectedAndVerified:
         return MarkAttendnacePage(mlService: mlService);
       case VerificationStatus.FaceVerified:
-        return const FaceVerifyWithProfileImage();
+        return FaceVerifyWithProfileImage();
       case VerificationStatus.FaceVerifiedWithLiveness:
         return LivenessDetectionScreen();
       case VerificationStatus.ManualAttendance:

@@ -43,6 +43,7 @@ abstract class AWSApiClient {
   Future<Attendance> createAttendance({required Attendance attendance});
   Future<ClassAttendance> createClassAttendance(
       {required ClassAttendance classAttendance});
+  Future<ClassAttendance> getClassAttendanceList({required String classID});
 
   // Future<Attendance> getAttendance({required })
 
@@ -147,7 +148,7 @@ query MyQuery {
     assignedClass {
       items {
        
-        
+        id
         classRoomName
       }
     }
@@ -172,7 +173,13 @@ query MyQuery {
       final responseString = await uploadJsonBodyRequest(body);
       final myJsonMap = json.decode(responseString);
 
-      final user = User.fromJson(myJsonMap['data']['getUser']);
+      var user = User.fromJson(myJsonMap['data']['getUser']);
+      List<ClassRoom> classRoomList = [];
+      for (var classRoom in json.decode(responseString)['data']['getUser']
+          ['assignedClass']['items']) {
+        classRoomList.add(ClassRoom.fromJson(classRoom));
+      }
+      user = user.copyWith(assignedClass: classRoomList);
       return user;
     } catch (e) {
       print(e);
@@ -646,7 +653,7 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  updateStudent(input: {address: "${updatedStudent.address}", classRoomStudentsId: "${updatedStudent.classRoomStudentsId}", email: ${updatedStudent.email}, idCardPhoto: ${updatedStudent.idCardPhoto}, modelData: ${updatedStudent.modelData}, phoneNumber: ${updatedStudent.phoneNumber}, profilePhoto: ${updatedStudent.profilePhoto}, roll: ${updatedStudent.roll}, studentID: "${updatedStudent.studentID}",studentName: "${updatedStudent.studentName}"}) {
+  updateStudent(input: {address: ${f(updatedStudent.address)}, classRoomStudentsId: ${f(updatedStudent.classRoomStudentsId)}, email: ${f(updatedStudent.email)}, idCardPhoto: ${f(updatedStudent.idCardPhoto)}, modelData:${updatedStudent.modelData}, phoneNumber: ${f(updatedStudent.phoneNumber)}, profilePhoto: ${f(updatedStudent.profilePhoto)}, roll: ${f(updatedStudent.roll)}, studentID: ${f(updatedStudent.studentID)},studentName: ${f(updatedStudent.studentName)}}) {
     email
     classRoomStudentsId
     modelData
@@ -662,7 +669,7 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-
+    print(responseString);
     return Student.fromJson(
         json.decode(responseString)['data']['updateStudent']);
   }
@@ -874,12 +881,18 @@ query MyQuery {
 
     return returnList;
   }
+
+  @override
+  Future<ClassAttendance> getClassAttendanceList({required String classID}) {
+    // TODO: implement getClassAttendanceList
+    throw UnimplementedError();
+  }
 }
 
 String f(var val) {
-  if (val == null ) {
+  if (val == null) {
     return null.toString();
-  }
+  } 
 
   var ans = '''"$val"''';
   return ans;

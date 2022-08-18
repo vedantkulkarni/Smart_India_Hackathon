@@ -10,13 +10,13 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/atte
 import '../../../injection_container.dart';
 import 'camera_service.dart';
 import 'face_detector.dart';
+import 'mediapipe/face_detection_painter.dart';
 import 'ml_service.dart';
 
 class MarkAttendnacePage extends StatefulWidget {
   MLService mlService;
- 
-  MarkAttendnacePage({Key? key,  required this.mlService})
-      : super(key: key);
+
+  MarkAttendnacePage({Key? key, required this.mlService}) : super(key: key);
 
   @override
   State<MarkAttendnacePage> createState() => _MarkAttendnacePageState();
@@ -38,8 +38,6 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
   // service injection
   final FaceDetectorService _faceDetectorService = getIt<FaceDetectorService>();
   final CameraService _cameraService = getIt<CameraService>();
-
-
 
   @override
   void initState() {
@@ -103,14 +101,46 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
     // _start();
   }
 
+  late double _ratio;
+
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      CameraDetectionPreview(),
-      CameraUIOverlay(cameraController: _cameraService.cameraController)
-    ]);
+    if (BlocProvider.of<AttendanceCubit>(context)
+            .cameraService
+            .cameraController ==
+        null) {
+      return Container();
+    }
+    _ratio = MediaQuery.of(context).size.width /
+        BlocProvider.of<AttendanceCubit>(context)
+            .cameraService
+            .cameraController!
+            .value
+            .previewSize!
+            .height;
+    final bbox =
+        BlocProvider.of<AttendanceCubit>(context).inferenceResults?['bbox'];
+    return BlocBuilder<AttendanceCubit, AttendanceState>(
+      builder: (context, state) {
+        return Stack(children: [
+          CameraDetectionPreview(),
+          // CameraUIOverlay(cameraController: _cameraService.cameraController)
+        ]);
+      },
+    );
   }
 }
+
+// Widget get _drawBoundingBox {
+
+//   return _ModelPainter(
+//     customPainter: FaceDetectionPainter(
+//       bbox: bbox ?? Rect.zero,
+//       ratio: _ratio,
+//     ),
+//   );
+//   // return Container();
+// }
 
 class CameraUIOverlay extends StatefulWidget {
   final CameraController? cameraController;

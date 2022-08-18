@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
 import '../../../../models/School.dart';
+import '../../../../models/Student.dart';
 import '../../../AdminConsole/Backend/aws_api_client.dart';
 
 part 'teacher_class_state.dart';
@@ -13,10 +14,12 @@ class TeacherClassCubit extends Cubit<TeacherClassState> {
   final School school;
   late ClassRoom classRoom;
   late List<CameraDescription> _cameras;
-  TeacherClassCubit({required this.school, required this.awsApiClient})
+  TeacherClassCubit(
+      {required this.school,
+      required this.awsApiClient,
+      required String classRoomID})
       : super(TeacherClassInitial()) {
-    fetchClassRoomDetailsForTeacher(
-        classRoomID: '29d318a3-f09b-4675-bfb0-a73eb7c5dbbd');
+    fetchClassRoomDetailsForTeacher(classRoomID: classRoomID);
   }
 
   Future<void> fetchClassRoomDetailsForTeacher(
@@ -28,6 +31,10 @@ class TeacherClassCubit extends Cubit<TeacherClassState> {
 
     _cameras = await availableCameras();
     emit(ClassDetailsFetched());
+  }
+
+  Future<Student> updateStudent({required Student student}) async {
+    return await awsApiClient.updateStudent(updatedStudent: student);
   }
 
   //getter

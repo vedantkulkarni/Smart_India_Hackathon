@@ -36,6 +36,7 @@ class CameraService {
       description,
       ResolutionPreset.high,
       enableAudio: false,
+      
     );
     await _cameraController?.initialize();
   }

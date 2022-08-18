@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +8,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/atte
 import 'package:image_picker/image_picker.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/amplify_storage_s3_service.dart';
 import '../../../core/constants.dart';
 import '../../../injection_container.dart';
 import '../../../models/Student.dart';
@@ -18,7 +17,7 @@ import '../Attendance/camera_service.dart';
 import '../Attendance/face_detector.dart';
 import '../Attendance/ml_service.dart';
 
-class StudentDetailScreen extends StatelessWidget {
+class StudentDetailScreen extends StatefulWidget {
   final String email;
   final String address;
   final String name;
@@ -34,7 +33,14 @@ class StudentDetailScreen extends StatelessWidget {
       this.student,
       Key? key})
       : super(key: key);
+
+  @override
+  State<StudentDetailScreen> createState() => _StudentDetailScreenState();
+}
+
+class _StudentDetailScreenState extends State<StudentDetailScreen> {
   final ImagePicker _picker = ImagePicker();
+
   void pickImage() async {
     // Pick an image
     // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -47,10 +53,23 @@ class StudentDetailScreen extends StatelessWidget {
     // final XFile? video = await _picker.pickVideo(source: ImageSource.camera);
     // Pick multiple images
     // final List<XFile>? images = await _picker.pickMultiImage();
-    File myFile = File(photo!.path);
-    await uploadFile(file: myFile);
+    // File myFile = File(photo!.path);
+    // await uploadFile(file: myFile);
+    var dURL = await uploadImage(photo!, widget.student!.studentID);
+    var updatedStudent = widget.student!.copyWith(profilePhoto: dURL);
+    widget.student = await BlocProvider.of<TeacherClassCubit>(context)
+        .updateStudent(student: updatedStudent);
+    await  BlocProvider.of<TeacherClassCubit>(context)
+        .fetchClassRoomDetailsForTeacher(
+            classRoomID: widget.student!.classRoomStudentsId!);
+    setState(() {});
     print('uploaded');
   }
+
+  var i = Image.network("https://images.pex"
+      "els.com/photos/220453/pexels-phot"
+      "o-220453.jpeg?auto=compress&c"
+      "s=tinysrgb&w=600");
 
   @override
   Widget build(BuildContext context) {
@@ -75,13 +94,15 @@ class StudentDetailScreen extends StatelessWidget {
                     radius: 72,
                     backgroundColor: backgroundColor,
                     child: CircleAvatar(
+                      // backgroundImage: i.image,
                       backgroundImage: NetworkImage(
-                        student!.profilePhoto ??
+                        widget.student!.profilePhoto ??
                             "https://images.pex"
                                 "els.com/photos/220453/pexels-phot"
                                 "o-220453.jpeg?auto=compress&c"
                                 "s=tinysrgb&w=600",
                       ),
+                      // "https://grandfinaleimages101118-staging.s3.ap-south-1.amazonaws.com/2022-08-13-09-13-45-6893D8C109546D2B"),
                       radius: 70,
                     ),
                   ),
@@ -91,7 +112,7 @@ class StudentDetailScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                student!.studentName,
+                widget.student!.studentName,
                 style: const TextStyle(
                     color: blackColor,
                     fontSize: 26,
@@ -117,7 +138,7 @@ class StudentDetailScreen extends StatelessWidget {
                               fontWeight: FontWeight.normal),
                         ),
                         Text(
-                          email,
+                          widget.email,
                           style: const TextStyle(
                               color: primaryColor,
                               fontSize: 16,
@@ -141,7 +162,7 @@ class StudentDetailScreen extends StatelessWidget {
                               fontWeight: FontWeight.normal),
                         ),
                         Text(
-                          address,
+                          widget.address,
                           style: const TextStyle(
                               color: primaryColor,
                               fontSize: 16,
@@ -165,7 +186,7 @@ class StudentDetailScreen extends StatelessWidget {
                               fontWeight: FontWeight.normal),
                         ),
                         Text(
-                          attendance,
+                          widget.attendance,
                           style: const TextStyle(
                               color: primaryColor,
                               fontSize: 16,
@@ -178,13 +199,13 @@ class StudentDetailScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              student!.modelData == null
+              widget.student!.modelData == null
                   ? SizedBox(
                       height: 40,
                       width: 200,
                       child: CustomTextButton(
                           onPressed: () {
-                            print(student);
+                            print(widget.student);
                             final classCubit =
                                 BlocProvider.of<TeacherClassCubit>(context);
                             final teacherCubit =
@@ -208,8 +229,8 @@ class StudentDetailScreen extends StatelessWidget {
                                           cameraService:
                                               getIt<CameraService>()),
                                       child: AddStudentFacialData(
-                                        cameras: cameras,
-                                        student: student!,
+                                        cameras: widget.cameras,
+                                        student: widget.student!,
                                         mlService:
                                             BlocProvider.of<AttendanceCubit>(
                                                     context)
@@ -227,7 +248,11 @@ class StudentDetailScreen extends StatelessWidget {
                   height: 40,
                   width: 200,
                   child: CustomTextButton(
-                      onPressed: () {}, text: 'Apply for Leave')),
+                      onPressed: () async {
+                        i = await getObjectFromS3();
+                        setState(() {});
+                      },
+                      text: 'Apply for Leave')),
               const SizedBox(
                 height: 40,
               ),

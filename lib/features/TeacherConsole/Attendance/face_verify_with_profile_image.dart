@@ -1,15 +1,18 @@
-import 'dart:convert';
-import 'dart:typed_data';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_face_api/face_api.dart' as Regula;
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify.dart';
+
+import '../../../core/constants.dart';
+import '../../../injection_container.dart';
+import '../Backend/cubit/attendance_cubit.dart';
+import '../Backend/cubit/teacher_class_cubit.dart';
+import 'cam_detection_preview.dart';
+import 'camera_service.dart';
 
 class FaceVerifyWithProfileImage extends StatefulWidget {
-  // Image capturedImage;
-  const FaceVerifyWithProfileImage({
-    Key? key,
-  }) : super(key: key);
+  const FaceVerifyWithProfileImage({Key? key}) : super(key: key);
 
   @override
   State<FaceVerifyWithProfileImage> createState() =>
@@ -18,133 +21,113 @@ class FaceVerifyWithProfileImage extends StatefulWidget {
 
 class _FaceVerifyWithProfileImageState
     extends State<FaceVerifyWithProfileImage> {
-  var image1 = Regula.MatchFacesImage();
-  var image2 = Regula.MatchFacesImage();
-  var img1 =
-      Image.network('https://avatars.githubusercontent.com/u/24658039?v=4');
-
-  var img2 = Image.network(
-      'https://media-exp1.licdn.com/dms/image/C4E03AQEAjY7zppPysw/profile-displayphoto-shrink_400_400/0/1649335610989?e=1665619200&v=beta&t=FP9PZ_7SSbW-EbWxi4bRKuG1zaxXox4qu1nmENzUTSw');
-
-  var _similarity = '';
-
-  Future<Uint8List> getBytesOfNetworkImage(String imageUrl) async {
-    Uint8List bytes =
-        (await NetworkAssetBundle(Uri.parse(imageUrl)).load(imageUrl))
-            .buffer
-            .asUint8List();
-    return bytes;
-  }
-
-  // showAlertDialog(BuildContext context, bool first) => showDialog(
-  //   context: context,
-  //   builder: (BuildContext context) =>
-  //       // AlertDialog(title: const Text("Select option"), actions: [
-  //   // ignore: deprecated_member_use
-  //   FlatButton(
-  //       child: const Text("Use gallery"),
-  //       onPressed: () {
-  //       //   ImagePicker().getImage(source: ImageSource.gallery).then(
-  //       //       (value) => setImage(
-  //       //           first,
-  //       //           io.File(value!.path).readAsBytesSync(),
-  //       //           Regula.ImageType.PRINTED));
-  //       //   Navigator.pop(context);
-  //       // }),
-  //   // ignore: deprecated_member_use
-  //   FlatButton(
-  //       child: const Text("Use camera"),
-  //       onPressed: () {
-  //         Regula.FaceSDK.presentFaceCaptureActivity().then((result) =>
-  //             setImage(
-  //                 first,
-  //                 base64Decode(Regula.FaceCaptureResponse.fromJson(
-  //                         json.decode(result))!
-  //                     .image!
-  //                     .bitmap!
-  //                     .replaceAll("\n", "")),
-  //                 Regula.ImageType.LIVE));
-  //         Navigator.pop(context);
-  //       })
-  // ]));
-  setImage(bool first, List<int> imageFile, int type) {
-    if (imageFile == null) return;
-    setState(() => _similarity = "nil");
-    if (first) {
-      image1.bitmap = base64Encode(imageFile);
-      image1.imageType = type;
-      setState(() {
-        img1 = Image.memory(Uint8List.fromList(imageFile));
-      });
-    } else {
-      image2.bitmap = base64Encode(imageFile);
-      image2.imageType = type;
-      setState(() => img2 = Image.memory(Uint8List.fromList(imageFile)));
-    }
-  }
-
-  matchFaces() {
-    print(image1.bitmap);
-    if (image1.bitmap == null ||
-        image1.bitmap == "" ||
-        image2.bitmap == null ||
-        image2.bitmap == "") return;
-    setState(() => _similarity = "Processing...");
-    var request = Regula.MatchFacesRequest();
-    request.images = [image1, image2];
-    Regula.FaceSDK.matchFaces(jsonEncode(request)).then((value) {
-      var response = Regula.MatchFacesResponse.fromJson(json.decode(value));
-      Regula.FaceSDK.matchFacesSimilarityThresholdSplit(
-              jsonEncode(response!.results), 0.75)
-          .then((str) {
-        var split = Regula.MatchFacesSimilarityThresholdSplit.fromJson(
-            json.decode(str));
-        setState(() => _similarity = split!.matchedFaces.isNotEmpty
-            ? ((split.matchedFaces[0]!.similarity! * 100).toStringAsFixed(2) +
-                "%")
-            : "error");
-      });
-    });
-  }
-
+  final CameraService _cameraService = getIt<CameraService>();
   @override
   Widget build(BuildContext context) {
+    return Stack(children: [
+      CameraDetectionPreview(),
+      CameraUIOverlay(cameraController: _cameraService.cameraController)
+    ]);
+  }
+}
+
+class CameraUIOverlay extends StatefulWidget {
+  final CameraController? cameraController;
+
+  const CameraUIOverlay({Key? key, required this.cameraController})
+      : super(key: key);
+
+  @override
+  State<CameraUIOverlay> createState() => _CameraUIOverlayState();
+}
+
+class _CameraUIOverlayState extends State<CameraUIOverlay> {
+  @override
+  Widget build(BuildContext context) {
+    final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
+    final teacherClassCubit = BlocProvider.of<TeacherClassCubit>(context);
     return Scaffold(
-      body: Container(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          const Text('Face Verify'),
-          Row(
+      backgroundColor: Colors.transparent,
+      body: BlocConsumer<AttendanceCubit, AttendanceState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is ComparingResults) {
+            return progressIndicator;
+          } else if (state is StudentNotRecognized) {
+            return Container(
+              child: const Center(child: Text('Student not recognized')),
+            );
+          } else if (state is InitializingCamera) {
+            return Column(
+              children: [
+                const Spacer(),
+                Container(
+                    color: backgroundColor,
+                    alignment: Alignment.bottomCenter,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: progressIndicator),
+              ],
+            );
+          }
+
+          return Container(
+              child: Column(
             children: [
-              Expanded(
-                child: Image.network(
-                    'https://avatars.githubusercontent.com/u/24658039?v=4'),
+              const Spacer(),
+              Center(
+                child: FloatingActionButton(
+                  backgroundColor: backgroundColor,
+                  onPressed: () async {
+                    final file = await attendanceCubit
+                        .cameraService.cameraController!
+                        .takePicture();
+                    await attendanceCubit.cameraService.cameraController!
+                        .pausePreview();
+
+                    await showMaterialModalBottomSheet(
+                      context: context,
+                      builder: (_) => MultiBlocProvider(
+                        providers: [
+                          BlocProvider.value(value: teacherClassCubit),
+                          BlocProvider.value(value: attendanceCubit)
+                        ],
+                        child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            child: FaceVerify(
+                              capturedImage: file,
+                            )),
+                      ),
+                    );
+                    await attendanceCubit.cameraService.cameraController!
+                        .resumePreview();
+
+                    // attendanceCubit.compareDetectedResults();
+                  },
+                  child: const Icon(
+                    Icons.camera_alt,
+                    size: 25,
+                    color: Colors.black,
+                  ),
+                ),
               ),
-              Expanded(
-                child: Image.network(
-                    'https://media-exp1.licdn.com/dms/image/C4E03AQEAjY7zppPysw/profile-displayphoto-shrink_400_400/0/1649335610989?e=1665619200&v=beta&t=FP9PZ_7SSbW-EbWxi4bRKuG1zaxXox4qu1nmENzUTSw'),
+
+              const SizedBox(
+                height: 20,
               ),
+              // Container(
+              //   height: MediaQuery.of(context).size.height * 0.25,
+              //   width: MediaQuery.of(context).size.width,
+              //   decoration: const BoxDecoration(
+              //       color: whiteColor,
+              //       borderRadius: BorderRadius.only(
+              //           topLeft: Radius.circular(10),
+              //           topRight: Radius.circular(10))),
+              //   child: const AttendanceMarkedForStudentWidget(),
+              // )
             ],
-          ),
-          CustomTextButton(
-              onPressed: () {
-                matchFaces();
-              },
-              text: 'Verify'),
-          CustomTextButton(
-              onPressed: () async {
-                var firstImageasBytes = await getBytesOfNetworkImage(
-                    'https://avatars.githubusercontent.com/u/24658039?v=4');
-                setImage(true, firstImageasBytes, Regula.ImageType.PRINTED);
-                var secon = await getBytesOfNetworkImage(
-                    'https://media-exp1.licdn.com/dms/image/C4E03AQEAjY7zppPysw/profile-displayphoto-shrink_400_400/0/1649335610989?e=1665619200&v=beta&t=FP9PZ_7SSbW-EbWxi4bRKuG1zaxXox4qu1nmENzUTSw');
-                setImage(false, secon, Regula.ImageType.PRINTED);
-              },
-              text: 'Set Both images'),
-          Text(_similarity)
-        ],
-      )),
+          ));
+        },
+      ),
     );
   }
 }

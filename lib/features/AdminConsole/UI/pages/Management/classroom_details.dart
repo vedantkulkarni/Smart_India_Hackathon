@@ -582,7 +582,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           )),
                         ));
                       });
-                  if (result!) {
+                  if (result!=null) {
                     await classCubit.getFullDetailsOfClassRoom(
                         classRoomID: classRoom.id);
                   }

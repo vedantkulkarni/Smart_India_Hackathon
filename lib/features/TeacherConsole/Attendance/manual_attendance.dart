@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -8,6 +7,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/attenda
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/attendance_dialog.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
+import 'package:intl/intl.dart';
 
 class ManualAttendance extends StatefulWidget {
   const ManualAttendance({Key? key}) : super(key: key);
@@ -35,14 +35,47 @@ class _ManualAttendanceState extends State<ManualAttendance> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const SizedBox(
+                        height: 80,
+                      ),
+                      Text(
+                        DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                        style: const TextStyle(
+                          color: blackColor,
+                          fontSize: 22,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      Text(
+                        DateFormat.Hm().format(DateTime.now()),
+                        style: const TextStyle(
+                          color: blackColor,
+                          fontSize: 22,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(
-                  height: 80,
+                  height: 20,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(40.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: FinalAttendanceDetails(
                       presentStudents: attendanceCubit.presentStudents,
                       totalStudents: attendanceCubit.attendanceMap.length),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 const Text(
                   'Attendance successfully uploaded !!',
@@ -269,29 +302,6 @@ class FinalAttendanceDetails extends StatelessWidget {
                 )
               ],
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  '${DateTime.now().weekday}, ${DateTime.now().day} ${DateTime.now().month}, ${DateTime.now().year}',
-                  style: TextStyle(
-                    color: whiteColor.withOpacity(0.7),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins',
-                  ),
-                ),
-                Spacer(),
-                Text(
-                  '${DateTime.now().hour} : ${DateTime.now().minute}',
-                  style: TextStyle(
-                    color: whiteColor.withOpacity(0.7),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins',
-                  ),
-                ),
-              ],
-            )
           ],
         ));
   }

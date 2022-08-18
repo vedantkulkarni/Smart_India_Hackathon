@@ -1,8 +1,7 @@
 part of 'attendance_cubit.dart';
 
-abstract class AttendanceState  {
+abstract class AttendanceState {
   const AttendanceState();
-
 }
 
 class AttendanceInitial extends AttendanceState {}
@@ -21,10 +20,25 @@ class NoFacesDetected extends AttendanceState {}
 
 class StudentNotRecognized extends AttendanceState {}
 
-class FacesDetected extends AttendanceState {}
-class UploadingAttendance extends AttendanceState {}
-class AttendanceUploaded extends AttendanceState {}
+class FacesDetected extends AttendanceState {
+  Rect? rect;
+  FacesDetected(this.rect);
+}
 
+class InitializingCamera extends AttendanceState {}
+
+class CameraInitialized extends AttendanceState {}
+
+class StudentNotSelected extends AttendanceState {}
+
+class StudentSelected extends AttendanceState {
+  final Student student;
+  StudentSelected({required this.student});
+}
+
+class UploadingAttendance extends AttendanceState {}
+
+class AttendanceUploaded extends AttendanceState {}
 
 class AttendanceMarked extends AttendanceState {
   Student student;
