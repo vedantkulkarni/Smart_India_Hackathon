@@ -45,7 +45,6 @@ class _ClassRoomCardState extends State<ClassRoomCard> {
           }));
         },
         child: Container(
-          
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             decoration: BoxDecoration(
@@ -76,7 +75,7 @@ class _ClassRoomCardState extends State<ClassRoomCard> {
                       fontSize: 18),
                 ),
                 const Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris malesuada eget tortor non efficitur.',
+                  'Lorem ipsum dolor sit amet',
                   style: TextStyle(
                       fontWeight: FontWeight.normal,
                       color: lightTextColor,

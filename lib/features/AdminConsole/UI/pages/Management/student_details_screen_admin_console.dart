@@ -41,14 +41,16 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
         Expanded(
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(child: Col1Widget()),
-              const SizedBox(
-                height: 20,
-              ),
-              const Expanded(child: Col2Widget()),
+              Expanded(
+                  child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Col1Widget(),
+              )),
+              const Expanded(
+                  child: Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Col2Widget(),
+              )),
             ],
           ),
         )
@@ -58,8 +60,8 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
 
   Container Col1Widget() {
     return Container(
-      height: 250,
-      width: 400,
+      // height: 250,
+      // width: 400,
       decoration: const BoxDecoration(
         // border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -128,8 +130,8 @@ class Col2Widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
-      width: 400,
+      // height: 250,
+      // width: 400,
       decoration: const BoxDecoration(
         //border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -173,7 +175,7 @@ class Col2Widget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Container(
-                    width: 150,
+                    width: 200,
                     height: 100,
                     decoration: BoxDecoration(
                       color: primaryColor,

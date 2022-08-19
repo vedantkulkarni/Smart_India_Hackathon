@@ -29,18 +29,17 @@ class _CustomTextButtonState extends State<CustomTextButton>
       child: ElevatedButton(
         clipBehavior: Clip.hardEdge,
         style: ElevatedButton.styleFrom(
-            shadowColor: primaryColor,
-            onSurface: primaryColor,
-            side: const BorderSide(style: BorderStyle.none),
-            primary: widget.bgColor ?? primaryColor,
-            onPrimary: widget.textColor ?? whiteColor,
-            textStyle: const TextStyle(
-              fontSize: 14,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.normal,
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10))),
+          shadowColor: primaryColor,
+          onSurface: primaryColor,
+          side: const BorderSide(style: BorderStyle.none),
+          primary: widget.bgColor ?? primaryColor,
+          onPrimary: widget.textColor ?? whiteColor,
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.normal,
+          ),
+        ),
         onPressed: () => widget.onPressed(),
         child: Center(
           child: Text(

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/models/ClassAttendance.dart';
 
 import '../../../../../../models/ClassRoom.dart';
 
@@ -10,6 +11,7 @@ class ClassDetailsCubit extends Cubit<ClassDetailsState> {
   String classRoomId;
   final AWSApiClient awsApiClient;
   late ClassRoom classRoom;
+  List<ClassAttendance>? classAttendanceListDate;
   ClassDetailsCubit({required this.classRoomId, required this.awsApiClient})
       : super(ClassDetailsInitial()) {
     getFullDetailsOfClassRoom(classRoomID: classRoomId);
@@ -22,4 +24,8 @@ class ClassDetailsCubit extends Cubit<ClassDetailsState> {
     // print(classRoo);
     emit(ClassRoomDetialsFetched());
   }
+
+  
+
+   
 }

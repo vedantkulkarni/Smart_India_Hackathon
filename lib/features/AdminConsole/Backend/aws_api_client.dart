@@ -47,6 +47,9 @@ abstract class AWSApiClient {
 
   // Future<Attendance> getAttendance({required })
 
+  Future<List<ClassAttendance>> classAttendanceDateWiseList(
+      {required String classId});
+
   //Elastic Search
   // Future<List<Student>> globalSearch(
   //     {required String searchQuery, required StudentSearchMode mode});//Implement User search also
@@ -880,12 +883,6 @@ query MyQuery {
     }
 
     return returnList;
-  }
-
-  @override
-  Future<ClassAttendance> getClassAttendanceList({required String classID}) {
-    // TODO: implement getClassAttendanceList
-    throw UnimplementedError();
   }
 }
 

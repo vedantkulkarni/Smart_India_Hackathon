@@ -25,6 +25,7 @@ bool get isDesktop {
   ].contains(defaultTargetPlatform);
 }
 
+<<<<<<< HEAD
 Future<void> _configureAmplify() async {
   try {
     final auth = AmplifyAuthCognito();
@@ -43,6 +44,8 @@ Future<void> _configureAmplify() async {
   }
 }
 
+=======
+>>>>>>> 43ce297bfff98d70f3c8efaaaafb7d8ae266f5f9
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.setup();
