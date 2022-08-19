@@ -47,6 +47,9 @@ abstract class AWSApiClient {
 
   // Future<Attendance> getAttendance({required })
 
+  Future<List<ClassAttendance>> classAttendanceDateWiseList(
+      {required String classId});
+
   //Elastic Search
   // Future<List<Student>> globalSearch(
   //     {required String searchQuery, required StudentSearchMode mode});//Implement User search also
@@ -887,13 +890,41 @@ query MyQuery {
     // TODO: implement getClassAttendanceList
     throw UnimplementedError();
   }
-}
 
-String f(var val) {
-  if (val == null) {
-    return null.toString();
-  } 
+  Future<List<ClassAttendance>> classAttendanceDateWiseList(
+      {required String classId}) async {
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+query MyQuery {
+  listClassAttendances(classID: "$classId") {
+    items {
+      classID
+      date
+      presentPercent
+      teacherEmail
+    }
+  }
+}''',
+    };
+    final responseString = await uploadJsonBodyRequest(body);
 
-  var ans = '''"$val"''';
-  return ans;
+    final jsonMap = json.decode(responseString);
+    List<ClassAttendance> returnList = [];
+    for (var classAttendance in jsonMap['data']['listClassAttendances']
+        ['items']) {
+      returnList.add(ClassAttendance.fromJson(classAttendance));
+    }
+
+    return returnList;
+  }
+
+  String f(var val) {
+    if (val == null) {
+      return null.toString();
+    }
+
+    var ans = '''"$val"''';
+    return ans;
+  }
 }

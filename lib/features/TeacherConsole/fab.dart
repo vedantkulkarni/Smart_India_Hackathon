@@ -40,7 +40,7 @@ class _FabState extends State<Fab> {
       children: <Widget>[
         RawMaterialButton(
           onPressed: () {
-            _showSnackBar(context, "You pressed 1");
+            // _showSnackBar(context, "You pressed 1");
           },
           shape: const CircleBorder(),
           padding: const EdgeInsets.all(24.0),
@@ -48,7 +48,7 @@ class _FabState extends State<Fab> {
         ),
         RawMaterialButton(
           onPressed: () {
-            _showSnackBar(context, "You pressed 2");
+            ////  _showSnackBar(context, "You pressed 2");
           },
           shape: const CircleBorder(),
           padding: const EdgeInsets.all(24.0),
@@ -56,7 +56,7 @@ class _FabState extends State<Fab> {
         ),
         RawMaterialButton(
           onPressed: () {
-            _showSnackBar(context, "You pressed 3");
+            // _showSnackBar(context, "You pressed 3");
           },
           shape: const CircleBorder(),
           padding: const EdgeInsets.all(24.0),
@@ -64,9 +64,9 @@ class _FabState extends State<Fab> {
         ),
         RawMaterialButton(
           onPressed: () {
-            _showSnackBar(
-                context, "You pressed 4. This one closes the menu on tap");
-            fabKey.currentState!.close();
+            // _showSnackBar(
+            //     context, "You pressed 4. This one closes the menu on tap");
+            // fabKey.currentState!.close();
           },
           shape: const CircleBorder(),
           padding: const EdgeInsets.all(24.0),
@@ -76,8 +76,8 @@ class _FabState extends State<Fab> {
     );
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(message), duration: const Duration(milliseconds: 100)));
-  }
+  // void _showSnackBar(BuildContext context, String message) {
+  //   Scaffold.of(context).showSnackBar(SnackBar(
+  //       content: Text(message), duration: const Duration(milliseconds: 100)));
+  // }
 }
