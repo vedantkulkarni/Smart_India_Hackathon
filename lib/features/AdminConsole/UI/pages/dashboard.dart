@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/dashboard_card.dart';
+import 'package:get/get.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -21,9 +22,9 @@ class _DashboardState extends State<Dashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Hi!",
-            style: TextStyle(
+          Text(
+            "hello".tr,
+            style: const TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 44,
                 fontFamily: 'Poppins',
@@ -70,7 +71,22 @@ class _DashboardState extends State<Dashboard> {
                 color: Colors.yellow,
               ),
             ],
-          )
+          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     var locale = Locale('hi', 'IN');
+          //     Get.updateLocale(locale);
+          //   },
+          //   child: Container(
+          //     height: 60,
+          //     width: 100,
+          //     color: Colors.red,
+          //     child: Text(
+          //       'Change',
+          //       style: TextStyle(color: Colors.white),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -2,9 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:system_theme/system_theme.dart';
+import 'package:team_dart_knights_sih/languages/localeString.dart';
 import 'package:window_manager/window_manager.dart';
 import 'injection_container.dart' as di;
-
+import 'package:get/get.dart';
 import 'features/Auth/UI/pages/login_screen.dart';
 
 const String appTitle = 'Fluent UI Showcase for Flutter';
@@ -61,7 +62,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
+      translations: LocalString(),
+      locale: Locale('en', 'US'),
       debugShowCheckedModeBanner: false,
       home: LoginScreen(),
     );
