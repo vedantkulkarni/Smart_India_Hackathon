@@ -6,11 +6,11 @@ import 'package:lottie/lottie.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/cam_detection_preview.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
+import 'package:team_dart_knights_sih/models/AttendanceStatus.dart';
 
 import '../../../injection_container.dart';
 import 'camera_service.dart';
 import 'face_detector.dart';
-import 'mediapipe/face_detection_painter.dart';
 import 'ml_service.dart';
 
 class MarkAttendnacePage extends StatefulWidget {
@@ -27,13 +27,7 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
   Face? faceDetected;
   Size? imageSize;
 
-  final bool _detectingFaces = false;
   bool pictureTaken = false;
-
-  final bool _initializing = false;
-
-  bool _saving = true;
-  bool _bottomSheetVisible = false;
 
   // service injection
   final FaceDetectorService _faceDetectorService = getIt<FaceDetectorService>();
@@ -47,90 +41,72 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
   @override
   void dispose() {
     _cameraService.dispose();
+
+    BlocProvider.of<AttendanceCubit>(context).disposeIsolate();
+    BlocProvider.of<AttendanceCubit>(context).mlService.dispose();
     super.dispose();
   }
 
-  // _start() async {
-  //   setState(() => _initializing = true);
-  //   await _cameraService.initialize();
-  //   _faceDetectorService.initialize();
-  //   await widget.mlService.initialize();
-  //   setState(() => _initializing = false);
-
-  //   // _frameFaces();
-  // }
-
-  Future<bool> onShot() async {
-    if (faceDetected == null) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const AlertDialog(
-            content: Text('No face detected!'),
-          );
-        },
-      );
-
-      return false;
-    } else {
-      _saving = true;
-      await Future.delayed(const Duration(milliseconds: 500));
-      // await _cameraService.cameraController?.stopImageStream();
-      await Future.delayed(const Duration(milliseconds: 200));
-      XFile? file = await _cameraService.takePicture();
-      imagePath = file?.path;
-
-      setState(() {
-        _bottomSheetVisible = true;
-        pictureTaken = true;
-      });
-
-      return true;
-    }
-  }
-
-  _onBackPressed() {
-    Navigator.of(context).pop();
-  }
-
-  _reload() {
-    setState(() {
-      _bottomSheetVisible = false;
-      pictureTaken = false;
-    });
-    // _start();
-  }
-
-  late double _ratio;
-
+  bool isSelect = false;
+  bool isShow = false;
   @override
   Widget build(BuildContext context) {
+    final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
+    return BlocConsumer<AttendanceCubit, AttendanceState>(
+      listener: (context, state) async {
+        if (state is FacesDetected) {
+          isSelect = true;
+        } else if (state is AttendanceMarked) {
+          bool? result = await showModalBottomSheet<bool>(
+              context: context,
+              builder: (_) => BlocProvider.value(
+                    value: attendanceCubit,
+                    child: CameraUIOverlay(
+                        cameraController: _cameraService.cameraController),
+                  ));
 
-
-   
-    return BlocBuilder<AttendanceCubit, AttendanceState>(
+          if (result == null || result == false) {
+            print("attendance not marked");
+          } else {
+            attendanceCubit.attendanceMap.putIfAbsent(
+                (state).student.studentID, () => AttendanceStatus.Present);
+          }
+          _cameraService.cameraController!.resumePreview();
+        }
+      },
       builder: (context, state) {
-        
-
         return Stack(children: [
           CameraDetectionPreview(),
-          // CameraUIOverlay(cameraController: _cameraService.cameraController)
+          if (isSelect)
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 60),
+                  child: FloatingActionButton.large(
+                    onPressed: () async {
+                      attendanceCubit.cameraService.cameraController!
+                          .pausePreview();
+                      attendanceCubit.setCurrentPrediction();
+                      await attendanceCubit.compareDetectedResults();
+                    },
+                    backgroundColor: primaryColor,
+                    child: const Icon(
+                      Icons.camera_alt_outlined,
+                      color: whiteColor,
+                      size: 22,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ]);
       },
     );
   }
 }
-
-// Widget get _drawBoundingBox {
-
-//   return _ModelPainter(
-//     customPainter: FaceDetectionPainter(
-//       bbox: bbox ?? Rect.zero,
-//       ratio: _ratio,
-//     ),
-//   );
-//   // return Container();
-// }
 
 class CameraUIOverlay extends StatefulWidget {
   final CameraController? cameraController;
@@ -170,47 +146,7 @@ class _CameraUIOverlayState extends State<CameraUIOverlay> {
             );
           }
 
-          return Container(
-              child: Column(
-            children: [
-              const Spacer(),
-              FloatingActionButton(
-                backgroundColor: backgroundColor,
-                onPressed: () {
-                  attendanceCubit.compareDetectedResults();
-                },
-                child: const Icon(
-                  Icons.start,
-                  size: 25,
-                  color: Colors.black,
-                ),
-              ),
-              FloatingActionButton(
-                backgroundColor: backgroundColor,
-                onPressed: () {
-                  attendanceCubit.startPredicting();
-                },
-                child: const Icon(
-                  Icons.camera_alt,
-                  size: 25,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.25,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10))),
-                child: const AttendanceMarkedForStudentWidget(),
-              )
-            ],
-          ));
+          return Container(child: const AttendanceMarkedForStudentWidget());
         },
       ),
     );
@@ -246,7 +182,7 @@ class _AttendanceMarkedForStudentWidgetState
         builder: (context, state) {
           if (state is AttendanceInitial) {
             return progressIndicator;
-          } else if (state is ScanningAttendance ||
+          } else if (state is StartingImageStream ||
               state is MLModelInitialized) {
             return Container(
               child: Column(

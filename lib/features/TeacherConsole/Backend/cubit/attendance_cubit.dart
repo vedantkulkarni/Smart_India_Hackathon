@@ -41,11 +41,6 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   bool _detectingFaces = false;
   bool pictureTaken = false;
 
-  final bool _initializing = false;
-
-  final bool _saving = true;
-  final bool _bottomSheetVisible = false;
-
   // final ClassRoom classRoom;
   AttendanceCubit(
       {required this.apiClient,
@@ -57,16 +52,26 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       this.studList})
       : super(AttendanceInitial()) {
     print(mode);
-    initializeInterPreter();
+
     if (mode == VerificationStatus.ManualAttendance) {
       initAttendance(studList!);
     } else if (mode == VerificationStatus.FaceVerified) {
       initCamera();
     } else if (mode == VerificationStatus.FaceDetectedAndVerified) {
-      initCamera();
+      initServices(mode);
     } else {
       faceDetectorService.initialize();
       initializeInterPreter();
+      initializeMediapipe();
+    }
+  }
+
+  Future<void> initServices(VerificationStatus mode) async {
+    if (mode == VerificationStatus.FaceDetectedAndVerified) {
+      await initializeInterPreter();
+      await initCamera();
+      // await initializeMediapipe();
+      faceDetectorService.initialize();
     }
   }
 
@@ -79,18 +84,24 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
   Future<void> initializeInterPreter() async {
     emit(InitializingMLModel());
-    faceDetectorService.initialize();
 
     await mlService.initialize();
-    await initializeMediapipe();
+
     print("model initializedb");
     emit(MLModelInitialized());
+  }
+
+  Future<Face> detectFaceFromImage(InputImage image) async {
+    List<Face> faces =
+        await faceDetectorService.faceDetector.processImage(image);
+    print(faces[0].boundingBox);
+    return faces[0];
   }
 
   void startPredicting() {
     imageSize = cameraService.getImageSize();
     print(imageSize);
-    emit(ScanningAttendance());
+    emit(StartingImageStream());
     cameraService.cameraController?.startImageStream((image) async {
       if (cameraService.cameraController != null) {
         if (_detectingFaces) return;
@@ -101,7 +112,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
           await faceDetectorService.detectFacesFromImage(image);
           if (faceDetectorService.faces.isNotEmpty) {
             faceDetected = faceDetectorService.faces[0];
-            emit(FacesDetected(Rect.zero));
+            // emit(FacesDetected());
 
             // mlService.setCurrentPrediction(image, faceDetected);
 
@@ -117,18 +128,6 @@ class AttendanceCubit extends Cubit<AttendanceState> {
         }
       }
     });
-  }
-
-  Future<void> compareDetectedResults() async {
-    emit(ComparingResults());
-    final result = await mlService.predict();
-    if (result == null) {
-      print('student not recognized');
-      emit(StudentNotRecognized());
-    } else {
-      print('attendance marked for student : $result');
-      emit(AttendanceMarked(student: result));
-    }
   }
 
   Future<void> addStudentFacialDataToDatabase(
@@ -245,119 +244,135 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   Future<void> initializeMediapipe() async {
     await _isolateUtils.initIsolate();
     _modelInferenceService.setModelConfig(0);
-
-    // NormalizeOp _normalizeInput = NormalizeOp(127.5, 127.5);
+    // await cameraService.cameraController!.buildPreview();
+    emit(InitializedAllServices());
   }
 
   var isPredicting = false;
-
+  CameraImage? _cameraImage;
+  Rect? face;
   void startPredictingMediaPipe(BuildContext context) {
-    print("started predicting with mediapipe");
-    // imageSize = cameraService.getImageSize();
     isPredicting = true;
     imageSize = cameraService.getImageSize();
-
-    print(imageSize);
-    emit(ScanningAttendance());
-    print("started image stream");
+    emit(StartingImageStream());
     cameraService.cameraController?.startImageStream((cameraImage) async {
+      _cameraImage = cameraImage;
+
       if (cameraService.cameraController != null) {
         if (_detectingFaces) return;
 
         _detectingFaces = true;
         await _inference(cameraImage: cameraImage);
 
-        try {
-          // await faceDetectorService.detectFacesFromImage(image);
-          // if (faceDetectorService.faces.isNotEmpty) {
-          //   faceDetected = faceDetectorService.faces[0];
-          if (_modelInferenceService.inferenceResults != null) {
-            emit(FacesDetected(
-                _modelInferenceService.inferenceResults!['bbox']));
+        // try {
+        //   if (_modelInferenceService.inferenceResults != null) {
+        //     mlService.setCurrentPrediction(
+        //         cameraImage, _modelInferenceService.inferenceResults!['bbox']);
 
-            mlService.setCurrentPrediction(
-                cameraImage, _modelInferenceService.inferenceResults!['bbox']);
+        //     await mlService.predict();
+        //     print(mlService.predictedData);
 
-            await mlService.predict();
-            print(mlService.predictedData);
+        //     emit(CurrentPredictionSet());
+        //   } else {
+        //     emit(NoFacesDetected());
+        //   }
 
-            emit(CurrentPredictionSet());
-          } else {
-            emit(NoFacesDetected());
-          }
-
-          _detectingFaces = false;
-        } catch (e) {
-          print(e);
-          _detectingFaces = false;
-        }
+        //   _detectingFaces = false;
+        // } catch (e) {
+        //   print(e);
+        //   _detectingFaces = false;
+        // }
       }
     });
   }
 
-  void facialDataMediapipeUpload(BuildContext context) {
-     isPredicting = true;
-    imageSize = cameraService.getImageSize();
+  // void facialDataMediapipeUpload(BuildContext context) {
+  //   isPredicting = true;
+  //   imageSize = cameraService.getImageSize();
 
-    print(imageSize);
-    emit(ScanningAttendance());
-    print("started image stream");
-    cameraService.cameraController?.startImageStream((cameraImage) async {
-      if (cameraService.cameraController != null) {
-        if (_detectingFaces) return;
+  //   print(imageSize);
+  //   emit(StartingImageStream());
+  //   print("started image stream");
+  //   cameraService.cameraController?.startImageStream((cameraImage) async {
+  //     if (cameraService.cameraController != null) {
+  //       if (_detectingFaces) return;
 
-        _detectingFaces = true;
-        await _inference(cameraImage: cameraImage);
+  //       _detectingFaces = true;
+  //       await _inference(cameraImage: cameraImage);
 
-        try {
-          // await faceDetectorService.detectFacesFromImage(image);
-          // if (faceDetectorService.faces.isNotEmpty) {
-          //   faceDetected = faceDetectorService.faces[0];
-          if (_modelInferenceService.inferenceResults != null) {
-            emit(FacesDetected(
-                _modelInferenceService.inferenceResults!['bbox']));
+  //       try {
+  //         // await faceDetectorService.detectFacesFromImage(image);
+  //         // if (faceDetectorService.faces.isNotEmpty) {
+  //         //   faceDetected = faceDetectorService.faces[0];
+  //         if (_modelInferenceService.inferenceResults != null) {
+  //           mlService.setCurrentPrediction(
+  //               cameraImage, _modelInferenceService.inferenceResults!['bbox']);
 
-            mlService.setCurrentPrediction(
-                cameraImage, _modelInferenceService.inferenceResults!['bbox']);
+  //           print(mlService.predictedData);
 
-           
-            print(mlService.predictedData);
+  //           emit(CurrentPredictionSet());
+  //         } else {
+  //           emit(NoFacesDetected());
+  //         }
 
-            emit(CurrentPredictionSet());
-          } else {
-            emit(NoFacesDetected());
-          }
-
-          _detectingFaces = false;
-        } catch (e) {
-          print(e);
-          _detectingFaces = false;
-        }
-      }
-    });
-  }
+  //         _detectingFaces = false;
+  //       } catch (e) {
+  //         print(e);
+  //         _detectingFaces = false;
+  //       }
+  //     }
+  //   });
+  // }
 
   Future<void> _inference({required CameraImage cameraImage}) async {
     // if (!mounted) return;
-    print("inside inference funciton");
+
     if (_modelInferenceService.model.interpreter != null) {
       // if (_detectingFaces) {
       //   return;
       // }
 
       _detectingFaces = true;
-      print("sending camera image for inference");
+
       await _modelInferenceService.inference(
         isolateUtils: _isolateUtils,
         cameraImage: cameraImage,
       );
+
       print(_modelInferenceService.inferenceResults);
-      emit(FacesDetected(_modelInferenceService.inferenceResults?['bbox']));
+      if (_modelInferenceService.inferenceResults != null) {
+        face = _modelInferenceService.inferenceResults?['bbox'];
+        emit(FacesDetected(
+            cameraImage, _modelInferenceService.inferenceResults?['bbox']));
+      }
 
       _detectingFaces = false;
     } else {
       print("interpreter is null");
     }
+  }
+
+  Future<void> setCurrentPrediction({Face? detectedFace,}) async {
+    print('Setting current prediction');
+    face = detectedFace!.boundingBox;
+    mlService.setCurrentPrediction(_cameraImage!, face);
+    emit(CurrentPredictionSet());
+  }
+
+  Future<void> compareDetectedResults() async {
+    emit(ComparingResults());
+    final result = await mlService.predict();
+    if (result == null) {
+      print('student not recognized');
+      emit(StudentNotRecognized());
+    } else {
+      print('attendance marked for student : $result');
+      emit(AttendanceMarked(student: result));
+    }
+  }
+
+  void disposeIsolate() {
+    _isolateUtils.dispose();
   }
 
   Map<String, dynamic>? get inferenceResults {

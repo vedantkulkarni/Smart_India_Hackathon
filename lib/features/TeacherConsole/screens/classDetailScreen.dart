@@ -10,6 +10,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_ve
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/liveness.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/manual_attendance.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/static_face_scan.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
@@ -21,6 +22,7 @@ import 'package:team_dart_knights_sih/injection_container.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../core/constants.dart';
+import '../Attendance/new_approach.dart';
 
 class ClassDetailScreen extends StatefulWidget {
   final String className;
@@ -372,9 +374,11 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
       VerificationStatus verificationStatus, MLService mlService) {
     switch (verificationStatus) {
       case VerificationStatus.FaceDetectedAndVerified:
-        return MarkAttendnacePage(mlService: mlService);
+        // return MarkAttendnacePage(mlService: mlService);
+        // return const StaticFaceScan();
+        return const FaceVerifyScreen();
       case VerificationStatus.FaceVerified:
-        return FaceVerifyWithProfileImage();
+        return const FaceVerifyWithProfileImage();
       case VerificationStatus.FaceVerifiedWithLiveness:
         return LivenessDetectionScreen();
       case VerificationStatus.ManualAttendance:
