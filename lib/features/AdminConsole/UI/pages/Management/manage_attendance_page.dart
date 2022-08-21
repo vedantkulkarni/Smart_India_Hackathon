@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import '../../../../../core/constants.dart';
 
@@ -42,7 +43,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 250,
+        height: 250.h,
         decoration: BoxDecoration(
           // gradient: const LinearGradient(
           //     colors: whiteColor,
@@ -90,7 +91,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: Container(
-                      width: 100,
+                      width: 100.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: primaryColor),
@@ -111,7 +112,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: Container(
-                      width: 100,
+                      width: 100.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: primaryColor),
@@ -132,7 +133,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Container(
-                      width: 100,
+                      width: 100.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: primaryColor),
@@ -167,8 +168,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
 
 Container Col1Widget() {
   return Container(
-    height: 250,
-    width: 400,
+    height: 250.h,
+    width: 400.w,
     decoration: const BoxDecoration(
       // border: Border.all(color: Colors.black),
       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -176,12 +177,12 @@ Container Col1Widget() {
       color: backgroundColor,
     ),
     child: Column(children: [
-      const Padding(
+      Padding(
         padding: EdgeInsets.all(10),
         child: Text(
           'Attendance log',
-          style:
-              TextStyle(fontFamily: 'Poppins', fontSize: 15, color: blackColor),
+          style: TextStyle(
+              fontFamily: 'Poppins', fontSize: 15.sp, color: blackColor),
         ),
       ),
       Expanded(
@@ -190,13 +191,13 @@ Container Col1Widget() {
                 child: const Center(
               child: Text('No Students added yet'),
             )),
-            dataTextStyle: const TextStyle(
-                fontSize: 14,
+            dataTextStyle: TextStyle(
+                fontSize: 14.sp,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.normal,
                 color: blackColor),
-            headingTextStyle: const TextStyle(
-                fontSize: 16,
+            headingTextStyle: TextStyle(
+                fontSize: 16.sp,
                 color: blackColor,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold),

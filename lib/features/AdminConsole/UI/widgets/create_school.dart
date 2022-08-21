@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
@@ -21,8 +22,8 @@ class _CreateSchoolPageState extends State<CreateSchoolPage> {
       body: Container(
         child: Column(
           children: [
-            const SizedBox(
-              height: 60,
+             SizedBox(
+              height: 60.h,
             ),
              CustomTextField(
                 hintText: 'School Name',
@@ -44,8 +45,8 @@ class _CreateSchoolPageState extends State<CreateSchoolPage> {
                 hintText: 'location',
                 
                 padding: EdgeInsets.all(20)),
-            const SizedBox(
-              height: 60,
+             SizedBox(
+              height: 60.h,
             ),
             CustomTextButton(
                 onPressed: () async {

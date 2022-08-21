@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
@@ -54,10 +55,10 @@ class StudentCard extends StatelessWidget {
               ),
               FittedBox(
                 child: Text(student.studentName.trim().split(' ')[0],
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: primaryColor,
                         fontFamily: 'Poppins',
-                        fontSize: 14)),
+                        fontSize: 14.sp)),
               )
             ],
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/user_profile_card.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
@@ -24,13 +25,16 @@ class _AssignTeacherToClassRoomState extends State<AssignTeacherToClassRoom> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+        double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    ScreenUtil.init(context, designSize: Size(width, height));
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     return Container(
       color: backgroundColor,
       child: Column(
         children: [
-          const SizedBox(
-            height: 40,
+           SizedBox(
+            height: 40.h,
           ),
           Container(
             margin: const EdgeInsets.all(10),

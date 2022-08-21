@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/classroom_card.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
@@ -60,13 +61,13 @@ class _ManageClassroomState extends State<ManageClassroom> {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Row(
                         children: [
-                          const Text('Show',
+                           Text('Show',
                               style: TextStyle(
                                   color: blackColor,
                                   fontFamily: 'Poppins',
-                                  fontSize: 14)),
-                          const SizedBox(
-                            width: 10,
+                                  fontSize: 14.sp)),
+                           SizedBox(
+                            width: 10.w,
                           ),
                           DropdownButton<int>(
                             icon: null,
@@ -77,13 +78,13 @@ class _ManageClassroomState extends State<ManageClassroom> {
                             borderRadius: BorderRadius.circular(10),
                             value: 10,
                             onChanged: (value) {},
-                            items: const [
+                            items:  [
                               DropdownMenuItem(
                                 child: Text('10',
                                     style: TextStyle(
                                         color: primaryColor,
                                         fontFamily: 'Poppins',
-                                        fontSize: 14)),
+                                        fontSize: 14.sp)),
                                 value: 10,
                               ),
                               DropdownMenuItem(
@@ -91,19 +92,19 @@ class _ManageClassroomState extends State<ManageClassroom> {
                                       style: TextStyle(
                                           color: primaryColor,
                                           fontFamily: 'Poppins',
-                                          fontSize: 14)),
+                                          fontSize: 14.sp)),
                                   value: 20),
                               DropdownMenuItem(
                                   child: Text('30',
                                       style: TextStyle(
                                           color: primaryColor,
                                           fontFamily: 'Poppins',
-                                          fontSize: 14)),
+                                          fontSize: 14.sp)),
                                   value: 30)
                             ],
                           ),
-                          const SizedBox(
-                            width: 20,
+                           SizedBox(
+                            width: 20.w,
                           ),
                           const Spacer(),
                           CustomTextButton(
@@ -137,9 +138,9 @@ class _ManageClassroomState extends State<ManageClassroom> {
                             margin: const EdgeInsets.all(10),
                             child: CustomTextField(
                               hintText: 'Search',
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 20),
-                              width: 300,
+                              padding:  EdgeInsets.symmetric(
+                                  horizontal: 10.w, vertical: 20.h),
+                              width: 300.w,
                               prefixIcon: const Icon(
                                 Icons.search,
                                 size: 14,

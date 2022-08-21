@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -315,24 +316,25 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                     //     )
                     //   ],
                     // ),
-                    const SizedBox(
-                      height: 30,
+                    SizedBox(
+                      height: 30.h,
                     ),
                     SizedBox(
-                        width: 150,
-                        height: 40,
-                        child: CustomTextButton(
-                            onPressed: () async {
-                              final student = _submit();
-                              if (student != null) {
-                                await managementCubit.createStudent(
-                                    student: student);
-                                Navigator.pop(context);
-                              } else {
-                                return;
-                              }
-                            },
-                            text: 'Submit'))
+                      width: 150.w,
+                      height: 40.h,
+                      child: CustomTextButton(
+                          onPressed: () async {
+                            final student = _submit();
+                            if (student != null) {
+                              await managementCubit.createStudent(
+                                  student: student);
+                              Navigator.pop(context);
+                            } else {
+                              return;
+                            }
+                          },
+                          text: 'Submit'),
+                    )
                   ],
                 ),
               ),

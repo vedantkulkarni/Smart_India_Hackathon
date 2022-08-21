@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 
 class CustomTextButton extends StatefulWidget {
@@ -34,8 +35,8 @@ class _CustomTextButtonState extends State<CustomTextButton>
           side: const BorderSide(style: BorderStyle.none),
           primary: widget.bgColor ?? primaryColor,
           onPrimary: widget.textColor ?? whiteColor,
-          textStyle: const TextStyle(
-            fontSize: 14,
+          textStyle: TextStyle(
+            fontSize: 14.sp,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.normal,
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants.dart';
 
@@ -26,6 +27,9 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    // ScreenUtil.init(context, designSize: Size(width, height));
     return SizedBox(
       width: width,
       child: Column(
@@ -35,9 +39,9 @@ class CustomTextField extends StatelessWidget {
               ? Container()
               : Text(
                   heading!,
-                  style: const TextStyle(
+                  style:  TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       color: lightTextColor),
                 ),
           TextFormField(

@@ -2,6 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/common_search.dart';
@@ -44,7 +45,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
               width: double.maxFinite,
               height: double.maxFinite,
               color: backgroundColor,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -71,7 +72,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                       // ),
                       const Spacer(),
                       SizedBox(
-                          width: 200,
+                          width: 200.w,
                           child: CustomTextButton(
                               onPressed: () async {
                                 await showDialog(
@@ -89,11 +90,11 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                     });
                               },
                               text: 'Search')),
-                      const SizedBox(
-                        width: 40,
+                      SizedBox(
+                        width: 40.w,
                       ),
                       SizedBox(
-                          width: 200,
+                          width: 200.w,
                           child: CustomTextButton(
                               onPressed: () async {
                                 await Navigator.of(context)
@@ -126,13 +127,13 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                               text: 'Add Student')),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 10.h),
                       decoration: BoxDecoration(
                         boxShadow: const [
                           BoxShadow(
@@ -148,13 +149,13 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                             child: const Center(
                           child: Text('No Students added yet'),
                         )),
-                        dataTextStyle: const TextStyle(
-                            fontSize: 14,
+                        dataTextStyle: TextStyle(
+                            fontSize: 14.sp,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                             color: blackColor),
-                        headingTextStyle: const TextStyle(
-                            fontSize: 16,
+                        headingTextStyle: TextStyle(
+                            fontSize: 16.sp,
                             color: blackColor,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.bold),
@@ -251,8 +252,8 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: 40.h,
                   )
                 ],
               ));
@@ -285,8 +286,8 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Row(
             children: [
@@ -311,11 +312,11 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   )),
             ],
           ),
-          const Align(
+          Align(
             alignment: Alignment.center,
             child: SizedBox(
-              height: 150,
-              width: 150,
+              height: 150.h,
+              width: 150.w,
               child: CircleAvatar(
                 backgroundColor: textFieldFillColor,
                 child: Center(child: Icon(fi.FluentIcons.photo2_add)),
@@ -330,28 +331,28 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
               student.profilePhoto ?? 'Unknown',
               style: const TextStyle(color: greyColor, fontFamily: 'Poppins'),
             ),
-            const SizedBox(
-              width: 10,
+            SizedBox(
+              width: 10.w,
             ),
             const Text('|',
                 style: TextStyle(color: primaryColor, fontFamily: 'Poppins')),
-            const SizedBox(
-              width: 10,
+            SizedBox(
+              width: 10.w,
             ),
             Text(student.profilePhoto == null ? 'Unknown' : '23',
                 style:
                     const TextStyle(color: greyColor, fontFamily: 'Poppins')),
-            const SizedBox(
-              width: 10,
+            SizedBox(
+              width: 10.w,
             ),
             const Text('|',
                 style: TextStyle(color: primaryColor, fontFamily: 'Poppins')),
-            const SizedBox(
-              width: 10,
+            SizedBox(
+              width: 10.w,
             ),
           ]),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Row(
             children: [
@@ -364,8 +365,8 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   heading: 'First Name',
                 ),
               ),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: 10.w,
               ),
               Expanded(
                 child: CustomTextField(
@@ -393,8 +394,8 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   heading: 'Email',
                 ),
               ),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: 10.w,
               ),
               Expanded(
                 child: CustomTextField(
@@ -414,8 +415,8 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
             padding: const EdgeInsets.all(5),
             heading: 'Address',
           ),
-          const SizedBox(
-            height: 30,
+          SizedBox(
+            height: 30.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

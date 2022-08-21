@@ -69,6 +69,8 @@ dependencies:
   fab_circular_menu: ^1.0.2
   image_picker: ^0.8.5+3
   geolocator: ^9.0.1
+  flutter_screenutil: ^5.5.3+2
+  
 
 dev_dependencies:
   flutter_test:
