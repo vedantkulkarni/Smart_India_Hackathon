@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/classroom_card.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../injection_container.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
@@ -60,8 +60,8 @@ class _ManageClassroomState extends State<ManageClassroom> {
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Row(
                         children: [
-                          const Text('Show',
-                              style: TextStyle(
+                          Text('Show'.tr,
+                              style: const TextStyle(
                                   color: blackColor,
                                   fontFamily: 'Poppins',
                                   fontSize: 14)),
@@ -108,35 +108,40 @@ class _ManageClassroomState extends State<ManageClassroom> {
                           const Spacer(),
                           CustomTextButton(
                               onPressed: () async {
-                              
                                 final classRoom = await showDialog(
                                   context: context,
                                   builder: (_) {
-                                    return MultiBlocProvider(providers: [
-                                      BlocProvider.value(
-                                          value: BlocProvider.of<AdminCubit>(
-                                              context)),
-                                      BlocProvider(
-                                          create: (context) => ManagementCubit(
-                                              awsApiClient:
-                                                  getIt<AWSApiClient>(),
-                                              managementMode:
-                                                  ManagementMode.Teachers)),
-                                    ], child: CustomDialogBox(widget: const CreateClassRoom()));
+                                    return MultiBlocProvider(
+                                        providers: [
+                                          BlocProvider.value(
+                                              value:
+                                                  BlocProvider.of<AdminCubit>(
+                                                      context)),
+                                          BlocProvider(
+                                              create: (context) =>
+                                                  ManagementCubit(
+                                                      awsApiClient:
+                                                          getIt<AWSApiClient>(),
+                                                      managementMode:
+                                                          ManagementMode
+                                                              .Teachers)),
+                                        ],
+                                        child: CustomDialogBox(
+                                            widget: const CreateClassRoom()));
                                   },
                                 );
 
-                                if(classRoom!=null)
-                                {
-                                  await BlocProvider.of<ManagementCubit>(context)
-                                    .getAllClassRooms(limit: 10);
+                                if (classRoom != null) {
+                                  await BlocProvider.of<ManagementCubit>(
+                                          context)
+                                      .getAllClassRooms(limit: 10);
                                 }
                               },
-                              text: 'Add Classroom'),
+                              text: 'Add'.tr + 'Classroom'.tr),
                           Container(
                             margin: const EdgeInsets.all(10),
                             child: CustomTextField(
-                              hintText: 'Search',
+                              hintText: 'Search'.tr,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 20),
                               width: 300,
