@@ -4,7 +4,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/user_profile_card.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/Role.dart';
@@ -50,8 +50,8 @@ class _ManageUsersState extends State<ManageUsers> {
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Row(
                     children: [
-                      const Text('Show',
-                          style: TextStyle(
+                      Text('Show'.tr,
+                          style: const TextStyle(
                               color: blackColor,
                               fontFamily: 'Poppins',
                               fontSize: 14)),
@@ -107,25 +107,25 @@ class _ManageUsersState extends State<ManageUsers> {
                           role = value!;
                           managementCubit.getAllUsers(role: value);
                         },
-                        items: const [
+                        items: [
                           DropdownMenuItem(
-                            child: Text('SuperAdmin',
-                                style: TextStyle(
+                            child: Text('SuperAdmin'.tr,
+                                style: const TextStyle(
                                     color: primaryColor,
                                     fontFamily: 'Poppins',
                                     fontSize: 14)),
                             value: Role.SuperAdmin,
                           ),
                           DropdownMenuItem(
-                              child: Text('Admin',
-                                  style: TextStyle(
+                              child: Text('Admin'.tr,
+                                  style: const TextStyle(
                                       color: primaryColor,
                                       fontFamily: 'Poppins',
                                       fontSize: 14)),
                               value: Role.Admin),
                           DropdownMenuItem(
-                              child: Text('Teacher',
-                                  style: TextStyle(
+                              child: Text('Teachers'.tr,
+                                  style: const TextStyle(
                                       color: primaryColor,
                                       fontFamily: 'Poppins',
                                       fontSize: 14)),
@@ -152,11 +152,11 @@ class _ManageUsersState extends State<ManageUsers> {
                             await BlocProvider.of<ManagementCubit>(context)
                                 .getAllUsers(role: role);
                           },
-                          text: 'Add User'),
+                          text: 'Add User'.tr),
                       Container(
                         margin: const EdgeInsets.all(10),
                         child: CustomTextField(
-                          hintText: 'Search',
+                          hintText: 'Search'.tr,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 20),
                           width: 300,

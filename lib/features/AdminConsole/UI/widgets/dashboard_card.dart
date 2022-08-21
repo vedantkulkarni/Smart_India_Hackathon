@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:get/get.dart';
 
 class DashboardCard extends StatelessWidget {
   String user;
@@ -44,7 +45,7 @@ class DashboardCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    user,
+                    user.tr,
                     style: const TextStyle(
                         fontWeight: FontWeight.normal,
                         color: greyColor,

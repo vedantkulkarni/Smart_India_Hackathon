@@ -5,7 +5,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/a
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
 
 class AddStudentsPage extends StatefulWidget {
@@ -91,7 +91,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                               controller: _nameController,
                               validator: ((value) {
                                 if (value!.isEmpty) {
-                                  return 'Please enter a name';
+                                  return 'Please enter a name'.tr;
                                 }
                                 return null;
                               }),

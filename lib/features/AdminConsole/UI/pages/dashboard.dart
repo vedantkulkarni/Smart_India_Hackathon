@@ -23,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "hello".tr,
+            "hi".tr,
             style: const TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 44,
@@ -41,9 +41,9 @@ class _DashboardState extends State<Dashboard> {
           const SizedBox(
             height: 60,
           ),
-          const Text(
-            "DashBoard",
-            style: TextStyle(
+          Text(
+            "DashBoard".tr,
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
                 fontFamily: 'Poppins',
@@ -72,21 +72,6 @@ class _DashboardState extends State<Dashboard> {
               ),
             ],
           ),
-          // GestureDetector(
-          //   onTap: () {
-          //     var locale = Locale('hi', 'IN');
-          //     Get.updateLocale(locale);
-          //   },
-          //   child: Container(
-          //     height: 60,
-          //     width: 100,
-          //     color: Colors.red,
-          //     child: Text(
-          //       'Change',
-          //       style: TextStyle(color: Colors.white),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
