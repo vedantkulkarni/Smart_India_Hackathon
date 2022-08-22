@@ -82,7 +82,7 @@ class _StudentSearchResultState extends State<StudentSearchResult> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: Container(
-          padding: const EdgeInsets.all(10),
+          padding:  EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: textFieldFillColor,

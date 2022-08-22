@@ -28,10 +28,10 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
         double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // double width = MediaQuery.of(context).size.width;
     // ScreenUtil.init(context, designSize: Size(width, height));
     return SizedBox(
-      width: width,
+      width: width == null ? MediaQuery.of(context).size.width.w : width!.w ,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
