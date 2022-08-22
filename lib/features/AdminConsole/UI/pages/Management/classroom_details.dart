@@ -12,7 +12,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../models/User.dart';
 import 'cubit/management_cubit.dart';
@@ -322,7 +322,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Today\'s Attendance',
+                              'Today'.tr + '\nAttendance'.tr,
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontFamily: 'Poppins',
@@ -338,7 +338,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                   color: whiteColor),
                             ),
                             Text(
-                              'present out of 56',
+                              'present out of 56'.tr,
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontFamily: 'Poppins',
@@ -378,7 +378,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                       );
                                     });
                               },
-                              child: const Text('View'),
+                              child: Text('View'.tr),
                             ),
                           ],
                         ),
@@ -387,7 +387,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                   ),
                 ),
               ),
-               SizedBox(
+              SizedBox(
                 width: 80.w,
               ),
               Expanded(
@@ -403,9 +403,9 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children:  [
+                          children: [
                             Text(
-                              'Classroom Concentration',
+                              'Classroom'.tr + 'Concentration'.tr,
                               style: TextStyle(
                                   fontSize: 16.sp,
                                   fontFamily: 'Poppins',
@@ -421,7 +421,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                   color: blackColor),
                             ),
                             Text(
-                              'present',
+                              'present'.tr,
                               style: TextStyle(
                                   fontSize: 14.sp,
                                   fontFamily: 'Poppins',
@@ -437,7 +437,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
               )
             ],
           ),
-           SizedBox(
+          SizedBox(
             height: 10.h,
           ),
           // const Divider(
@@ -446,18 +446,18 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
           //   endIndent: 10,
           //   thickness: 0.5,
           // ),
-           SizedBox(
+          SizedBox(
             height: 10.h,
           ),
-           Text(
-            'Students',
+          Text(
+            'Students'.tr,
             style: TextStyle(
                 fontSize: 24.sp,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold,
                 color: blackColor),
           ),
-           SizedBox(
+          SizedBox(
             height: 20.h,
           ),
           classRoom.students == null
@@ -511,7 +511,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
     return Container(
-      margin:  EdgeInsets.only(left: 20.w),
+      margin: EdgeInsets.only(left: 20.w),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
             colors: [primaryColor, secondaryColor],
@@ -531,13 +531,13 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-           SizedBox(
+          SizedBox(
             height: 10.h,
           ),
-           Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Manage Classroom',
+              'Manage'.tr + 'Classroom'.tr,
               style: TextStyle(
                   fontSize: 24.sp,
                   fontFamily: 'Poppins',
@@ -565,11 +565,11 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   //   return DownloadAttedance();
                   // }));
                 },
-                text: 'Download Attendance',
+                text: 'Download'.tr + ' ' + 'Attendance'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
-               SizedBox(
+              SizedBox(
                 height: 10,
               ),
               CustomTextButton(
@@ -590,7 +590,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                         classRoomID: widget.classRoom.id);
                   }
                 },
-                text: 'Add Student',
+                text: 'Add'.tr + ' ' + 'Students'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
@@ -617,7 +617,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                         classRoomID: classRoom.id);
                   }
                 },
-                text: 'Assign Teacher',
+                text: 'Assign'.tr + ' ' + 'Teachers'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
@@ -631,7 +631,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   await managementCubit.getAllClassRooms(limit: 10);
                   Navigator.pop(context);
                 },
-                text: 'Delete Class',
+                text: 'Delete'.tr + ' ' + 'ClassRoom'.tr,
                 bgColor: whiteColor,
                 textColor: blackColor,
               ),

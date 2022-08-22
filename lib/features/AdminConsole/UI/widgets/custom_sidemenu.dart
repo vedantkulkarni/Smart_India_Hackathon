@@ -2,6 +2,8 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:get/get.dart';
+
 import '../../../../core/constants.dart';
 
 class CustomSideMenu extends StatefulWidget {
@@ -17,7 +19,7 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
   _CustomSideMenuState(this.page);
   @override
   Widget build(BuildContext context) {
-        double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     // ScreenUtil.init(context, designSize: Size(width, height));
     List<SideMenuItem> items = [
@@ -25,26 +27,26 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
         // Priority of item to show on SideMenu, lower value is displayed at the top
         priority: 0,
 
-        title: width > 300 ? 'Dashboard' : '',
+        title: width > 300 ? 'Dashboard'.tr : '',
+
         onTap: () => page.jumpToPage(0),
         icon: const Icon(FluentIcons.home),
       ),
       SideMenuItem(
         priority: 1,
-        title: width > 300 ? 'Attendance' : '',
+        title: width > 300 ? 'Attendance'.tr : '',
         onTap: () => page.jumpToPage(1),
         icon: const Icon(FluentIcons.check_list),
       ),
-     
       SideMenuItem(
         priority: 2,
-        title: width > 300 ? 'Manage' : '',
+        title: width > 300 ? 'Manage'.tr : '',
         onTap: () => page.jumpToPage(2),
         icon: const Icon(FluentIcons.add_group),
       ),
       SideMenuItem(
         priority: 3,
-        title: width > 300 ? 'Settings' : '',
+        title: width > 300 ? 'Settings'.tr : '',
         onTap: () => page.jumpToPage(3),
         icon: const Icon(FluentIcons.settings),
       ),
@@ -62,7 +64,7 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
         // Will shows on top of all items, it can be a logo or a Title text
         title: Column(
           children: [
-             SizedBox(
+            SizedBox(
               height: 40.h,
             ),
             Image.asset(
@@ -70,7 +72,7 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
               width: 60.w,
               height: 60.h,
             ),
-             SizedBox(
+            SizedBox(
               height: 40.h,
             )
           ],
@@ -90,12 +92,12 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
           selectedIconColor: primaryColor,
           unselectedIconColor: lightTextColor,
           backgroundColor: navPanecolor,
-          selectedTitleTextStyle:  TextStyle(
+          selectedTitleTextStyle: TextStyle(
               color: primaryColor,
               fontWeight: FontWeight.bold,
               fontSize: 14.sp,
               fontFamily: 'Poppins'),
-          unselectedTitleTextStyle:  TextStyle(
+          unselectedTitleTextStyle: TextStyle(
               color: lightTextColor,
               fontWeight: FontWeight.bold,
               fontSize: 14.sp,

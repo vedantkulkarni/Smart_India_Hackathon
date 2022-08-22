@@ -10,7 +10,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_details_screen_admin_console.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/cubit/search_cubit.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/Student.dart';
@@ -89,9 +89,11 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                       );
                                     });
                               },
-                              text: 'Search')),
+
+                              text: 'Search'.tr)),
                       SizedBox(
                         width: 40.w,
+
                       ),
                       SizedBox(
                           width: 200.w,
@@ -124,7 +126,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                 // await BlocProvider.of<ManagementCubit>(context)
                                 //     .fetchAllTeachers();
                               },
-                              text: 'Add Student')),
+                              text: 'Add Student'.tr)),
                     ],
                   ),
                   SizedBox(
@@ -146,8 +148,8 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                       ),
                       child: DataTable2(
                         empty: Container(
-                            child: const Center(
-                          child: Text('No Students added yet'),
+                            child: Center(
+                          child: Text('No Students added yet'.tr),
                         )),
                         dataTextStyle: TextStyle(
                             fontSize: 14.sp,
@@ -159,20 +161,20 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                             color: blackColor,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.bold),
-                        columns: const [
+                        columns: [
                           DataColumn2(
                             label: Text(
-                              'Name',
+                              'Name'.tr,
                             ),
                             size: ColumnSize.L,
                           ),
                           DataColumn(
-                            label: Text('Phone'),
+                            label: Text('Phone'.tr),
                           ),
                           DataColumn(
-                            label: Text('Email'),
+                            label: Text('Email'.tr),
                           ),
-                          DataColumn(label: Text('Profile')),
+                          DataColumn(label: Text('Profile'.tr)),
                         ],
                         rows: List<DataRow>.generate(
                           (state as StudentsFetched).studentsList.length,

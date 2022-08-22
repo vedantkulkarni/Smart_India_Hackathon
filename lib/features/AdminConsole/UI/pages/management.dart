@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/management_card.dart';
-
+import 'package:get/get.dart';
 import '../../../../core/constants.dart';
 
 class Management extends StatefulWidget {
@@ -19,22 +19,22 @@ class _ManagementState extends State<Management> {
       '$commonPath/user.png'
     ],
     [
-      'Students',
+      'Students'.tr,
       'Teachers are the main interactors for the system.',
       '$commonPath/students.png'
     ],
     [
-      'Groups',
+      'Groups'.tr,
       'User are the main interactors for the system.',
       '$commonPath/box.png'
     ],
     [
-      'Class Room',
+      'ClassRoom'.tr,
       'User are the main interactors for the system.',
       '$commonPath/myClassRoom.png'
     ],
     [
-      'Attendance',
+      'Attendance'.tr,
       'User are the main interactors for the system.',
       '$commonPath/attendance.png'
     ],
@@ -47,8 +47,8 @@ class _ManagementState extends State<Management> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text(
-            "Management",
+          Text(
+            "Management".tr,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22.sp,
@@ -63,14 +63,14 @@ class _ManagementState extends State<Management> {
             children: List.generate(
               2,
               (index) => ManageMentCard(
-                addText: addList[index][0],
+                addText: addList[index][0].tr,
                 content: addList[index][1],
                 imagePath: addList[index][2],
                 index: index,
               ),
             ),
           ),
-           SizedBox(
+          SizedBox(
             height: 20.h,
           ),
           Row(

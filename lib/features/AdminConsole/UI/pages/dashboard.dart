@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/dashboard_card.dart';
+import 'package:get/get.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     final adminProvider = BlocProvider.of<AdminCubit>(context);
     double _screenWidth = MediaQuery.of(context).size.width;
-        double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     // ScreenUtil.init(context, designSize: Size(width, height));
     return Container(
@@ -27,7 +28,7 @@ class _DashboardState extends State<Dashboard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hi!",
+            "hi!".tr,
             style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 44.sp,
@@ -46,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
             height: 60.h,
           ),
           Text(
-            "DashBoard",
+            "DashBoard".tr,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22.sp,
@@ -78,8 +79,8 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 )
               : SizedBox(
-                height: 500.h,
-                child: Column(
+                  height: 500.h,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       DashboardCard(
@@ -99,7 +100,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
-              ),
+                ),
         ],
       ),
     );
