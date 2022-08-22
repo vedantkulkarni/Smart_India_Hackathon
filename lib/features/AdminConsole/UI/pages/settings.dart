@@ -16,8 +16,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final List locale = [
     {'name': 'ENGLISH', 'locale': Locale('en', 'US')},
-    //{'name':'ಕನ್ನಡ','locale': Locale('kn','IN')},
     {'name': 'हिंदी', 'locale': Locale('hi', 'IN')},
+    {'name': 'मराठी', 'locale': Locale('mr', 'IN')},
   ];
 
   updateLanguage(Locale locale) {
@@ -91,6 +91,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               }, isSelectedHin),
               LanguageTile('Marathi'.tr, () {
+                updateLanguage(locale[2]['locale']);
                 if (isSelectedMar) {
                   setState(() {
                     isSelectedMar = false;
