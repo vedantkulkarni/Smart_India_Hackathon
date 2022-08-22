@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -12,9 +13,11 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
+import '../../../../../models/ModelProvider.dart';
 import '../../../../../models/User.dart';
+// import '../../../../../models/VerificationStatus.dart';
 import 'cubit/management_cubit.dart';
 import '../../../../../injection_container.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
@@ -40,7 +43,7 @@ class _ClassRoomDetailsState extends State<ClassRoomDetails> {
           backgroundColor: backgroundColor,
           automaticallyImplyLeading: true,
           elevation: 0,
-          iconTheme: const IconThemeData(color: blackColor),
+          iconTheme: IconThemeData(color: blackColor),
         ),
         body: BlocBuilder<ClassDetailsCubit, ClassDetailsState>(
           builder: (context, state) {
@@ -320,9 +323,9 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Today\'s Attendance',
-                              style: TextStyle(
+                            Text(
+                              'Today'.tr + '\nAttendance'.tr,
+                              style: const TextStyle(
                                   fontSize: 14,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal,
@@ -337,7 +340,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                   color: whiteColor),
                             ),
                             Text(
-                              'present out of 56',
+                              'present out of 56'.tr,
                               style: TextStyle(
                                   fontSize: 12,
                                   fontFamily: 'Poppins',
@@ -376,7 +379,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                       ));
                                     });
                               },
-                              child: const Text('View'),
+                              child: Text('View'.tr),
                             ),
                           ],
                         ),
@@ -401,10 +404,10 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
-                              'Classroom Concentration',
-                              style: TextStyle(
+                              'Classroom'.tr + 'Concentration'.tr,
+                              style: const TextStyle(
                                   fontSize: 16,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold,
@@ -419,8 +422,8 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                   color: blackColor),
                             ),
                             Text(
-                              'present',
-                              style: TextStyle(
+                              'present'.tr,
+                              style: const TextStyle(
                                   fontSize: 14,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal,
@@ -447,8 +450,8 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            'Students',
+          Text(
+            'Students'.tr,
             style: TextStyle(
                 fontSize: 24,
                 fontFamily: 'Poppins',
@@ -508,6 +511,9 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
   Widget build(BuildContext context) {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
+
+    VerificationStatus _verificationStatus = widget.classRoom.attendanceMode;
+
     return Container(
       margin: const EdgeInsets.only(left: 20),
       decoration: BoxDecoration(
@@ -532,11 +538,11 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
           const SizedBox(
             height: 10,
           ),
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Manage Classroom',
-              style: TextStyle(
+              'Manage'.tr + 'Classroom'.tr,
+              style: const TextStyle(
                   fontSize: 24,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
@@ -547,6 +553,107 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: 30,
+                color: backgroundColor,
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: DropdownButton<VerificationStatus>(
+                  icon: null,
+                  iconSize: 14,
+                  alignment: Alignment.center,
+                  underline: Container(),
+                  borderRadius: BorderRadius.circular(10),
+                  value: _verificationStatus,
+                  onChanged: (val) async {
+                    // print(val);
+                    try {
+                      widget.classRoom =
+                          widget.classRoom.copyWith(attendanceMode: val);
+
+                      ClassRoom currentClassRoom = await managementCubit
+                          .updateClassRoom(updatedClassRoom: widget.classRoom);
+
+                      await classCubit.getFullDetailsOfClassRoom(
+                        classRoomID: currentClassRoom.id,
+                      );
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Detected And Verified',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceDetectedAndVerified,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Verified',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceVerified,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Verified With Liveness',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceVerifiedWithLiveness,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Involve Parent',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.InvolveParent,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Manual Attendance',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.ManualAttendance,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               CustomTextButton(
                 onPressed: () async {
                   await classCubit.getAttendanceListDateWise(
@@ -563,7 +670,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   //   return DownloadAttedance();
                   // }));
                 },
-                text: 'Download Attendance',
+                text: 'Download'.tr + ' ' + 'Attendance'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
@@ -589,7 +696,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                         classRoomID: widget.classRoom.id);
                   }
                 },
-                text: 'Add Student',
+                text: 'Add'.tr + ' ' + 'Students'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
@@ -616,7 +723,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                         classRoomID: classRoom.id);
                   }
                 },
-                text: 'Assign Teacher',
+                text: 'Assign'.tr + ' ' + 'Teachers'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
@@ -630,7 +737,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   await managementCubit.getAllClassRooms(limit: 10);
                   Navigator.pop(context);
                 },
-                text: 'Delete Class',
+                text: 'Delete'.tr + ' ' + 'ClassRoom'.tr,
                 bgColor: whiteColor,
                 textColor: blackColor,
               ),

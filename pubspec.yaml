@@ -74,7 +74,13 @@ dependencies:
   flutter_face_api: ^3.0.0
   scidart: ^0.0.2-dev.6
   tflite_flutter_helper: ^0.2.1
- 
+  get: ^4.6.5
+  csv: ^5.0.1
+  universal_html: ^2.0.8
+  path_provider: ^2.0.11
+  file_saver: ^0.1.1
+  syncfusion_flutter_charts: ^20.2.44
+
 
 dev_dependencies:
   flutter_test:

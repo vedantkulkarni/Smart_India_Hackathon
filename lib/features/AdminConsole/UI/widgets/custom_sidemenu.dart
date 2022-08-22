@@ -1,6 +1,6 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-
+import 'package:get/get.dart';
 import '../../../../core/constants.dart';
 
 class CustomSideMenu extends StatefulWidget {
@@ -21,26 +21,25 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
         // Priority of item to show on SideMenu, lower value is displayed at the top
         priority: 0,
 
-        title: 'Dashboard',
+        title: 'Dashboard'.tr,
         onTap: () => page.jumpToPage(0),
         icon: const Icon(FluentIcons.home),
       ),
       SideMenuItem(
         priority: 1,
-        title: 'Attendance',
+        title: 'Attendance'.tr,
         onTap: () => page.jumpToPage(1),
         icon: const Icon(FluentIcons.check_list),
       ),
-     
       SideMenuItem(
         priority: 2,
-        title: 'Manage',
+        title: 'Manage'.tr,
         onTap: () => page.jumpToPage(2),
         icon: const Icon(FluentIcons.add_group),
       ),
       SideMenuItem(
         priority: 3,
-        title: 'Settings',
+        title: 'Settings'.tr,
         onTap: () => page.jumpToPage(3),
         icon: const Icon(FluentIcons.settings),
       ),

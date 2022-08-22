@@ -476,6 +476,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1"
+  get:
+    dependency: "direct main"
+    description:
+      name: get
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.6.5"
   get_it:
     dependency: "direct main"
     description:
@@ -693,6 +700,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+<<<<<<< HEAD
   modal_bottom_sheet:
     dependency: "direct main"
     description:
@@ -700,6 +708,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+=======
+>>>>>>> c810c459991b4f69a5bc1c01a43cf49609c771c5
   modal_side_sheet:
     dependency: "direct main"
     description:

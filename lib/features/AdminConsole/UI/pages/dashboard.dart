@@ -1,8 +1,13 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image/image.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/chart/cartesianChart.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/chart/pieChart.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/dashboard_card.dart';
+import 'package:get/get.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -21,9 +26,9 @@ class _DashboardState extends State<Dashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Hi!",
-            style: TextStyle(
+          Text(
+            "hi".tr,
+            style: const TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 44,
                 fontFamily: 'Poppins',
@@ -35,18 +40,18 @@ class _DashboardState extends State<Dashboard> {
                 fontWeight: FontWeight.bold,
                 fontSize: 44,
                 fontFamily: 'Poppins',
-                color: Colors.black),
+                color: blackColor),
           ),
           const SizedBox(
             height: 60,
           ),
-          const Text(
-            "DashBoard",
-            style: TextStyle(
+          Text(
+            "DashBoard".tr,
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
                 fontFamily: 'Poppins',
-                color: Colors.black),
+                color: blackColor),
           ),
           const SizedBox(
             height: 20,
@@ -54,23 +59,27 @@ class _DashboardState extends State<Dashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              DashboardCard(
-                user: 'Students',
-                number: '302',
-                color: primaryColor,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const PieChartWidget();
+                  }));
+                },
+                child: DashboardCard(
+                  user: 'Students',
+                  number: '302',
+                  color: primaryColor,
+                ),
               ),
               DashboardCard(
                 user: 'Teachers',
                 number: '33',
                 color: secondaryColor,
               ),
-              DashboardCard(
-                user: 'Staff',
-                number: '28',
-                color: Colors.yellow,
-              ),
+              DashboardCard(user: 'Staff', number: '28', color: yellowColor),
             ],
-          )
+          ),
+          Expanded(child: Cartesian()),
         ],
       ),
     );
