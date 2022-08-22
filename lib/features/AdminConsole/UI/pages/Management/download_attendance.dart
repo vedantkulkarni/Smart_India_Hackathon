@@ -1,9 +1,11 @@
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/classroom_card.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/csvConvertor.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
+import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DownloadAttedance extends StatefulWidget {
@@ -25,11 +27,11 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
           automaticallyImplyLeading: true,
           elevation: 0,
           iconTheme: const IconThemeData(color: blackColor),
-          title:  Text(
+          title: Text(
             'Download Attendance',
             style: TextStyle(
               fontSize: 14.sp,
-              color: Colors.black,
+              color: blackColor,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.normal,
             ),
@@ -56,17 +58,40 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
                 color: backgroundColor,
                 child: Expanded(
                   child: GridView.count(
-                      crossAxisCount: 6,
+                      crossAxisCount: 5,
                       children: List.generate(
                           classCubit.classAttendanceListDate!.length,
                           (index) => DownloadTile(
-                              classCubit.classAttendanceListDate![index]
-                                  .presentPercent
-                                  .toString(),
-                              classCubit
-                                  .classAttendanceListDate![index].teacherEmail
-                                  .toString(),
-                              () {}))),
+                                  classCubit.classAttendanceListDate![index]
+                                      .presentPercent
+                                      .toString(),
+                                  classCubit.classAttendanceListDate![index]
+                                      .teacherEmail
+                                      .toString(), () {
+                                save();
+                                showSnackbar(
+                                    context,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          color: primaryColor,
+                                        ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'The is successfully downloaded',
+                                            style: TextStyle(
+                                              color: whiteColor,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ));
+                              }))),
                 ));
           },
         ));
@@ -77,7 +102,7 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
-      padding: const EdgeInsets.all(10),
+      //padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
             colors: [primaryColor, secondaryColor],
@@ -91,7 +116,7 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Text(
+          Text(
             'Today\'s Attendance',
             style: TextStyle(
                 fontSize: 14.sp,
@@ -101,13 +126,13 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
           ),
           Text(
             precent,
-            style:  TextStyle(
+            style: TextStyle(
                 fontSize: 40.sp,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold,
                 color: whiteColor),
           ),
-           Text(
+          Text(
             'Taken By:-',
             style: TextStyle(
                 fontSize: 14.sp,
@@ -117,13 +142,13 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
           ),
           Text(
             teacher,
-            style:  TextStyle(
+            style: TextStyle(
                 fontSize: 15.sp,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold,
                 color: whiteColor),
           ),
-           SizedBox(
+          SizedBox(
             height: 10.h,
           ),
           GestureDetector(
@@ -133,7 +158,7 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
                 decoration: const BoxDecoration(
                     color: navPanecolor,
                     borderRadius: BorderRadius.all(Radius.circular(10))),
-                child:  Padding(
+                child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
                     'Download CSV',

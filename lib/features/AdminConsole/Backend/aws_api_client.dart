@@ -59,6 +59,8 @@ abstract class AWSApiClient {
       required AttendanceSearchMode mode,
       required int limit});
 
+  Future<List<ClassAttendance>> searchByMonth({required String searchQuery});
+
   // Future<List<Student>> searchAttendance(
   //     {required String searchQuery, required StudentSearchMode mode});
 }
@@ -902,6 +904,39 @@ query MyQuery {
     for (var classAttendance in jsonMap['data']['listClassAttendances']
         ['items']) {
       returnList.add(ClassAttendance.fromJson(classAttendance));
+    }
+
+    return returnList;
+  }
+
+  @override
+  Future<List<ClassAttendance>> searchByMonth(
+      {required String searchQuery}) async {
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+query MyQuery {
+  searchClassAttendances(filter: {date: {range: $searchQuery}}) {
+    items {
+      date
+      classID
+      teacherEmail
+      presentPercent
+    }
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<ClassAttendance> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['searchClassAttendances']
+        ['items']) {
+      returnList.add(ClassAttendance.fromJson(eachStudent));
     }
 
     return returnList;
