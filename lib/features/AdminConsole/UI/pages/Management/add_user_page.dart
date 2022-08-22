@@ -34,7 +34,7 @@ class _AddUserPageState extends State<AddUserPage> {
         email: _emailController.text,
         name: _nameController.text,
         description: _descriptionController.text,
-        role: Role.Teacher,
+        role: _role,
         phoneNumber: phNo,
         address: _addressController.text,
         shitfInfo: _shiftController.text,
