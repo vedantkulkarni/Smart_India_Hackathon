@@ -6,6 +6,8 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/errors/exceptions.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
+import '../UI/pages/attendance.dart';
+
 abstract class AWSApiClient {
   //User
   Future<void> authenticateUser(
@@ -56,9 +58,7 @@ abstract class AWSApiClient {
   Future<List<Student>> searchStudent(
       {required String searchQuery, required StudentSearchMode mode});
   Future<List<Attendance>> searchAttendance(
-      {required String searchQuery,
-      required AttendanceSearchMode mode,
-      required int limit});
+      {required List<SearchQuery> searchQuery, required int limit});
 
   // Future<List<Student>> searchAttendance(
   //     {required String searchQuery, required StudentSearchMode mode});
@@ -755,12 +755,14 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createClassAttendance(input: {classID: "${classAttendance.classID}", date: "${classAttendance.date}", presentPercent: ${classAttendance.presentPercent}, teacherEmail: "${classAttendance.teacherEmail}"}) {
+  createClassAttendance(input: {classID: "${classAttendance.classID}", date: "${classAttendance.date}", presentPercent: ${classAttendance.presentPercent}, teacherEmail: "${classAttendance.teacherEmail}", time: "${classAttendance.time}"}) {
     classID
+    date
     presentPercent
     teacherEmail
   }
 }
+
 
 ''',
     };
@@ -823,36 +825,66 @@ query MyQuery {
 
   @override
   Future<List<Attendance>> searchAttendance(
-      {required String searchQuery,
-      required AttendanceSearchMode mode,
-      required int limit}) async {
-    String searchFilter = '';
-    switch (mode) {
-      case AttendanceSearchMode.date:
-        searchFilter = 'date';
-        break;
-      case AttendanceSearchMode.status:
-        searchFilter = 'status';
-        break;
-      case AttendanceSearchMode.teacherID:
-        searchFilter = 'teacherID';
-        break;
-      case AttendanceSearchMode.teacherName:
-        searchFilter = 'teacherName';
-        break;
-      case AttendanceSearchMode.studentID:
-        searchFilter = 'studentID';
-        break;
-      case AttendanceSearchMode.verification:
-        searchFilter = 'verification';
-        break;
-      default:
+      {required List<SearchQuery> searchQuery, required int limit}) async {
+    List<String> searchFiltersList = [];
+    for (var searchq in searchQuery) {
+      String searchFilter = '';
+      switch (searchq.mode) {
+        case AttendanceSearchMode.date:
+          searchFilter = 'date';
+          searchFiltersList.add(searchFilter);
+
+          break;
+        case AttendanceSearchMode.status:
+          searchFilter = 'status';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.className:
+          searchFilter = 'className';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.teacherID:
+          searchFilter = 'teacherID';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.teacherName:
+          searchFilter = 'teacherName';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.studentName:
+          searchFilter = 'studentName';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.verification:
+          searchFilter = 'verification';
+          searchFiltersList.add(searchFilter);
+          break;
+        default:
+      }
     }
+    String temp =
+        '{className: {match: "5A"}, and: {verification: {match: "ManualAttendance"}, and: {status: {match: "Absent"}}}}';
+
+    String finalSearch = '';
+    for (int i = 0; i < searchQuery.length; i++) {
+      finalSearch += '{';
+      finalSearch += '${searchFiltersList[i]}:';
+      finalSearch += '{match: "${searchQuery[i].searchText}"},';
+      if (i == searchQuery.length - 1) {
+        for (int j = 0; j < searchQuery.length; j++) {
+          finalSearch += '}';
+        }
+        break;
+      } else {
+        finalSearch += 'and: ';
+      }
+    }
+    print(finalSearch);
     final body = {
       'operationName': 'MyQuery',
       'query': '''
      query MyQuery {
-  searchAttendances(filter: {$searchFilter: {match: "$searchQuery"}}, limit: $limit) {
+  searchAttendances(filter: $finalSearch, limit: $limit) {
     items {
       classID
       geoLatitude
@@ -891,6 +923,7 @@ query MyQuery {
     throw UnimplementedError();
   }
 
+  @override
   Future<List<ClassAttendance>> classAttendanceDateWiseList(
       {required String classId}) async {
     final body = {

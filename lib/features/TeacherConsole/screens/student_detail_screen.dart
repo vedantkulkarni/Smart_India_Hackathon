@@ -24,12 +24,14 @@ class StudentDetailScreen extends StatefulWidget {
   final String attendance;
   List<CameraDescription> cameras;
   Student? student;
+  int index;
   StudentDetailScreen(
       {required this.name,
       required this.email,
       required this.address,
       required this.attendance,
       required this.cameras,
+      required this.index,
       this.student,
       Key? key})
       : super(key: key);
@@ -204,7 +206,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                       height: 40,
                       width: 200,
                       child: CustomTextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             print(widget.student);
                             final classCubit =
                                 BlocProvider.of<TeacherClassCubit>(context);
@@ -216,24 +218,37 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                                         .classRoom
                                         .students!);
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => BlocProvider(
-                                      create: (_) => AttendanceCubit(
-                                          teacher: teacherCubit.teacher,
-                                          mode: classCubit
-                                              .classRoom.attendanceMode,
-                                          apiClient: getIt<AWSApiClient>(),
-                                          faceDetectorService:
-                                              getIt<FaceDetectorService>(),
-                                          mlService: mlService,
-                                          cameraService:
-                                              getIt<CameraService>()),
-                                      child: AddStudentFacialData(
-                                        cameras: widget.cameras,
-                                        student: widget.student!,
-                                        mlService: mlService,
-                                      ),
-                                    )));
+                            var res = await Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (ctx) => BlocProvider(
+                                          create: (_) => AttendanceCubit(
+                                              studList: BlocProvider.of<
+                                                          TeacherClassCubit>(
+                                                      context)
+                                                  .classRoom
+                                                  .students!,
+                                              teacher: teacherCubit.teacher,
+                                              mode: classCubit
+                                                  .classRoom.attendanceMode,
+                                              apiClient: getIt<AWSApiClient>(),
+                                              faceDetectorService:
+                                                  getIt<FaceDetectorService>(),
+                                              mlService: mlService,
+                                              cameraService:
+                                                  getIt<CameraService>()),
+                                          child: AddStudentFacialData(
+                                            student: widget.student!,
+                                            mlService: mlService,
+                                          ),
+                                        )));
+                            if (res != null) {
+                              await classCubit.fetchClassRoomDetailsForTeacher(
+                                  classRoomID: classCubit.classRoom.id);
+                              setState(() {
+                                widget.student = classCubit
+                                    .classRoom.students![widget.index];
+                              });
+                            }
                           },
                           text: 'Add Face Data'),
                     )

@@ -6,12 +6,14 @@ class CustomTextButton extends StatefulWidget {
   final String text;
   Color? bgColor;
   Color? textColor;
+  Icon? icon;
   CustomTextButton(
       {Key? key,
       required this.onPressed,
       required this.text,
       this.bgColor,
-      this.textColor})
+      this.textColor,
+      this.icon})
       : super(key: key);
 
   @override
@@ -41,11 +43,25 @@ class _CustomTextButtonState extends State<CustomTextButton>
           ),
         ),
         onPressed: () => widget.onPressed(),
-        child: Center(
-          child: Text(
-            widget.text,
-          ),
-        ),
+        child: widget.icon == null
+            ? Center(
+                child: Text(
+                  widget.text,
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.text,
+                  ),
+                  Icon(
+                    widget.icon!.icon,
+                    color: whiteColor,
+                    size: 18,
+                  )
+                ],
+              ),
       ),
     );
   }

@@ -14,6 +14,7 @@ class TeacherClassCubit extends Cubit<TeacherClassState> {
   final School school;
   late ClassRoom classRoom;
   late List<CameraDescription> _cameras;
+  late List<Student> studentList;
   TeacherClassCubit(
       {required this.school,
       required this.awsApiClient,
@@ -27,6 +28,7 @@ class TeacherClassCubit extends Cubit<TeacherClassState> {
     emit(TeacherClassInitial());
     classRoom = await awsApiClient.getClassRoom(classRoomID: classRoomID);
     print('here');
+    studentList = classRoom.students!;
     print(classRoom.students);
 
     _cameras = await availableCameras();

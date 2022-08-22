@@ -12,7 +12,7 @@ import 'image_converter.dart';
 
 class MLService {
   Interpreter? _interpreter;
-  double threshold = 0.5;
+  double threshold = 0.9;
   List<Student> students;
   List<double> _predictedData = [];
   List get predictedData => _predictedData;
@@ -49,13 +49,13 @@ class MLService {
     }
   }
 
-  void setCurrentPrediction(CameraImage cameraImage, Rect? face) {
+  void setCurrentPrediction(imglib.Image image, Rect? face) {
     if (face == null) {
       return;
     }
     if (_interpreter == null) throw Exception('Interpreter is null');
     if (face == null) throw Exception('Face is null');
-    List input = _preProcess(cameraImage, face);
+    List input = _preProcess(image, face);
 
     input = input.reshape([1, 112, 112, 3]);
     List output = List.generate(1, (index) => List.filled(192, 0));
@@ -70,7 +70,7 @@ class MLService {
     return _searchResult(_predictedData);
   }
 
-  List _preProcess(CameraImage image, Rect faceDetected) {
+  List _preProcess(imglib.Image image, Rect faceDetected) {
     imglib.Image croppedImage = _cropFace(image, faceDetected);
     imglib.Image img = imglib.copyResizeCropSquare(croppedImage, 112);
 
@@ -78,14 +78,13 @@ class MLService {
     return imageAsList;
   }
 
-  imglib.Image _cropFace(CameraImage image, Rect faceDetected) {
-    imglib.Image convertedImage = _convertCameraImage(image);
+  imglib.Image _cropFace(imglib.Image image, Rect faceDetected) {
+    // imglib.Image convertedImage = _convertCameraImage(image);
     double x = faceDetected.left - 10.0;
     double y = faceDetected.top - 10.0;
     double w = faceDetected.width + 10.0;
     double h = faceDetected.height + 10.0;
-    return imglib.copyCrop(
-        convertedImage, x.round(), y.round(), w.round(), h.round());
+    return imglib.copyCrop(image, x.round(), y.round(), w.round(), h.round());
   }
 
   imglib.Image _convertCameraImage(CameraImage image) {
@@ -125,6 +124,19 @@ class MLService {
       }
     }
     return predictedResult;
+  }
+
+  bool compareFaces(
+    List<double> initialData,
+  ) {
+    double minDist = 999;
+    double currDist = 0.0;
+    currDist = _euclideanDistance(initialData, predictedData);
+    if (currDist <= threshold && currDist < minDist) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   double _euclideanDistance(List? e1, List? e2) {

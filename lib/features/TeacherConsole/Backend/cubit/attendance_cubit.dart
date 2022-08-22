@@ -14,6 +14,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mediapi
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mediapipe/options_face.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
+import 'package:image/image.dart' as imglib;
 
 import '../../../../injection_container.dart';
 import '../../Attendance/mediapipe/model_inference_service.dart';
@@ -54,10 +55,12 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     print(mode);
 
     if (mode == VerificationStatus.ManualAttendance) {
-      initAttendance(studList!);
+      initAttendance(studList!, AttendanceStatus.Present);
     } else if (mode == VerificationStatus.FaceVerified) {
       initCamera();
     } else if (mode == VerificationStatus.FaceDetectedAndVerified) {
+      print("coming here");
+      initAttendance(studList!, AttendanceStatus.Absent);
       initServices(mode);
     } else {
       faceDetectorService.initialize();
@@ -79,7 +82,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     emit(InitializingCamera());
     await cameraService.initialize();
     emit(CameraInitialized());
-    emit(StudentNotSelected());
+    // emit(StudentNotSelected());
   }
 
   Future<void> initializeInterPreter() async {
@@ -95,6 +98,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     List<Face> faces =
         await faceDetectorService.faceDetector.processImage(image);
     print(faces[0].boundingBox);
+
     return faces[0];
   }
 
@@ -149,10 +153,10 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     emit(AttendanceToggled(attendance: attendanceMap));
   }
 
-  Future<void> initAttendance(List<Student> studentList) async {
+  Future<void> initAttendance(
+      List<Student> studentList, AttendanceStatus status) async {
     for (var everyStudent in studentList) {
-      attendanceMap.putIfAbsent(
-          everyStudent.studentID, () => AttendanceStatus.Present);
+      attendanceMap.putIfAbsent(everyStudent.studentID, () => status);
     }
   }
 
@@ -160,7 +164,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     emit(StudentSelected(student: student));
   }
 
-  Future<void> uploadManualAttendance({required ClassRoom classRoom}) async {
+  Future<void> uploadAttendance({required ClassRoom classRoom}) async {
     emit(UploadingAttendance());
     final position = await determinePosition();
     final double latitude = position.latitude;
@@ -193,6 +197,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     final classAttendance = ClassAttendance(
         classID: classRoom.id,
         date: TemporalDate(DateTime.now()),
+        time: TemporalTime(DateTime.now()),
         presentPercent: presentStudents.toDouble(),
         teacherEmail: teacher.email);
     final uploadedClassAttendance =
@@ -240,12 +245,18 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     return count;
   }
 
-  //Mediapipe
+  //Face Verification
+
   Future<void> initializeMediapipe() async {
     await _isolateUtils.initIsolate();
     _modelInferenceService.setModelConfig(0);
     // await cameraService.cameraController!.buildPreview();
     emit(InitializedAllServices());
+  }
+
+  void markPresent({required Student student}) {
+    attendanceMap[student.studentID] = AttendanceStatus.Present;
+    emit(StudentSelected(student: student));
   }
 
   var isPredicting = false;
@@ -263,66 +274,9 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
         _detectingFaces = true;
         await _inference(cameraImage: cameraImage);
-
-        // try {
-        //   if (_modelInferenceService.inferenceResults != null) {
-        //     mlService.setCurrentPrediction(
-        //         cameraImage, _modelInferenceService.inferenceResults!['bbox']);
-
-        //     await mlService.predict();
-        //     print(mlService.predictedData);
-
-        //     emit(CurrentPredictionSet());
-        //   } else {
-        //     emit(NoFacesDetected());
-        //   }
-
-        //   _detectingFaces = false;
-        // } catch (e) {
-        //   print(e);
-        //   _detectingFaces = false;
-        // }
       }
     });
   }
-
-  // void facialDataMediapipeUpload(BuildContext context) {
-  //   isPredicting = true;
-  //   imageSize = cameraService.getImageSize();
-
-  //   print(imageSize);
-  //   emit(StartingImageStream());
-  //   print("started image stream");
-  //   cameraService.cameraController?.startImageStream((cameraImage) async {
-  //     if (cameraService.cameraController != null) {
-  //       if (_detectingFaces) return;
-
-  //       _detectingFaces = true;
-  //       await _inference(cameraImage: cameraImage);
-
-  //       try {
-  //         // await faceDetectorService.detectFacesFromImage(image);
-  //         // if (faceDetectorService.faces.isNotEmpty) {
-  //         //   faceDetected = faceDetectorService.faces[0];
-  //         if (_modelInferenceService.inferenceResults != null) {
-  //           mlService.setCurrentPrediction(
-  //               cameraImage, _modelInferenceService.inferenceResults!['bbox']);
-
-  //           print(mlService.predictedData);
-
-  //           emit(CurrentPredictionSet());
-  //         } else {
-  //           emit(NoFacesDetected());
-  //         }
-
-  //         _detectingFaces = false;
-  //       } catch (e) {
-  //         print(e);
-  //         _detectingFaces = false;
-  //       }
-  //     }
-  //   });
-  // }
 
   Future<void> _inference({required CameraImage cameraImage}) async {
     // if (!mounted) return;
@@ -352,10 +306,11 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     }
   }
 
-  Future<void> setCurrentPrediction({Face? detectedFace,}) async {
+  Future<void> setCurrentPrediction(
+      {Face? detectedFace, imglib.Image? image}) async {
     print('Setting current prediction');
     face = detectedFace!.boundingBox;
-    mlService.setCurrentPrediction(_cameraImage!, face);
+    mlService.setCurrentPrediction(image!, face);
     emit(CurrentPredictionSet());
   }
 
@@ -368,6 +323,18 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     } else {
       print('attendance marked for student : $result');
       emit(AttendanceMarked(student: result));
+    }
+  }
+
+  Future<void> compareDetectedResultsWithStudent(Student student) async {
+    emit(ComparingResults());
+    final result = mlService.compareFaces(student.modelData!);
+    if (result == false) {
+      print('student not recognized');
+      emit(StudentNotRecognized());
+    } else {
+      print('attendance marked for student : $student');
+      emit(AttendanceMarked(student: student));
     }
   }
 

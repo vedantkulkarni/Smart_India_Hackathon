@@ -78,11 +78,13 @@ enum VerificationStatus{
   InvolveParent
 }
 
-type ClassAttendance @model{
+type ClassAttendance @model @searchable{
     classID: ID! @primaryKey
     date: AWSDate!
     presentPercent:Float
     teacherEmail:AWSEmail
+    time:AWSTime
+    
     
 
 }

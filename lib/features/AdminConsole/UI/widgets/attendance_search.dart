@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 
 import '../../../../core/constants.dart';
+import '../../../../models/AttendanceStatus.dart';
 
 class AttendanceSearch extends StatelessWidget {
   const AttendanceSearch({
@@ -42,29 +43,55 @@ class AttendanceSearch extends StatelessWidget {
             columns: const [
               DataColumn2(
                 label: Text(
-                  'Student id',
+                  'Name',
+                ),
+                size: ColumnSize.M,
+              ),
+              DataColumn2(
+                label: Text(
+                  'Status',
+                ),
+                size: ColumnSize.S,
+              ),
+              DataColumn2(
+                label: Text(
+                  'Verification Mode',
                 ),
                 size: ColumnSize.L,
               ),
-              DataColumn(
-                label: Text('Status'),
+              DataColumn2(
+                label: Text(
+                  'Status',
+                ),
+                size: ColumnSize.S,
               ),
-              DataColumn(
-                label: Text('Verification'),
+              DataColumn2(
+                label: Text(
+                  'Teacher',
+                ),
+                size: ColumnSize.L,
               ),
-              DataColumn(label: Text('Date')),
+              DataColumn2(
+                label: Text(
+                  'Date',
+                ),
+                size: ColumnSize.S,
+              ),
             ],
             rows: List<DataRow>.generate(
               searchCubit.attendanceList.length,
               (index) => DataRow2.byIndex(
                   selected: true,
-                  color: null,
+                  color: searchCubit.attendanceList[index].status ==
+                          AttendanceStatus.Absent
+                      ? MaterialStateProperty.all(Colors.red.withOpacity(0.1))
+                      : null,
                   index: index,
                   onTap: () {},
                   cells: [
                     DataCell(
                       Text(
-                        searchCubit.attendanceList[index].studentID,
+                        searchCubit.attendanceList[index].studentName,
                       ),
                     ),
                     DataCell(
@@ -73,8 +100,20 @@ class AttendanceSearch extends StatelessWidget {
                       ),
                     ),
                     DataCell(
+                      FittedBox(
+                        child: Text(
+                          searchCubit.attendanceList[index].verification.name,
+                        ),
+                      ),
+                    ),
+                    DataCell(
                       Text(
-                        searchCubit.attendanceList[index].verification.name,
+                        searchCubit.attendanceList[index].className,
+                      ),
+                    ),
+                    DataCell(
+                      Text(
+                        searchCubit.attendanceList[index].teacherID,
                       ),
                     ),
                     DataCell(

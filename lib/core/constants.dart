@@ -49,9 +49,10 @@ enum StudentSearchMode {
 enum AttendanceSearchMode {
   date,
   status,
-  studentID,
+  className,
   teacherID,
   teacherName,
+  studentName,
   verification,
   classID
 }

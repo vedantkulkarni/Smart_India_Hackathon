@@ -23,7 +23,7 @@ class _ManagementState extends State<Management> {
       '$commonPath/students.png'
     ],
     [
-      'Groups',
+      'Permissions',
       'User are the main interactors for the system.',
       '$commonPath/box.png'
     ],
