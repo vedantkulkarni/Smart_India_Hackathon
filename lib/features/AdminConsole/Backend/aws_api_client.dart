@@ -577,7 +577,7 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
      mutation MyMutation {
-  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${f(classRoom.currentAttendanceDate.toString())}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
+  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
     userAssignedClassId
     currentAttendanceDate
     classRoomName
