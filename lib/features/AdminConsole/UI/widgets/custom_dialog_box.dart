@@ -18,6 +18,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.7.h,
         width: MediaQuery.of(context).size.width * 0.4.w,
+
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10), color: whiteColor),

@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +15,9 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_te
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
+import '../../../../../models/ModelProvider.dart';
 import '../../../../../models/User.dart';
+// import '../../../../../models/VerificationStatus.dart';
 import 'cubit/management_cubit.dart';
 import '../../../../../injection_container.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
@@ -40,7 +43,7 @@ class _ClassRoomDetailsState extends State<ClassRoomDetails> {
           backgroundColor: backgroundColor,
           automaticallyImplyLeading: true,
           elevation: 0,
-          iconTheme: const IconThemeData(color: blackColor),
+          iconTheme: IconThemeData(color: blackColor),
         ),
         body: BlocBuilder<ClassDetailsCubit, ClassDetailsState>(
           builder: (context, state) {
@@ -510,6 +513,9 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
   Widget build(BuildContext context) {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
+
+    VerificationStatus _verificationStatus = widget.classRoom.attendanceMode;
+
     return Container(
       margin: EdgeInsets.only(left: 20.w),
       decoration: BoxDecoration(
@@ -549,6 +555,107 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: 30,
+                color: backgroundColor,
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: DropdownButton<VerificationStatus>(
+                  icon: null,
+                  iconSize: 14,
+                  alignment: Alignment.center,
+                  underline: Container(),
+                  borderRadius: BorderRadius.circular(10),
+                  value: _verificationStatus,
+                  onChanged: (val) async {
+                    // print(val);
+                    try {
+                      widget.classRoom =
+                          widget.classRoom.copyWith(attendanceMode: val);
+
+                      ClassRoom currentClassRoom = await managementCubit
+                          .updateClassRoom(updatedClassRoom: widget.classRoom);
+
+                      await classCubit.getFullDetailsOfClassRoom(
+                        classRoomID: currentClassRoom.id,
+                      );
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Detected And Verified',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceDetectedAndVerified,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Verified',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceVerified,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Verified With Liveness',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceVerifiedWithLiveness,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Involve Parent',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.InvolveParent,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Manual Attendance',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.ManualAttendance,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               CustomTextButton(
                 onPressed: () async {
                   await classCubit.getAttendanceListDateWise(
