@@ -21,17 +21,14 @@ class FaceDetectorService {
   void initialize() {
     _faceDetector = GoogleMlKit.vision.faceDetector(
       FaceDetectorOptions(
-        performanceMode: FaceDetectorMode.fast,
-        enableTracking: true
+        performanceMode: FaceDetectorMode.accurate,
+        enableTracking: true,
+        
         
       ),
     );
 
-    // _faceDetector = FaceDetector(
-    //     options: FaceDetectorOptions(
-    //         performanceMode: FaceDetectorMode.fast,
-    //         enableContours: true,
-    //         enableClassification: true));
+    
   }
 
   Future<void> detectFacesFromImage(CameraImage image) async {

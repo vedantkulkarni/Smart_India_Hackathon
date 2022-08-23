@@ -13,6 +13,7 @@ import '../../../../models/User.dart';
 part 'admin_state.dart';
 
 class AdminCubit extends Cubit<AdminState> {
+  bool isAnalyticsFetched = false;
   AWSApiClient awsApiClient;
   RoleChecker roleChecker;
   String userID;

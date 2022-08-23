@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
+import '../../../../../injection_container.dart';
 import '../../../../../models/Student.dart';
-import '../../widgets/custom_textfield.dart';
+import '../../../Backend/aws_api_client.dart';
+import '../../widgets/custom_dialog_box.dart';
+import 'common_search.dart';
 
 class AddStudentToClassRoom extends StatefulWidget {
   ClassRoom classRoom;
@@ -27,63 +31,110 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
     double width = MediaQuery.of(context).size.width;
     // ScreenUtil.init(context, designSize: Size(width, height));
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
+    final searchCubit = BlocProvider.of<SearchCubit>(context);
     return Container(
       color: backgroundColor,
+      // width: w * 0.5,
       child: Column(
         children: [
-           SizedBox(
-            height: 40.h,
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: CustomTextField(
-              textEditingController: textEditingController,
-              hintText: 'Search',
-              padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-              width: 300.w,
-              prefixIcon:  Icon(
-                Icons.search,
-                size: 14.sp,
-              ),
-            ),
-          ),
           const SizedBox(
-            height: 30,
+            height: 80,
           ),
-          addList.isEmpty
-              ? Expanded(
-                  child: DottedBorder(
-                      dashPattern: const [4, 4],
-                      strokeWidth: 1,
-                      radius: const Radius.circular(20),
-                      color: lightTextColor,
-                      child: Container(
-                        // height: 420,
-                        width: 300.w,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: const Center(
-                            child: Text(
+
+          // Container(
+          //   margin: const EdgeInsets.symmetric(vertical: 10),
+          //   child: CustomTextField(
+          //     textEditingController: textEditingController,
+          //     hintText: 'Search',
+          //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          //     width: 300,
+          //     prefixIcon: const Icon(
+          //       Icons.search,
+          //       size: 14,
+          //     ),
+          //   ),
+          // ),
+
+          Expanded(
+            child: DottedBorder(
+                dashPattern: const [4, 4],
+                strokeWidth: 1,
+                radius: const Radius.circular(20),
+                color: primaryColor,
+                child: Container(
+                  // height: 420,
+                  margin: const EdgeInsets.all(30),
+                  // padding: const EdgeInsets.all(20),
+                  width: 340,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: addList.isEmpty
+                      ? const Center(
+                          child: Text(
+
+
                           'Add Students',
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                           ),
-                        )),
-                        //color: Colors.red,
-                      )),
-                )
-              : Row(
-                  children: List.generate(
-                      addList.length,
-                      (index) => const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'),
-                          )),
-                ),
-           SizedBox(
-            height: 40.h,
+                        ))
+                      : GridView.count(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          children: List.generate(
+                              addList.length,
+                              (index) => Stack(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          CircleAvatar(
+                                            backgroundImage: NetworkImage(addList[
+                                                        index]
+                                                    .profilePhoto ??
+                                                'https://avatars.githubusercontent.com/u/24658039?v=4'),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          FittedBox(
+                                            child: Text(
+                                              addList[index].studentName,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: MouseRegion(
+                                          cursor: SystemMouseCursors.click,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              addList.removeAt(index);
+                                              setState(() {});
+                                            },
+                                            child: const Icon(
+                                              Icons.close,
+                                              size: 18,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                        ),
+                )),
+          ),
+          const SizedBox(
+            height: 40,
+
           ),
           Padding(
             padding:  EdgeInsets.only(
@@ -94,11 +145,32 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
             child: Center(
               child: CustomTextButton(
                 onPressed: () async {
-                  final searchedStudent = await managementCubit.getStudent(
-                      studentID: textEditingController.text);
-                  setState(() {
-                    addList.add(searchedStudent);
-                  });
+                  var student = await showDialog<Student>(
+                      context: context,
+                      builder: (_) {
+                        return BlocProvider(
+                          create: (_) => SearchCubit(
+                              apiClient: getIt<AWSApiClient>(),
+                              searchMode: SearchMode.Student),
+                          child: CustomDialogBox(
+                              widget: CommonSearch(
+                            searchMode: SearchMode.Student,
+                          )),
+                        );
+                      });
+                  // if (student != null) {
+                  //   textEditingController.clear();
+                  //   textEditingController.text = student.studentName;
+                  //   searchCubit.searchAttendance(
+                  //       searchQuery: student.studentName,
+                  //       mode: attendanceSearchMode);
+                  // }
+
+                  if (student != null) {
+                    setState(() {
+                      addList.add(student);
+                    });
+                  }
                 },
                 text: 'Search',
               ),

@@ -8,6 +8,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teac
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/homeScreen.dart';
 
 
+import '../../../amplifyconfiguration.dart';
 import '../../../injection_container.dart';
 import '../../../models/ModelProvider.dart';
 import '../../AdminConsole/Backend/admin_bloc/admin_cubit.dart';
@@ -15,20 +16,7 @@ import '../../AdminConsole/Backend/admin_bloc/role_checker.dart';
 import '../../AdminConsole/Backend/aws_api_client.dart';
 import '../../Auth/Logic/auth_bloc/auth_cubit.dart';
 
-// Future<void> _configureAmplify() async {
-//   try {
-//     final auth = AmplifyAuthCognito();
-//     await Amplify.addPlugin(auth);
 
-//     final api = AmplifyAPI(modelProvider: ModelProvider.instance);
-//     await Amplify.addPlugin(api);
-
-//     // call Amplify.configure to use the initialized categories in your app
-//     await Amplify.configure(amplifyconfig);
-//   } on Exception catch (e) {
-//     print('An error occurred configuring Amplify: $e');
-//   }
-// }
 
 class TeacherConsole extends StatefulWidget {
   String userName;

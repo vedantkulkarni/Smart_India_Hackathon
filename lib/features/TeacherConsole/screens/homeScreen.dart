@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: Builder(builder: (context) {
-        return Fab();
+        return const Fab();
       }),
       body: BlocBuilder<TeacherCubit, TeacherState>(
         builder: (context, state) {
@@ -81,53 +81,70 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 // const SizedBox(height: 20,),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: StaggeredGrid.count(
-                        crossAxisCount: 4,
-                        mainAxisSpacing: 2,
-                        crossAxisSpacing: 10,
-                        children: [
-                          StaggeredGridTile.count(
-                            crossAxisCellCount: 2,
-                            mainAxisCellCount: 2,
-                            child: ClassTile(
-                              width: w,
-                              onTap: () {
-                                print(BlocProvider.of<TeacherCubit>(context)
-                                    .teacher);
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (_) {
-                                  return MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider.value(
-                                            value:
-                                                BlocProvider.of<TeacherCubit>(
-                                                    context)),
-                                        BlocProvider(
-                                            create: (context) =>
-                                                TeacherClassCubit(
-                                                    awsApiClient:
-                                                        getIt<AWSApiClient>(),
-                                                    school:
-                                                        teacherCubit.school)),
-                                      ],
-                                      child: const ClassDetailScreen(
-                                        className: 'TE',
-                                      ));
-                                }));
-                              },
-                              classNo: 'TE-01',
-                              noOfStd: '89',
-                            ),
+                (teacherCubit.teacher.assignedClass == null ||
+                        teacherCubit.teacher.assignedClass!.isEmpty)
+                    ? Expanded(
+                        child: Container(
+                          child: const Center(
+                              child: Text('No Classrooms Assigned Yet !')),
+                        ),
+                      )
+                    : Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: StaggeredGrid.count(
+                                crossAxisCount: 4,
+                                mainAxisSpacing: 2,
+                                crossAxisSpacing: 10,
+                                children: List.generate(
+                                  teacherCubit.teacher.assignedClass!.length,
+                                  (index) => StaggeredGridTile.count(
+                                    crossAxisCellCount: 2,
+                                    mainAxisCellCount: 2,
+                                    child: ClassTile(
+                                      width: w,
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(builder: (_) {
+                                          return MultiBlocProvider(
+                                              providers: [
+                                                BlocProvider.value(
+                                                    value: BlocProvider.of<
+                                                        TeacherCubit>(context)),
+                                                BlocProvider(
+                                                  key: ValueKey(teacherCubit
+                                                                  .teacher
+                                                                  .assignedClass![
+                                                                      0]
+                                                                  .id.toString()),
+                                                  create: (context) =>
+                                                      TeacherClassCubit(
+                                                          awsApiClient: getIt<
+                                                              AWSApiClient>(),
+                                                          school: teacherCubit
+                                                              .school,
+                                                          classRoomID:
+                                                              teacherCubit
+                                                                  .teacher
+                                                                  .assignedClass![
+                                                                      0]
+                                                                  .id),
+                                                ),
+                                              ],
+                                              child: const ClassDetailScreen(
+                                                className: 'TE',
+                                              ));
+                                        }));
+                                      },
+                                      classNo: 'TE-01',
+                                      noOfStd: '89',
+                                    ),
+                                  ),
+                                )),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
+                        ),
+                      )
               ],
             ),
           );

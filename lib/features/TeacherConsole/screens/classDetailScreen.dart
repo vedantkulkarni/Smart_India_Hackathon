@@ -6,20 +6,20 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_clie
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify_with_profile_image.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/liveness.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/manual_attendance.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mark_attendance.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_verify_with_profile_image.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/student_detail_screen.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/screens/teacher_console_student_card.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../core/constants.dart';
+import '../Attendance/new_approach.dart';
 
 class ClassDetailScreen extends StatefulWidget {
   final String className;
@@ -173,77 +173,85 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    // height: h * 0.5,
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                            color: blendColor, blurRadius: 15, spreadRadius: 10)
-                      ],
-                      color: backgroundColor,
-                      borderRadius: BorderRadius.circular(10),
+              BlocProvider.of<TeacherClassCubit>(context).studentList.isEmpty
+                  ? Container(
+                      child: const Center(
+                        child: Text('Student List is Empty'),
+                      ),
+                    )
+                  : Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          // height: h * 0.5,
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: blendColor,
+                                  blurRadius: 15,
+                                  spreadRadius: 10)
+                            ],
+                            color: backgroundColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: StaggeredGrid.count(
+                              crossAxisCount: 4,
+                              mainAxisSpacing: 1,
+                              crossAxisSpacing: 6,
+                              children: List.generate(
+                                  BlocProvider.of<TeacherClassCubit>(context)
+                                      .studentList
+                                      .length, (index) {
+                                return StaggeredGridTile.count(
+                                    crossAxisCellCount: 1,
+                                    mainAxisCellCount: 1,
+                                    child: TeacherConsoleStudentCard(
+                                        onTap: () {
+                                          final student = BlocProvider.of<
+                                                  TeacherClassCubit>(context)
+                                              .classRoom
+                                              .students![index];
+                                          final mlService = MLService(
+                                              students: BlocProvider.of<
+                                                          TeacherClassCubit>(
+                                                      context)
+                                                  .classRoom
+                                                  .students!);
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (_) {
+                                            return MultiBlocProvider(
+                                              providers: [
+                                                BlocProvider.value(
+                                                    value: BlocProvider.of<
+                                                        TeacherCubit>(context)),
+                                                BlocProvider.value(
+                                                    value: BlocProvider.of<
+                                                            TeacherClassCubit>(
+                                                        context)),
+                                              ],
+                                              child: StudentDetailScreen(
+                                                  name: 'Harsh',
+                                                  email: 'atk@gmail.com',
+                                                  address: 'Pune',
+                                                  attendance: '89%',
+                                                  student: student,
+                                                  index: index,
+                                                  cameras: BlocProvider.of<
+                                                              TeacherClassCubit>(
+                                                          context)
+                                                      .camerasList),
+                                            );
+                                          }));
+                                        },
+                                        student: classCubit
+                                            .classRoom.students![index]));
+                              })),
+                        ),
+                      ),
                     ),
-                    child: StaggeredGrid.count(
-                        crossAxisCount: 4,
-                        mainAxisSpacing: 1,
-                        crossAxisSpacing: 6,
-                        children: List.generate(
-                            BlocProvider.of<TeacherClassCubit>(context)
-                                .classRoom
-                                .students!
-                                .length, (index) {
-                          return StaggeredGridTile.count(
-                              crossAxisCellCount: 1,
-                              mainAxisCellCount: 1,
-                              child: TeacherConsoleStudentCard(
-                                  onTap: () {
-                                    final student =
-                                        BlocProvider.of<TeacherClassCubit>(
-                                                context)
-                                            .classRoom
-                                            .students![index];
-                                    final mlService = MLService(
-                                        students:
-                                            BlocProvider.of<TeacherClassCubit>(
-                                                    context)
-                                                .classRoom
-                                                .students!);
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (_) {
-                                      return MultiBlocProvider(
-                                        providers: [
-                                          BlocProvider.value(
-                                              value:
-                                                  BlocProvider.of<TeacherCubit>(
-                                                      context)),
-                                          BlocProvider.value(
-                                              value: BlocProvider.of<
-                                                  TeacherClassCubit>(context)),
-                                        ],
-                                        child: StudentDetailScreen(
-                                            name: 'Harsh',
-                                            email: 'atk@gmail.com',
-                                            address: 'Pune',
-                                            attendance: '89%',
-                                            student: student,
-                                            cameras: BlocProvider.of<
-                                                    TeacherClassCubit>(context)
-                                                .camerasList),
-                                      );
-                                    }));
-                                  },
-                                  student:
-                                      classCubit.classRoom.students![index]));
-                        })),
-                  ),
-                ),
-              ),
               const SizedBox(
                 height: 25,
               ),
@@ -259,14 +267,58 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                               if (classCubit.classRoom.students == null ||
                                   classCubit.classRoom.students!.isEmpty) {
                                 print("student list is empty");
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible:
+                                      false, // user must tap button!
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      titleTextStyle: const TextStyle(
+                                          color: primaryColor,
+                                          fontSize: 24,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.bold),
+                                      contentTextStyle: const TextStyle(
+                                          color: lightTextColor,
+                                          fontSize: 16,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.normal),
+                                      title: const Text('No Students !'),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: const <Widget>[
+                                            Text('The student list is empty.'),
+                                            Text(
+                                                'Please ask your admin to assign students to your class.'),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text(
+                                            'Ok',
+                                            style: TextStyle(
+                                                color: blackColor,
+                                                fontSize: 18,
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                                 return;
                               }
-                              print(classCubit.classRoom.students);
+                              // print(classCubit.classRoom.students);
                               final mlService = MLService(
                                   students: classCubit.classRoom.students!);
-                              bool? isMarkSuccessfull =
-                                  await Navigator.of(context).push<bool>(
-                                      MaterialPageRoute(builder: (_) {
+                              bool? isMarkSuccessfull;
+                              await Navigator.of(context)
+                                  .push<bool>(MaterialPageRoute(builder: (_) {
                                 return MultiBlocProvider(
                                     providers: [
                                       BlocProvider.value(
@@ -278,7 +330,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                                 context),
                                       ),
                                       BlocProvider(
-                                          create: (context) => AttendanceCubit(
+                                          create: (_) => AttendanceCubit(
                                               apiClient: getIt<AWSApiClient>(),
                                               faceDetectorService:
                                                   getIt<FaceDetectorService>(),
@@ -294,7 +346,11 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                     child: getAttendanceWidget(
                                         classCubit.classRoom.attendanceMode,
                                         mlService));
+                                // child: Scaffold(
+                                //   body: progressIndicator,
+                                // ));
                               }));
+
                               if (isMarkSuccessfull == null ||
                                   isMarkSuccessfull == false) {
                                 print("Attendance Not marked");
@@ -324,10 +380,14 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
   }
 
   Widget getAttendanceWidget(
-      VerificationStatus verificationStatus, MLService mlService) {
+    VerificationStatus verificationStatus,
+    MLService mlService,
+  ) {
     switch (verificationStatus) {
       case VerificationStatus.FaceDetectedAndVerified:
-        return MarkAttendnacePage(mlService: mlService);
+        // return MarkAttendnacePage(mlService: mlService);
+        // return const StaticFaceScan();
+        return FaceVerifyScreen();
       case VerificationStatus.FaceVerified:
         return const FaceVerifyWithProfileImage();
       case VerificationStatus.FaceVerifiedWithLiveness:

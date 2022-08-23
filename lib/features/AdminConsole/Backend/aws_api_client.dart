@@ -6,6 +6,8 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/errors/exceptions.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
+import '../UI/pages/attendance.dart';
+
 abstract class AWSApiClient {
   //User
   Future<void> authenticateUser(
@@ -43,6 +45,7 @@ abstract class AWSApiClient {
   Future<Attendance> createAttendance({required Attendance attendance});
   Future<ClassAttendance> createClassAttendance(
       {required ClassAttendance classAttendance});
+  Future<ClassAttendance> getClassAttendanceList({required String classID});
 
   // Future<Attendance> getAttendance({required })
 
@@ -55,14 +58,17 @@ abstract class AWSApiClient {
   Future<List<Student>> searchStudent(
       {required String searchQuery, required StudentSearchMode mode});
   Future<List<Attendance>> searchAttendance(
-      {required String searchQuery,
-      required AttendanceSearchMode mode,
-      required int limit});
+      {required List<SearchQuery> searchQuery, required int limit});
 
   Future<List<ClassAttendance>> searchByMonth({required String searchQuery});
 
   // Future<List<Student>> searchAttendance(
   //     {required String searchQuery, required StudentSearchMode mode});
+
+  //Leaves
+  Future<Leave> createLeave({required Leave leave});
+  Future<Leave> getLeave({required String leaveID});
+  Future<List<Leave>> getListOfLeaves({required int limit});
 }
 
 class AWSApiClientImpl implements AWSApiClient {
@@ -152,7 +158,7 @@ query MyQuery {
     assignedClass {
       items {
        
-        
+        id
         classRoomName
       }
     }
@@ -177,7 +183,13 @@ query MyQuery {
       final responseString = await uploadJsonBodyRequest(body);
       final myJsonMap = json.decode(responseString);
 
-      final user = User.fromJson(myJsonMap['data']['getUser']);
+      var user = User.fromJson(myJsonMap['data']['getUser']);
+      List<ClassRoom> classRoomList = [];
+      for (var classRoom in json.decode(responseString)['data']['getUser']
+          ['assignedClass']['items']) {
+        classRoomList.add(ClassRoom.fromJson(classRoom));
+      }
+      user = user.copyWith(assignedClass: classRoomList);
       return user;
     } catch (e) {
       print(e);
@@ -651,7 +663,7 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  updateStudent(input: {address: "${updatedStudent.address}", classRoomStudentsId: "${updatedStudent.classRoomStudentsId}", email: ${updatedStudent.email}, idCardPhoto: ${updatedStudent.idCardPhoto}, modelData: ${updatedStudent.modelData}, phoneNumber: ${updatedStudent.phoneNumber}, profilePhoto: ${updatedStudent.profilePhoto}, roll: ${updatedStudent.roll}, studentID: "${updatedStudent.studentID}",studentName: "${updatedStudent.studentName}"}) {
+  updateStudent(input: {address: ${f(updatedStudent.address)}, classRoomStudentsId: ${f(updatedStudent.classRoomStudentsId)}, email: ${f(updatedStudent.email)}, idCardPhoto: ${f(updatedStudent.idCardPhoto)}, modelData:${updatedStudent.modelData}, phoneNumber: ${f(updatedStudent.phoneNumber)}, profilePhoto: ${f(updatedStudent.profilePhoto)}, roll: ${f(updatedStudent.roll)}, studentID: ${f(updatedStudent.studentID)},studentName: ${f(updatedStudent.studentName)}}) {
     email
     classRoomStudentsId
     modelData
@@ -667,7 +679,7 @@ query MyQuery {
     };
 
     final responseString = await uploadJsonBodyRequest(body);
-
+    print(responseString);
     return Student.fromJson(
         json.decode(responseString)['data']['updateStudent']);
   }
@@ -750,12 +762,14 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createClassAttendance(input: {classID: "${classAttendance.classID}", date: "${classAttendance.date}", presentPercent: ${classAttendance.presentPercent}, teacherEmail: "${classAttendance.teacherEmail}"}) {
+  createClassAttendance(input: {classID: "${classAttendance.classID}", date: "${classAttendance.date}", presentPercent: ${classAttendance.presentPercent}, teacherEmail: "${classAttendance.teacherEmail}", time: "${classAttendance.time}"}) {
     classID
+    date
     presentPercent
     teacherEmail
   }
 }
+
 
 ''',
     };
@@ -818,36 +832,66 @@ query MyQuery {
 
   @override
   Future<List<Attendance>> searchAttendance(
-      {required String searchQuery,
-      required AttendanceSearchMode mode,
-      required int limit}) async {
-    String searchFilter = '';
-    switch (mode) {
-      case AttendanceSearchMode.date:
-        searchFilter = 'date';
-        break;
-      case AttendanceSearchMode.status:
-        searchFilter = 'status';
-        break;
-      case AttendanceSearchMode.teacherID:
-        searchFilter = 'teacherID';
-        break;
-      case AttendanceSearchMode.teacherName:
-        searchFilter = 'teacherName';
-        break;
-      case AttendanceSearchMode.studentID:
-        searchFilter = 'studentID';
-        break;
-      case AttendanceSearchMode.verification:
-        searchFilter = 'verification';
-        break;
-      default:
+      {required List<SearchQuery> searchQuery, required int limit}) async {
+    List<String> searchFiltersList = [];
+    for (var searchq in searchQuery) {
+      String searchFilter = '';
+      switch (searchq.mode) {
+        case AttendanceSearchMode.date:
+          searchFilter = 'date';
+          searchFiltersList.add(searchFilter);
+
+          break;
+        case AttendanceSearchMode.status:
+          searchFilter = 'status';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.className:
+          searchFilter = 'className';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.teacherID:
+          searchFilter = 'teacherID';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.teacherName:
+          searchFilter = 'teacherName';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.studentName:
+          searchFilter = 'studentName';
+          searchFiltersList.add(searchFilter);
+          break;
+        case AttendanceSearchMode.verification:
+          searchFilter = 'verification';
+          searchFiltersList.add(searchFilter);
+          break;
+        default:
+      }
     }
+    String temp =
+        '{className: {match: "5A"}, and: {verification: {match: "ManualAttendance"}, and: {status: {match: "Absent"}}}}';
+
+    String finalSearch = '';
+    for (int i = 0; i < searchQuery.length; i++) {
+      finalSearch += '{';
+      finalSearch += '${searchFiltersList[i]}:';
+      finalSearch += '{match: "${searchQuery[i].searchText}"},';
+      if (i == searchQuery.length - 1) {
+        for (int j = 0; j < searchQuery.length; j++) {
+          finalSearch += '}';
+        }
+        break;
+      } else {
+        finalSearch += 'and: ';
+      }
+    }
+    print(finalSearch);
     final body = {
       'operationName': 'MyQuery',
       'query': '''
      query MyQuery {
-  searchAttendances(filter: {$searchFilter: {match: "$searchQuery"}}, limit: $limit) {
+  searchAttendances(filter: $finalSearch, limit: $limit) {
     items {
       classID
       geoLatitude
@@ -881,6 +925,12 @@ query MyQuery {
   }
 
   @override
+  Future<ClassAttendance> getClassAttendanceList({required String classID}) {
+    // TODO: implement getClassAttendanceList
+    throw UnimplementedError();
+  }
+
+  @override
   Future<List<ClassAttendance>> classAttendanceDateWiseList(
       {required String classId}) async {
     final body = {
@@ -908,6 +958,7 @@ query MyQuery {
 
     return returnList;
   }
+
 
   @override
   Future<List<ClassAttendance>> searchByMonth(
@@ -941,13 +992,60 @@ query MyQuery {
 
     return returnList;
   }
+  
+  @override
+  Future<Leave> createLeave({required Leave leave}) {
+    // TODO: implement createLeave
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Leave> getLeave({required String leaveID}) {
+    // TODO: implement getLeave
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<Leave>> getListOfLeaves({required int limit}) async{
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+query MyQuery {
+  listLeaves(limit: $limit) {
+    items {
+      leaveDate
+      leaveDays
+      leaveReason
+      leaveStatus
+      studentID
+      teacherID
+    }
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<Leave> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['listLeaves']
+        ['items']) {
+      returnList.add(Leave.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
 }
 
-String f(var val) {
-  if (val == null) {
-    return null.toString();
+  String f(var val) {
+    if (val == null) {
+      return null.toString();
+    }
+
+    var ans = '''"$val"''';
+    return ans;
   }
 
-  var ans = '''"$val"''';
-  return ans;
-}
