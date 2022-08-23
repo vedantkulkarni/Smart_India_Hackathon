@@ -19,10 +19,12 @@ class ClassDetailsCubit extends Cubit<ClassDetailsState> {
 
   Future<void> getFullDetailsOfClassRoom({required String classRoomID}) async {
     emit(LoadingClassDetails());
+   
     classRoom = await awsApiClient.getClassRoom(classRoomID: classRoomID);
     // print(classRoo);
     emit(ClassRoomDetialsFetched());
   }
+
 
   Future<void> getAttendanceListDateWise({required String classRoomID}) async {
     emit(FectingAttendanceByDate());
@@ -30,4 +32,5 @@ class ClassDetailsCubit extends Cubit<ClassDetailsState> {
         await awsApiClient.classAttendanceDateWiseList(classId: classRoomID);
     emit(AttendanceByDateFetched());
   }
+
 }

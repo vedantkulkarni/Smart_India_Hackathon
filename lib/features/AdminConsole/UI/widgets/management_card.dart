@@ -7,7 +7,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_clie
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_attendance_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_classrooms_page.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_groups_page.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_leaves.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_students_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_users_page.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
@@ -27,8 +27,8 @@ class ManageMentCard extends StatelessWidget {
   List<ManagementMode> modes = [
     ManagementMode.User,
     ManagementMode.Students,
-    ManagementMode.Students,
-    ManagementMode.ClassRooms
+    ManagementMode.Leaves,
+    ManagementMode.ClassRooms,
   ];
 
   @override
@@ -102,7 +102,7 @@ class ManageMentCard extends StatelessWidget {
       return const ManageStudentsPage();
     } else if (index == 2) {
       //manage groups
-      return ManageGroupsPage();
+      return const ManageLeaves();
     } else if (index == 3) {
       return const ManageClassroom();
     } else {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
 import 'package:team_dart_knights_sih/models/ClassAttendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
@@ -82,6 +84,7 @@ class _CartesianState extends State<Cartesian> {
       }
     }
     setState(() {
+      BlocProvider.of<AdminCubit>(context).isAnalyticsFetched = true;
       isLoaded = true;
     });
   }
@@ -89,7 +92,10 @@ class _CartesianState extends State<Cartesian> {
   @override
   void initState() {
     // TODO: implement initState
-    searchAttendanecByMonth();
+    isLoaded = BlocProvider.of<AdminCubit>(context).isAnalyticsFetched;
+    if (isLoaded == false) {
+      searchAttendanecByMonth();
+    }
     super.initState();
   }
 

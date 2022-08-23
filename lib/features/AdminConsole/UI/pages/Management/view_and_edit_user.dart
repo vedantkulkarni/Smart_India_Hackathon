@@ -56,10 +56,15 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     )),
                 const Spacer(),
                 IconButton(
-                    onPressed: () {},
-                    icon: Icon(
+                    onPressed: () async{
+
+                      // await managementCubit.updateUser(updatedUser: updatedUser)
+
+                    },
+                    icon: const Icon(
+
                       fi.FluentIcons.check_mark,
-                      size: 20.sp,
+                      size: 20,
                       color: primaryColor,
                     )),
               ],
@@ -108,7 +113,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                 alignment: Alignment.center,
                 underline: Container(),
                 borderRadius: fi.BorderRadius.circular(10),
-                value: user.role,
+                value: widget.currentRole,
                 onChanged: (value) {
                   changeRole(value!);
                   print(user.role);
@@ -151,6 +156,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     hintText: user.name.trim().split(' ')[0],
                     padding: const EdgeInsets.all(5),
                     heading: 'First Name',
+                    
                   ),
                 ),
                  SizedBox(
@@ -200,6 +206,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
               heading: 'Address',
             ),
             CustomTextField(
+              
               enabled: canEdit,
               hintText: user.description ?? 'Unknown',
               value: user.description ?? 'Unknown',

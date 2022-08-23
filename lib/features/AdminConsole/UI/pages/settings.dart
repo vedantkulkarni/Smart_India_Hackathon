@@ -2,7 +2,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
-import 'package:get/get.dart';
 
 bool isSelectedEng = true, isSelectedHin = false, isSelectedMar = false;
 

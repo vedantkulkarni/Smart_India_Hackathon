@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
+import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_to_class_room.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/assign_teacher_to_class_room.dart';
@@ -685,6 +686,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                       context: context,
                       body: MultiBlocProvider(
                           providers: [
+                            BlocProvider(create: (context)=>SearchCubit(searchMode: SearchMode.Student, apiClient: getIt<AWSApiClient>())),
                             BlocProvider.value(
                                 value:
                                     BlocProvider.of<ManagementCubit>(context))
@@ -719,7 +721,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           )),
                         ));
                       });
-                  if (result!) {
+                  if (result!=null) {
                     await classCubit.getFullDetailsOfClassRoom(
                         classRoomID: classRoom.id);
                   }

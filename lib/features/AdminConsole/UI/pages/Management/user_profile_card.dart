@@ -5,6 +5,7 @@ import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/view_and_edit_user.dart';
 
+import '../../../../../models/Role.dart';
 import '../../../../../models/User.dart';
 import 'cubit/management_cubit.dart';
 
@@ -30,7 +31,7 @@ class UserProfileCard extends StatelessWidget {
                 value: BlocProvider.of<ManagementCubit>(context),
                 child: ViewAndEditUser(
                   user: user,
-                  currentRole: user.role,
+                  currentRole: Role.SuperAdmin,
                 ),
               ));
         },

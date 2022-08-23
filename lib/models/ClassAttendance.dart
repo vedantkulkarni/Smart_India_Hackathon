@@ -32,6 +32,7 @@ class ClassAttendance extends Model {
   final TemporalDate? _date;
   final double? _presentPercent;
   final String? _teacherEmail;
+  final TemporalTime? _time;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -77,6 +78,10 @@ class ClassAttendance extends Model {
     return _teacherEmail;
   }
   
+  TemporalTime? get time {
+    return _time;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -85,15 +90,16 @@ class ClassAttendance extends Model {
     return _updatedAt;
   }
   
-  const ClassAttendance._internal({required this.id, required classID, required date, presentPercent, teacherEmail, createdAt, updatedAt}): _classID = classID, _date = date, _presentPercent = presentPercent, _teacherEmail = teacherEmail, _createdAt = createdAt, _updatedAt = updatedAt;
+  const ClassAttendance._internal({required this.id, required classID, required date, presentPercent, teacherEmail, time, createdAt, updatedAt}): _classID = classID, _date = date, _presentPercent = presentPercent, _teacherEmail = teacherEmail, _time = time, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory ClassAttendance({String? id, required String classID, required TemporalDate date, double? presentPercent, String? teacherEmail}) {
+  factory ClassAttendance({String? id, required String classID, required TemporalDate date, double? presentPercent, String? teacherEmail, TemporalTime? time}) {
     return ClassAttendance._internal(
       id: id == null ? UUID.getUUID() : id,
       classID: classID,
       date: date,
       presentPercent: presentPercent,
-      teacherEmail: teacherEmail);
+      teacherEmail: teacherEmail,
+      time: time);
   }
   
   bool equals(Object other) {
@@ -108,7 +114,8 @@ class ClassAttendance extends Model {
       _classID == other._classID &&
       _date == other._date &&
       _presentPercent == other._presentPercent &&
-      _teacherEmail == other._teacherEmail;
+      _teacherEmail == other._teacherEmail &&
+      _time == other._time;
   }
   
   @override
@@ -124,6 +131,7 @@ class ClassAttendance extends Model {
     buffer.write("date=" + (_date != null ? _date!.format() : "null") + ", ");
     buffer.write("presentPercent=" + (_presentPercent != null ? _presentPercent!.toString() : "null") + ", ");
     buffer.write("teacherEmail=" + "$_teacherEmail" + ", ");
+    buffer.write("time=" + (_time != null ? _time!.format() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -131,13 +139,14 @@ class ClassAttendance extends Model {
     return buffer.toString();
   }
   
-  ClassAttendance copyWith({String? id, String? classID, TemporalDate? date, double? presentPercent, String? teacherEmail}) {
+  ClassAttendance copyWith({String? id, String? classID, TemporalDate? date, double? presentPercent, String? teacherEmail, TemporalTime? time}) {
     return ClassAttendance._internal(
       id: id ?? this.id,
       classID: classID ?? this.classID,
       date: date ?? this.date,
       presentPercent: presentPercent ?? this.presentPercent,
-      teacherEmail: teacherEmail ?? this.teacherEmail);
+      teacherEmail: teacherEmail ?? this.teacherEmail,
+      time: time ?? this.time);
   }
   
   ClassAttendance.fromJson(Map<String, dynamic> json)  
@@ -146,11 +155,12 @@ class ClassAttendance extends Model {
       _date = json['date'] != null ? TemporalDate.fromString(json['date']) : null,
       _presentPercent = (json['presentPercent'] as num?)?.toDouble(),
       _teacherEmail = json['teacherEmail'],
+      _time = json['time'] != null ? TemporalTime.fromString(json['time']) : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'classID': _classID, 'date': _date?.format(), 'presentPercent': _presentPercent, 'teacherEmail': _teacherEmail, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'classID': _classID, 'date': _date?.format(), 'presentPercent': _presentPercent, 'teacherEmail': _teacherEmail, 'time': _time?.format(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "classAttendance.id");
@@ -158,6 +168,7 @@ class ClassAttendance extends Model {
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField PRESENTPERCENT = QueryField(fieldName: "presentPercent");
   static final QueryField TEACHEREMAIL = QueryField(fieldName: "teacherEmail");
+  static final QueryField TIME = QueryField(fieldName: "time");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ClassAttendance";
     modelSchemaDefinition.pluralName = "ClassAttendances";
@@ -186,6 +197,12 @@ class ClassAttendance extends Model {
       key: ClassAttendance.TEACHEREMAIL,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: ClassAttendance.TIME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.time)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
