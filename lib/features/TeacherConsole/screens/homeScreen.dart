@@ -113,6 +113,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     value: BlocProvider.of<
                                                         TeacherCubit>(context)),
                                                 BlocProvider(
+                                                  key: ValueKey(teacherCubit
+                                                                  .teacher
+                                                                  .assignedClass![
+                                                                      0]
+                                                                  .id.toString()),
                                                   create: (context) =>
                                                       TeacherClassCubit(
                                                           awsApiClient: getIt<

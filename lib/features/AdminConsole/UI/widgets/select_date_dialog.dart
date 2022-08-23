@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
@@ -23,19 +24,19 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          const Text(
+           Text(
             'Select a date for your search query',
             style: TextStyle(
                 color: primaryColor,
                 fontWeight: FontWeight.normal,
                 fontFamily: 'Poppins',
-                fontSize: 26),
+                fontSize: 26.sp),
           ),
-          const SizedBox(
-            height: 60,
+           SizedBox(
+            height: 60.h,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 40),
+            padding:  EdgeInsets.symmetric(horizontal: 120.w, vertical: 40.h),
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: TableCalendar(
@@ -72,8 +73,8 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
                     borderRadius: BorderRadius.circular(10),
                     color: primaryColor,
                   ),
-                  selectedTextStyle: const TextStyle(
-                      fontSize: 14,
+                  selectedTextStyle:  TextStyle(
+                      fontSize: 14.sp,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal,
                       color: whiteColor),
@@ -81,8 +82,8 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
                     borderRadius: BorderRadius.circular(10),
                     color: primaryColor,
                   ),
-                  todayTextStyle: const TextStyle(
-                      fontSize: 14,
+                  todayTextStyle:  TextStyle(
+                      fontSize: 14.sp,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal,
                       color: blackColor),
@@ -90,8 +91,8 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
                     color: backgroundColor,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  defaultTextStyle: const TextStyle(
-                      fontSize: 14,
+                  defaultTextStyle:  TextStyle(
+                      fontSize: 14.sp,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal,
                       color: blackColor),
@@ -99,30 +100,30 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
                     color: backgroundColor,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  weekendTextStyle: const TextStyle(
-                      fontSize: 14,
+                  weekendTextStyle:  TextStyle(
+                      fontSize: 14.sp,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal,
                       color: blackColor),
                 ),
                 headerStyle: HeaderStyle(
-                  leftChevronIcon: const FaIcon(
+                  leftChevronIcon:  FaIcon(
                     FontAwesomeIcons.chevronLeft,
                     color: primaryColor,
-                    size: 16,
+                    size: 16.sp,
                   ),
-                  rightChevronIcon: const FaIcon(
+                  rightChevronIcon:  FaIcon(
                     FontAwesomeIcons.chevronRight,
                     color: primaryColor,
-                    size: 16,
+                    size: 16.sp,
                   ),
                   headerMargin: const EdgeInsets.only(bottom: 20),
                   // decoration: BoxDecoration(
                   //   color: const Color(0xFFAB47BC).withOpacity(0.0),
                   //   borderRadius: BorderRadius.circular(16),
                   // ),
-                  titleTextStyle: const TextStyle(
-                      fontSize: 16,
+                  titleTextStyle:  TextStyle(
+                      fontSize: 16.sp,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal,
                       color: blackColor),

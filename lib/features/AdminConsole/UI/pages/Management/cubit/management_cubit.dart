@@ -2,11 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
-
-import '../../../../../../models/Role.dart';
-import '../../../../../../models/User.dart';
 
 part 'management_state.dart';
 
@@ -25,6 +21,8 @@ class ManagementCubit extends Cubit<ManagementState> {
       getAllUsers(role: Role.SuperAdmin);
     } else if (managementMode == ManagementMode.ClassRooms) {
       getAllClassRooms(limit: 10);
+    } else if (managementMode == ManagementMode.Leaves) {
+      getAllLeaves(limit: 10);
     }
   }
 
@@ -136,6 +134,13 @@ class ManagementCubit extends Cubit<ManagementState> {
   Future<ClassRoom> updateClassRoom(
       {required ClassRoom updatedClassRoom}) async {
     return await awsApiClient.updateClassRoom(classRoom: updatedClassRoom);
+  }
+
+  //Managemode  = Leaves
+  Future<void> getAllLeaves({required int limit}) async {
+    emit(FetchingLeaves());
+    final leaves = await awsApiClient.getListOfLeaves(limit: limit);
+    emit(LeavesFetched(leaves: leaves));
   }
 
   //getter

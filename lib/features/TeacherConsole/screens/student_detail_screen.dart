@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/Screens/Leave_Apply/Leave_apply.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/s3_service.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -24,12 +28,14 @@ class StudentDetailScreen extends StatefulWidget {
   final String attendance;
   List<CameraDescription> cameras;
   Student? student;
+  int index;
   StudentDetailScreen(
       {required this.name,
       required this.email,
       required this.address,
       required this.attendance,
       required this.cameras,
+      required this.index,
       this.student,
       Key? key})
       : super(key: key);
@@ -204,7 +210,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                       height: 40,
                       width: 200,
                       child: CustomTextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             print(widget.student);
                             final classCubit =
                                 BlocProvider.of<TeacherClassCubit>(context);
@@ -216,24 +222,37 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                                         .classRoom
                                         .students!);
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => BlocProvider(
-                                      create: (_) => AttendanceCubit(
-                                          teacher: teacherCubit.teacher,
-                                          mode: classCubit
-                                              .classRoom.attendanceMode,
-                                          apiClient: getIt<AWSApiClient>(),
-                                          faceDetectorService:
-                                              getIt<FaceDetectorService>(),
-                                          mlService: mlService,
-                                          cameraService:
-                                              getIt<CameraService>()),
-                                      child: AddStudentFacialData(
-                                        cameras: widget.cameras,
-                                        student: widget.student!,
-                                        mlService: mlService,
-                                      ),
-                                    )));
+                            var res = await Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (ctx) => BlocProvider(
+                                          create: (_) => AttendanceCubit(
+                                              studList: BlocProvider.of<
+                                                          TeacherClassCubit>(
+                                                      context)
+                                                  .classRoom
+                                                  .students!,
+                                              teacher: teacherCubit.teacher,
+                                              mode: classCubit
+                                                  .classRoom.attendanceMode,
+                                              apiClient: getIt<AWSApiClient>(),
+                                              faceDetectorService:
+                                                  getIt<FaceDetectorService>(),
+                                              mlService: mlService,
+                                              cameraService:
+                                                  getIt<CameraService>()),
+                                          child: AddStudentFacialData(
+                                            student: widget.student!,
+                                            mlService: mlService,
+                                          ),
+                                        )));
+                            if (res != null) {
+                              await classCubit.fetchClassRoomDetailsForTeacher(
+                                  classRoomID: classCubit.classRoom.id);
+                              setState(() {
+                                widget.student = classCubit
+                                    .classRoom.students![widget.index];
+                              });
+                            }
                           },
                           text: 'Add Face Data'),
                     )
@@ -245,11 +264,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                   height: 40,
                   width: 200,
                   child: CustomTextButton(
-                      onPressed: () async {
-                        i = await getObjectFromS3();
-                        setState(() {});
-                      },
-                      text: 'Apply for Leave')),
+                      onPressed: () {}, text: 'Apply for Leave')),
               const SizedBox(
                 height: 40,
               ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_attendance_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_classrooms_page.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_groups_page.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_leaves.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_students_page.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/manage_users_page.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
@@ -26,8 +27,8 @@ class ManageMentCard extends StatelessWidget {
   List<ManagementMode> modes = [
     ManagementMode.User,
     ManagementMode.Students,
-    ManagementMode.Students,
-    ManagementMode.ClassRooms
+    ManagementMode.Leaves,
+    ManagementMode.ClassRooms,
   ];
 
   @override
@@ -48,10 +49,10 @@ class ManageMentCard extends StatelessWidget {
             }));
           },
           child: Container(
-              height: 200,
-              width: 200,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              height: 200.h,
+              width: 200.w,
+              margin:  EdgeInsets.symmetric(horizontal: 10.w),
+              padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
               decoration: BoxDecoration(
                 boxShadow: const [
                   BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
@@ -64,28 +65,28 @@ class ManageMentCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    height: 50,
-                    width: 50,
+                    height: 50.h,
+                    width: 50.w,
                     child: Image.asset(imagePath),
                   ),
-                  const SizedBox(
-                    width: 20,
+                   SizedBox(
+                    width: 20.w,
                   ),
                   Text(
                     addText,
-                    style: const TextStyle(
+                    style:  TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Poppins',
-                        fontSize: 18),
+                        fontSize: 18.sp),
                   ),
-                  const Text(
+                   Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris malesuada eget tortor non efficitur.',
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         color: lightTextColor,
                         fontFamily: 'Poppins',
-                        fontSize: 14),
+                        fontSize: 14.sp),
                   )
                 ],
               )),
@@ -98,10 +99,10 @@ class ManageMentCard extends StatelessWidget {
     if (index == 0) {
       return const ManageUsers();
     } else if (index == 1) {
-      return ManageStudentsPage();
+      return const ManageStudentsPage();
     } else if (index == 2) {
       //manage groups
-      return ManageGroupsPage();
+      return const ManageLeaves();
     } else if (index == 3) {
       return const ManageClassroom();
     } else {

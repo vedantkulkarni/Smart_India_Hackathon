@@ -24,6 +24,7 @@ import 'Attendance.dart';
 import 'ClassAttendance.dart';
 import 'ClassRoom.dart';
 import 'Group.dart';
+import 'Leave.dart';
 import 'School.dart';
 import 'Student.dart';
 import 'User.dart';
@@ -34,6 +35,8 @@ export 'ClassAttendance.dart';
 export 'ClassRoom.dart';
 export 'Gender.dart';
 export 'Group.dart';
+export 'Leave.dart';
+export 'LeaveStatus.dart';
 export 'Role.dart';
 export 'School.dart';
 export 'Student.dart';
@@ -42,9 +45,9 @@ export 'VerificationStatus.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "78fe1af74ebee10d7468aab3378717f5";
+  String version = "8e813ff1722d74d018db89dea8b34bd9";
   @override
-  List<ModelSchema> modelSchemas = [Attendance.schema, ClassAttendance.schema, ClassRoom.schema, Group.schema, School.schema, Student.schema, User.schema];
+  List<ModelSchema> modelSchemas = [Attendance.schema, ClassAttendance.schema, ClassRoom.schema, Group.schema, Leave.schema, School.schema, Student.schema, User.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [];
@@ -61,6 +64,8 @@ class ModelProvider implements ModelProviderInterface {
         return ClassRoom.classType;
       case "Group":
         return Group.classType;
+      case "Leave":
+        return Leave.classType;
       case "School":
         return School.classType;
       case "Student":

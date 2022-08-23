@@ -1,7 +1,10 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
+import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_to_class_room.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/assign_teacher_to_class_room.dart';
@@ -11,9 +14,11 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/models/ClassRoom.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
+import '../../../../../models/ModelProvider.dart';
 import '../../../../../models/User.dart';
+// import '../../../../../models/VerificationStatus.dart';
 import 'cubit/management_cubit.dart';
 import '../../../../../injection_container.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
@@ -39,7 +44,7 @@ class _ClassRoomDetailsState extends State<ClassRoomDetails> {
           backgroundColor: backgroundColor,
           automaticallyImplyLeading: true,
           elevation: 0,
-          iconTheme: const IconThemeData(color: blackColor),
+          iconTheme: IconThemeData(color: blackColor),
         ),
         body: BlocBuilder<ClassDetailsCubit, ClassDetailsState>(
           builder: (context, state) {
@@ -53,15 +58,14 @@ class _ClassRoomDetailsState extends State<ClassRoomDetails> {
               height: double.maxFinite,
               width: double.maxFinite,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 20.h),
                 child: Column(
                   children: [
                     AssignedTeacherWidget(
                       classRoom: classDetails,
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: 20.h,
                     ),
                     Expanded(
                         child: Row(
@@ -93,7 +97,7 @@ class AssignedTeacherWidget extends StatelessWidget {
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
@@ -112,18 +116,18 @@ class AssignedTeacherWidget extends StatelessWidget {
             children: [
               Text(
                 classRoom.classRoomName,
-                style: const TextStyle(
-                    fontSize: 24,
+                style: TextStyle(
+                    fontSize: 24.sp,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.bold,
                     color: blackColor),
               ),
               Row(
                 children: [
-                  const Text(
+                  Text(
                     'Students : ',
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.normal,
                         color: lightTextColor),
@@ -132,8 +136,8 @@ class AssignedTeacherWidget extends StatelessWidget {
                     classRoom.students == null
                         ? '0'
                         : classRoom.students!.length.toString(),
-                    style: const TextStyle(
-                        fontSize: 12,
+                    style: TextStyle(
+                        fontSize: 12.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.normal,
                         color: primaryColor),
@@ -142,18 +146,18 @@ class AssignedTeacherWidget extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Text(
+                  Text(
                     'School : ',
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.normal,
                         color: lightTextColor),
                   ),
                   Text(
                     classRoom.schoolID,
-                    style: const TextStyle(
-                        fontSize: 12,
+                    style: TextStyle(
+                        fontSize: 12.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.normal,
                         color: primaryColor),
@@ -178,34 +182,36 @@ class AssignedTeacherWidget extends StatelessWidget {
                 children: [
                   Container(
                     child: Center(
-                        child: TextButton(
-                            onPressed: () async {
-                              final result = await showDialog<bool>(
-                                  context: context,
-                                  builder: (_) {
-                                    return CustomDialogBox(
-                                        widget: BlocProvider.value(
-                                      value: BlocProvider.of<ManagementCubit>(
-                                          context),
-                                      child: Container(
-                                          child: AssignTeacherToClassRoom(
-                                        classRoom: classRoom,
-                                      )),
-                                    ));
-                                  });
-                              if (result!) {
-                                await classCubit.getFullDetailsOfClassRoom(
-                                    classRoomID: classRoom.id);
-                              }
-                            },
-                            child: const Text(
-                              'No Teacher Assigned',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.normal,
-                                  color: blackColor),
-                            ))),
+                      child: TextButton(
+                        onPressed: () async {
+                          final result = await showDialog<bool>(
+                              context: context,
+                              builder: (_) {
+                                return CustomDialogBox(
+                                    widget: BlocProvider.value(
+                                  value:
+                                      BlocProvider.of<ManagementCubit>(context),
+                                  child: Container(
+                                      child: AssignTeacherToClassRoom(
+                                    classRoom: classRoom,
+                                  )),
+                                ));
+                              });
+                          if (result!) {
+                            await classCubit.getFullDetailsOfClassRoom(
+                                classRoomID: classRoom.id);
+                          }
+                        },
+                        child: Text(
+                          'No Teacher Assigned',
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.normal,
+                              color: blackColor),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               )
@@ -231,13 +237,13 @@ class AssignedTeacherWidget extends StatelessWidget {
                                   'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'),
                               radius: 20,
                             ),
-                            const SizedBox(
-                              width: 10,
+                            SizedBox(
+                              width: 10.w,
                             ),
                             Text(
                               snapshot.data!.name.trim(),
-                              style: const TextStyle(
-                                  fontSize: 20,
+                              style: TextStyle(
+                                  fontSize: 20.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold,
                                   color: blackColor),
@@ -245,18 +251,18 @@ class AssignedTeacherWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Assigned Teacher',
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                             color: blackColor),
                       ),
                       Text(
                         snapshot.data!.email,
-                        style: const TextStyle(
-                            fontSize: 12,
+                        style: TextStyle(
+                            fontSize: 12.sp,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                             color: primaryColor),
@@ -287,7 +293,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
   Widget build(BuildContext context) {
     return Container(
         width: double.maxFinite,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
@@ -319,26 +325,26 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Today\'s Attendance',
+                            Text(
+                              'Today'.tr + '\nAttendance'.tr,
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal,
                                   color: whiteColor),
                             ),
-                            const Text(
+                            Text(
                               '48',
                               style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 24.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold,
                                   color: whiteColor),
                             ),
                             Text(
-                              'present out of 56',
+                              'present out of 56'.tr,
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 12.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal,
                                   color: whiteColor.withOpacity(0.8)),
@@ -370,12 +376,13 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                     context: context,
                                     builder: (context) {
                                       return CustomDialogBox(
-                                          widget: const Center(
-                                        child: Text('Attendnace Details'),
-                                      ));
+                                        widget: const Center(
+                                          child: Text('Attendnace Details'),
+                                        ),
+                                      );
                                     });
                               },
-                              child: const Text('View'),
+                              child: Text('View'.tr),
                             ),
                           ],
                         ),
@@ -384,8 +391,8 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 80,
+              SizedBox(
+                width: 80.w,
               ),
               Expanded(
                 child: Container(
@@ -400,11 +407,11 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
-                              'Classroom Concentration',
+                              'Classroom'.tr + 'Concentration'.tr,
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold,
                                   color: blackColor),
@@ -412,15 +419,15 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                             Text(
                               '92%',
                               style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: 24.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.bold,
                                   color: blackColor),
                             ),
                             Text(
-                              'present',
+                              'present'.tr,
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal,
                                   color: whiteColor),
@@ -434,8 +441,8 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
               )
             ],
           ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: 10.h,
           ),
           // const Divider(
           //   color: primaryColor,
@@ -443,19 +450,19 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
           //   endIndent: 10,
           //   thickness: 0.5,
           // ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: 10.h,
           ),
-          const Text(
-            'Students',
+          Text(
+            'Students'.tr,
             style: TextStyle(
-                fontSize: 24,
+                fontSize: 24.sp,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold,
                 color: blackColor),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           classRoom.students == null
               ? const Expanded(
@@ -507,8 +514,11 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
   Widget build(BuildContext context) {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
+
+    VerificationStatus _verificationStatus = widget.classRoom.attendanceMode;
+
     return Container(
-      margin: const EdgeInsets.only(left: 20),
+      margin: EdgeInsets.only(left: 20.w),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
             colors: [primaryColor, secondaryColor],
@@ -524,19 +534,19 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      width: MediaQuery.of(context).size.width * 0.3,
+      width: MediaQuery.of(context).size.width * 0.3.w,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: 10.h,
           ),
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Manage Classroom',
+              'Manage'.tr + 'Classroom'.tr,
               style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                   color: whiteColor),
@@ -546,6 +556,107 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: 30,
+                color: backgroundColor,
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: DropdownButton<VerificationStatus>(
+                  icon: null,
+                  iconSize: 14,
+                  alignment: Alignment.center,
+                  underline: Container(),
+                  borderRadius: BorderRadius.circular(10),
+                  value: _verificationStatus,
+                  onChanged: (val) async {
+                    // print(val);
+                    try {
+                      widget.classRoom =
+                          widget.classRoom.copyWith(attendanceMode: val);
+
+                      ClassRoom currentClassRoom = await managementCubit
+                          .updateClassRoom(updatedClassRoom: widget.classRoom);
+
+                      await classCubit.getFullDetailsOfClassRoom(
+                        classRoomID: currentClassRoom.id,
+                      );
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Detected And Verified',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceDetectedAndVerified,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Verified',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceVerified,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Face Verified With Liveness',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.FaceVerifiedWithLiveness,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Involve Parent',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.InvolveParent,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Manual Attendance',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: VerificationStatus.ManualAttendance,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               CustomTextButton(
                 onPressed: () async {
                   await classCubit.getAttendanceListDateWise(
@@ -562,11 +673,11 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   //   return DownloadAttedance();
                   // }));
                 },
-                text: 'Download Attendance',
+                text: 'Download'.tr + ' ' + 'Attendance'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
               CustomTextButton(
@@ -575,6 +686,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                       context: context,
                       body: MultiBlocProvider(
                           providers: [
+                            BlocProvider(create: (context)=>SearchCubit(searchMode: SearchMode.Student, apiClient: getIt<AWSApiClient>())),
                             BlocProvider.value(
                                 value:
                                     BlocProvider.of<ManagementCubit>(context))
@@ -587,7 +699,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                         classRoomID: widget.classRoom.id);
                   }
                 },
-                text: 'Add Student',
+                text: 'Add'.tr + ' ' + 'Students'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
@@ -614,7 +726,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                         classRoomID: classRoom.id);
                   }
                 },
-                text: 'Assign Teacher',
+                text: 'Assign'.tr + ' ' + 'Teachers'.tr,
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
@@ -628,7 +740,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   await managementCubit.getAllClassRooms(limit: 10);
                   Navigator.pop(context);
                 },
-                text: 'Delete Class',
+                text: 'Delete'.tr + ' ' + 'ClassRoom'.tr,
                 bgColor: whiteColor,
                 textColor: blackColor,
               ),

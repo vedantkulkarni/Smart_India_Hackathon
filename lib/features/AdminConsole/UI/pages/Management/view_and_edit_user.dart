@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -23,7 +24,7 @@ class ViewAndEditUser extends StatefulWidget {
 class _ViewAndEditUserState extends State<ViewAndEditUser> {
   User user;
   Role currentRole;
-  _ViewAndEditUserState(this.user,this.currentRole);
+  _ViewAndEditUserState(this.user, this.currentRole);
   bool canEdit = false;
   @override
   Widget build(BuildContext context) {
@@ -37,8 +38,8 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 20.sp,
             ),
             Row(
               children: [
@@ -48,58 +49,63 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                         canEdit = true;
                       });
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       fi.FluentIcons.edit,
-                      size: 16,
+                      size: 16.sp,
                       color: primaryColor,
                     )),
                 const Spacer(),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async{
+
+                      // await managementCubit.updateUser(updatedUser: updatedUser)
+
+                    },
                     icon: const Icon(
+
                       fi.FluentIcons.check_mark,
                       size: 20,
                       color: primaryColor,
                     )),
               ],
             ),
-            const Align(
+            Align(
               alignment: Alignment.center,
               child: SizedBox(
-                height: 150,
-                width: 150,
+                height: 150.h,
+                width: 150.w,
                 child: CircleAvatar(
                   backgroundColor: textFieldFillColor,
                   child: Center(child: Icon(fi.FluentIcons.photo2_add)),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 20.h,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
                 user.gender ?? 'Unknown',
                 style: const TextStyle(color: greyColor, fontFamily: 'Poppins'),
               ),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: 10.w,
               ),
               const Text('|',
                   style: TextStyle(color: primaryColor, fontFamily: 'Poppins')),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: 10.w,
               ),
               Text(user.age == null ? 'Unknown' : user.age.toString(),
                   style:
                       const TextStyle(color: greyColor, fontFamily: 'Poppins')),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: 10.w,
               ),
               const Text('|',
                   style: TextStyle(color: primaryColor, fontFamily: 'Poppins')),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: 10.w,
               ),
               DropdownButton<Role>(
                 icon: null,
@@ -107,18 +113,18 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                 alignment: Alignment.center,
                 underline: Container(),
                 borderRadius: fi.BorderRadius.circular(10),
-                value: user.role,
+                value: widget.currentRole,
                 onChanged: (value) {
                   changeRole(value!);
                   print(user.role);
                 },
-                items: const [
+                items:  [
                   DropdownMenuItem(
                     child: Text('SuperAdmin',
                         style: TextStyle(
                             color: greyColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14)),
+                            fontSize: 14.sp)),
                     value: Role.SuperAdmin,
                   ),
                   DropdownMenuItem(
@@ -126,20 +132,20 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                           style: TextStyle(
                               color: greyColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: Role.Admin),
                   DropdownMenuItem(
                       child: Text('Teacher',
                           style: TextStyle(
                               color: greyColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: Role.Teacher)
                 ],
               )
             ]),
-            const SizedBox(
-              height: 20,
+             SizedBox(
+              height: 20.h,
             ),
             Row(
               children: [
@@ -150,10 +156,11 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     hintText: user.name.trim().split(' ')[0],
                     padding: const EdgeInsets.all(5),
                     heading: 'First Name',
+                    
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                 SizedBox(
+                  width: 10.w,
                 ),
                 Expanded(
                   child: CustomTextField(
@@ -177,8 +184,8 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     heading: 'Email',
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
+                SizedBox(
+                  width: 10.w,
                 ),
                 Expanded(
                   child: CustomTextField(
@@ -199,14 +206,15 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
               heading: 'Address',
             ),
             CustomTextField(
+              
               enabled: canEdit,
               hintText: user.description ?? 'Unknown',
               value: user.description ?? 'Unknown',
               padding: const EdgeInsets.all(5),
               heading: 'Description',
             ),
-            const SizedBox(
-              height: 30,
+            SizedBox(
+              height: 30.h,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

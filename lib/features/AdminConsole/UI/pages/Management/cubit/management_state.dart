@@ -131,4 +131,18 @@ class ClassRoomsFetched extends ManagementState {
   List<Object?> get props => [classroomList];
 }
 
+//Leaves
+class FetchingLeaves extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class LeavesFetched extends ManagementState {
+  final List<Leave> leaves;
+  LeavesFetched({required this.leaves});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [leaves];
+}
 

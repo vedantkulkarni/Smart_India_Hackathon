@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 
 class CustomTextButton extends StatefulWidget {
@@ -6,12 +7,14 @@ class CustomTextButton extends StatefulWidget {
   final String text;
   Color? bgColor;
   Color? textColor;
+  Icon? icon;
   CustomTextButton(
       {Key? key,
       required this.onPressed,
       required this.text,
       this.bgColor,
-      this.textColor})
+      this.textColor,
+      this.icon})
       : super(key: key);
 
   @override
@@ -34,18 +37,32 @@ class _CustomTextButtonState extends State<CustomTextButton>
           side: const BorderSide(style: BorderStyle.none),
           primary: widget.bgColor ?? primaryColor,
           onPrimary: widget.textColor ?? whiteColor,
-          textStyle: const TextStyle(
-            fontSize: 14,
+          textStyle: TextStyle(
+            fontSize: 14.sp,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.normal,
           ),
         ),
         onPressed: () => widget.onPressed(),
-        child: Center(
-          child: Text(
-            widget.text,
-          ),
-        ),
+        child: widget.icon == null
+            ? Center(
+                child: Text(
+                  widget.text,
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.text,
+                  ),
+                  Icon(
+                    widget.icon!.icon,
+                    color: whiteColor,
+                    size: 18,
+                  )
+                ],
+              ),
       ),
     );
   }

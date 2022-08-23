@@ -10,7 +10,7 @@ class InitializingMLModel extends AttendanceState {}
 
 class MLModelInitialized extends AttendanceState {}
 
-class ScanningAttendance extends AttendanceState {}
+class StartingImageStream extends AttendanceState {}
 
 class ComparingResults extends AttendanceState {}
 
@@ -19,15 +19,22 @@ class CurrentPredictionSet extends AttendanceState {}
 class NoFacesDetected extends AttendanceState {}
 
 class StudentNotRecognized extends AttendanceState {}
+class AddingFacialDataToDataBase extends AttendanceState {}
+class FacialDataAdded extends AttendanceState {}
+
+
 
 class FacesDetected extends AttendanceState {
   Rect? rect;
-  FacesDetected(this.rect);
+  CameraImage cameraImage;
+  FacesDetected(this.cameraImage,this.rect);
 }
 
 class InitializingCamera extends AttendanceState {}
 
 class CameraInitialized extends AttendanceState {}
+
+class InitializedAllServices extends AttendanceState {}
 
 class StudentNotSelected extends AttendanceState {}
 

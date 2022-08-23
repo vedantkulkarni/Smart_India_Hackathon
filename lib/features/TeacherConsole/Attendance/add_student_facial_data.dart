@@ -1,86 +1,150 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:lottie/lottie.dart';
+import 'package:image/image.dart' as imglib;
 import 'package:team_dart_knights_sih/core/constants.dart';
-import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/cam_detection_preview.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
-import 'package:team_dart_knights_sih/models/ModelProvider.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/custom_snackbar.dart';
+import 'package:team_dart_knights_sih/models/AttendanceStatus.dart';
 
+import '../../../models/AttendanceStatus.dart';
 import '../../../injection_container.dart';
+import '../../../models/Student.dart';
+import '../../AdminConsole/UI/widgets/custom_textbutton.dart';
+import 'add_student_facial_data.dart';
+import 'camera_service.dart';
+import 'face_detector.dart';
+import 'ml_service.dart';
 
 class AddStudentFacialData extends StatefulWidget {
-  List<CameraDescription> cameras;
-  Student student;
   MLService mlService;
+  Student student;
+
   AddStudentFacialData(
-      {Key? key,
-      required this.cameras,
-      required this.student,
-      required this.mlService})
+      {Key? key, required this.mlService, required this.student})
       : super(key: key);
 
   @override
-  State<AddStudentFacialData> createState() =>
-      _AddStudentFacialDataState(cameras);
+  State<AddStudentFacialData> createState() => _AddStudentFacialDataState();
 }
 
 class _AddStudentFacialDataState extends State<AddStudentFacialData> {
-  final _cameras;
-  final _cameraService = getIt<CameraService>();
-  final FaceDetectorService _faceDetectorService = getIt<FaceDetectorService>();
   String? imagePath;
   Face? faceDetected;
   Size? imageSize;
 
-  final bool _detectingFaces = false;
   bool pictureTaken = false;
 
-  bool _initializing = false;
-
-  final bool _saving = true;
-  final bool _bottomSheetVisible = false;
-  _AddStudentFacialDataState(this._cameras);
+  // service injection
+  final FaceDetectorService _faceDetectorService = getIt<FaceDetectorService>();
+  final CameraService _cameraService = getIt<CameraService>();
 
   @override
   void initState() {
     super.initState();
-    // _start();
   }
 
   @override
   void dispose() {
     _cameraService.dispose();
+
     super.dispose();
   }
 
-  _start() async {
-    setState(() => _initializing = true);
-    await _cameraService.initialize();
-    _faceDetectorService.initialize();
-    await widget.mlService.initialize();
-    setState(() => _initializing = false);
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    // _cameraService.dispose();
+    // BlocProvider.of<AttendanceCubit>(context).mlService.dispose();
+    super.didChangeDependencies();
+  }
 
-    // _frameFaces();
+  bool isSelect = false;
+  bool isShow = false;
+
+  Future<void> workOnCapturedImage(XFile xfile, BuildContext context) async {
+    final cubit = BlocProvider.of<AttendanceCubit>(context);
+
+    imglib.Image? capturedImage = imglib.decodeImage(await xfile.readAsBytes());
+    // //For Firebase Ml Kit face detection
+    InputImage inputImage = InputImage.fromFile(File(xfile.path));
+    Face face = await cubit.detectFaceFromImage(inputImage);
+
+    await cubit.setCurrentPrediction(detectedFace: face, image: capturedImage);
+    var result = await showModalBottomSheet<Student?>(
+        context: context,
+        builder: (_) {
+          return BlocProvider.value(
+            value: cubit,
+            child: AddFaceCamOverLay(
+              student: widget.student,
+              cameraController: _cameraService.cameraController!,
+            ),
+          );
+        });
+    if (result == null) {
+      _cameraService.cameraController!.resumePreview();
+    } else {
+     
+      showSnackBar(context, text: 'Face Data Has been added');
+      Navigator.pop(context,true);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
+    return BlocConsumer<AttendanceCubit, AttendanceState>(
+      listener: (context, state) async {},
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: blackColor,
+          body: Stack(children: [
+            CameraDetectionPreview(callback: () async {
+              XFile? xfile =
+                  await _cameraService.cameraController!.takePicture();
+              _cameraService.cameraController!.pausePreview();
+              workOnCapturedImage(xfile, context);
+            }),
+
+            // CameraUIOverlay(
+            //   cameraController: attendanceCubit.cameraService.cameraController,
+            // )
+          ]),
+        );
+      },
+    );
+  }
+}
+
+class CameraUIOverlay extends StatefulWidget {
+  final CameraController? cameraController;
+
+  const CameraUIOverlay({Key? key, required this.cameraController})
+      : super(key: key);
+
+  @override
+  State<CameraUIOverlay> createState() => _CameraUIOverlayState();
+}
+
+class _CameraUIOverlayState extends State<CameraUIOverlay> {
+  @override
+  Widget build(BuildContext context) {
+    final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
+
     return Scaffold(
-      body: Container(
-          child: Stack(children: [
-        CameraDetectionPreview(),
-        _cameraService.cameraController == null
-            ? Container()
-            : AddFaceCamOverLay(
-                cameraController: _cameraService.cameraController!,
-                student: widget.student,
-              )
-      ])),
+      backgroundColor: Colors.transparent,
+      body: BlocBuilder<AttendanceCubit, AttendanceState>(
+        builder: (context, state) {
+          // return Container(child:  AttendanceMarkedForStudentWidget());
+          return Container();
+        },
+      ),
     );
   }
 }
@@ -102,43 +166,41 @@ class _AddFaceCamOverLayState extends State<AddFaceCamOverLay> {
     final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
     return BlocBuilder<AttendanceCubit, AttendanceState>(
       builder: (context, state) {
-        // if (state is ComparingResults) {
-        //   return progressIndicator;
-        // } else if (state is StudentNotRecognized) {
-        //   return Container(
-        //     child: const Center(child: Text('Student not recognized')),
-        //   );
-        // }
+        if (state is AddingFacialDataToDataBase) {
+          return progressIndicator;
+        }
         return Container(
-          color: Colors.transparent,
+          height: MediaQuery.of(context).size.height * 0.2,
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+          width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(),
               SizedBox(
                 height: 40,
                 width: 200,
                 child: CustomTextButton(
-                    onPressed: () {
-                      attendanceCubit.addStudentFacialDataToDatabase(
+                    onPressed: () async {
+                      await attendanceCubit.addStudentFacialDataToDatabase(
                           student: widget.student);
+                      Navigator.pop(context, widget.student);
                     },
-                    text: 'Uplaod to Database'),
+                    text: 'Add Face'),
               ),
               const SizedBox(
                 height: 20,
               ),
               SizedBox(
                 height: 40,
-                width: 140,
+                width: 200,
                 child: CustomTextButton(
                     onPressed: () {
-                      attendanceCubit.startPredictingMediaPipe(context);
+                      Navigator.pop(context, false);
                     },
-                    text: 'Start'),
-              ),
-              const SizedBox(
-                height: 40,
+                    text: 'Try Again'),
               ),
             ],
           ),

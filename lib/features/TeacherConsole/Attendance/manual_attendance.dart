@@ -200,7 +200,7 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                                 });
                             print(res);
                             if (res) {
-                              await attendanceCubit.uploadManualAttendance(
+                              await attendanceCubit.uploadAttendance(
                                   classRoom: classCubit.classRoom);
                             }
                           },

@@ -78,11 +78,13 @@ enum VerificationStatus{
   InvolveParent
 }
 
-type ClassAttendance @model{
+type ClassAttendance @model @searchable{
     classID: ID! @primaryKey
     date: AWSDate!
     presentPercent:Float
     teacherEmail:AWSEmail
+    time:AWSTime
+    
     
 
 }
@@ -103,11 +105,32 @@ type Student @model @searchable
 
 }
 
+enum LeaveStatus{
+  Pending
+  Approved
+  Rejected
+}
+
+type Leave@model{
+  studentID:ID! @primaryKey(sortKeyFields:["leaveDate"])
+  leaveDate:AWSDate!
+  leaveReason:String!
+  leaveDays:Int!
+  leaveBody:String
+  leaveDocLink:AWSURL
+  teacherID:ID!
+  leaveStatus:LeaveStatus!
+}
+
+
+
 enum Gender{
   Male
   Female
   Other
 }
+
+
 
 type Attendance @model @searchable{
   studentID: ID! 

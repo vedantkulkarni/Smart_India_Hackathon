@@ -4,13 +4,17 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:system_theme/system_theme.dart';
+
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
+import 'package:team_dart_knights_sih/languages/localeString.dart';
+
 import 'package:window_manager/window_manager.dart';
 import 'amplifyconfiguration.dart';
 import 'injection_container.dart' as di;
-
+import 'package:get/get.dart';
 import 'features/Auth/UI/pages/login_screen.dart';
 
 const String appTitle = 'Fluent UI Showcase for Flutter';
@@ -26,6 +30,10 @@ bool get isDesktop {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> fe0fb71ece4da561fcd939e348646656db231aef
 Future<void> _configureAmplify() async {
   try {
     final auth = AmplifyAuthCognito();
@@ -44,8 +52,7 @@ Future<void> _configureAmplify() async {
   }
 }
 
-=======
->>>>>>> 43ce297bfff98d70f3c8efaaaafb7d8ae266f5f9
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   di.setup();
@@ -90,9 +97,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+    return ScreenUtilInit(
+      builder: (ctx, child) => GetMaterialApp(
+        translations: LocalString(),
+        locale: Locale('en', 'US'),
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
+      ),
+      designSize: isDesktop ? const Size(1366, 768) : const Size(375, 812),
     );
   }
 }

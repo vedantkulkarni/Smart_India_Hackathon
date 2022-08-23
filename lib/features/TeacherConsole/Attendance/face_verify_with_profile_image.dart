@@ -25,7 +25,7 @@ class _FaceVerifyWithProfileImageState
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      CameraDetectionPreview(),
+      CameraDetectionPreview(callback: (){}),
       CameraUIOverlay(cameraController: _cameraService.cameraController)
     ]);
   }
