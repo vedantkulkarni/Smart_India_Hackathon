@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/user_profile_card.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textfield.dart';
-
+import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/Role.dart';
@@ -43,20 +44,20 @@ class _ManageUsersState extends State<ManageUsers> {
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back)),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Row(
                     children: [
-                      const Text('Show',
+                      Text('Show'.tr,
                           style: TextStyle(
                               color: blackColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
-                      const SizedBox(
-                        width: 10,
+                              fontSize: 14.sp)),
+                      SizedBox(
+                        width: 10.w,
                       ),
                       DropdownButton<int>(
                         icon: null,
@@ -67,13 +68,13 @@ class _ManageUsersState extends State<ManageUsers> {
                         borderRadius: BorderRadius.circular(10),
                         value: 10,
                         onChanged: (value) {},
-                        items: const [
+                        items: [
                           DropdownMenuItem(
                             child: Text('10',
                                 style: TextStyle(
                                     color: primaryColor,
                                     fontFamily: 'Poppins',
-                                    fontSize: 14)),
+                                    fontSize: 14.sp)),
                             value: 10,
                           ),
                           DropdownMenuItem(
@@ -81,19 +82,19 @@ class _ManageUsersState extends State<ManageUsers> {
                                   style: TextStyle(
                                       color: primaryColor,
                                       fontFamily: 'Poppins',
-                                      fontSize: 14)),
+                                      fontSize: 14.sp)),
                               value: 20),
                           DropdownMenuItem(
                               child: Text('30',
                                   style: TextStyle(
                                       color: primaryColor,
                                       fontFamily: 'Poppins',
-                                      fontSize: 14)),
+                                      fontSize: 14.sp)),
                               value: 30)
                         ],
                       ),
-                      const SizedBox(
-                        width: 20,
+                      SizedBox(
+                        width: 20.w,
                       ),
                       DropdownButton<Role>(
                         icon: null,
@@ -107,28 +108,28 @@ class _ManageUsersState extends State<ManageUsers> {
                           role = value!;
                           managementCubit.getAllUsers(role: value);
                         },
-                        items: const [
+                        items: [
                           DropdownMenuItem(
-                            child: Text('SuperAdmin',
+                            child: Text('SuperAdmin'.tr,
                                 style: TextStyle(
                                     color: primaryColor,
                                     fontFamily: 'Poppins',
-                                    fontSize: 14)),
+                                    fontSize: 14.sp)),
                             value: Role.SuperAdmin,
                           ),
                           DropdownMenuItem(
-                              child: Text('Admin',
+                              child: Text('Admin'.tr,
                                   style: TextStyle(
                                       color: primaryColor,
                                       fontFamily: 'Poppins',
-                                      fontSize: 14)),
+                                      fontSize: 14.sp)),
                               value: Role.Admin),
                           DropdownMenuItem(
-                              child: Text('Teacher',
+                              child: Text('Teachers'.tr,
                                   style: TextStyle(
                                       color: primaryColor,
                                       fontFamily: 'Poppins',
-                                      fontSize: 14)),
+                                      fontSize: 14.sp)),
                               value: Role.Teacher)
                         ],
                       ),
@@ -152,14 +153,14 @@ class _ManageUsersState extends State<ManageUsers> {
                             await BlocProvider.of<ManagementCubit>(context)
                                 .getAllUsers(role: role);
                           },
-                          text: 'Add User'),
+                          text: 'Add User'.tr),
                       Container(
                         margin: const EdgeInsets.all(10),
                         child: CustomTextField(
-                          hintText: 'Search',
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          width: 300,
+                          hintText: 'Search'.tr,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 20.h),
+                          width: 300.w,
                           prefixIcon: const Icon(
                             Icons.search,
                             size: 14,
@@ -168,12 +169,12 @@ class _ManageUsersState extends State<ManageUsers> {
                       ),
                     ],
                   )),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  padding: EdgeInsets.symmetric(horizontal: 40.w),
                   child: GridView.count(
                       crossAxisCount: 4,
                       children: List.generate(

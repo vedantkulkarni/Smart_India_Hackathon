@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -22,25 +23,27 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
+        double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    // ScreenUtil.init(context, designSize: Size(width, height));
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     return Container(
       color: backgroundColor,
       child: Column(
         children: [
-          const SizedBox(
-            height: 40,
+           SizedBox(
+            height: 40.h,
           ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             child: CustomTextField(
               textEditingController: textEditingController,
               hintText: 'Search',
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              width: 300,
-              prefixIcon: const Icon(
+              padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+              width: 300.w,
+              prefixIcon:  Icon(
                 Icons.search,
-                size: 14,
+                size: 14.sp,
               ),
             ),
           ),
@@ -56,7 +59,7 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                       color: lightTextColor,
                       child: Container(
                         // height: 420,
-                        width: 300,
+                        width: 300.w,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20)),
                         child: const Center(
@@ -79,14 +82,14 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                                 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'),
                           )),
                 ),
-          const SizedBox(
-            height: 40,
+           SizedBox(
+            height: 40.h,
           ),
           Padding(
-            padding: const EdgeInsets.only(
-              left: 15,
-              right: 15,
-              bottom: 5,
+            padding:  EdgeInsets.only(
+              left: 15.w,
+              right: 15.w,
+              bottom: 5.h,
             ),
             child: Center(
               child: CustomTextButton(
@@ -103,7 +106,7 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 50),
+                 EdgeInsets.only(left: 15.w, right: 15.w, top: 10.h, bottom: 50.h),
             child: Center(
               child: CustomTextButton(
                 onPressed: () async {

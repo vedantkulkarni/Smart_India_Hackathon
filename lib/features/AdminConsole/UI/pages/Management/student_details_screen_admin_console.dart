@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 
 class StudentDetailScreenPartAdmin extends StatefulWidget {
@@ -27,11 +28,11 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
             size: 20,
           ),
         ),
-        title: const Text(
+        title: Text(
           'Student Profile',
           style: TextStyle(
               fontFamily: 'Poppins',
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.bold,
               color: blackColor),
         ),
@@ -71,12 +72,12 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
         color: backgroundColor,
       ),
       child: Column(children: [
-        const Padding(
-          padding: EdgeInsets.all(10),
+         Padding(
+          padding: const EdgeInsets.all(10),
           child: Text(
             'Attendance log',
             style: TextStyle(
-                fontFamily: 'Poppins', fontSize: 15, color: blackColor),
+                fontFamily: 'Poppins', fontSize: 15.sp, color: blackColor),
           ),
         ),
         Expanded(
@@ -85,13 +86,13 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                   child: const Center(
                 child: Text('No Students added yet'),
               )),
-              dataTextStyle: const TextStyle(
-                  fontSize: 14,
+              dataTextStyle:  TextStyle(
+                  fontSize: 14.sp,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.normal,
                   color: blackColor),
-              headingTextStyle: const TextStyle(
-                  fontSize: 16,
+              headingTextStyle:  TextStyle(
+                  fontSize: 16.sp,
                   color: blackColor,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold),
@@ -145,20 +146,20 @@ class Col2Widget extends StatelessWidget {
         children: [
           Column(
             children: [
-              const SizedBox(
-                height: 20,
+               SizedBox(
+                height: 20.h,
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
                   'Id card',
                   style: TextStyle(
-                      fontFamily: 'Poppins', fontSize: 15, color: blackColor),
+                      fontFamily: 'Poppins', fontSize: 15.sp, color: blackColor),
                 ),
               ),
               Container(
-                height: 150,
-                width: 100,
+                height: 150.h,
+                width: 100.w,
                 decoration: BoxDecoration(
                   color: primaryColor,
                   borderRadius: BorderRadius.circular(10),
@@ -175,8 +176,8 @@ class Col2Widget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Container(
-                    width: 200,
-                    height: 100,
+                    width: 200.w,
+                    height: 100.h,
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
@@ -184,23 +185,23 @@ class Col2Widget extends StatelessWidget {
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children:  [
                           Padding(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Center(
                               child: Text(
                                 'CSV ',
                                 style: TextStyle(
                                     fontFamily: 'Poppins',
-                                    fontSize: 15,
+                                    fontSize: 15.sp,
                                     color: Colors.white),
                               ),
                             ),
                           ),
-                          Icon(
+                           Icon(
                             Icons.download,
                             color: Colors.white,
-                            size: 20,
+                            size: 20.sp,
                           )
                         ]),
                   ),
@@ -211,7 +212,7 @@ class Col2Widget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Container(
-                    width: 200,
+                    width: 200.w,
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
@@ -249,8 +250,8 @@ class StudentDetailWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(25),
       child: Container(
-        height: 500,
-        width: 400,
+        height: 500.h,
+        width: 400.w,
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10),
@@ -259,8 +260,8 @@ class StudentDetailWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Column(children: [
-          const SizedBox(
-            height: 20,
+           SizedBox(
+            height: 20.h,
           ),
           const CircleAvatar(
             radius: 45,
@@ -271,16 +272,16 @@ class StudentDetailWidget extends StatelessWidget {
               backgroundImage: NetworkImage(""),
             ),
           ),
-          const SizedBox(
-            height: 50,
+           SizedBox(
+            height: 50.h,
           ),
           RowWidget('Name', 'Harsh'),
           RowWidget('Email', 'atl@gmail.com'),
           RowWidget('Phone No.', '+91 9922889487'),
           RowWidget('Class', 'TE-01'),
           RowWidget('Teacher', 'DK'),
-          const SizedBox(
-            height: 30,
+           SizedBox(
+            height: 30.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -295,14 +296,14 @@ class StudentDetailWidget extends StatelessWidget {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Padding(
+                    child:  Padding(
                       padding: EdgeInsets.all(10),
                       child: Center(
                         child: Text(
                           'Edit',
                           style: TextStyle(
                               fontFamily: 'Poppins',
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               color: Colors.white),
                         ),
                       ),
@@ -315,19 +316,19 @@ class StudentDetailWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Container(
-                    width: 100,
+                    width: 100.w,
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Padding(
+                    child:  Padding(
                       padding: EdgeInsets.all(10),
                       child: Center(
                         child: Text(
                           'Delete',
                           style: TextStyle(
                               fontFamily: 'Poppins',
-                              fontSize: 15,
+                              fontSize: 15.sp,
                               color: Colors.white),
                         ),
                       ),
@@ -349,13 +350,13 @@ class StudentDetailWidget extends StatelessWidget {
         children: [
           Text(
             '$title : - ',
-            style: const TextStyle(
-                fontFamily: 'Poppins', fontSize: 17, color: blackColor),
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 17.sp, color: blackColor),
           ),
           Text(
             field,
-            style: const TextStyle(
-                fontFamily: 'Poppins', fontSize: 17, color: blackColor),
+            style: TextStyle(
+                fontFamily: 'Poppins', fontSize: 17.sp, color: blackColor),
           ),
         ],
       ),

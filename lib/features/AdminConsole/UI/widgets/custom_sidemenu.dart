@@ -1,5 +1,8 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:get/get.dart';
 
 import '../../../../core/constants.dart';
 
@@ -16,37 +19,40 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
   _CustomSideMenuState(this.page);
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    // ScreenUtil.init(context, designSize: Size(width, height));
     List<SideMenuItem> items = [
       SideMenuItem(
         // Priority of item to show on SideMenu, lower value is displayed at the top
         priority: 0,
 
-        title: 'Dashboard',
+        title: width > 300 ? 'DashBoard'.tr : '',
+
         onTap: () => page.jumpToPage(0),
         icon: const Icon(FluentIcons.home),
       ),
       SideMenuItem(
         priority: 1,
-        title: 'Attendance',
+        title: width > 300 ? 'Attendance'.tr : '',
         onTap: () => page.jumpToPage(1),
         icon: const Icon(FluentIcons.check_list),
       ),
-     
       SideMenuItem(
         priority: 2,
-        title: 'Manage',
+        title: width > 300 ? 'Manage'.tr : '',
         onTap: () => page.jumpToPage(2),
         icon: const Icon(FluentIcons.add_group),
       ),
       SideMenuItem(
         priority: 3,
-        title: 'Settings',
+        title: width > 300 ? 'Settings'.tr : '',
         onTap: () => page.jumpToPage(3),
         icon: const Icon(FluentIcons.settings),
       ),
       SideMenuItem(
         priority: 4,
-        title: 'Log Out',
+        title: width > 300 ? 'Log Out' : '',
         onTap: () {},
         icon: const Icon(FluentIcons.sign_out),
       ),
@@ -58,16 +64,16 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
         // Will shows on top of all items, it can be a logo or a Title text
         title: Column(
           children: [
-            const SizedBox(
-              height: 40,
+            SizedBox(
+              height: 40.h,
             ),
             Image.asset(
               'assets/images/class.png',
-              width: 60,
-              height: 60,
+              width: 60.w,
+              height: 60.h,
             ),
-            const SizedBox(
-              height: 40,
+            SizedBox(
+              height: 40.h,
             )
           ],
         ),
@@ -86,15 +92,15 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
           selectedIconColor: primaryColor,
           unselectedIconColor: lightTextColor,
           backgroundColor: navPanecolor,
-          selectedTitleTextStyle: const TextStyle(
+          selectedTitleTextStyle: TextStyle(
               color: primaryColor,
               fontWeight: FontWeight.bold,
-              fontSize: 14,
+              fontSize: 14.sp,
               fontFamily: 'Poppins'),
-          unselectedTitleTextStyle: const TextStyle(
+          unselectedTitleTextStyle: TextStyle(
               color: lightTextColor,
               fontWeight: FontWeight.bold,
-              fontSize: 14,
+              fontSize: 14.sp,
               fontFamily: 'Poppins'),
           iconSize: 20,
         ),

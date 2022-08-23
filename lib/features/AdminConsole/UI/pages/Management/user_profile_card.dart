@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/view_and_edit_user.dart';
@@ -12,7 +13,8 @@ class UserProfileCard extends StatelessWidget {
   double? height;
   double? width;
 
-   UserProfileCard({Key? key, required this.user,this.height,this.width}) : super(key: key);
+  UserProfileCard({Key? key, required this.user, this.height, this.width})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class UserProfileCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           final res = await showModalSideSheet<bool>(
-              width: MediaQuery.of(context).size.width * 0.4,
+              width: MediaQuery.of(context).size.width * 0.4.w,
               context: context,
               ignoreAppBar: false,
               body: BlocProvider.value(
@@ -37,7 +39,7 @@ class UserProfileCard extends StatelessWidget {
           // fit: StackFit.expand,
           children: [
             Container(
-              margin: const EdgeInsets.only(left: 20, right: 20, top: 40),
+              margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 40.h),
               decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -68,23 +70,23 @@ class UserProfileCard extends StatelessWidget {
                     child: Column(
                       children: [
                         RowTile(
-                            const Icon(
+                            Icon(
                               Icons.location_city,
-                              size: 15,
+                              size: 15.sp,
                             ),
                             'Email',
                             user.email.toString()),
                         RowTile(
-                            const Icon(
+                            Icon(
                               Icons.mail,
-                              size: 15,
+                              size: 15.sp,
                             ),
                             'Email',
                             user.email.toString()),
                         RowTile(
-                            const Icon(
+                            Icon(
                               Icons.phone,
-                              size: 15,
+                              size: 15.sp,
                             ),
                             'Phone',
                             user.phoneNumber.toString()),
@@ -97,8 +99,8 @@ class UserProfileCard extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: Container(
-                width: 110,
-                height: 110,
+                width: 110.w,
+                height: 110.h,
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
