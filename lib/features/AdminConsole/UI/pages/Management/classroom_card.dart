@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/classroom_details.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
@@ -45,45 +46,46 @@ class _ClassRoomCardState extends State<ClassRoomCard> {
           }));
         },
         child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            decoration: BoxDecoration(
-              boxShadow: const [
-                BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
-              ],
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(
-                  height: 50,
-                  width: 50,
-                  // child: Image.asset(imagePath),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  classRoom.classRoomName,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Poppins',
-                      fontSize: 18),
-                ),
-                const Text(
-                  'Lorem ipsum dolor sit amet',
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      color: lightTextColor,
-                      fontFamily: 'Poppins',
-                      fontSize: 14),
-                )
-              ],
-            )),
+          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          decoration: BoxDecoration(
+            boxShadow: const [
+              BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 10)
+            ],
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 50.h,
+                width: 50.w,
+                // child: Image.asset(imagePath),
+              ),
+              SizedBox(
+                width: 20.w,
+              ),
+              Text(
+                classRoom.classRoomName,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    fontSize: 18.sp),
+              ),
+              Text(
+                'Lorem ipsum dolor sit amet',
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: lightTextColor,
+                    fontFamily: 'Poppins',
+                    fontSize: 14.sp),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

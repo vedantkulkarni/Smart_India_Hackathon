@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -121,7 +122,7 @@ class _CreateClassRoomState extends State<CreateClassRoom> {
                     ),
                      DropdownButton<VerificationStatus>(
                 icon: null,
-                iconSize: 14,
+                iconSize: 14.sp,
                 alignment: Alignment.center,
                 underline: Container(),
                 borderRadius: BorderRadius.circular(10),
@@ -136,13 +137,13 @@ class _CreateClassRoomState extends State<CreateClassRoom> {
                   });
                   // managementCubit.getAllUsers(role: value);
                 },
-                items: const [
+                items:  [
                   DropdownMenuItem(
                     child: Text('FaceDetectedAndVerified',
                         style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14)),
+                            fontSize: 14.sp)),
                     value: VerificationStatus.FaceDetectedAndVerified,
                   ),
                   DropdownMenuItem(
@@ -150,37 +151,37 @@ class _CreateClassRoomState extends State<CreateClassRoom> {
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: VerificationStatus.FaceVerified),
                   DropdownMenuItem(
                       child: Text('FaceVerifiedWithLiveness',
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: VerificationStatus.FaceVerifiedWithLiveness),
                   DropdownMenuItem(
                       child: Text('ManualAttendance',
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: VerificationStatus.ManualAttendance),
                   DropdownMenuItem(
                       child: Text('InvolveParent',
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: VerificationStatus.InvolveParent),
                 ],
               ),
-                    const SizedBox(
-                      height: 30,
+                     SizedBox(
+                      height: 30.h,
                     ),
                     SizedBox(
-                        width: 150,
-                        height: 40,
+                        width: 150.w,
+                        height: 40.h,
                         child: CustomTextButton(
                             onPressed: () async {
                               var schoolID =

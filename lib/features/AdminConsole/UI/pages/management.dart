@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/management_card.dart';
 import 'package:get/get.dart';
 import '../../../../core/constants.dart';
@@ -48,9 +49,9 @@ class _ManagementState extends State<Management> {
         children: [
           Text(
             "Management".tr,
-            style: const TextStyle(
+            style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 22,
+                fontSize: 22.sp,
                 fontFamily: 'Poppins',
                 color: Colors.black),
           ),
@@ -69,8 +70,8 @@ class _ManagementState extends State<Management> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

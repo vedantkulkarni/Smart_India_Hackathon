@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:system_theme/system_theme.dart';
 import 'package:team_dart_knights_sih/languages/localeString.dart';
@@ -62,11 +63,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      translations: LocalString(),
-      locale: Locale('en', 'US'),
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+    return ScreenUtilInit(
+      builder: (ctx, child) => GetMaterialApp(
+        translations: LocalString(),
+        locale: Locale('en', 'US'),
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
+      ),
+      designSize: isDesktop ? const Size(1366, 768) : const Size(375, 812),
     );
   }
 }

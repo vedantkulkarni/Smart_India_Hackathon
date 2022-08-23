@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/models/Student.dart';
@@ -81,7 +82,7 @@ class _StudentSearchResultState extends State<StudentSearchResult> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: Container(
-          padding: const EdgeInsets.all(10),
+          padding:  EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: textFieldFillColor,
@@ -97,10 +98,10 @@ class _StudentSearchResultState extends State<StudentSearchResult> {
               ),
               FittedBox(
                 child: Text(widget.student.studentName.trim().split(' ')[0],
-                    style: const TextStyle(
+                    style:  TextStyle(
                         color: primaryColor,
                         fontFamily: 'Poppins',
-                        fontSize: 14)),
+                        fontSize: 14.sp)),
               )
             ],
           ),
