@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/Screens/Leave_Apply/Leave_apply.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/s3_service.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -260,11 +264,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                   height: 40,
                   width: 200,
                   child: CustomTextButton(
-                      onPressed: () async {
-                        i = await getObjectFromS3();
-                        setState(() {});
-                      },
-                      text: 'Apply for Leave')),
+                      onPressed: () {}, text: 'Apply for Leave')),
               const SizedBox(
                 height: 40,
               ),

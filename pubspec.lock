@@ -295,6 +295,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.6"
+  date_time_picker:
+    dependency: "direct main"
+    description:
+      name: date_time_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   dotted_border:
     dependency: "direct main"
     description:
@@ -302,6 +309,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0+2"
+  dropdown_search:
+    dependency: "direct main"
+    description:
+      name: dropdown_search
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.9"
   easy_sidemenu:
     dependency: "direct main"
     description:
@@ -358,6 +372,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1"
+  flare_dart:
+    dependency: transitive
+    description:
+      name: flare_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.4"
+  flare_flutter:
+    dependency: "direct main"
+    description:
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.6"
+  flrx_validator:
+    dependency: "direct main"
+    description:
+      name: flrx_validator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+2"
   fluent_ui:
     dependency: "direct main"
     description:
@@ -868,6 +903,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  randomizer:
+    dependency: "direct main"
+    description:
+      name: randomizer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   recase:
     dependency: transitive
     description:
