@@ -32,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "hi!".tr,
+            "hi".tr,
             style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 44.sp,

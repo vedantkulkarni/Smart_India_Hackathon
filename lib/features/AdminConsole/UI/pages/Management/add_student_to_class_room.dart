@@ -40,10 +40,10 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
               textEditingController: textEditingController,
               hintText: 'Search',
               padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
-              width: 300,
-              prefixIcon: const Icon(
+              width: 300.w,
+              prefixIcon:  Icon(
                 Icons.search,
-                size: 14,
+                size: 14.sp,
               ),
             ),
           ),
@@ -59,7 +59,7 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                       color: lightTextColor,
                       child: Container(
                         // height: 420,
-                        width: 300,
+                        width: 300.w,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20)),
                         child: const Center(

@@ -43,7 +43,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: 250.h,
+        height: 275.h,
         decoration: BoxDecoration(
           // gradient: const LinearGradient(
           //     colors: whiteColor,

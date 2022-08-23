@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -79,7 +80,7 @@ class _AddUserPageState extends State<AddUserPage> {
             }
 
             return Container(
-              padding: const EdgeInsets.all(30),
+              padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
               color: backgroundColor,
               child: Form(
                 key: _formKey,
@@ -89,7 +90,7 @@ class _AddUserPageState extends State<AddUserPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _nameController,
                               validator: ((value) {
@@ -110,7 +111,7 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _emailController,
                               validator: ((value) {
@@ -133,7 +134,7 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _phoneController,
                               validator: ((value) {
@@ -155,7 +156,7 @@ class _AddUserPageState extends State<AddUserPage> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(15),
+                      padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                       child: TextFormField(
                         controller: _addressController,
                         validator: ((value) {
@@ -177,7 +178,7 @@ class _AddUserPageState extends State<AddUserPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _genderController,
                               validator: ((value) {
@@ -198,7 +199,7 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _ageController,
                               validator: ((value) {
@@ -219,7 +220,7 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _classController,
                               validator: ((value) {
@@ -243,7 +244,7 @@ class _AddUserPageState extends State<AddUserPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _descriptionController,
                               validator: ((value) {
@@ -264,7 +265,7 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.2,
-                          padding: const EdgeInsets.all(15),
+                          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                           child: TextFormField(
                             controller: _shiftController,
                             validator: ((value) {
@@ -284,8 +285,8 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.10,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 4),
+                          padding:  EdgeInsets.symmetric(
+                              vertical: 4.h, horizontal: 4.w),
                           decoration: BoxDecoration(
                             color: textFieldFillColor,
                             border: Border.all(color: greyColor, width: 0.5),
@@ -323,12 +324,12 @@ class _AddUserPageState extends State<AddUserPage> {
                       ],
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 30.h,
                     ),
                     Center(
                       child: SizedBox(
-                        width: 150,
-                        height: 40,
+                        width: 150.w,
+                        height: 40.h,
                         child: CustomTextButton(
                             onPressed: () async {
                               final user = _submit1();

@@ -27,7 +27,7 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
         // Priority of item to show on SideMenu, lower value is displayed at the top
         priority: 0,
 
-        title: width > 300 ? 'Dashboard'.tr : '',
+        title: width > 300 ? 'DashBoard'.tr : '',
 
         onTap: () => page.jumpToPage(0),
         icon: const Icon(FluentIcons.home),
