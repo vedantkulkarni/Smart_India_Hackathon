@@ -24,9 +24,31 @@ class _FaceVerifyWithProfileImageState
   final CameraService _cameraService = getIt<CameraService>();
   @override
   Widget build(BuildContext context) {
+    final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
+    final teacherClassCubit = BlocProvider.of<TeacherClassCubit>(context);
     return Stack(children: [
-      CameraDetectionPreview(callback: (){}),
-      CameraUIOverlay(cameraController: _cameraService.cameraController)
+      CameraDetectionPreview(callback: () async {
+        final file =
+            await attendanceCubit.cameraService.cameraController!.takePicture();
+        await attendanceCubit.cameraService.cameraController!.pausePreview();
+
+        await showMaterialModalBottomSheet(
+          context: context,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: teacherClassCubit),
+              BlocProvider.value(value: attendanceCubit)
+            ],
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: FaceVerify(
+                  capturedImage: file,
+                )),
+          ),
+        );
+        await attendanceCubit.cameraService.cameraController!.resumePreview();
+      }),
+      // CameraUIOverlay(cameraController: _cameraService.cameraController)
     ]);
   }
 }
@@ -44,8 +66,6 @@ class CameraUIOverlay extends StatefulWidget {
 class _CameraUIOverlayState extends State<CameraUIOverlay> {
   @override
   Widget build(BuildContext context) {
-    final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
-    final teacherClassCubit = BlocProvider.of<TeacherClassCubit>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: BlocConsumer<AttendanceCubit, AttendanceState>(
@@ -78,29 +98,6 @@ class _CameraUIOverlayState extends State<CameraUIOverlay> {
                 child: FloatingActionButton(
                   backgroundColor: backgroundColor,
                   onPressed: () async {
-                    final file = await attendanceCubit
-                        .cameraService.cameraController!
-                        .takePicture();
-                    await attendanceCubit.cameraService.cameraController!
-                        .pausePreview();
-
-                    await showMaterialModalBottomSheet(
-                      context: context,
-                      builder: (_) => MultiBlocProvider(
-                        providers: [
-                          BlocProvider.value(value: teacherClassCubit),
-                          BlocProvider.value(value: attendanceCubit)
-                        ],
-                        child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.7,
-                            child: FaceVerify(
-                              capturedImage: file,
-                            )),
-                      ),
-                    );
-                    await attendanceCubit.cameraService.cameraController!
-                        .resumePreview();
-
                     // attendanceCubit.compareDetectedResults();
                   },
                   child: const Icon(

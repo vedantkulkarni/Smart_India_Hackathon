@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:team_dart_knights_sih/core/attendance_upload_service.dart';
 import 'package:team_dart_knights_sih/core/location_service.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
@@ -62,6 +63,9 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       print("coming here");
       initAttendance(studList!, AttendanceStatus.Absent);
       initServices(mode);
+    } else if (mode == VerificationStatus.FaceVerifiedWithLiveness) {
+      initAttendance(studList!, AttendanceStatus.Absent);
+      initServices(mode);
     } else {
       faceDetectorService.initialize();
       initializeInterPreter();
@@ -94,44 +98,42 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     emit(MLModelInitialized());
   }
 
-  Future<Face> detectFaceFromImage(InputImage image) async {
-    List<Face> faces =
-        await faceDetectorService.faceDetector.processImage(image);
-    print(faces[0].boundingBox);
+  // void startPredicting() {
+  //   imageSize = cameraService.getImageSize();
+  //   print(imageSize);
+  //   emit(StartingImageStream());
+  //   cameraService.cameraController?.startImageStream((image) async {
+  //     if (cameraService.cameraController != null) {
+  //       if (_detectingFaces) return;
 
-    return faces[0];
-  }
+  //       _detectingFaces = true;
 
-  void startPredicting() {
-    imageSize = cameraService.getImageSize();
-    print(imageSize);
-    emit(StartingImageStream());
-    cameraService.cameraController?.startImageStream((image) async {
-      if (cameraService.cameraController != null) {
-        if (_detectingFaces) return;
+  //       try {
+  //         await faceDetectorService.detectFacesFromImage(image);
+  //         if (faceDetectorService.faces.isNotEmpty) {
+  //           faceDetected = faceDetectorService.faces[0];
+  //           // emit(FacesDetected());
 
-        _detectingFaces = true;
+  //           // mlService.setCurrentPrediction(image, faceDetected);
 
-        try {
-          await faceDetectorService.detectFacesFromImage(image);
-          if (faceDetectorService.faces.isNotEmpty) {
-            faceDetected = faceDetectorService.faces[0];
-            // emit(FacesDetected());
+  //           emit(CurrentPredictionSet());
+  //         } else {
+  //           emit(NoFacesDetected());
+  //         }
 
-            // mlService.setCurrentPrediction(image, faceDetected);
+  //         _detectingFaces = false;
+  //       } catch (e) {
+  //         print(e);
+  //         _detectingFaces = false;
+  //       }
+  //     }
+  //   });
+  // }
 
-            emit(CurrentPredictionSet());
-          } else {
-            emit(NoFacesDetected());
-          }
-
-          _detectingFaces = false;
-        } catch (e) {
-          print(e);
-          _detectingFaces = false;
-        }
-      }
-    });
+  Future<void> uploadLeave({required Leave leave}) async {
+    emit(UploadingLeave());
+    await apiClient.createLeave(leave: leave);
+    emit(LeaveUploaded());
   }
 
   Future<void> addStudentFacialDataToDatabase(
@@ -166,12 +168,14 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
   Future<void> uploadAttendance({required ClassRoom classRoom}) async {
     emit(UploadingAttendance());
+
     final position = await determinePosition();
     final double latitude = position.latitude;
     final double longitude = position.longitude;
     print(latitude);
     print(longitude);
 
+    List<Attendance> attendanceList = [];
     for (var studentID in attendanceMap.entries) {
       var sutdentName = studList!
           .firstWhere((element) => element.studentID == studentID.key)
@@ -189,50 +193,38 @@ class AttendanceCubit extends Cubit<AttendanceState> {
           longitude: longitude,
           classID: classRoom.id,
           studentID: studentID.key);
-      final uploadedAttendance =
-          await apiClient.createAttendance(attendance: attendance);
+      attendanceList.add(attendance);
+      // final uploadedAttendance =
+      //     await apiClient.createAttendance(attendance: attendance);
       // print(attendance);
     }
     final percent = (presentStudents / attendanceMap.length) * 100;
+    // final String classAttendanceID = "${classRoom.id}#${TemporalDate(DateTime.now())}";
     final classAttendance = ClassAttendance(
         classID: classRoom.id,
         date: TemporalDate(DateTime.now()),
         time: TemporalTime(DateTime.now()),
         presentPercent: presentStudents.toDouble(),
         teacherEmail: teacher.email);
-    final uploadedClassAttendance =
-        await apiClient.createClassAttendance(classAttendance: classAttendance);
+    // final uploadedClassAttendance =
+    //     await apiClient.createClassAttendance(classAttendance: classAttendance);
     // print(classAttendance);
     final updatedClassRoom =
         classRoom.copyWith(currentAttendanceDate: TemporalDate(DateTime.now()));
-    final res = await apiClient.updateClassRoom(classRoom: updatedClassRoom);
-    emit(AttendanceUploaded());
-  }
-
-  Attendance getAttendanceObj(
-      {required VerificationStatus mode,
-      required AttendanceStatus attendanceStatus,
-      required double latitude,
-      required double longitude,
-      required String classID,
-      required String className,
-      required String studentName,
-      required String studentID}) {
-    final Attendance attendance = Attendance(
-      geoLatitude: latitude,
-      geoLongitude: longitude,
-      studentName: studentName,
-      className: className,
-      classID: classID,
-      date: TemporalDate(DateTime.now()),
-      status: attendanceStatus,
-      studentID: studentID,
-      teacherID: teacher.email,
-      teacherName: teacher.name,
-      time: TemporalTime(DateTime.now()),
-      verification: mode,
-    );
-    return attendance;
+    AttendanceUploadModel attendanceUploadModel = AttendanceUploadModel(
+        updatedClassRoom: updatedClassRoom,
+        date: TemporalDate(DateTime.now()),
+        time: TemporalTime(DateTime.now()),
+        attendanceList: attendanceList,
+        classAttendance: classAttendance);
+    final uploadAttendanceRes = await getIt<AttendanceUploadService>()
+        .uploadAttendance(attendanceUploadModel: attendanceUploadModel);
+    if (uploadAttendanceRes) {
+      emit(AttendanceUploaded());
+    } else {
+      emit(AttendanceStoredToLocalStore());
+    }
+    // final res = await apiClient.updateClassRoom(classRoom: updatedClassRoom);
   }
 
   int get presentStudents {
@@ -278,7 +270,16 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     });
   }
 
+  Future<List<Face>> detectFacesFromImage(InputImage image) async {
+    List<Face> faces =
+        await faceDetectorService.faceDetector.processImage(image);
+    // print(faces[0].boundingBox);
+
+    return faces;
+  }
+
   Future<void> _inference({required CameraImage cameraImage}) async {
+    //discarder
     // if (!mounted) return;
 
     if (_modelInferenceService.model.interpreter != null) {
@@ -306,6 +307,23 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     }
   }
 
+  List<Student> predictedStudents = [];
+  Future<void> predictAttendanceForGivenList(
+      {required List<Face> studentFaces, required imglib.Image? image}) async {
+    print("detected faces are ${studentFaces.length}");
+    emit(ComparingResults());
+    for (var face in studentFaces) {
+      print(face.boundingBox);
+
+      setCurrentPrediction(detectedFace: face, image: image);
+
+      compareDetectedResults();
+    }
+
+    emit(AttendanceMarked(studentList: predictedStudents));
+    predictedStudents.clear();
+  }
+
   Future<void> setCurrentPrediction(
       {Face? detectedFace, imglib.Image? image}) async {
     print('Setting current prediction');
@@ -315,14 +333,14 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   }
 
   Future<void> compareDetectedResults() async {
-    emit(ComparingResults());
     final result = await mlService.predict();
     if (result == null) {
       print('student not recognized');
-      emit(StudentNotRecognized());
+      // emit(StudentNotRecognized());
     } else {
       print('attendance marked for student : $result');
-      emit(AttendanceMarked(student: result));
+      predictedStudents.add(result);
+      // emit(AttendanceMarked(student: result));
     }
   }
 
@@ -334,7 +352,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       emit(StudentNotRecognized());
     } else {
       print('attendance marked for student : $student');
-      emit(AttendanceMarked(student: student));
+      emit(AttendanceMarked(studentList: [student]));
     }
   }
 
@@ -345,5 +363,31 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   Map<String, dynamic>? get inferenceResults {
     _modelInferenceService.inferenceResults;
     return null;
+  }
+
+  Attendance getAttendanceObj(
+      {required VerificationStatus mode,
+      required AttendanceStatus attendanceStatus,
+      required double latitude,
+      required double longitude,
+      required String classID,
+      required String className,
+      required String studentName,
+      required String studentID}) {
+    final Attendance attendance = Attendance(
+      geoLatitude: latitude,
+      geoLongitude: longitude,
+      studentName: studentName,
+      className: className,
+      classID: classID,
+      date: TemporalDate(DateTime.now()),
+      status: attendanceStatus,
+      studentID: studentID,
+      teacherID: teacher.email,
+      teacherName: teacher.name,
+      time: TemporalTime(DateTime.now()),
+      verification: mode,
+    );
+    return attendance;
   }
 }

@@ -7,6 +7,8 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/
 
 import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/Widgets/LeaveApply/datepicker.dart';
 
+import '../../../../../core/constants.dart';
+
 class LeaveApply extends StatefulWidget {
   @override
   _LeaveApplyState createState() => _LeaveApplyState();
@@ -44,17 +46,17 @@ class _LeaveApplyState extends State<LeaveApply>
     _tocontroller = TextEditingController(text: DateTime.now().toString());
 
     animationController =
-        AnimationController(duration: Duration(seconds: 3), vsync: this);
+        AnimationController(duration: const Duration(seconds: 3), vsync: this);
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
         parent: animationController, curve: Curves.fastOutSlowIn));
 
     delayedAnimation = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(
         parent: animationController,
-        curve: Interval(0.2, 0.5, curve: Curves.fastOutSlowIn)));
+        curve: const Interval(0.2, 0.5, curve: Curves.fastOutSlowIn)));
 
     muchDelayedAnimation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
         parent: animationController,
-        curve: Interval(0.3, 0.5, curve: Curves.fastOutSlowIn)));
+        curve: const Interval(0.3, 0.5, curve: Curves.fastOutSlowIn)));
   }
 
   @override
@@ -64,7 +66,7 @@ class _LeaveApplyState extends State<LeaveApply>
     super.dispose();
   }
 
-  final GlobalKey<FormState> _formkey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Color:
@@ -72,299 +74,289 @@ class _LeaveApplyState extends State<LeaveApply>
     animationController.forward();
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
-    final GlobalKey<ScaffoldState> _scaffoldKey =
-        new GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return AnimatedBuilder(
       animation: animationController,
       builder: (context, child) {
         final GlobalKey<ScaffoldState> _scaffoldKey =
-            new GlobalKey<ScaffoldState>();
+            GlobalKey<ScaffoldState>();
         return Scaffold(
           key: _scaffoldKey,
-          appBar: CommonAppBar(
+          backgroundColor: whiteColor,
+          appBar: const CommonAppBar(
             key: null,
             menuenabled: true,
             notificationenabled: false,
-            title: "Apply Leave",
-            ontap: () {
-              _scaffoldKey.currentState?.openDrawer();
-            },
+            title: "Leave Application",
           ),
           body: Form(
             key: _formkey,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Divider(
-                      color: Colors.black.withOpacity(0.5),
-                      height: 1,
-                    ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: const Text(
-                        "Apply Leave Date",
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        muchDelayedAnimation.value * width, 0, 0),
+                    child: const Text("Select the date for leave",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 13,
                     ),
-                    Padding(
+                    child: Container(
+                      // height: height * 0.06,
                       padding: const EdgeInsets.only(
-                        top: 13,
+                        left: 10,
                       ),
-                      child: Container(
-                        // height: height * 0.06,
-                        padding: const EdgeInsets.only(
-                          left: 10,
-                        ),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Row(
-                          children: [
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  muchDelayedAnimation.value * width, 0, 0),
-                              child: Container(
-                                width: width * 0.75,
-                                child: DateTimePicker(
-                                  type: DateTimePickerType.date,
-                                  dateMask: 'dd/MM/yyyy',
-                                  controller: _applyleavecontroller,
-                                  //initialValue: _initialValue,
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2100),
-                                  calendarTitle: "Leave Date",
-                                  confirmText: "Confirm",
-                                  enableSuggestions: true,
-                                  //locale: Locale('en', 'US'),
-                                  onChanged: (val) => setState(
-                                      () => _applyleavevalueChanged = val),
-                                  validator: (val) {
-                                    setState(() =>
-                                        _applyleavevalueToValidate = val!);
-                                    return null;
-                                  },
-                                  onSaved: (val) => setState(
-                                      () => _applyleavevalueSaved = val!),
-                                ),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        children: [
+                          Transform(
+                            transform: Matrix4.translationValues(
+                                muchDelayedAnimation.value * width, 0, 0),
+                            child: SizedBox(
+                              width: width * 0.75,
+                              child: DateTimePicker(
+                                type: DateTimePickerType.date,
+                                dateMask: 'dd/MM/yyyy',
+                                controller: _applyleavecontroller,
+                                //initialValue: _initialValue,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100),
+                                calendarTitle: "Leave Date",
+                                confirmText: "Confirm",
+                                enableSuggestions: true,
+                                //locale: Locale('en', 'US'),
+                                onChanged: (val) => setState(
+                                    () => _applyleavevalueChanged = val),
+                                validator: (val) {
+                                  setState(
+                                      () => _applyleavevalueToValidate = val!);
+                                  return null;
+                                },
+                                onSaved: (val) => setState(
+                                    () => _applyleavevalueSaved = val!),
                               ),
                             ),
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  delayedAnimation.value * width, 0, 0),
-                              child: const Icon(
-                                Icons.calendar_today,
-                                color: Colors.black,
-                              ),
+                          ),
+                          const Spacer(),
+                          Transform(
+                            transform: Matrix4.translationValues(
+                                delayedAnimation.value * width, 0, 0),
+                            child: const Icon(
+                              Icons.calendar_today,
+                              color: primaryColor,
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.03,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: const Text(
-                        "Choose Leave Type",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: DropdownSearch<String>(
-                        validator: (v) => v == null ? "required field" : null,
-                        hint: "Please Select Leave type",
-                        mode: Mode.MENU,
-                        showSelectedItem: true,
-                        items: [
-                          "Medical",
-                          "Family",
-                          "Sick",
-                          'Function',
-                          'Others'
+                          ),
                         ],
-                        showClearButton: true,
-                        onChanged: print,
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: Text(
-                        "Leave Date",
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        muchDelayedAnimation.value * width, 0, 0),
+                    child: const Text("Choose the type of leave.",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14)),
+                  ),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        delayedAnimation.value * width, 0, 0),
+                    child: DropdownSearch<String>(
+                      validator: (v) => v == null ? "required field" : null,
+                      hint: "Please Select Leave type",
+                      mode: Mode.MENU,
+                      showSelectedItem: true,
+                      items: const [
+                        "Medical",
+                        "Family",
+                        "Sick",
+                        'Function',
+                        'Others'
+                      ],
+                      showClearButton: true,
+                      clearButton: const Icon(
+                        Icons.close,
+                        color: primaryColor,
                       ),
+                      onChanged: print,
                     ),
-                    Padding(
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        muchDelayedAnimation.value * width, 0, 0),
+                    child: const Text("Leave date range",
+                        style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14)),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 13,
+                    ),
+                    child: Container(
+                      // height: height * 0.06,
                       padding: const EdgeInsets.only(
-                        top: 13,
+                        left: 10,
                       ),
-                      child: Container(
-                        // height: height * 0.06,
-                        padding: const EdgeInsets.only(
-                          left: 10,
-                        ),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.white38,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: const [
-                              BoxShadow(
-                                offset: Offset(0, 1),
-                                color: Colors.black12,
-                              )
-                            ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  muchDelayedAnimation.value * width, 0, 0),
-                              child: const Icon(
-                                Icons.calendar_today,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  muchDelayedAnimation.value * width, 0, 0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 4.0),
-                                  width: width * 0.28,
-                                  decoration: const BoxDecoration(
-                                      color: Colors.white38,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          offset: Offset(0, 1),
-                                          blurRadius: 2,
-                                          color: Colors.black26,
-                                        )
-                                      ]),
-                                  child: CustomDatePicker(
-                                    controller: _fromcontroller,
-                                    title: "From",
-                                    onchanged: (val) =>
-                                        setState(() => _fromvalueChanged = val),
-                                    validator: (val) {
-                                      setState(
-                                          () => _fromvalueToValidate = val);
-                                      return null;
-                                    },
-                                    saved: (val) =>
-                                        setState(() => _fromvalueSaved = val),
-                                    key: null,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  muchDelayedAnimation.value * width, 0, 0),
-                              child: Icon(
-                                Icons.arrow_forward,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Transform(
-                              transform: Matrix4.translationValues(
-                                  delayedAnimation.value * width, 0, 0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 4.0),
-                                  width: width * 0.28,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white38,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              offset: Offset(0, 1),
+                              color: blendColor,
+                            )
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Transform(
+                          //   transform: Matrix4.translationValues(
+                          //       muchDelayedAnimation.value * width, 0, 0),
+                          //   child: const Icon(
+                          //     Icons.calendar_today,
+                          //     color: Colors.black,
+                          //   ),
+                          // ),
+                          Transform(
+                            transform: Matrix4.translationValues(
+                                muchDelayedAnimation.value * width, 0, 0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                width: width * 0.28,
+                                decoration: const BoxDecoration(
+                                    color: whiteColor,
                                     boxShadow: [
                                       BoxShadow(
                                         offset: Offset(0, 1),
                                         blurRadius: 2,
-                                        color: Colors.black26,
+                                        color: blendColor,
                                       )
-                                    ],
-                                  ),
-                                  child: CustomDatePicker(
-                                    controller: _tocontroller,
-                                    title: "To",
-                                    onchanged: (String val) => setState(() {
-                                      _tovalueChanged = val;
-                                      print(val);
-                                    }),
-                                    validator: (val) {
-                                      setState(() => _tovalueToValidate = val);
-                                      return null;
-                                    },
-                                    saved: (val) =>
-                                        setState(() => _tovalueSaved = val),
-                                    key: null,
-                                  ),
+                                    ]),
+                                child: CustomDatePicker(
+                                  controller: _fromcontroller,
+                                  title: "From",
+                                  onchanged: (val) =>
+                                      setState(() => _fromvalueChanged = val),
+                                  validator: (val) {
+                                    setState(() => _fromvalueToValidate = val);
+                                    return null;
+                                  },
+                                  saved: (val) =>
+                                      setState(() => _fromvalueSaved = val),
+                                  key: null,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Transform(
+                            transform: Matrix4.translationValues(
+                                muchDelayedAnimation.value * width, 0, 0),
+                            child: const Icon(
+                              Icons.arrow_forward,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Transform(
+                            transform: Matrix4.translationValues(
+                                delayedAnimation.value * width, 0, 0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 4.0),
+                                width: width * 0.28,
+                                decoration: const BoxDecoration(
+                                  color: Colors.white38,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: Offset(0, 1),
+                                      blurRadius: 2,
+                                      color: Colors.black26,
+                                    )
+                                  ],
+                                ),
+                                child: CustomDatePicker(
+                                  controller: _tocontroller,
+                                  title: "To",
+                                  onchanged: (String val) => setState(() {
+                                    _tovalueChanged = val;
+                                    print(val);
+                                  }),
+                                  validator: (val) {
+                                    setState(() => _tovalueToValidate = val);
+                                    return null;
+                                  },
+                                  saved: (val) =>
+                                      setState(() => _tovalueSaved = val),
+                                  key: null,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Transform(
                       transform: Matrix4.translationValues(
                           muchDelayedAnimation.value * width, 0, 0),
-                      child: Text(
-                        "Apply Leave Date",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    Transform(
+                      child: const Text("Message Body",
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: 'Poppins',
+                              fontSize: 14))),
+                  Expanded(
+                    child: Transform(
                       transform: Matrix4.translationValues(
                           delayedAnimation.value * width, 0, 0),
                       child: Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 13,
                         ),
                         child: Container(
                           // height: height * 0.06,
-                          height: height * 0.25,
+                          // height: height * 0.25,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5),
+                            color: navPanecolor,
+                            border:
+                                Border.all(color: navIconsColor, width: 0.75),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextFormField(
                             //autofocus: true,
@@ -374,79 +366,92 @@ class _LeaveApplyState extends State<LeaveApply>
                             decoration: InputDecoration(
                               suffixIcon: searchFieldController.text.isNotEmpty
                                   ? IconButton(
-                                      icon: Icon(Icons.clear),
+                                      icon: const Icon(Icons.clear),
                                       onPressed: () => WidgetsBinding.instance
                                           .addPostFrameCallback((_) =>
                                               searchFieldController.clear()))
                                   : null,
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(7),
+                              contentPadding: const EdgeInsets.all(7),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.05,
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          muchDelayedAnimation.value * width, 0, 0),
-                      child: Text(
-                        "Attach Document",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Row(
+                    children: [
+                      Transform(
+                          transform: Matrix4.translationValues(
+                              muchDelayedAnimation.value * width, 0, 0),
+                          child: const Text("Attach Document",
+                              style: TextStyle(
+                                  color: blackColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14))),
+                      const Spacer(),
+                      Transform(
+                        transform: Matrix4.translationValues(
+                            delayedAnimation.value * width, 0, 0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                              onTap: () async {},
+                              child: const Text("Click Here",
+                                  style: TextStyle(
+                                      color: primaryColor,
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold))),
                         ),
                       ),
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InkWell(
-                          onTap: () async {},
-                          child: Text(
-                            "Click Here",
-                            style: TextStyle(
-                              color: Colors.blue,
-                            ),
-                          ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                  Transform(
+                    transform: Matrix4.translationValues(
+                        delayedAnimation.value * width, 0, 0),
+                    child: Bouncing(
+                      onPress: () async {
+                        // var leave = Leave(
+                        //     studentID: '',
+                        //     leaveDate: _applyleavevalueSaved,
+                        //     leaveReason: leaveReason,
+                        //     leaveDays: leaveDays,
+                        //     teacherID: teacherID,
+                        //     leaveStatus: LeaveStatus.Pending);
+                      },
+                      key: null,
+                      child: Container(
+                        //height: 20,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: primaryColor,
                         ),
-                      ),
-                    ),
-                    Transform(
-                      transform: Matrix4.translationValues(
-                          delayedAnimation.value * width, 0, 0),
-                      child: Bouncing(
-                        onPress: () {},
-                        key: null,
-                        child: Container(
-                          //height: 20,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.blue,
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Request Leave",
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text("Request Leave",
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
+                                    color: whiteColor,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: height * 0.05,
+                  ),
+                ],
               ),
             ),
           ),

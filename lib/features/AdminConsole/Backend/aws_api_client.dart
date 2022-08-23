@@ -589,7 +589,7 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
      mutation MyMutation {
-  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
+  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: "${classRoom.currentAttendanceDate}", groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
     userAssignedClassId
     currentAttendanceDate
     classRoomName
@@ -959,7 +959,6 @@ query MyQuery {
     return returnList;
   }
 
-
   @override
   Future<List<ClassAttendance>> searchByMonth(
       {required String searchQuery}) async {
@@ -992,21 +991,40 @@ query MyQuery {
 
     return returnList;
   }
-  
+
   @override
-  Future<Leave> createLeave({required Leave leave}) {
-    // TODO: implement createLeave
-    throw UnimplementedError();
+  Future<Leave> createLeave({required Leave leave})async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''
+mutation MyMutation {
+  createLeave(input: {leaveBody: "${leave.leaveBody}", leaveDate: "${leave.leaveDate}", leaveDays: ${leave.leaveDays}, leaveDocLink: "${leave.leaveDocLink}", leaveReason: "${leave.leaveReason}", leaveStatus: ${leave.leaveStatus}, studentID: "${leave.studentID}", teacherID: "${leave.teacherID}"}) {
+    leaveBody
+    leaveDate
+    leaveDays
+    leaveDocLink
+    leaveReason
+    leaveStatus
+    studentID
+    teacherID
   }
-  
+}
+''',
+    };
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return Leave.fromJson(
+        json.decode(responseString)['data']['createLeave']);
+  }
+
   @override
   Future<Leave> getLeave({required String leaveID}) {
     // TODO: implement getLeave
     throw UnimplementedError();
   }
-  
+
   @override
-  Future<List<Leave>> getListOfLeaves({required int limit}) async{
+  Future<List<Leave>> getListOfLeaves({required int limit}) async {
     final body = {
       'operationName': 'MyQuery',
       'query': '''
@@ -1031,8 +1049,7 @@ query MyQuery {
     print(jsonMap);
     List<Leave> returnList = [];
 
-    for (var eachStudent in jsonMap['data']['listLeaves']
-        ['items']) {
+    for (var eachStudent in jsonMap['data']['listLeaves']['items']) {
       returnList.add(Leave.fromJson(eachStudent));
     }
 
@@ -1040,12 +1057,11 @@ query MyQuery {
   }
 }
 
-  String f(var val) {
-    if (val == null) {
-      return null.toString();
-    }
-
-    var ans = '''"$val"''';
-    return ans;
+String f(var val) {
+  if (val == null) {
+    return null.toString();
   }
 
+  var ans = '''"$val"''';
+  return ans;
+}

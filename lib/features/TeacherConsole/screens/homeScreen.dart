@@ -70,9 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 TeacherDetail(
                   height: h,
                   width: w,
-                  name: 'Rohin Bhat',
-                  email: 'atk@gmail.com',
-                  phone: '9922889487',
+                  name: teacherCubit.teacher.name,
+                  email: teacherCubit.teacher.email,
+                  phone: teacherCubit.teacher.phoneNumber,
                 ),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -114,10 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         TeacherCubit>(context)),
                                                 BlocProvider(
                                                   key: ValueKey(teacherCubit
-                                                                  .teacher
-                                                                  .assignedClass![
-                                                                      0]
-                                                                  .id.toString()),
+                                                      .teacher
+                                                      .assignedClass![index]
+                                                      .id
+                                                      .toString()),
                                                   create: (context) =>
                                                       TeacherClassCubit(
                                                           awsApiClient: getIt<
@@ -128,17 +128,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               teacherCubit
                                                                   .teacher
                                                                   .assignedClass![
-                                                                      0]
+                                                                      index]
                                                                   .id),
                                                 ),
                                               ],
-                                              child: const ClassDetailScreen(
-                                                className: 'TE',
+                                              child: ClassDetailScreen(
+                                                className: teacherCubit
+                                                    .teacher
+                                                    .assignedClass![index]
+                                                    .classRoomName,
                                               ));
                                         }));
                                       },
-                                      classNo: 'TE-01',
-                                      noOfStd: '89',
+                                      classNo: teacherCubit.teacher
+                                          .assignedClass![index].classRoomName,
+                                      noOfStd: teacherCubit
+                                                  .teacher
+                                                  .assignedClass![index]
+                                                  .students ==
+                                              null
+                                          ? ''
+                                          : teacherCubit
+                                              .teacher
+                                              .assignedClass![index]
+                                              .students!
+                                              .length
+                                              .toString(),
                                     ),
                                   ),
                                 )),

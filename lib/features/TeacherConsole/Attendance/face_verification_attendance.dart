@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_face_api/face_api.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,15 +12,17 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/mark_at
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:image/image.dart' as imglib;
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/custom_snackbar.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../core/constants.dart';
-import '../../../models/Student.dart';
 import 'attendance_card.dart';
 import 'attendance_dialog.dart';
 
 class FaceVerifyScreen extends StatefulWidget {
-  
-  FaceVerifyScreen({Key? key, }) : super(key: key);
+  VerificationStatus verificationStatus;
+  FaceVerifyScreen({Key? key, required this.verificationStatus})
+      : super(key: key);
 
   @override
   State<FaceVerifyScreen> createState() => _FaceVerifyScreenState();
@@ -40,15 +44,36 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
     return inputImage;
   }
 
+  Future<bool> checkLiveness() async {
+    FaceSDK.startLiveness().then((livenessResponse) {
+      var response = LivenessResponse.fromJson(json.decode(livenessResponse));
+      if (response!.liveness == LivenessStatus.PASSED) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final classCubit = BlocProvider.of<TeacherClassCubit>(context);
     final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
     final attendance = attendanceCubit.attendanceMap;
-    Student student = classCubit.classRoom.students![0];
+    // Student student = classCubitstudentList[0];
     return Scaffold(
-      body: BlocBuilder<AttendanceCubit, AttendanceState>(
-        // listener: (context, state) => Navigator.pop(context,true),
+      body: BlocConsumer<AttendanceCubit, AttendanceState>(
+        listener: (context, state) {
+          if(state is AttendanceUploaded) {
+            showSnackBar(context, text: 'Attendance Uploaded Successfully');
+            Navigator.pop(context);
+          }
+          else if(state is AttendanceStoredToLocalStore) {
+            showSnackBar(context, text: 'Attendance Upload Failed Due to Network Error, A Local Copy Has Been Stored');
+            Navigator.pop(context);
+          }
+        },
         builder: (context, state) {
           if (state is UploadingAttendance) return progressIndicator;
 
@@ -70,12 +95,19 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
               const SizedBox(
                 height: 20,
               ),
-              classCubit.classRoom.students == null ||
-                      classCubit.classRoom.students!.isEmpty
+              classCubit.studentList.isEmpty
                   ? const Expanded(
                       child: SizedBox(
                         height: double.maxFinite,
-                        child: Center(child: Text('No Students Added')),
+                        child: Center(
+                            child: Text(
+                                'Please add face data of students to proceed with attendance',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: lightTextColor,
+                                    fontSize: 16,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.normal))),
                       ),
                     )
                   : Expanded(
@@ -87,8 +119,7 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
                                 crossAxisCount: 3,
                                 physics: const BouncingScrollPhysics(),
                                 children: List.generate(
-                                    classCubit.classRoom.students!.length,
-                                    (index) {
+                                    classCubit.studentList.length, (index) {
                                   return AnimationConfiguration.staggeredGrid(
                                       position: index,
                                       duration:
@@ -101,19 +132,6 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
                                         child: FadeInAnimation(
                                             child: AttendanceCard(
                                           onTap: () async {
-                                            // var inputImage = await pickImage();
-                                            // Face face = await attendanceCubit
-                                            //     .detectFaceFromImage(
-                                            //         inputImage);
-
-                                            // await attendanceCubit
-                                            //     .setCurrentPrediction(
-                                            //         detectedFace: face,
-                                            //         image: img);
-                                            // await attendanceCubit
-                                            //     .compareDetectedResultsWithStudent(
-                                            //         classCubit.classRoom
-                                            //             .students![index]);
                                             if (attendanceCubit.cameraService
                                                     .cameraController ==
                                                 null) {
@@ -132,12 +150,10 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
                                             }));
                                             setState(() {});
                                           },
-                                          student: classCubit
-                                              .classRoom.students![index],
+                                          student:
+                                              classCubit.studentList[index],
                                           isPresent: attendance[classCubit
-                                              .classRoom
-                                              .students![index]
-                                              .studentID]!,
+                                              .studentList[index].studentID]!,
                                         )),
                                       ));
                                 }))),
@@ -152,6 +168,10 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
                 width: 170,
                 child: CustomTextButton(
                   onPressed: () async {
+                    if (widget.verificationStatus ==
+                        VerificationStatus.FaceVerifiedWithLiveness) {
+                         var result = await checkLiveness();
+                        }
                     if (attendanceCubit.cameraService.cameraController ==
                         null) {
                       await attendanceCubit.initCamera();
@@ -166,7 +186,7 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
                     }));
                     setState(() {});
                   },
-                  text: 'Mark',
+                  text: 'Mark Randomly',
                 ),
               ),
               const SizedBox(
