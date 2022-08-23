@@ -64,6 +64,11 @@ abstract class AWSApiClient {
 
   // Future<List<Student>> searchAttendance(
   //     {required String searchQuery, required StudentSearchMode mode});
+
+  //Leaves
+  Future<Leave> createLeave({required Leave leave});
+  Future<Leave> getLeave({required String leaveID});
+  Future<List<Leave>> getListOfLeaves({required int limit});
 }
 
 class AWSApiClientImpl implements AWSApiClient {
@@ -983,6 +988,52 @@ query MyQuery {
     for (var eachStudent in jsonMap['data']['searchClassAttendances']
         ['items']) {
       returnList.add(ClassAttendance.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
+  
+  @override
+  Future<Leave> createLeave({required Leave leave}) {
+    // TODO: implement createLeave
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Leave> getLeave({required String leaveID}) {
+    // TODO: implement getLeave
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<List<Leave>> getListOfLeaves({required int limit}) async{
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+query MyQuery {
+  listLeaves(limit: $limit) {
+    items {
+      leaveDate
+      leaveDays
+      leaveReason
+      leaveStatus
+      studentID
+      teacherID
+    }
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<Leave> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['listLeaves']
+        ['items']) {
+      returnList.add(Leave.fromJson(eachStudent));
     }
 
     return returnList;

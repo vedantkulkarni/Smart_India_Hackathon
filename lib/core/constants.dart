@@ -34,6 +34,7 @@ enum ManagementMode {
   Students,
   User,
   ClassRooms,
+  Leaves
 }
 
 enum SearchMode { Attendance, Student }
