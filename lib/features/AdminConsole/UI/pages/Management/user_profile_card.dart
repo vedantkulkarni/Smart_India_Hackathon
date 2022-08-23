@@ -31,7 +31,7 @@ class UserProfileCard extends StatelessWidget {
                 value: BlocProvider.of<ManagementCubit>(context),
                 child: ViewAndEditUser(
                   user: user,
-                  currentRole: Role.SuperAdmin,
+                  currentRole: user.role,
                 ),
               ));
         },
