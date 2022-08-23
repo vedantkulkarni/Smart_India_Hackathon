@@ -254,7 +254,7 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
       mutation MyMutation {
-  updateUser(input: {address: "${updatedUser.address}", age: 10, description: "${updatedUser.description}", email: "${updatedUser.email}", gender: "${updatedUser.gender}", name: "${updatedUser.name}", role: SuperAdmin, schoolID: "${updatedUser.schoolID}", shitfInfo: "${updatedUser.shitfInfo}", phoneNumber: "${updatedUser.phoneNumber}"}) {
+  updateUser(input: {address: "${updatedUser.address}", age: 10, description: "${updatedUser.description}", email: "${updatedUser.email}", gender: "${updatedUser.gender}", name: "${updatedUser.name}", role: ${updatedUser.role.name}, schoolID: "${updatedUser.schoolID}", shitfInfo: "${updatedUser.shitfInfo}", phoneNumber: "${updatedUser.phoneNumber}"}) {
     email
     schoolID
     age

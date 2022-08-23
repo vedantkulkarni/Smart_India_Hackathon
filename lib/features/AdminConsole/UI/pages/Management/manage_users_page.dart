@@ -27,11 +27,17 @@ class _ManageUsersState extends State<ManageUsers> {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     return Scaffold(
       backgroundColor: whiteColor,
-      body: BlocBuilder<ManagementCubit, ManagementState>(
+      body: BlocConsumer<ManagementCubit, ManagementState>(
+        listener: (context, state) {
+          if (state is UserUpdated) {
+            managementCubit.getAllUsers(role: role);
+          }
+        },
         builder: (context, state) {
           if (state is ManagementInitial ||
               state is FetchingUsers ||
-              state is DeletingUser) {
+              state is DeletingUser ||
+              state is UpdatingUser) {
             return progressIndicator;
           }
 

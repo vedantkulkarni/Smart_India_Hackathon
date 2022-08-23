@@ -40,8 +40,11 @@ class ManagementCubit extends Cubit<ManagementState> {
     return await awsApiClient.getAdminDetails(userID: userID);
   }
 
-  Future<User> updateUser({required User updatedUser}) async {
-    return await awsApiClient.updateUser(updatedUser: updatedUser);
+  Future<void> updateUser({required User updatedUser}) async {
+    emit(UpdatingUser());
+    await awsApiClient.updateUser(updatedUser: updatedUser);
+
+    emit(UserUpdated());
   }
 
   Future<void> addNewUser({required User newUser}) async {

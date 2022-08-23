@@ -50,7 +50,7 @@ class _AddUserPageState extends State<AddUserPage> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  Role _role = Role.SuperAdmin;
+  Role _role = Role.Teacher;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -90,7 +90,8 @@ class _AddUserPageState extends State<AddUserPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _nameController,
                               validator: ((value) {
@@ -111,7 +112,8 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _emailController,
                               validator: ((value) {
@@ -134,7 +136,8 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _phoneController,
                               validator: ((value) {
@@ -156,7 +159,8 @@ class _AddUserPageState extends State<AddUserPage> {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 15.h, horizontal: 15.w),
                       child: TextFormField(
                         controller: _addressController,
                         validator: ((value) {
@@ -178,7 +182,8 @@ class _AddUserPageState extends State<AddUserPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _genderController,
                               validator: ((value) {
@@ -199,7 +204,8 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _ageController,
                               validator: ((value) {
@@ -220,7 +226,8 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _classController,
                               validator: ((value) {
@@ -244,7 +251,8 @@ class _AddUserPageState extends State<AddUserPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.h, horizontal: 15.w),
                             child: TextFormField(
                               controller: _descriptionController,
                               validator: ((value) {
@@ -265,7 +273,8 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.2,
-                          padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15.h, horizontal: 15.w),
                           child: TextFormField(
                             controller: _shiftController,
                             validator: ((value) {
@@ -285,7 +294,7 @@ class _AddUserPageState extends State<AddUserPage> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.10,
-                          padding:  EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                               vertical: 4.h, horizontal: 4.w),
                           decoration: BoxDecoration(
                             color: textFieldFillColor,
@@ -331,16 +340,17 @@ class _AddUserPageState extends State<AddUserPage> {
                         width: 150.w,
                         height: 40.h,
                         child: CustomTextButton(
-                            onPressed: () async {
-                              final user = _submit1();
-                              if (user != null) {
-                                await managementCubit.addNewUser(newUser: user);
-                                Navigator.pop(context);
-                              } else {
-                                return;
-                              }
-                            },
-                            text: 'Submit'),
+                          onPressed: () async {
+                            final user = _submit1();
+                            if (user != null) {
+                              await managementCubit.addNewUser(newUser: user);
+                              Navigator.pop(context);
+                            } else {
+                              return;
+                            }
+                          },
+                          text: 'Submit',
+                        ),
                       ),
                     )
                   ],
