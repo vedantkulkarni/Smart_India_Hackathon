@@ -114,6 +114,18 @@ class UsersFetched extends ManagementState {
   List<Object?> get props => [userList];
 }
 
+class UpdatingUser extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class UserUpdated extends ManagementState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
 
 
 //ClassRooms

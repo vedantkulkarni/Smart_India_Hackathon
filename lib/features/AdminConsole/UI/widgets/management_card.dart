@@ -81,7 +81,7 @@ class ManageMentCard extends StatelessWidget {
                         fontSize: 18.sp),
                   ),
                    Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris malesuada eget tortor non efficitur.',
+                    content,
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         color: lightTextColor,

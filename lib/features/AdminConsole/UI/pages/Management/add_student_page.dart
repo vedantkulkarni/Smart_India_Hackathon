@@ -23,7 +23,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
       print(_emailController.text);
       print(_phoneController.text);
       print(_addressController.text);
-      print(_genderController.text);
+      print(_gender);
       print(_ageController.text);
       print(_rollNoController.text);
       String phNo;
@@ -33,13 +33,15 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
         phNo = _phoneController.text;
       }
       final student = Student(
-          studentID: UUID.getUUID(),
-          studentName: _nameController.text,
-          address: _addressController.text,
-          email: _emailController.text,
-          phoneNumber: phNo,
-          roll: _rollNoController.text,
-          classRoomStudentsId: 'blankID');
+        studentID: UUID.getUUID(),
+        studentName: _nameController.text,
+        address: _addressController.text,
+        email: _emailController.text,
+        phoneNumber: phNo,
+        roll: _rollNoController.text,
+        classRoomStudentsId: 'blankID',
+        gender: _gender,
+      );
       print(student);
 
       _formKey.currentState!.save();
@@ -53,7 +55,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
+  Gender _gender = Gender.Male;
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _rollNoController = TextEditingController();
 
@@ -61,6 +63,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
   Widget build(BuildContext context) {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     final adminCubit = BlocProvider.of<AdminCubit>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: backgroundColor,
@@ -174,22 +177,66 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: TextFormField(
-                              validator: ((value) {
-                                if (value!.isEmpty) {
-                                  return 'Please enter a gender';
-                                }
-                                return null;
-                              }),
-                              decoration: const InputDecoration(
-                                fillColor: textFieldFillColor,
-                                filled: true,
-                                labelStyle: TextStyle(color: primaryColor),
-                                labelText: 'Gender',
-                                hintText: 'Enter Your Gender',
-                              ),
+                          child: Container(
+                            color: textFieldFillColor,
+                            
+                            padding:  EdgeInsets.symmetric(vertical: 2.h),
+                            child: DropdownButton<Gender>(
+                              
+                              icon: null,
+                              iconSize: 24,
+                              alignment: Alignment.center,
+                              underline: Container(),
+                              borderRadius: BorderRadius.circular(10),
+                              value: _gender,
+                              onChanged: (val) async {
+                                // print(val);
+                                setState(() {
+                                  _gender = val!;
+                                });
+                              },
+                              isExpanded: true,
+                              items: const [
+                                DropdownMenuItem(
+                                  child: Center(
+                                    child: Text(
+                                      'Male',
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                  value: Gender.Male,
+                                ),
+                                DropdownMenuItem(
+                                  child: Center(
+                                    child: Text(
+                                      'Female',
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                  value: Gender.Female,
+                                ),
+                                DropdownMenuItem(
+                                  child: Center(
+                                    child: Text(
+                                      'Other',
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                  value: Gender.Other,
+                                ),
+                              ],
                             ),
                           ),
                         ),
