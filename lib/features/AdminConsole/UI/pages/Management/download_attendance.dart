@@ -1,9 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/csvConvertor.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
+import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DownloadAttedance extends StatefulWidget {
@@ -25,10 +27,10 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
           automaticallyImplyLeading: true,
           elevation: 0,
           iconTheme: const IconThemeData(color: blackColor),
-          title: const Text(
+          title: Text(
             'Download Attendance',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 14.sp,
               color: blackColor,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.normal,
@@ -111,72 +113,66 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
         ],
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Today\'s Attendance',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.normal,
-                  color: whiteColor),
-            ),
-            Text(
-              precent,
-              style: const TextStyle(
-                  fontSize: 40,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.bold,
-                  color: whiteColor),
-            ),
-            const Text(
-              'Taken By:-',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.normal,
-                  color: whiteColor),
-            ),
-            Text(
-              teacher,
-              style: const TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.bold,
-                  color: whiteColor),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            GestureDetector(
-              onTap: onTap,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        color: navPanecolor,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Download CSV',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.bold,
-                            color: blackColor),
-                      ),
-                    ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Today\'s Attendance',
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.normal,
+                color: whiteColor),
+          ),
+          Text(
+            precent,
+            style: TextStyle(
+                fontSize: 40.sp,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.bold,
+                color: whiteColor),
+          ),
+          Text(
+            'Taken By:-',
+            style: TextStyle(
+                fontSize: 14.sp,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.normal,
+                color: whiteColor),
+          ),
+          Text(
+            teacher,
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.bold,
+                color: whiteColor),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          GestureDetector(
+            onTap: onTap,
+            child: Center(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: navPanecolor,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Download CSV',
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                        color: blackColor),
                   ),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     ),
   );

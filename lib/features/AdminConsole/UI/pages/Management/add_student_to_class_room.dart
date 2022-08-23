@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
@@ -26,7 +27,9 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
+        double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    // ScreenUtil.init(context, designSize: Size(width, height));
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     final searchCubit = BlocProvider.of<SearchCubit>(context);
     return Container(
@@ -68,6 +71,8 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                   child: addList.isEmpty
                       ? const Center(
                           child: Text(
+
+
                           'Add Students',
                           style: TextStyle(
                             fontSize: 14,
@@ -129,12 +134,13 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
           ),
           const SizedBox(
             height: 40,
+
           ),
           Padding(
-            padding: const EdgeInsets.only(
-              left: 15,
-              right: 15,
-              bottom: 5,
+            padding:  EdgeInsets.only(
+              left: 15.w,
+              right: 15.w,
+              bottom: 5.h,
             ),
             child: Center(
               child: CustomTextButton(
@@ -172,7 +178,7 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
           ),
           Padding(
             padding:
-                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 50),
+                 EdgeInsets.only(left: 15.w, right: 15.w, top: 10.h, bottom: 50.h),
             child: Center(
               child: CustomTextButton(
                 onPressed: () async {

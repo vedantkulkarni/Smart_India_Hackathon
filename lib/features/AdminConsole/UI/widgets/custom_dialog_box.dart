@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants.dart';
 
@@ -15,8 +16,9 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
   Widget build(BuildContext context) {
     return Dialog(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7,
-        width: MediaQuery.of(context).size.width * 0.4,
+        height: MediaQuery.of(context).size.height * 0.7.h,
+        width: MediaQuery.of(context).size.width * 0.4.w,
+
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10), color: whiteColor),

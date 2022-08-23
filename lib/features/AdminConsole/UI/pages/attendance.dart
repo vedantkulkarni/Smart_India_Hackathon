@@ -2,6 +2,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
@@ -72,25 +73,27 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
   @override
   Widget build(BuildContext context) {
     final searchCubit = BlocProvider.of<SearchCubit>(context);
-    double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    // ScreenUtil.init(context, designSize: Size(width, height));
     return Container(
       color: backgroundColor,
       child: Column(
         children: [
-          const SizedBox(
-            width: 20,
+          SizedBox(
+            width: 20.w,
           ),
           Row(
             children: [
               Expanded(
                 child: Container(
-                  margin: const EdgeInsets.all(10),
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                   child: CustomTextField(
                     textEditingController: textEditingController,
                     hintText: hintText,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 15),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
                     prefixIcon: const Icon(
                       fi.FluentIcons.search,
                       size: 16,
@@ -98,8 +101,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   ),
                 ),
               ),
-              const SizedBox(
-                width: 20,
+              SizedBox(
+                width: 20.w,
               ),
               showCalender == false
                   ? Container()
@@ -171,13 +174,13 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   });
                   // managementCubit.getAllUsers(role: value);
                 },
-                items: const [
+                items: [
                   DropdownMenuItem(
                     child: Text('Search by Date',
                         style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14)),
+                            fontSize: 14.sp)),
                     value: AttendanceSearchMode.date,
                   ),
                   DropdownMenuItem(
@@ -187,6 +190,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 14)),
                       value: AttendanceSearchMode.studentName),
+
                   DropdownMenuItem(
                       child: Text('Search by Assigned Class',
                           style: TextStyle(
@@ -194,26 +198,28 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 14)),
                       value: AttendanceSearchMode.className),
+                  
                   DropdownMenuItem(
                       child: Text('Search by Teacher Name',
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: AttendanceSearchMode.teacherName),
                   DropdownMenuItem(
                       child: Text('Search by Teacher Email',
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: AttendanceSearchMode.teacherID),
                 ],
               ),
-              const SizedBox(
-                width: 40,
+              SizedBox(
+                width: 40.w,
               ),
               SizedBox(
+
                   height: 45,
                   width: 150,
                   child: TextButton(
@@ -270,6 +276,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                       text: 'Search')),
               const SizedBox(
                 width: 20,
+
               )
             ],
           ),

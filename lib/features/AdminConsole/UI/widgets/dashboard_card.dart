@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:get/get.dart';
 
@@ -12,10 +13,14 @@ class DashboardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double _screenWidth = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    // ScreenUtil.init(context, designSize: Size(width, height));
     return Expanded(
       child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
           decoration: BoxDecoration(
             boxShadow: const [
               BoxShadow(color: blendColor, blurRadius: 15, spreadRadius: 5)
@@ -26,8 +31,8 @@ class DashboardCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                height: 50,
-                width: 50,
+                height: 50.h,
+                width: _screenWidth > 800.w ? 50.w : 300.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: color,
@@ -38,27 +43,27 @@ class DashboardCard extends StatelessWidget {
                   color: whiteColor,
                 )),
               ),
-              const SizedBox(
-                width: 20,
+              SizedBox(
+                width: 20.w,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     user.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.normal,
                         color: greyColor,
                         fontFamily: 'Poppins',
-                        fontSize: 14),
+                        fontSize: _screenWidth > 800.w ? 14.sp : 24.sp),
                   ),
                   Text(
                     number,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                         fontFamily: 'Poppins',
-                        fontSize: 18),
+                        fontSize: _screenWidth > 800.w ? 18.sp : 20.sp),
                   )
                 ],
               )
@@ -67,3 +72,5 @@ class DashboardCard extends StatelessWidget {
     );
   }
 }
+
+// TODO: Make 

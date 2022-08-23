@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_search.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
@@ -34,8 +35,8 @@ class _CommonSearchState extends State<CommonSearch> {
                       hintText: 'Search Name, Roll Number or Email Id',
                       padding: const EdgeInsets.all(10)),
                 ),
-                const SizedBox(
-                  width: 20,
+                 SizedBox(
+                  width: 20.w,
                 ),
                 DropdownButton<StudentSearchMode>(
                   icon: null,
@@ -51,13 +52,13 @@ class _CommonSearchState extends State<CommonSearch> {
                     });
                     // managementCubit.getAllUsers(role: value);
                   },
-                  items: const [
+                  items:  [
                     DropdownMenuItem(
                       child: Text('Name',
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: StudentSearchMode.name,
                     ),
                     DropdownMenuItem(
@@ -65,22 +66,22 @@ class _CommonSearchState extends State<CommonSearch> {
                             style: TextStyle(
                                 color: primaryColor,
                                 fontFamily: 'Poppins',
-                                fontSize: 14)),
+                                fontSize: 14.sp)),
                         value: StudentSearchMode.email),
                     DropdownMenuItem(
                         child: Text('Roll Number',
                             style: TextStyle(
                                 color: primaryColor,
                                 fontFamily: 'Poppins',
-                                fontSize: 14)),
+                                fontSize: 14.sp)),
                         value: StudentSearchMode.roll),
                   ],
                 ),
-                const SizedBox(
-                  width: 40,
+                 SizedBox(
+                  width: 40.w,
                 ),
                 SizedBox(
-                    width: 120,
+                    width: 120.w,
                     child: CustomTextButton(
                         onPressed: () {
                           searchCubit.searchStudent(
@@ -90,8 +91,8 @@ class _CommonSearchState extends State<CommonSearch> {
                         text: 'Search'))
               ],
             ),
-            const SizedBox(
-              height: 20,
+             SizedBox(
+              height: 20.h,
             ),
             Container(
                 child: widget.searchMode == SearchMode.Student

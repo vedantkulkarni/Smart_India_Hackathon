@@ -1,6 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 
 import '../../../../core/constants.dart';
@@ -30,13 +31,13 @@ class AttendanceSearch extends StatelessWidget {
         return DataTable2(
             dataRowColor:
                 MaterialStateProperty.all(primaryColor.withOpacity(0.1)),
-            dataTextStyle: const TextStyle(
-                fontSize: 14,
+            dataTextStyle:  TextStyle(
+                fontSize: 14.sp,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.normal,
                 color: blackColor),
-            headingTextStyle: const TextStyle(
-                fontSize: 16,
+            headingTextStyle:  TextStyle(
+                fontSize: 16.sp,
                 color: blackColor,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold),

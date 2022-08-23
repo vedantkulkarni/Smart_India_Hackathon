@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/platform_checker.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
@@ -54,17 +55,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+        double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    ScreenUtil.init(context, designSize: Size(width, height));
     return FlutterLogin(
       title: 'Smart Attendance App',
       // logo: const AssetImage('assets/images/ecorp-lightblue.png'),
       onLogin: _authUser,
       onSignup: _signupUser,
       theme: LoginTheme(
-        titleStyle: const TextStyle(
+        titleStyle: TextStyle(
           color: primaryColor,
           fontFamily: 'Quicksand',
           letterSpacing: 2,
-          fontSize: 24,
+          fontSize: 24.sp,
         ),
         primaryColor: whiteColor,
         buttonTheme: LoginButtonTheme(
@@ -83,8 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
             backgroundColor: Colors.orange,
             color: Colors.white,
           ),
-          labelStyle: const TextStyle(
-              fontSize: 16, color: primaryColor, fontWeight: FontWeight.normal),
+          labelStyle: TextStyle(
+              fontSize: 16.sp, color: primaryColor, fontWeight: FontWeight.normal),
         ),
       ),
 
