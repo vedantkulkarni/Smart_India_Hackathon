@@ -35,10 +35,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   amplify_authenticator: ^0.2.2
+  dropdown_search: ^0.4.8
+  date_time_picker: ^2.1.0
+
+  flare_flutter: ^2.0.6
+  randomizer: ^0.0.2
+  flrx_validator: ^0.4.0+2
   flutter_login: ^4.0.0
   font_awesome_flutter: ^10.1.0
   amazon_cognito_identity_dart_2: ^3.0.0
   fluent_ui: ^3.12.0
+  intl: ^0.17.0
+
   window_manager: ^0.2.5
   system_theme: ^2.0.0
   http: ^0.13.4
