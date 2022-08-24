@@ -60,7 +60,7 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
   Widget build(BuildContext context) {
     final classCubit = BlocProvider.of<TeacherClassCubit>(context);
     final attendanceCubit = BlocProvider.of<AttendanceCubit>(context);
-    final attendance = attendanceCubit.attendanceMap;
+    // final attendance = attendanceCubit.attendanceMap;
     // Student student = classCubitstudentList[0];
     return Scaffold(
       body: BlocConsumer<AttendanceCubit, AttendanceState>(
@@ -152,7 +152,7 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
                                           },
                                           student:
                                               classCubit.studentList[index],
-                                          isPresent: attendance[classCubit
+                                          isPresent: attendanceCubit.attendanceMap[classCubit
                                               .studentList[index].studentID]!,
                                         )),
                                       ));

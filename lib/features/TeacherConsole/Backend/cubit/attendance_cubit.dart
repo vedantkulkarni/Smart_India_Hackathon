@@ -74,7 +74,8 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   }
 
   Future<void> initServices(VerificationStatus mode) async {
-    if (mode == VerificationStatus.FaceDetectedAndVerified) {
+    if (mode == VerificationStatus.FaceDetectedAndVerified ||
+        mode == VerificationStatus.FaceVerifiedWithLiveness) {
       await initializeInterPreter();
       await initCamera();
       // await initializeMediapipe();
@@ -174,6 +175,8 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     final double longitude = position.longitude;
     print(latitude);
     print(longitude);
+    print(attendanceMap);
+    // return;
 
     List<Attendance> attendanceList = [];
     for (var studentID in attendanceMap.entries) {
@@ -181,14 +184,12 @@ class AttendanceCubit extends Cubit<AttendanceState> {
           .firstWhere((element) => element.studentID == studentID.key)
           .studentName;
 
-      var status = attendanceMap[studentID.value] == AttendanceStatus.Present
-          ? AttendanceStatus.Present
-          : AttendanceStatus.Absent;
+      var status = attendanceMap[studentID.value];
       final attendance = getAttendanceObj(
           studentName: sutdentName,
           className: classRoom.classRoomName,
           mode: mode,
-          attendanceStatus: status,
+          attendanceStatus: status!,
           latitude: latitude,
           longitude: longitude,
           classID: classRoom.id,

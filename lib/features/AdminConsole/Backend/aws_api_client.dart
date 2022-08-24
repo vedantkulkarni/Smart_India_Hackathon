@@ -46,6 +46,8 @@ abstract class AWSApiClient {
   Future<ClassAttendance> createClassAttendance(
       {required ClassAttendance classAttendance});
   Future<ClassAttendance> getClassAttendanceList({required String classID});
+  Future<List<Attendance>> getStudentAnalytics(
+      {required String studentId, required String month});
 
   // Future<Attendance> getAttendance({required })
 
@@ -993,7 +995,7 @@ query MyQuery {
   }
 
   @override
-  Future<Leave> createLeave({required Leave leave})async {
+  Future<Leave> createLeave({required Leave leave}) async {
     final body = {
       'operationName': 'MyMutation',
       'query': '''
@@ -1013,8 +1015,7 @@ mutation MyMutation {
     };
     final responseString = await uploadJsonBodyRequest(body);
     print(responseString);
-    return Leave.fromJson(
-        json.decode(responseString)['data']['createLeave']);
+    return Leave.fromJson(json.decode(responseString)['data']['createLeave']);
   }
 
   @override
@@ -1051,6 +1052,46 @@ query MyQuery {
 
     for (var eachStudent in jsonMap['data']['listLeaves']['items']) {
       returnList.add(Leave.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
+
+  @override
+  Future<List<Attendance>> getStudentAnalytics(
+      {required String studentId, required String month}) async {
+    String range = '["2022-$month-01","2022-$month-30"]';
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+query MyQuery {
+  searchAttendances(filter: {studentID: {match: $studentId}, and: {date: {range: $range}}}) {
+    items {
+      classID
+      className
+      date
+      geoLatitude
+      geoLongitude
+      status
+      studentID
+      studentName
+      teacherID
+      teacherName
+      time
+      verification
+    }
+  }
+}''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<Attendance> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['searchAttendances']['items']) {
+      returnList.add(Attendance.fromJson(eachStudent));
     }
 
     return returnList;
