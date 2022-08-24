@@ -45,11 +45,13 @@ class StudentSelected extends AttendanceState {
 
 class UploadingAttendance extends AttendanceState {}
 
+
 class AttendanceUploaded extends AttendanceState {}
+class AttendanceStoredToLocalStore extends AttendanceState {}
 
 class AttendanceMarked extends AttendanceState {
-  Student student;
-  AttendanceMarked({required this.student});
+  List<Student> studentList;
+  AttendanceMarked({required this.studentList});
 }
 
 class AttendanceToggled extends AttendanceState {
@@ -61,3 +63,6 @@ class FinalImage extends AttendanceState {
   Image image;
   FinalImage(this.image);
 }
+
+class UploadingLeave extends AttendanceState {}
+class LeaveUploaded extends AttendanceState {}

@@ -13,14 +13,14 @@ class ManagementCubit extends Cubit<ManagementState> {
   List<Student> _studentList = [];
   List<ClassRoom> _classroomList = [];
 
-  ManagementCubit({required this.awsApiClient, required this.managementMode})
+  ManagementCubit({required this.awsApiClient, required this.managementMode, required int limit})
       : super(ManagementInitial()) {
     if (managementMode == ManagementMode.Students) {
-      getAllStudents(limit: 10);
+      getAllStudents(limit: limit);
     } else if (managementMode == ManagementMode.User) {
       getAllUsers(role: Role.SuperAdmin);
     } else if (managementMode == ManagementMode.ClassRooms) {
-      getAllClassRooms(limit: 10);
+      getAllClassRooms(limit: limit);
     } else if (managementMode == ManagementMode.Leaves) {
       getAllLeaves(limit: 10);
     }
@@ -40,8 +40,11 @@ class ManagementCubit extends Cubit<ManagementState> {
     return await awsApiClient.getAdminDetails(userID: userID);
   }
 
-  Future<User> updateUser({required User updatedUser}) async {
-    return await awsApiClient.updateUser(updatedUser: updatedUser);
+  Future<void> updateUser({required User updatedUser}) async {
+    emit(UpdatingUser());
+    await awsApiClient.updateUser(updatedUser: updatedUser);
+
+    emit(UserUpdated());
   }
 
   Future<void> addNewUser({required User newUser}) async {
@@ -70,7 +73,7 @@ class ManagementCubit extends Cubit<ManagementState> {
   //Management mode = Students
   Future<void> getAllStudents({required int limit}) async {
     emit(FetchingStudents());
-    _studentList = await awsApiClient.getListOfStudent(limit: 10);
+    _studentList = await awsApiClient.getListOfStudent(limit: limit);
     emit(StudentsFetched(studentsList: _studentList));
   }
 

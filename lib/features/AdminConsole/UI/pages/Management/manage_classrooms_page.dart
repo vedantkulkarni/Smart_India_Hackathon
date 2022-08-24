@@ -21,8 +21,11 @@ class ManageClassroom extends StatefulWidget {
 }
 
 class _ManageClassroomState extends State<ManageClassroom> {
+  int limit = 10;
+
   @override
   Widget build(BuildContext context) {
+    final managementCubit = BlocProvider.of<ManagementCubit>(context);
     return Scaffold(
       appBar: AppBar(
         actions: [Container()],
@@ -76,8 +79,15 @@ class _ManageClassroomState extends State<ManageClassroom> {
                             alignment: Alignment.center,
                             underline: Container(),
                             borderRadius: BorderRadius.circular(10),
-                            value: 10,
-                            onChanged: (value) {},
+                            value: limit,
+                            onChanged: (value) {
+                              setState(() {
+                                limit = value!;
+                              });
+                              managementCubit.getAllClassRooms(
+                                limit: limit,
+                              );
+                            },
                             items: [
                               DropdownMenuItem(
                                 child: Text('10',
@@ -119,13 +129,14 @@ class _ManageClassroomState extends State<ManageClassroom> {
                                                   BlocProvider.of<AdminCubit>(
                                                       context)),
                                           BlocProvider(
-                                              create: (context) =>
-                                                  ManagementCubit(
-                                                      awsApiClient:
-                                                          getIt<AWSApiClient>(),
-                                                      managementMode:
-                                                          ManagementMode
-                                                              .Teachers)),
+                                            create: (context) =>
+                                                ManagementCubit(
+                                                    awsApiClient:
+                                                        getIt<AWSApiClient>(),
+                                                    managementMode:
+                                                        ManagementMode.Teachers,
+                                                    limit: limit),
+                                          ), 
                                         ],
                                         child: CustomDialogBox(
                                             widget: const CreateClassRoom()));

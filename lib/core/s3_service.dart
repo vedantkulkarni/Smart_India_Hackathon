@@ -92,7 +92,7 @@ Future<void> uploadFile({required File file}) async {
 
   const _region = 'ap-south-1';
   const _s3Endpoint =
-      'https://grandfinaleimages101118-staging.s3-ap-south-1.amazonaws.com';
+      'https://grandfinale4eb33be56aa4404e8544507a94058c9f101118-staging.s3-ap-south-1.amazonaws.com';
   // const _s3Endpoint = 'https://s3.console.aws.amazon.com/s3/buckets/grandfinaleimages101118-staging?region=ap-south-1&tab=objects';
 
   // final file = File.fromUri(Uri.parse('https://avatars.githubusercontent.com/u/24658039?v=4'));
@@ -110,7 +110,7 @@ Future<void> uploadFile({required File file}) async {
   final String bucketKey = 'test/$usrIdentityId/$fileName';
   final policy = Policy.fromS3PresignedPost(
       bucketKey,
-      'grandfinaleimages101118-staging',
+      'grandfinale4eb33be56aa4404e8544507a94058c9f101118-staging',
       15,
       _credentials.accessKeyId!,
       length,

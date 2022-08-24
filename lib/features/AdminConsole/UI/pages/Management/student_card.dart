@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +14,8 @@ import '../../../../../models/Student.dart';
 
 class StudentCard extends StatelessWidget {
   Student student;
-  StudentCard({Key? key, required this.student}) : super(key: key);
+  VoidCallback onTap;
+  StudentCard({Key? key, required this.student,required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,24 +23,7 @@ class StudentCard extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () async {
-          // final res = await showDialog(
-          //     context: context,
-          //     builder: (_) {
-          //       return BlocProvider.value(
-          //         value: BlocProvider.of<ManagementCubit>(context),
-          //         child: CustomDialogBox(
-          //             widget: StudentCardDetails(
-          //           student: student,
-          //         )),
-          //       );
-          //     });
-          // final res = Navigator.of(context).push(route)
-          // if (res!) {
-          //   await classCubit.getFullDetailsOfClassRoom(
-          //       classRoomID: classCubit.classRoomId);
-          // }
-        },
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -47,9 +33,10 @@ class StudentCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-               CircleAvatar(
-                backgroundImage: NetworkImage(student.profilePhoto??
-                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  student.profilePhoto ??
+                      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
                 ),
                 radius: 20,
               ),

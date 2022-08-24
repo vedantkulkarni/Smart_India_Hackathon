@@ -1,37 +1,38 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants.dart';
+
 class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
   final String title;
   final bool menuenabled;
   final bool notificationenabled;
-  final VoidCallback ontap;
+
   const CommonAppBar({
     Key? key,
     required this.title,
     required this.menuenabled,
     required this.notificationenabled,
-    required this.ontap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        "${title}",
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
+      title: Text(title,
+          style: const TextStyle(
+              color: primaryColor, fontFamily: 'Poppins', fontSize: 18)),
+      automaticallyImplyLeading: true,
+      iconTheme: const IconThemeData(
+        color: primaryColor,
       ),
-      leading: menuenabled == true
-          ? IconButton(
-              color: Colors.black,
-              onPressed: ontap,
-              icon: Icon(
-                Icons.menu,
-              ),
-            )
-          : null,
+      // leading: menuenabled == true
+      //     ? IconButton(
+      //         color: Colors.black,
+      //         onPressed: ontap,
+      //         icon: Icon(
+      //           Icons.menu,
+      //         ),
+      //       )
+      //     : null,
       actions: [
         notificationenabled == true
             ? InkWell(
@@ -41,7 +42,7 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
                   width: 35,
                 ),
               )
-            : SizedBox(
+            : const SizedBox(
                 width: 1,
               ),
       ],
@@ -53,5 +54,5 @@ class CommonAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(50);
+  Size get preferredSize => const Size.fromHeight(50);
 }

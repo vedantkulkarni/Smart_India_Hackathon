@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:team_dart_knights_sih/main.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 List<List<String>> itemList = [
   <String>[
@@ -17,19 +18,22 @@ List<List<String>> itemList = [
   ]
 ];
 
-void save() async {
-  print('kkkkk');
-  itemList.add([
-    "5A",
-    "2022-08-17",
-    "18.4577404",
-    "73.8507438",
-    "Absent",
-    "Utkarsh Gupta",
-    "Vedant Dattatray Kulkarni",
-    "09:39:29.587049000",
-    "ManualAttendance"
-  ]);
+void save({required List<Attendance> attendanceList}) async {
+  for(var everyAttendance in attendanceList)
+  {
+    itemList.add([
+      everyAttendance.className,
+      everyAttendance.date.toString(),
+      everyAttendance.geoLatitude.toString(),
+      everyAttendance.geoLongitude.toString(),
+      everyAttendance.status.name.toString(),
+      everyAttendance.studentName,
+      everyAttendance.teacherName,
+      everyAttendance.time.toString(),
+      everyAttendance.verification.name.toString()
+    ]);
+  }
+  
 
   print('CSV Function Start');
 

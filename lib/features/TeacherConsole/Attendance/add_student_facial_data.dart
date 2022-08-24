@@ -73,9 +73,9 @@ class _AddStudentFacialDataState extends State<AddStudentFacialData> {
     imglib.Image? capturedImage = imglib.decodeImage(await xfile.readAsBytes());
     // //For Firebase Ml Kit face detection
     InputImage inputImage = InputImage.fromFile(File(xfile.path));
-    Face face = await cubit.detectFaceFromImage(inputImage);
+    List<Face> faces = await cubit.detectFacesFromImage(inputImage);
 
-    await cubit.setCurrentPrediction(detectedFace: face, image: capturedImage);
+    await cubit.setCurrentPrediction(detectedFace: faces[0], image: capturedImage);
     var result = await showModalBottomSheet<Student?>(
         context: context,
         builder: (_) {

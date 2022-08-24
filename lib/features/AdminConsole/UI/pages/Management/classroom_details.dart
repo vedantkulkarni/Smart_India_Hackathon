@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,17 +10,18 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/download_attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_card.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_details_screen_admin_console.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
-import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../models/ModelProvider.dart';
-import '../../../../../models/User.dart';
 // import '../../../../../models/VerificationStatus.dart';
+import 'chart/radialChart.dart';
 import 'cubit/management_cubit.dart';
 import '../../../../../injection_container.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
+import 'cubit/student_details_cubit_cubit.dart';
 
 class ClassRoomDetails extends StatefulWidget {
   final ClassRoom classRoom;
@@ -44,7 +44,7 @@ class _ClassRoomDetailsState extends State<ClassRoomDetails> {
           backgroundColor: backgroundColor,
           automaticallyImplyLeading: true,
           elevation: 0,
-          iconTheme: IconThemeData(color: blackColor),
+          iconTheme: const IconThemeData(color: blackColor),
         ),
         body: BlocBuilder<ClassDetailsCubit, ClassDetailsState>(
           builder: (context, state) {
@@ -394,64 +394,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
               SizedBox(
                 width: 80.w,
               ),
-              Expanded(
-                child: Container(
-                  // width: 300,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Classroom'.tr + 'Concentration'.tr,
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.bold,
-                                  color: blackColor),
-                            ),
-                            Text(
-                              '92%',
-                              style: TextStyle(
-                                  fontSize: 24.sp,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.bold,
-                                  color: blackColor),
-                            ),
-                            Text(
-                              'present'.tr,
-                              style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.normal,
-                                  color: whiteColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
             ],
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          // const Divider(
-          //   color: primaryColor,
-          //   indent: 10,
-          //   endIndent: 10,
-          //   thickness: 0.5,
-          // ),
-          SizedBox(
-            height: 10.h,
           ),
           Text(
             'Students'.tr,
@@ -460,9 +403,6 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.bold,
                 color: blackColor),
-          ),
-          SizedBox(
-            height: 20.h,
           ),
           classRoom.students == null
               ? const Expanded(
@@ -491,6 +431,43 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                     child: FadeInAnimation(
                                       child: StudentCard(
                                         student: classRoom.students![index],
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (_) {
+                                            return MultiBlocProvider(
+                                              providers: [
+                                                BlocProvider.value(
+                                                    value: BlocProvider.of<
+                                                        AdminCubit>(context)),
+                                                BlocProvider.value(
+                                                    value: BlocProvider.of<
+                                                            ManagementCubit>(
+                                                        context)),
+                                                BlocProvider(
+                                                    create: (context) =>
+                                                        ClassDetailsCubit(
+                                                            classRoomId:
+                                                                classRoom.id,
+                                                            awsApiClient: getIt<
+                                                                AWSApiClient>())),
+                                                BlocProvider(
+                                                    create: (_) =>
+                                                        StudentDetailsCubitCubit(
+                                                            student: classRoom
+                                                                    .students![
+                                                                index],
+                                                            apiClient: getIt<
+                                                                AWSApiClient>()))
+                                              ],
+                                              child:
+                                                  StudentDetailScreenPartAdmin(
+                                                studentId: classRoom
+                                                    .students![index].studentID
+                                                    .toString(),
+                                              ),
+                                            );
+                                          }));
+                                        },
                                       ),
                                     ),
                                   ));
@@ -550,6 +527,25 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                   color: whiteColor),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: RadialChartWidget(
+              classRoom: widget.classRoom,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Male / Female Ratio',
+              style: TextStyle(
+                  color: whiteColor, fontSize: 17, fontWeight: FontWeight.bold),
             ),
           ),
           const Spacer(),
@@ -677,7 +673,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               CustomTextButton(
@@ -686,7 +682,10 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                       context: context,
                       body: MultiBlocProvider(
                           providers: [
-                            BlocProvider(create: (context)=>SearchCubit(searchMode: SearchMode.Student, apiClient: getIt<AWSApiClient>())),
+                            BlocProvider(
+                                create: (context) => SearchCubit(
+                                    searchMode: SearchMode.Student,
+                                    apiClient: getIt<AWSApiClient>())),
                             BlocProvider.value(
                                 value:
                                     BlocProvider.of<ManagementCubit>(context))
@@ -721,7 +720,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           )),
                         ));
                       });
-                  if (result!=null) {
+                  if (result != null) {
                     await classCubit.getFullDetailsOfClassRoom(
                         classRoomID: classRoom.id);
                   }

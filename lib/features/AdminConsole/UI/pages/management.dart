@@ -15,27 +15,27 @@ class _ManagementState extends State<Management> {
   final List<List<String>> addList = [
     [
       'User',
-      'User are the main interactors for the system.',
+      'View, manage, update, create and delete users.',
       '$commonPath/user.png'
     ],
     [
       'Students'.tr,
-      'Teachers are the main interactors for the system.',
+      'View, manage, update, create and delete students',
       '$commonPath/students.png'
     ],
     [
-      'Leaves and Permissions'.tr,
-      'User are the main interactors for the system.',
+      'Groups'.tr,
+      'View, manage, update, create and delete groups',
       '$commonPath/box.png'
     ],
     [
       'ClassRoom'.tr,
-      'User are the main interactors for the system.',
+      'View, manage, update, create and delete classroom',
       '$commonPath/myClassRoom.png'
     ],
     [
       'Attendance'.tr,
-      'User are the main interactors for the system.',
+      'View, manage, update, download and delete student\'s attendance',
       '$commonPath/attendance.png'
     ],
   ];

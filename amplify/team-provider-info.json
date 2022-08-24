@@ -21,10 +21,10 @@
           "identityPoolId": "ap-south-1:e78b1945-7d3c-4ca7-824a-fc7f9be319cf",
           "identityPoolName": "testAuthIdentityPool__staging",
           "allowUnauthenticatedIdentities": false,
-          "authRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-authRole",
-          "authRoleName": "amplify-dartknightssih-staging-92040-authRole",
-          "unauthRoleArn": "arn:aws:iam::312855018916:role/amplify-dartknightssih-staging-92040-unauthRole",
-          "unauthRoleName": "amplify-dartknightssih-staging-92040-unauthRole"
+          "authRoleArn": "arn:aws:iam::312855018916:role/amplify-grandfinale-staging-101118-authRole",
+          "authRoleName": "amplify-grandfinale-staging-101118-authRole",
+          "unauthRoleArn": "arn:aws:iam::312855018916:role/amplify-grandfinale-staging-101118-unauthRole",
+          "unauthRoleName": "amplify-grandfinale-staging-101118-unauthRole"
         }
       }
     }
