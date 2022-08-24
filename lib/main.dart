@@ -29,11 +29,8 @@ bool get isDesktop {
   ].contains(defaultTargetPlatform);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> fe0fb71ece4da561fcd939e348646656db231aef
+
 Future<void> _configureAmplify() async {
   try {
     final auth = AmplifyAuthCognito();
