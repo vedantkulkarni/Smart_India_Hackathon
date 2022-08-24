@@ -16,3 +16,7 @@ class ClassRoomDetialsFetched extends ClassDetailsState {}
 class FectingAttendanceByDate extends ClassDetailsState {}
 
 class AttendanceByDateFetched extends ClassDetailsState {}
+
+class FetchingAttendanceList extends ClassDetailsState {}
+
+class AttendanceListFetched extends ClassDetailsState {}

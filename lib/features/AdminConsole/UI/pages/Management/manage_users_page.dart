@@ -54,127 +54,91 @@ class _ManageUsersState extends State<ManageUsers> {
                 height: 20.h,
               ),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Row(
-                    children: [
-                      Text('Show'.tr,
-                          style: TextStyle(
-                              color: blackColor,
-                              fontFamily: 'Poppins',
-                              fontSize: 14.sp)),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      DropdownButton<int>(
-                        icon: null,
-                        iconSize: 14,
-                        elevation: 4,
-                        alignment: Alignment.center,
-                        underline: Container(),
-                        borderRadius: BorderRadius.circular(10),
-                        value: 10,
-                        onChanged: (value) {},
-                        items: [
-                          DropdownMenuItem(
-                            child: Text('10',
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Row(
+                  children: [
+                    Text('Show'.tr,
+                        style: TextStyle(
+                            color: blackColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14.sp)),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    
+                    DropdownButton<Role>(
+                      icon: null,
+                      iconSize: 14,
+                      alignment: Alignment.center,
+                      underline: Container(),
+                      borderRadius: BorderRadius.circular(10),
+                      value: role,
+                      onChanged: (value) {
+                        managementCubit.clearUserList();
+                        role = value!;
+                        managementCubit.getAllUsers(role: value);
+                      },
+                      items: [
+                        DropdownMenuItem(
+                          child: Text('SuperAdmin'.tr,
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14.sp)),
+                          value: Role.SuperAdmin,
+                        ),
+                        DropdownMenuItem(
+                            child: Text('Admin'.tr,
                                 style: TextStyle(
                                     color: primaryColor,
                                     fontFamily: 'Poppins',
                                     fontSize: 14.sp)),
-                            value: 10,
-                          ),
-                          DropdownMenuItem(
-                              child: Text('20',
-                                  style: TextStyle(
-                                      color: primaryColor,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14.sp)),
-                              value: 20),
-                          DropdownMenuItem(
-                              child: Text('30',
-                                  style: TextStyle(
-                                      color: primaryColor,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14.sp)),
-                              value: 30)
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      DropdownButton<Role>(
-                        icon: null,
-                        iconSize: 14,
-                        alignment: Alignment.center,
-                        underline: Container(),
-                        borderRadius: BorderRadius.circular(10),
-                        value: role,
-                        onChanged: (value) {
-                          managementCubit.clearUserList();
-                          role = value!;
-                          managementCubit.getAllUsers(role: value);
-                        },
-                        items: [
-                          DropdownMenuItem(
-                            child: Text('SuperAdmin'.tr,
+                            value: Role.Admin),
+                        DropdownMenuItem(
+                            child: Text('Teachers'.tr,
                                 style: TextStyle(
                                     color: primaryColor,
                                     fontFamily: 'Poppins',
                                     fontSize: 14.sp)),
-                            value: Role.SuperAdmin,
-                          ),
-                          DropdownMenuItem(
-                              child: Text('Admin'.tr,
-                                  style: TextStyle(
-                                      color: primaryColor,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14.sp)),
-                              value: Role.Admin),
-                          DropdownMenuItem(
-                              child: Text('Teachers'.tr,
-                                  style: TextStyle(
-                                      color: primaryColor,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14.sp)),
-                              value: Role.Teacher)
-                        ],
-                      ),
-                      const Spacer(),
-                      CustomTextButton(
-                          onPressed: () async {
-                            await Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) {
-                              return MultiBlocProvider(providers: [
-                                BlocProvider.value(
-                                    value:
-                                        BlocProvider.of<AdminCubit>(context)),
-                                BlocProvider(
-                                    create: (context) => ManagementCubit(
-                                        awsApiClient: getIt<AWSApiClient>(),
-                                        managementMode:
-                                            ManagementMode.Teachers)),
-                              ], child: const AddUserPage());
-                            }));
+                            value: Role.Teacher)
+                      ],
+                    ),
+                    const Spacer(),
+                    CustomTextButton(
+                        onPressed: () async {
+                          await Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (_) {
+                            return MultiBlocProvider(providers: [
+                              BlocProvider.value(
+                                  value: BlocProvider.of<AdminCubit>(context)),
+                              BlocProvider(
+                                  create: (context) => ManagementCubit(
+                                      awsApiClient: getIt<AWSApiClient>(),
+                                      managementMode: ManagementMode.Teachers,
+                                      limit: 10)),
+                            ], child: const AddUserPage());
+                          }));
 
-                            await BlocProvider.of<ManagementCubit>(context)
-                                .getAllUsers(role: role);
-                          },
-                          text: 'Add User'.tr),
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        child: CustomTextField(
-                          hintText: 'Search'.tr,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 20.h),
-                          width: 300.w,
-                          prefixIcon: const Icon(
-                            Icons.search,
-                            size: 14,
-                          ),
+                          await BlocProvider.of<ManagementCubit>(context)
+                              .getAllUsers(role: role);
+                        },
+                        text: 'Add User'.tr),
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      child: CustomTextField(
+                        hintText: 'Search'.tr,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 20.h),
+                        width: 300.w,
+                        prefixIcon: const Icon(
+                          Icons.search,
+                          size: 14,
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 20.h,
               ),

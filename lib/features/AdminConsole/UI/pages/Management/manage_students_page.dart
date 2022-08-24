@@ -25,11 +25,14 @@ class ManageStudentsPage extends StatefulWidget {
   State<ManageStudentsPage> createState() => _ManageStudentsPageState();
 }
 
+int limit = 10;
+
 class _ManageStudentsPageState extends State<ManageStudentsPage> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   int index = 0;
   @override
   Widget build(BuildContext context) {
+    final manageStudentsCubit = BlocProvider.of<ManagementCubit>(context);
     return Scaffold(
       key: _key,
       endDrawerEnableOpenDragGesture: false,
@@ -70,6 +73,67 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                       //     ),
                       //   ),
                       // ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Row(
+                          children: [
+                            Text('Show'.tr,
+                                style: TextStyle(
+                                    color: blackColor,
+                                    fontFamily: 'Poppins',
+                                    fontSize: 14.sp)),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            DropdownButton<int>(
+                              icon: null,
+                              iconSize: 14,
+                              elevation: 4,
+                              alignment: Alignment.center,
+                              underline: Container(),
+                              borderRadius: BorderRadius.circular(10),
+                              value: limit,
+                              onChanged: (value) {
+                                setState(() {
+                                  limit = value!;
+                                });
+                                manageStudentsCubit.getAllStudents(
+                                    limit: limit);
+                              },
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text('10',
+                                      style: TextStyle(
+                                          color: primaryColor,
+                                          fontFamily: 'Poppins',
+                                          fontSize: 14.sp)),
+                                  value: 10,
+                                ),
+                                DropdownMenuItem(
+                                    child: Text('20',
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontFamily: 'Poppins',
+                                            fontSize: 14.sp)),
+                                    value: 20),
+                                DropdownMenuItem(
+                                    child: Text('30',
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontFamily: 'Poppins',
+                                            fontSize: 14.sp)),
+                                    value: 30)
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20.w,
+                            ),
+                          ],
+                        ),
+                      ),
                       const Spacer(),
                       SizedBox(
                           width: 200.w,
@@ -83,17 +147,16 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                             apiClient: getIt<AWSApiClient>(),
                                             searchMode: SearchMode.Student),
                                         child: CustomDialogBox(
-                                            widget: CommonSearch(
-                                          searchMode: SearchMode.Student,
-                                        )),
+                                          widget: CommonSearch(
+                                            searchMode: SearchMode.Student,
+                                          ),
+                                        ),
                                       );
                                     });
                               },
-
                               text: 'Search'.tr)),
                       SizedBox(
                         width: 40.w,
-
                       ),
                       SizedBox(
                           width: 200.w,
@@ -106,10 +169,12 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                         value: BlocProvider.of<AdminCubit>(
                                             context)),
                                     BlocProvider(
-                                        create: (context) => ManagementCubit(
-                                            awsApiClient: getIt<AWSApiClient>(),
-                                            managementMode:
-                                                ManagementMode.Teachers)),
+                                      create: (context) => ManagementCubit(
+                                          awsApiClient: getIt<AWSApiClient>(),
+                                          managementMode:
+                                              ManagementMode.Teachers,
+                                          limit: limit),
+                                    ), 
                                   ], child: const AddStudentsPage());
                                 }));
 
@@ -428,7 +493,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   print(student.id);
                   await managementCubit.deleteStudent(
                       studentID: student.studentID);
-                  await managementCubit.getAllStudents(limit: 10);
+                  await managementCubit.getAllStudents(limit: limit);
                   Navigator.pop(context, true);
                 },
                 text: 'Delete',

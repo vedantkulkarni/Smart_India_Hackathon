@@ -44,7 +44,7 @@ class ManageMentCard extends StatelessWidget {
                 BlocProvider(
                     create: (context) => ManagementCubit(
                         awsApiClient: getIt<AWSApiClient>(),
-                        managementMode: modes[index])),
+                        managementMode: modes[index],limit: 10),), // TODO static
               ], child: customPushHandlerFunction(index));
             }));
           },
