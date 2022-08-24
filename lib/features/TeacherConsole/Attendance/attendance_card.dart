@@ -38,7 +38,7 @@ class AttendanceCard extends StatelessWidget {
                 backgroundImage: NetworkImage(
                   'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
                 ),
-                radius: 35,
+                radius: 30,
               ),
               const SizedBox(
                 height: 5,
@@ -48,7 +48,17 @@ class AttendanceCard extends StatelessWidget {
                     style: const TextStyle(
                         color: primaryColor,
                         fontFamily: 'Poppins',
-                        fontSize: 14)),
+                        fontSize: 16)),
+              ),
+              const SizedBox(
+                height: 1,
+              ),
+              const FittedBox(
+                child: Text('Tap to mark',
+                    style: TextStyle(
+                        color: lightTextColor,
+                        fontFamily: 'Poppins',
+                        fontSize: 10)),
               )
             ],
           ),

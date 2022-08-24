@@ -7,6 +7,7 @@ Future<String?> uploadImage(XFile pickedFile, String studentID) async {
   final key = 'students/$studentID';
   final file = File(pickedFile.path);
   try {
+  
     final UploadFileResult result = await Amplify.Storage.uploadFile(
       local: file,
       key: key,

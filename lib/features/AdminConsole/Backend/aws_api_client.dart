@@ -46,6 +46,8 @@ abstract class AWSApiClient {
   Future<ClassAttendance> createClassAttendance(
       {required ClassAttendance classAttendance});
   Future<ClassAttendance> getClassAttendanceList({required String classID});
+  Future<List<Attendance>> getStudentAnalytics(
+      {required String studentId, required String month});
 
   // Future<Attendance> getAttendance({required })
 
@@ -589,7 +591,7 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
      mutation MyMutation {
-  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
+  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: "${classRoom.currentAttendanceDate}", groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
     userAssignedClassId
     currentAttendanceDate
     classRoomName
@@ -959,7 +961,6 @@ query MyQuery {
     return returnList;
   }
 
-
   @override
   Future<List<ClassAttendance>> searchByMonth(
       {required String searchQuery}) async {
@@ -992,21 +993,39 @@ query MyQuery {
 
     return returnList;
   }
-  
+
   @override
-  Future<Leave> createLeave({required Leave leave}) {
-    // TODO: implement createLeave
-    throw UnimplementedError();
+  Future<Leave> createLeave({required Leave leave}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''
+mutation MyMutation {
+  createLeave(input: {leaveBody: "${leave.leaveBody}", leaveDate: "${leave.leaveDate}", leaveDays: ${leave.leaveDays}, leaveDocLink: "${leave.leaveDocLink}", leaveReason: "${leave.leaveReason}", leaveStatus: ${leave.leaveStatus}, studentID: "${leave.studentID}", teacherID: "${leave.teacherID}"}) {
+    leaveBody
+    leaveDate
+    leaveDays
+    leaveDocLink
+    leaveReason
+    leaveStatus
+    studentID
+    teacherID
   }
-  
+}
+''',
+    };
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return Leave.fromJson(json.decode(responseString)['data']['createLeave']);
+  }
+
   @override
   Future<Leave> getLeave({required String leaveID}) {
     // TODO: implement getLeave
     throw UnimplementedError();
   }
-  
+
   @override
-  Future<List<Leave>> getListOfLeaves({required int limit}) async{
+  Future<List<Leave>> getListOfLeaves({required int limit}) async {
     final body = {
       'operationName': 'MyQuery',
       'query': '''
@@ -1031,21 +1050,59 @@ query MyQuery {
     print(jsonMap);
     List<Leave> returnList = [];
 
-    for (var eachStudent in jsonMap['data']['listLeaves']
-        ['items']) {
+    for (var eachStudent in jsonMap['data']['listLeaves']['items']) {
       returnList.add(Leave.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
+
+  @override
+  Future<List<Attendance>> getStudentAnalytics(
+      {required String studentId, required String month}) async {
+    String range = '["2022-$month-01","2022-$month-30"]';
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+query MyQuery {
+  searchAttendances(filter: {studentID: {match: $studentId}, and: {date: {range: $range}}}) {
+    items {
+      classID
+      className
+      date
+      geoLatitude
+      geoLongitude
+      status
+      studentID
+      studentName
+      teacherID
+      teacherName
+      time
+      verification
+    }
+  }
+}''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<Attendance> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['searchAttendances']['items']) {
+      returnList.add(Attendance.fromJson(eachStudent));
     }
 
     return returnList;
   }
 }
 
-  String f(var val) {
-    if (val == null) {
-      return null.toString();
-    }
-
-    var ans = '''"$val"''';
-    return ans;
+String f(var val) {
+  if (val == null) {
+    return null.toString();
   }
 
+  var ans = '''"$val"''';
+  return ans;
+}
