@@ -16,7 +16,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
   Widget build(BuildContext context) {
     return Dialog(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.7.h,
+        height: MediaQuery.of(context).size.height * 0.8.h,
         width: MediaQuery.of(context).size.width * 0.4.w,
 
         child: Container(

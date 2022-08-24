@@ -254,7 +254,7 @@ query MyQuery {
       'operationName': 'MyMutation',
       'query': '''
       mutation MyMutation {
-  updateUser(input: {address: "${updatedUser.address}", age: 10, description: "${updatedUser.description}", email: "${updatedUser.email}", gender: "${updatedUser.gender}", name: "${updatedUser.name}", role: ${updatedUser.role.name}, schoolID: "${updatedUser.schoolID}", shitfInfo: "${updatedUser.shitfInfo}", phoneNumber: "${updatedUser.phoneNumber}"}) {
+  updateUser(input: {address: "${updatedUser.address}", age: ${updatedUser.age}, description: "${updatedUser.description}", email: "${updatedUser.email}", gender: "${updatedUser.gender}", name: "${updatedUser.name}", role: ${updatedUser.role.name}, schoolID: "${updatedUser.schoolID}", shitfInfo: "${updatedUser.shitfInfo}", phoneNumber: "${updatedUser.phoneNumber}"}) {
     email
     schoolID
     age
@@ -286,7 +286,7 @@ query MyQuery {
       'operationName': 'MyQuery',
       'query': '''
       query MyQuery {
-  listUsers(filter: {role: {eq: $myRole}}) {
+  listUsers( filter: {role: {eq: $myRole}}) {
     items {
       email
       gender
@@ -611,10 +611,11 @@ query MyQuery {
 
   @override
   Future<Student> createStudent({required Student student}) async {
+    
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createStudent(input: {address: ${f(student.address)}, classRoomStudentsId: ${f(student.classRoomStudentsId)}, email: ${f(student.email)}, idCardPhoto: ${f(student.idCardPhoto)} modelData: ${student.modelData}, phoneNumber: ${f(student.phoneNumber)}, profilePhoto: ${f(student.profilePhoto)}, roll: ${f(student.roll)}, studentID: ${f(student.studentID)}, studentName: ${f(student.studentName)}}) {
+  createStudent(input: {gender:${student.gender} address: ${f(student.address)}, classRoomStudentsId: ${f(student.classRoomStudentsId)}, email: ${f(student.email)}, idCardPhoto: ${f(student.idCardPhoto)} modelData: ${student.modelData}, phoneNumber: ${f(student.phoneNumber)}, profilePhoto: ${f(student.profilePhoto)}, roll: ${f(student.roll)}, studentID: ${f(student.studentID)}, studentName: ${f(student.studentName)}}) {
     studentID
     studentName
     roll
@@ -842,6 +843,11 @@ query MyQuery {
           searchFiltersList.add(searchFilter);
 
           break;
+        case AttendanceSearchMode.classID:
+          searchFilter = 'classID';
+          searchFiltersList.add(searchFilter);
+
+          break;
         case AttendanceSearchMode.status:
           searchFilter = 'status';
           searchFiltersList.add(searchFilter);
@@ -900,6 +906,7 @@ query MyQuery {
       status
       studentID
       teacherID
+      teacherName
       verification
       time
       className
@@ -959,7 +966,6 @@ query MyQuery {
     return returnList;
   }
 
-
   @override
   Future<List<ClassAttendance>> searchByMonth(
       {required String searchQuery}) async {
@@ -992,21 +998,21 @@ query MyQuery {
 
     return returnList;
   }
-  
+
   @override
   Future<Leave> createLeave({required Leave leave}) {
     // TODO: implement createLeave
     throw UnimplementedError();
   }
-  
+
   @override
   Future<Leave> getLeave({required String leaveID}) {
     // TODO: implement getLeave
     throw UnimplementedError();
   }
-  
+
   @override
-  Future<List<Leave>> getListOfLeaves({required int limit}) async{
+  Future<List<Leave>> getListOfLeaves({required int limit}) async {
     final body = {
       'operationName': 'MyQuery',
       'query': '''
@@ -1031,8 +1037,7 @@ query MyQuery {
     print(jsonMap);
     List<Leave> returnList = [];
 
-    for (var eachStudent in jsonMap['data']['listLeaves']
-        ['items']) {
+    for (var eachStudent in jsonMap['data']['listLeaves']['items']) {
       returnList.add(Leave.fromJson(eachStudent));
     }
 
@@ -1040,12 +1045,11 @@ query MyQuery {
   }
 }
 
-  String f(var val) {
-    if (val == null) {
-      return null.toString();
-    }
-
-    var ans = '''"$val"''';
-    return ans;
+String f(var val) {
+  if (val == null) {
+    return null.toString();
   }
 
+  var ans = '''"$val"''';
+  return ans;
+}

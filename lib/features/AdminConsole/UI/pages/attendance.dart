@@ -34,20 +34,7 @@ class _AttendancePageState extends State<AttendancePage> {
     return Container(
       child: Row(children: [
         const Expanded(child: AttendanceWidget()),
-        const VerticalDivider(
-          width: 1,
-          color: greyColor,
-          thickness: 1,
-        ),
-        Container(
-            width: w * 0.3,
-            color: navPanecolor,
-            padding: const EdgeInsets.all(10),
-            child: Container(
-              child: const Center(
-                child: Text('Detials'),
-              ),
-            )),
+        
       ]),
     );
   }

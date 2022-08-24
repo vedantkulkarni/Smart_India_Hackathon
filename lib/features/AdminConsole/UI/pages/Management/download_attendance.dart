@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +7,8 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 
 class DownloadAttedance extends StatefulWidget {
   DownloadAttedance({Key? key}) : super(key: key);
@@ -67,9 +69,25 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
                                       .toString(),
                                   classCubit.classAttendanceListDate![index]
                                       .teacherEmail
-                                      .toString(), () {
-                                save();
-                                showSnackbar(
+                                      .toString(), () async {
+                                // save();
+                                classCubit.getAttendanceListOfDate(
+                                    classRoomID: classCubit.classRoom.id,
+                                    date: classCubit
+                                        .classAttendanceListDate![index].date
+                                        .toString());
+                                await showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return BlocProvider.value(
+                                      value: classCubit,
+                                      child: CustomDialogBox(
+                                          widget: DownloadCsvDialog()),
+                                    );
+                                  },
+                                );
+                                // showDateRangePicker(context: context, firstDate: firstDate, lastDate: lastDate)
+                                fi.showSnackbar(
                                     context,
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -176,4 +194,36 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
       ),
     ),
   );
+}
+
+class DownloadCsvDialog extends StatefulWidget {
+  DownloadCsvDialog({Key? key}) : super(key: key);
+
+  @override
+  State<DownloadCsvDialog> createState() => DownloadCsvDialogState();
+}
+
+class DownloadCsvDialogState extends State<DownloadCsvDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ClassDetailsCubit, ClassDetailsState>(
+      builder: (context, state) {
+        if (state is ClassDetailsInitial || state is FetchingAttendanceList) {
+          return progressIndicator;
+        }
+        return Container(
+            child: Container(
+          child: Center(
+              child: CustomTextButton(
+                  onPressed: () {
+                    save(
+                        attendanceList:
+                            BlocProvider.of<ClassDetailsCubit>(context)
+                                .attendanceList);
+                  },
+                  text: 'Download')),
+        ));
+      },
+    );
+  }
 }

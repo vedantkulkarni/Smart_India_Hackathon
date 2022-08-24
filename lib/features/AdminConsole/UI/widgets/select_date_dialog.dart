@@ -21,6 +21,7 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
+      
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
@@ -33,10 +34,10 @@ class _SelectDateDialogState extends State<SelectDateDialog> {
                 fontSize: 26.sp),
           ),
            SizedBox(
-            height: 60.h,
+            height: 20.h,
           ),
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 120.w, vertical: 40.h),
+            padding:  EdgeInsets.symmetric(horizontal: 120.w, ),
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: TableCalendar(

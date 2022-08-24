@@ -49,7 +49,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
   }
 
   _ViewAndEditUserState(
-      this.user, this.currentRole); // TODO passing current role
+      this.user, this.currentRole); // TODO passing current age
   final _formKey = GlobalKey<FormState>();
   Role changedRole = Role.Teacher;
   final TextEditingController _fnameController = TextEditingController();
@@ -278,7 +278,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                   CustomTextButton(
                     onPressed: () async {
                       await managementCubit.deleteUser(email: user.email);
-                      await managementCubit.getAllUsers(role: currentRole);
+                      await managementCubit.getAllUsers(role: currentRole,); //TODO static
                       Navigator.pop(context, true);
                     },
                     text: 'Delete',
