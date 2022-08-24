@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 const Color primaryColor = Color(0xff3fc47c);
+// const Color primaryColor = Colors.blue;
 const Color secondaryColor = Color(0xffaee8ae);
 const Color backgroundColor = Color(0xffffffff);
 const Color sideMenubg = Color(0xfffdfdff);
@@ -26,16 +27,12 @@ Widget progressIndicator = Container(
   )),
 );
 
+String sharedPrefKey = 'classAttendancesList';
+
 //role check conditions
 enum UserRole { CanCreateSchool }
 
-enum ManagementMode {
-  Teachers,
-  Students,
-  User,
-  ClassRooms,
-  Leaves
-}
+enum ManagementMode { Teachers, Students, User, ClassRooms, Leaves }
 
 enum SearchMode { Attendance, Student }
 

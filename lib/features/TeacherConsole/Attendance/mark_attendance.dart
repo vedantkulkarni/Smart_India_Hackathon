@@ -89,10 +89,10 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
     imglib.Image? capturedImage = imglib.decodeImage(await xfile.readAsBytes());
     // //For Firebase Ml Kit face detection
     InputImage inputImage = InputImage.fromFile(File(xfile.path));
-    Face face = await cubit.detectFaceFromImage(inputImage);
+    List<Face> faces = await cubit.detectFacesFromImage(inputImage);
 
-    await cubit.setCurrentPrediction(detectedFace: face, image: capturedImage);
-    await cubit.compareDetectedResults();
+    await cubit.predictAttendanceForGivenList(
+        studentFaces: faces, image: capturedImage);
   }
 
   @override
@@ -140,15 +140,6 @@ class _AttendanceMarkedForStudentWidgetState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Text("Scan Results",
-                style: TextStyle(
-                    color: primaryColor,
-                    fontFamily: 'Poppins',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold)),
-            const SizedBox(
-              height: 20,
-            ),
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -268,6 +259,18 @@ class _WorkOnImageWidgetState extends State<WorkOnImageWidget> {
               fit: BoxFit.cover,
             ).image,
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text("Scan Results",
+              style: TextStyle(
+                  color: primaryColor,
+                  fontFamily: 'Poppins',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold)),
+          const SizedBox(
+            height: 20,
+          ),
           BlocConsumer<AttendanceCubit, AttendanceState>(
             listener: (context, state) {
               // TODO: implement listener
@@ -295,10 +298,22 @@ class _WorkOnImageWidgetState extends State<WorkOnImageWidget> {
                   ),
                 );
               } else if (state is AttendanceMarked) {
-                return AttendanceMarkedForStudentWidget(
-                  student: (state.student),
+                return Expanded(
+                  child: ListView.builder(
+                      itemCount: state.studentList.length,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return AttendanceMarkedForStudentWidget(
+                          student: state.studentList[index],
+                        );
+                      }),
                 );
               }
+              // return AttendanceMarkedForStudentWidget(
+              //   student: (state.studentList),
+              // );
+
               return SizedBox(
                 // width: double,
                 child: Lottie.network(

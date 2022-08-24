@@ -1,10 +1,17 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/student_details_cubit_cubit.dart';
+
+import '../../../../../injection_container.dart';
 
 class StudentDetailScreenPartAdmin extends StatefulWidget {
-  const StudentDetailScreenPartAdmin({Key? key}) : super(key: key);
+  final String studentId = "";
+  const StudentDetailScreenPartAdmin({Key? key, required String studentId})
+      : super(key: key);
 
   @override
   State<StudentDetailScreenPartAdmin> createState() =>
@@ -12,8 +19,61 @@ class StudentDetailScreenPartAdmin extends StatefulWidget {
 }
 
 class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
+  var studentAttendanceList = [];
+  List<int> srNo = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30
+  ];
+  Future<void> getStudentAnalytics(String studentId) async {
+    print('start');
+    var apiclient = getIt<AWSApiClient>();
+    studentAttendanceList =
+        await apiclient.getStudentAnalytics(studentId: studentId, month: '02');
+
+    print(studentAttendanceList);
+    print('lll');
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getStudentAnalytics(widget.studentId);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final studentDetailsCubit =
+        BlocProvider.of<StudentDetailsCubitCubit>(context);
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -37,25 +97,40 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
               color: blackColor),
         ),
       ),
-      body: Row(children: [
-        const Expanded(child: StudentDetailWidget()),
-        Expanded(
-          child: Column(
-            children: [
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Col1Widget(),
-              )),
-              const Expanded(
-                  child: Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Col2Widget(),
-              )),
-            ],
-          ),
-        )
-      ]),
+      body: BlocBuilder<StudentDetailsCubitCubit, StudentDetailsCubitState>(
+        builder: (context, state) {
+          if (state is FetchingStudentDetails) return progressIndicator;
+          return Row(children: [
+            Expanded(
+                child: StudentDetailWidget(
+              name: studentDetailsCubit.studentDeatail!.studentName.toString(),
+              teacherName:
+                  studentDetailsCubit.studentDeatail!.createdAt.toString(),
+              email: studentDetailsCubit.studentDeatail!.email.toString(),
+              phoneNumber:
+                  studentDetailsCubit.studentDeatail!.phoneNumber.toString(),
+              classname: studentDetailsCubit.studentDeatail!.classRoomStudentsId
+                  .toString(),
+            )),
+            Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Col1Widget(),
+                  )),
+                  const Expanded(
+                      child: Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Col2Widget(),
+                  )),
+                ],
+              ),
+            )
+          ]);
+        },
+      ),
     );
   }
 
@@ -72,7 +147,7 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
         color: backgroundColor,
       ),
       child: Column(children: [
-         Padding(
+        Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
             'Attendance log',
@@ -86,12 +161,12 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                   child: const Center(
                 child: Text('No Students added yet'),
               )),
-              dataTextStyle:  TextStyle(
+              dataTextStyle: TextStyle(
                   fontSize: 14.sp,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.normal,
                   color: blackColor),
-              headingTextStyle:  TextStyle(
+              headingTextStyle: TextStyle(
                   fontSize: 16.sp,
                   color: blackColor,
                   fontFamily: 'Poppins',
@@ -116,7 +191,17 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                   size: ColumnSize.L,
                 ),
               ],
-              rows: const []),
+              rows: List<DataRow>.generate(
+                  30,
+                  (index) => DataRow2.byIndex(
+                          selected: true,
+                          color: MaterialStateProperty.all(whiteColor),
+                          index: index,
+                          cells: [
+                            DataCell(Text(srNo[index].toString())),
+                            DataCell(Text(srNo[index].toString())),
+                            DataCell(Text(srNo[index].toString())),
+                          ]))),
         )
       ]),
     );
@@ -146,15 +231,17 @@ class Col2Widget extends StatelessWidget {
         children: [
           Column(
             children: [
-               SizedBox(
+              SizedBox(
                 height: 20.h,
               ),
-               Padding(
-                padding: EdgeInsets.all(10),
+              Padding(
+                padding: const EdgeInsets.all(10),
                 child: Text(
                   'Id card',
                   style: TextStyle(
-                      fontFamily: 'Poppins', fontSize: 15.sp, color: blackColor),
+                      fontFamily: 'Poppins',
+                      fontSize: 15.sp,
+                      color: blackColor),
                 ),
               ),
               Container(
@@ -185,7 +272,7 @@ class Col2Widget extends StatelessWidget {
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children:  [
+                        children: [
                           Padding(
                             padding: const EdgeInsets.all(10),
                             child: Center(
@@ -198,7 +285,7 @@ class Col2Widget extends StatelessWidget {
                               ),
                             ),
                           ),
-                           Icon(
+                          Icon(
                             Icons.download,
                             color: Colors.white,
                             size: 20.sp,
@@ -241,8 +328,15 @@ class Col2Widget extends StatelessWidget {
 }
 
 class StudentDetailWidget extends StatelessWidget {
+  final String? name, email, phoneNumber, classname, teacherName;
   const StudentDetailWidget({
     Key? key,
+    required this.classname,
+    required this.email,
+    required this.name,
+    required this.phoneNumber,
+    required this.teacherName,
+    //required this.profileName
   }) : super(key: key);
 
   @override
@@ -260,7 +354,7 @@ class StudentDetailWidget extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Column(children: [
-           SizedBox(
+          SizedBox(
             height: 20.h,
           ),
           const CircleAvatar(
@@ -272,16 +366,16 @@ class StudentDetailWidget extends StatelessWidget {
               backgroundImage: NetworkImage(""),
             ),
           ),
-           SizedBox(
+          SizedBox(
             height: 50.h,
           ),
-          RowWidget('Name', 'Harsh'),
-          RowWidget('Email', 'atl@gmail.com'),
-          RowWidget('Phone No.', '+91 9922889487'),
-          RowWidget('Class', 'TE-01'),
-          RowWidget('Teacher', 'DK'),
-           SizedBox(
-            height: 30.h,
+          RowWidget('Name', name.toString()),
+          RowWidget('Email', email.toString()),
+          RowWidget('Phone No.', phoneNumber.toString()),
+          RowWidget('Class', classname.toString()),
+          RowWidget('Teacher', teacherName.toString()),
+          const SizedBox(
+            height: 30,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -296,8 +390,8 @@ class StudentDetailWidget extends StatelessWidget {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child:  Padding(
-                      padding: EdgeInsets.all(10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
                       child: Center(
                         child: Text(
                           'Edit',
@@ -321,8 +415,8 @@ class StudentDetailWidget extends StatelessWidget {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child:  Padding(
-                      padding: EdgeInsets.all(10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
                       child: Center(
                         child: Text(
                           'Delete',

@@ -6,7 +6,6 @@ import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_clie
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/camera_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/face_detector.dart';
-import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/liveness.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/manual_attendance.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/ml_service.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
@@ -19,7 +18,7 @@ import 'package:team_dart_knights_sih/injection_container.dart';
 import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../core/constants.dart';
-import '../Attendance/new_approach.dart';
+import '../Attendance/face_verification_attendance.dart';
 
 class ClassDetailScreen extends StatefulWidget {
   final String className;
@@ -60,17 +59,17 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       bottomLeft: Radius.circular(10)),
                 ),
                 child: Row(
-                  children: const [
+                  children: [
                     Text(
-                      'TE-11',
-                      style: TextStyle(
+                      widget.className,
+                      style: const TextStyle(
                           color: blackColor,
                           fontSize: 34,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.bold),
                     ),
-                    Spacer(),
-                    CircleAvatar(
+                    const Spacer(),
+                    const CircleAvatar(
                       backgroundColor: primaryColor,
                       radius: 22,
                       child: CircleAvatar(
@@ -86,79 +85,91 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        decoration: BoxDecoration(
-                          boxShadow: const [
-                            BoxShadow(
-                                color: blendColor,
-                                blurRadius: 15,
-                                spreadRadius: 10)
-                          ],
-                          gradient: const LinearGradient(
-                              colors: [primaryColor, secondaryColor],
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '79%',
-                              style: TextStyle(
-                                  color: whiteColor.withOpacity(0.7),
-                                  fontSize: 26,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.normal),
+              classCubit.classRoom.currentAttendanceDate == null ||
+                      classCubit.classRoom.currentAttendanceDate !=
+                          TemporalDate(DateTime.now())
+                  ? const Center(
+                      child: Text(
+                          'Attendance has not been marked yet.\nMark attendance to view analytics.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: lightTextColor,
+                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.normal)))
+                  : Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
+                              decoration: BoxDecoration(
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: blendColor,
+                                      blurRadius: 15,
+                                      spreadRadius: 10)
+                                ],
+                                gradient: const LinearGradient(
+                                    colors: [primaryColor, secondaryColor],
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '79%',
+                                    style: TextStyle(
+                                        color: whiteColor.withOpacity(0.7),
+                                        fontSize: 26,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                  Text(
+                                    'Attendance',
+                                    style: TextStyle(
+                                        color: whiteColor.withOpacity(0.7),
+                                        fontSize: 14,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.normal),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              'Attendance',
-                              style: TextStyle(
-                                  color: whiteColor.withOpacity(0.7),
-                                  fontSize: 14,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.normal),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: backgroundColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            '34',
-                            style: TextStyle(
-                                color: blackColor,
-                                fontSize: 26,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.normal),
                           ),
-                          Text(
-                            'present out of 45',
-                            style: TextStyle(
-                                color: greyColor,
-                                fontSize: 14,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.normal),
-                          )
-                        ],
-                      ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            color: backgroundColor,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                Text(
+                                  '34',
+                                  style: TextStyle(
+                                      color: blackColor,
+                                      fontSize: 26,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.normal),
+                                ),
+                                Text(
+                                  'present out of 45',
+                                  style: TextStyle(
+                                      color: greyColor,
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.normal),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -173,7 +184,10 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              BlocProvider.of<TeacherClassCubit>(context).studentList.isEmpty
+              BlocProvider.of<TeacherClassCubit>(context)
+                      .classRoom
+                      .students!
+                      .isEmpty
                   ? Container(
                       child: const Center(
                         child: Text('Student List is Empty'),
@@ -203,7 +217,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                               crossAxisSpacing: 6,
                               children: List.generate(
                                   BlocProvider.of<TeacherClassCubit>(context)
-                                      .studentList
+                                      .classRoom
+                                      .students!
                                       .length, (index) {
                                 return StaggeredGridTile.count(
                                     crossAxisCellCount: 1,
@@ -314,8 +329,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                 return;
                               }
                               // print(classCubit.classRoom.students);
-                              final mlService = MLService(
-                                  students: classCubit.classRoom.students!);
+                              final mlService =
+                                  MLService(students: [...classCubit.studentList]);
                               bool? isMarkSuccessfull;
                               await Navigator.of(context)
                                   .push<bool>(MaterialPageRoute(builder: (_) {
@@ -339,8 +354,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                               mode: classCubit
                                                   .classRoom.attendanceMode,
                                               teacher: teacherCubit.teacher,
-                                              studList:
-                                                  classCubit.classRoom.students,
+                                              studList: classCubit.studentList,
                                               mlService: mlService))
                                     ],
                                     child: getAttendanceWidget(
@@ -354,10 +368,9 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                               if (isMarkSuccessfull == null ||
                                   isMarkSuccessfull == false) {
                                 print("Attendance Not marked");
-                              } else {
-                                classCubit.fetchClassRoomDetailsForTeacher(
-                                    classRoomID: classCubit.classRoom.id);
-                              }
+                              } else {}
+                              classCubit.fetchClassRoomDetailsForTeacher(
+                                  classRoomID: classCubit.classRoom.id);
                             },
                             text: 'Mark Attendance'),
                       ),
@@ -387,11 +400,11 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
       case VerificationStatus.FaceDetectedAndVerified:
         // return MarkAttendnacePage(mlService: mlService);
         // return const StaticFaceScan();
-        return FaceVerifyScreen();
+        return  FaceVerifyScreen(verificationStatus: VerificationStatus.FaceDetectedAndVerified,);
       case VerificationStatus.FaceVerified:
         return const FaceVerifyWithProfileImage();
       case VerificationStatus.FaceVerifiedWithLiveness:
-        return LivenessDetectionScreen();
+        return FaceVerifyScreen(verificationStatus: VerificationStatus.FaceVerifiedWithLiveness);
       case VerificationStatus.ManualAttendance:
         return const ManualAttendance();
 

@@ -73,21 +73,23 @@ enum AttendanceStatus{
 enum VerificationStatus{
   FaceVerifiedWithLiveness #done
   FaceVerified 
+  FaceNotVerified
   FaceDetectedAndVerified #done
   ManualAttendance
   InvolveParent
 }
 
-type ClassAttendance @model @searchable{
-    classID: ID! @primaryKey
+type ClassAttendance @model@searchable{
+    classID: ID! @primaryKey(sortKeyFields:["date"])
     date: AWSDate!
     presentPercent:Float
     teacherEmail:AWSEmail
     time:AWSTime
-    
+    attendance:[Attendance]
     
 
 }
+
 
 type Student @model @searchable
 {

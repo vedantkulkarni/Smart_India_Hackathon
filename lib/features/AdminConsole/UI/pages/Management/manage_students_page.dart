@@ -280,11 +280,11 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                 //         ),
                                 //       );
                                 //     });
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) {
-                                    return const StudentDetailScreenPartAdmin();
-                                  },
-                                ));
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //   builder: (context) {
+                                //     return const StudentDetailScreenPartAdmin();
+                                //   },
+                                //));
                               },
                               cells: [
                                 DataCell(
