@@ -90,7 +90,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                             ),
                             DropdownButton<int>(
                               icon: null,
-                              iconSize: 14,
+                              iconSize: 14.sp,
                               elevation: 4,
                               alignment: Alignment.center,
                               underline: Container(),
@@ -347,7 +347,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
   Widget build(BuildContext context) {
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.sp),
       width: double.maxFinite,
       height: double.maxFinite,
       child: Column(
@@ -364,17 +364,17 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                       canEdit = true;
                     });
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     fi.FluentIcons.edit,
-                    size: 16,
+                    size: 16.sp,
                     color: primaryColor,
                   )),
               const Spacer(),
               IconButton(
                   onPressed: () {},
-                  icon: const Icon(
+                  icon: Icon(
                     fi.FluentIcons.check_mark,
-                    size: 20,
+                    size: 20.sp,
                     color: primaryColor,
                   )),
             ],
@@ -390,8 +390,8 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
@@ -428,7 +428,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   enabled: canEdit,
                   value: student.studentName.trim().split(' ')[0],
                   hintText: student.studentName.trim().split(' ')[0],
-                  padding: const EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5.sp),
                   heading: 'First Name',
                 ),
               ),
@@ -444,7 +444,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   value: student.studentName.trim().split(' ').length == 2
                       ? student.studentName.trim().split(' ')[1]
                       : student.studentName.trim().split(' ')[2],
-                  padding: const EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5.sp),
                   heading: 'Last Name',
                 ),
               ),
@@ -457,7 +457,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   enabled: canEdit,
                   hintText: student.email ?? "Email",
                   value: student.email,
-                  padding: const EdgeInsets.all(5),
+                  padding:EdgeInsets.all(5.sp),
                   heading: 'Email',
                 ),
               ),
@@ -469,7 +469,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   enabled: canEdit,
                   hintText: student.phoneNumber ?? 'Phone',
                   value: student.phoneNumber,
-                  padding: const EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5.sp),
                   heading: 'Phone Number',
                 ),
               ),
@@ -479,7 +479,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
             enabled: canEdit,
             hintText: student.address ?? 'Unknown',
             value: student.address ?? 'Unknown',
-            padding: const EdgeInsets.all(5),
+            padding: EdgeInsets.all(5.sp),
             heading: 'Address',
           ),
           SizedBox(

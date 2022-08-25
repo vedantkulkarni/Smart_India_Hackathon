@@ -72,7 +72,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.sp),
         width: double.maxFinite,
         height: double.maxFinite,
         child: Form(
@@ -109,9 +109,9 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                           return;
                         }
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         fi.FluentIcons.check_mark,
-                        size: 20,
+                        size: 20.sp,
                         color: primaryColor,
                       )),
                 ],
@@ -135,27 +135,28 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                 children: [
                   Text(
                     user.gender ?? 'Unknown',
-                    style: const TextStyle(
-                        color: greyColor, fontFamily: 'Poppins'),
+    
+                    style: TextStyle(
+                        color: greyColor, fontFamily: 'Poppins',fontSize:14.sp),
                   ),
                   SizedBox(
                     width: 10.w,
                   ),
-                  const Text('|',
+                  Text('|',
                       style: TextStyle(
-                          color: primaryColor, fontFamily: 'Poppins')),
+                          color: primaryColor, fontFamily: 'Poppins',fontSize:14.sp)),
                   SizedBox(
                     width: 10.w,
                   ),
                   Text(user.age == null ? 'Unknown' : user.age.toString(),
-                      style: const TextStyle(
-                          color: greyColor, fontFamily: 'Poppins')),
+                      style: TextStyle(
+                          color: greyColor, fontFamily: 'Poppins',fontSize:14.sp)),
                   SizedBox(
                     width: 10.w,
                   ),
-                  const Text('|',
+                  Text('|',
                       style: TextStyle(
-                          color: primaryColor, fontFamily: 'Poppins')),
+                          color: primaryColor, fontFamily: 'Poppins',fontSize:14.sp)),
                   SizedBox(
                     width: 10.w,
                   ),
@@ -211,7 +212,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     child: CustomTextField(
                       enabled: canEdit,
                       hintText: user.name.trim().split(' ')[0],
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5.sp),
                       heading: 'First Name',
                       textEditingController: _fnameController,
                     ),
@@ -223,7 +224,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     child: CustomTextField(
                       enabled: canEdit,
                       hintText: user.name.trim().split(' ')[1],
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5.sp),
                       heading: 'Last Name',
                       textEditingController: _lnameController,
                     ),
@@ -236,7 +237,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     child: CustomTextField(
                       enabled: canEdit,
                       hintText: user.email,
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5.sp),
                       heading: 'Email',
                       textEditingController: _emailController,
                     ),
@@ -248,7 +249,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     child: CustomTextField(
                       enabled: canEdit,
                       hintText: user.phoneNumber,
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5.sp),
                       heading: 'Phone Number',
                       textEditingController: _phoneController,
                     ),
@@ -258,14 +259,14 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
               CustomTextField(
                 enabled: canEdit,
                 hintText: user.address ?? 'Unknown',
-                padding: const EdgeInsets.all(5),
+                padding: EdgeInsets.all(5.sp),
                 heading: 'Address',
                 textEditingController: _addressController,
               ),
               CustomTextField(
                 enabled: canEdit,
                 hintText: user.description ?? 'Unknown',
-                padding: const EdgeInsets.all(5),
+                padding: EdgeInsets.all(5.sp),
                 heading: 'Description',
                 textEditingController: _descriptionController,
               ),

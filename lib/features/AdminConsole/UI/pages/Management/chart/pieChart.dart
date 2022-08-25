@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PieChartWidget extends StatefulWidget {
@@ -67,14 +68,14 @@ class _PieChartWidgetState extends State<PieChartWidget> {
       ),
       body: Center(
           child: Container(
-        margin: EdgeInsets.all(20),
+        margin: EdgeInsets.all(20.sp),
         child: SfCircularChart(
             backgroundColor: Colors.brown,
             // palette: [Colors.red, Colors.green, Colors.blue],
             title: ChartTitle(
                 text: 'Attendace of class',
                 textStyle:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 25.sp)),
             legend: Legend(isVisible: true),
             series: <PieSeries<_PieData, String>>[
               PieSeries<_PieData, String>(
@@ -89,7 +90,7 @@ class _PieChartWidgetState extends State<PieChartWidget> {
                   yValueMapper: (_PieData data, _) => data.yData,
                   dataLabelSettings: DataLabelSettings(
                       isVisible: true,
-                      textStyle: TextStyle(color: Colors.black, fontSize: 18))),
+                      textStyle: TextStyle(color: Colors.black, fontSize: 18.sp))),
             ]),
       )),
     );

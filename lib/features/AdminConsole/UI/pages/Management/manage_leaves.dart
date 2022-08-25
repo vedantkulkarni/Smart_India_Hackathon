@@ -1,6 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 
@@ -30,7 +31,7 @@ class _ManageLeavesState extends State<ManageLeaves> {
               width: double.maxFinite,
               height: double.maxFinite,
               color: backgroundColor,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -57,7 +58,7 @@ class _ManageLeavesState extends State<ManageLeaves> {
                       // ),
                       const Spacer(),
                       SizedBox(
-                          width: 200,
+                          width: 200.w,
                           child: CustomTextButton(
                               onPressed: () async {
                                 // await showDialog(
@@ -75,8 +76,8 @@ class _ManageLeavesState extends State<ManageLeaves> {
                                 //     });
                               },
                               text: 'Search'.tr)),
-                      const SizedBox(
-                        width: 40,
+                      SizedBox(
+                        width: 40.w,
                       ),
                       // SizedBox(
                       //     width: 200,
@@ -84,13 +85,13 @@ class _ManageLeavesState extends State<ManageLeaves> {
                       //         onPressed: () async {}, text: 'Add Student'.tr)),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 10.h),
                       decoration: BoxDecoration(
                         boxShadow: const [
                           BoxShadow(
@@ -106,13 +107,13 @@ class _ManageLeavesState extends State<ManageLeaves> {
                             child: Center(
                           child: Text('No Leave Applications Found'.tr),
                         )),
-                        dataTextStyle: const TextStyle(
-                            fontSize: 14,
+                        dataTextStyle: TextStyle(
+                            fontSize: 14.sp,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                             color: blackColor),
-                        headingTextStyle: const TextStyle(
-                            fontSize: 16,
+                        headingTextStyle: TextStyle(
+                            fontSize: 16.sp,
                             color: blackColor,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.bold),
@@ -170,8 +171,8 @@ class _ManageLeavesState extends State<ManageLeaves> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: 40.h,
                   )
                 ],
               ));

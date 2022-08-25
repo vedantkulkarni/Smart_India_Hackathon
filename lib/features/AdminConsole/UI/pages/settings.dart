@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 
@@ -33,27 +34,27 @@ class _SettingsPageState extends State<SettingsPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(15.0.sp),
             child: Text(
               'Settings'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 color: blackColor,
-                fontSize: 30,
+                fontSize: 30.sp,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
               ),
             ),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.sp),
             child: Text(
               'Selected Language'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 color: primaryColor,
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
               ),
@@ -106,31 +107,31 @@ class _SettingsPageState extends State<SettingsPage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.sp),
             child: Container(
-              width: 150,
+              width: 150.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: secondaryColor,
               ),
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0.sp),
                   child: Row(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Padding(
+                        padding: EdgeInsets.all(8.0.sp),
                         child: Icon(
                           Icons.logout,
                           color: whiteColor,
-                          size: 20,
+                          size: 20.sp,
                         ),
                       ),
                       Text(
                         'Log Out'.tr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: whiteColor,
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Poppins',
                         ),
@@ -150,20 +151,20 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0.sp),
         child: Container(
           decoration: BoxDecoration(
             color: selected ? primaryColor : secondaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.sp),
             child: Center(
               child: Text(
                 name,
-                style: const TextStyle(
+                style: TextStyle(
                   color: whiteColor,
-                  fontSize: 15,
+                  fontSize: 15.sp,
                   fontFamily: 'Poppins',
                 ),
               ),

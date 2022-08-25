@@ -61,7 +61,7 @@ class _ManageClassroomState extends State<ManageClassroom> {
               child: Column(
                 children: [
                   Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: EdgeInsets.symmetric(horizontal: 40.sp),
                       child: Row(
                         children: [
                           Text('Show'.tr,
@@ -74,7 +74,7 @@ class _ManageClassroomState extends State<ManageClassroom> {
                           ),
                           DropdownButton<int>(
                             icon: null,
-                            iconSize: 14,
+                            iconSize: 14.sp,
                             elevation: 4,
                             alignment: Alignment.center,
                             underline: Container(),
@@ -157,9 +157,9 @@ class _ManageClassroomState extends State<ManageClassroom> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 10.w, vertical: 20.h),
                               width: 300.w,
-                              prefixIcon: const Icon(
+                              prefixIcon: Icon(
                                 Icons.search,
-                                size: 14,
+                                size: 14.sp,
                               ),
                             ),
                           ),

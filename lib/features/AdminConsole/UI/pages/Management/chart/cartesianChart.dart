@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
@@ -16,6 +17,7 @@ class Cartesian extends StatefulWidget {
 
 class _CartesianState extends State<Cartesian> {
   final List<SalesData> chartData = [
+
     SalesData('Jan', 86, primaryColor),
     SalesData('Feb', 70, primaryColor),
     SalesData('Mar', 34, primaryColor),
@@ -28,6 +30,7 @@ class _CartesianState extends State<Cartesian> {
     SalesData('Oct', 97, primaryColor),
     SalesData('Nov', 84, primaryColor),
     SalesData('Dec', 54, primaryColor),
+
   ];
   List<double> monthWise = [];
   bool isLoaded = false;
@@ -78,9 +81,11 @@ class _CartesianState extends State<Cartesian> {
     for (int i = 0; i <= 12; i++) {
       print(monthTemp[i] + " " + monthWise[i].toString());
       if (monthWise[i] < 1) {
-        // chartData.add(SalesData(monthTemp[i], 0, Colors.red));
+
+       // chartData.add(SalesData(monthTemp[i], 0, Colors.red));
       } else {
-        // chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
+       // chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
+
       }
     }
     setState(() {
@@ -111,7 +116,7 @@ class _CartesianState extends State<Cartesian> {
               child: progressIndicator,
             )
           : Container(
-              margin: const EdgeInsets.all(20),
+              margin: EdgeInsets.all(20.sp),
               child: Center(
                   child: SfCartesianChart(
                       primaryXAxis: CategoryAxis(),
