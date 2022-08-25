@@ -613,13 +613,12 @@ query MyQuery {
 
   @override
   Future<Student> createStudent({required Student student}) async {
-    
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createStudent(input: {gender:${student.gender} address: ${f(student.address)}, classRoomStudentsId: ${f(student.classRoomStudentsId)}, email: ${f(student.email)}, idCardPhoto: ${f(student.idCardPhoto)} modelData: ${student.modelData}, phoneNumber: ${f(student.phoneNumber)}, profilePhoto: ${f(student.profilePhoto)}, roll: ${f(student.roll)}, studentID: ${f(student.studentID)}, studentName: ${f(student.studentName)}}) {
+  createStudent(input: {gender:${student.gender}, address: ${f(student.address)}, classRoomStudentsId: ${f(student.classRoomStudentsId)}, email: ${f(student.email)}, idCardPhoto: ${f(student.idCardPhoto)}, modelData: ${student.modelData}, phoneNumber: ${f(student.phoneNumber)}, profilePhoto: ${f(student.profilePhoto)}, roll: ${f(student.roll)}, studentID: ${f(student.studentID)}, studentName: ${f(student.studentName)}}) {
     studentID
-    studentName
+    studentName2
     roll
   }
 }
@@ -1063,7 +1062,6 @@ query MyQuery {
 
     return returnList;
   }
-
 
   @override
   Future<List<Attendance>> getStudentAnalytics(

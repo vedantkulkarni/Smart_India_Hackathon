@@ -17,8 +17,8 @@ class _RadialChartWidgetState extends State<RadialChartWidget> {
   int male = 0, female = 0;
 
   List<_ChartData> chartData = [
-    // _ChartData('Jan', 86, Colors.red),
-    // _ChartData('Feb', 70, Colors.red),
+    _ChartData('Jan', 86, Colors.red),
+    _ChartData('Feb', 70, primaryColor),
   ];
 
   void getMaleFemaleRatio() {
@@ -29,8 +29,8 @@ class _RadialChartWidgetState extends State<RadialChartWidget> {
         female++;
       }
     }
-    chartData.add(_ChartData('Male', male, Colors.blue));
-    chartData.add(_ChartData('Female', female, whiteColor));
+    //chartData.add(_ChartData('Male', male, Colors.blue));
+    //chartData.add(_ChartData('Female', female, whiteColor));
   }
 
   @override
