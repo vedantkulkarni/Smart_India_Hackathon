@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 
 class DialogUtils {
   static DialogUtils _instance = new DialogUtils.internal();
@@ -8,7 +9,7 @@ class DialogUtils {
   factory DialogUtils() => _instance;
 
   static void showCustomDialog(BuildContext context,
-      {required String title, 
+      {required String title,
       String okBtnText = "Ok",
       String cancelBtnText = "Cancel",
       Widget? content,
@@ -18,17 +19,18 @@ class DialogUtils {
         builder: (_) {
           return AlertDialog(
             title: Text(title),
-            content: content??Text("content"),
+            content: content ?? Text("content"),
             actions: <Widget>[
-              FlatButton(
-                child: Text(okBtnText),
-                onPressed: okBtnFunction,
-              ),
-              FlatButton(
-                  child: Text(cancelBtnText),
-                  onPressed: () => Navigator.pop(context))
+              // FlatButton(
+              //   child: Text(okBtnText),
+              //   onPressed: okBtnFunction,
+
+              // ),
+              CustomTextButton(onPressed: okBtnFunction, text: okBtnText),
+              CustomTextButton(
+                  onPressed: () => Navigator.pop(context), text: cancelBtnText)
             ],
           );
         });
   }
- }
+}

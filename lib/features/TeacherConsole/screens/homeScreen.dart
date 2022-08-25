@@ -23,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var _langStatus;
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -81,20 +82,79 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: const Icon(
-                Icons.notifications,
-                size: 35,
-                color: primaryColor,
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButton(
+                  icon: const Icon(
+                    Icons.notifications,
+                    size: 35,
+                    color: primaryColor,
+                  ),
+                  iconSize: 14,
+                  alignment: Alignment.centerLeft,
+                  underline: Container(),
+                  borderRadius: BorderRadius.circular(10),
+                  value: _langStatus,
+                  onChanged: (val) async {
+                    _langStatus = val;
+                  },
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'English',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: 1,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Hindi',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: 2,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Marathi',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: 3,
+                    ),
+                  ],
+                ),
               ),
               actions: [
                 GestureDetector(
                   onTap: () {},
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.info_outline,
-                      size: 35,
-                      color: Colors.black,
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundColor: primaryColor,
+                      child: CircleAvatar(
+                        radius: 23,
+                        backgroundImage: NetworkImage(
+                            "https://image.shutterstock.com/image-photo/profile-picture-smiling-millennial-asian-260nw-1836020740.jpg"),
+                      ),
                     ),
                   ),
                 )
