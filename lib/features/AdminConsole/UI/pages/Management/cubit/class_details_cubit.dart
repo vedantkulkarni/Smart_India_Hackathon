@@ -28,6 +28,7 @@ class ClassDetailsCubit extends Cubit<ClassDetailsState> {
     emit(ClassRoomDetialsFetched());
   }
 
+
   Future<void> getAttendanceListDateWise({required String classRoomID}) async {
     emit(FectingAttendanceByDate());
     classAttendanceListDate =

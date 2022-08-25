@@ -291,6 +291,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
   _ClassRoomDashBoardWidgetState(this.classRoom);
   @override
   Widget build(BuildContext context) {
+    var classDetailsCubit=BlocProvider.of<ClassDetailsCubit>(context);
     return Container(
         width: double.maxFinite,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
@@ -302,7 +303,16 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
+          classDetailsCubit.classRoom.currentAttendanceDate==null?Container(height:200,
+          child:const Center(
+                      child: Text(
+                          'Attendance has not been marked yet.\nMark attendance to view analytics.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: lightTextColor,
+                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.normal)))): Row(
             children: [
               Expanded(
                 child: Container(
@@ -536,12 +546,33 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
           const SizedBox(
             height: 10,
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Male / Female Ratio',
-              style: TextStyle(
-                  color: whiteColor, fontSize: 17, fontWeight: FontWeight.bold),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment:MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Text(
+                        ' Male',
+                        style: TextStyle(
+                            color: Colors.blue, fontSize: 17, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text('Female',style: TextStyle(color: Colors.white,fontSize: 17)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text('Other',style: TextStyle(color: Colors.black,fontSize: 17)),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           const Spacer(),

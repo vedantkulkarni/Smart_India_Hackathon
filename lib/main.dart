@@ -30,6 +30,7 @@ bool get isDesktop {
 }
 
 
+
 Future<void> _configureAmplify() async {
   try {
     final auth = AmplifyAuthCognito();

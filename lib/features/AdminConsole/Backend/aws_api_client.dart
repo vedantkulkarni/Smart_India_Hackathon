@@ -590,14 +590,15 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''
-     mutation MyMutation {
-  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: "${classRoom.currentAttendanceDate}", groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", schoolID: "${classRoom.schoolID}", userAssignedClassId: "${classRoom.userAssignedClassId}"}) {
-    userAssignedClassId
-    currentAttendanceDate
+    mutation MyMutation {
+  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", userAssignedClassId: "${classRoom.userAssignedClassId}", schoolID: "${classRoom.schoolID}"}) {
+    attendanceMode
     classRoomName
+    currentAttendanceDate
     id
-    schoolID
+    importantNotice
     schoolClassRoomsId
+    schoolID
   }
 }
 ''',
@@ -613,13 +614,16 @@ query MyQuery {
 
   @override
   Future<Student> createStudent({required Student student}) async {
+
+    var gender = student.gender == Gender.Male ? "Male" : "Female";
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createStudent(input: {gender:${student.gender}, address: ${f(student.address)}, classRoomStudentsId: ${f(student.classRoomStudentsId)}, email: ${f(student.email)}, idCardPhoto: ${f(student.idCardPhoto)}, modelData: ${student.modelData}, phoneNumber: ${f(student.phoneNumber)}, profilePhoto: ${f(student.profilePhoto)}, roll: ${f(student.roll)}, studentID: ${f(student.studentID)}, studentName: ${f(student.studentName)}}) {
+  createStudent(input: {address: "${student.address}", dob: ${student.dob}, email: "${student.email}", gender: $gender, idCardPhoto: ${student.idCardPhoto}, modelData: ${student.modelData}, phoneNumber: "${student.phoneNumber}", profilePhoto: ${student.profilePhoto}, roll: "${student.roll}", studentID: "${student.studentID}", studentName: "${student.studentName}"}) {
+    email
+    gender
+    studentName
     studentID
-    studentName2
-    roll
   }
 }
 ''',
@@ -1046,6 +1050,7 @@ query MyQuery {
       teacherID
     }
   }
+>>>>>>> fe0fb71ece4da561fcd939e348646656db231aef
 }
 ''',
     };
@@ -1071,7 +1076,7 @@ query MyQuery {
       'operationName': 'MyQuery',
       'query': '''
 query MyQuery {
-  searchAttendances(filter: {studentID: {match: $studentId}, and: {date: {range: $range}}}) {
+  searchAttendances(filter: {studentID: {match: "$studentId"}, and: {date: {range: $range}}},) {
     items {
       classID
       className

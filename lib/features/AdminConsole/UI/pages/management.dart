@@ -62,7 +62,7 @@ class _ManagementState extends State<Management> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
               2,
-              (index) => ManageMentCard(
+             (index) => ManageMentCard(
                 addText: addList[index][0].tr,
                 content: addList[index][1],
                 imagePath: addList[index][2],

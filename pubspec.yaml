@@ -76,7 +76,7 @@ dependencies:
   fab_circular_menu: ^1.0.2
   image_picker: ^0.8.5+3
   geolocator: ^9.0.1
-  amplify_storage_s3: ^0.6.5
+  amplify_storage_s3: ^0.6.5 
   modal_bottom_sheet: ^2.1.0
   flutter_face_api: ^3.0.0
   scidart: ^0.0.2-dev.6

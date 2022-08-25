@@ -8,6 +8,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/student_details_cubit_cubit.dart';
 
 import '../../../../../injection_container.dart';
+import '../../../../../models/Attendance.dart';
 
 class StudentDetailScreenPartAdmin extends StatefulWidget {
   final String studentId = "";
@@ -20,7 +21,7 @@ class StudentDetailScreenPartAdmin extends StatefulWidget {
 }
 
 class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
-  var studentAttendanceList = [];
+  List<Attendance> studentAttendanceList = [];
   List<int> srNo = [
     1,
     2,
@@ -57,10 +58,13 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
     print('start');
     var apiclient = getIt<AWSApiClient>();
     studentAttendanceList =
-        await apiclient.getStudentAnalytics(studentId: studentId, month: '02');
+        await apiclient.getStudentAnalytics(studentId: '3787c22e-f195-4e0c-a2d3-72c16ab6160e', month: '08');
 
+    setState(() {
+
+    });
     print(studentAttendanceList);
-    print('lll');
+  
   }
 
   @override
@@ -105,6 +109,7 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
             Expanded(
                 child: StudentDetailWidget(
               name: studentDetailsCubit.studentDeatail!.studentName.toString(),
+              image: studentDetailsCubit.studentDeatail!.profilePhoto,
               teacherName:
                   studentDetailsCubit.studentDeatail!.roll.toString(),
               email: studentDetailsCubit.studentDeatail!.email.toString(),
@@ -194,7 +199,7 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                 ),
               ],
               rows: List<DataRow>.generate(
-                  30,
+                  studentAttendanceList.length,
                   (index) => DataRow2.byIndex(
                           selected: true,
                           color: MaterialStateProperty.all(whiteColor),
@@ -202,7 +207,7 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                           cells: [
                             DataCell(Text(srNo[index].toString())),
                             DataCell(Text(srNo[index].toString())),
-                            DataCell(Text(srNo[index].toString())),
+                            DataCell(Text(studentAttendanceList[index].status.name)),
                           ]))),
         )
       ]),
@@ -330,10 +335,11 @@ class Col2Widget extends StatelessWidget {
 }
 
 class StudentDetailWidget extends StatelessWidget {
-  final String? name, email, phoneNumber, classname, teacherName;
+  final String? name, email, phoneNumber, classname, teacherName,image;
   const StudentDetailWidget({
     Key? key,
     required this.classname,
+    required this.image,
     required this.email,
     required this.name,
     required this.phoneNumber,
@@ -343,10 +349,11 @@ class StudentDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: const EdgeInsets.all(25),
       child: Container(
-        height: 500.h,
+       // height: 700.h,
         width: 400.w,
         decoration: const BoxDecoration(
           boxShadow: [
@@ -359,13 +366,13 @@ class StudentDetailWidget extends StatelessWidget {
           SizedBox(
             height: 20.h,
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 45,
             backgroundColor: Colors.black,
             child: CircleAvatar(
               radius: 43,
-              backgroundColor: Colors.white,
-              backgroundImage: NetworkImage(""),
+              backgroundColor: Colors.blue,
+              backgroundImage: NetworkImage(image.toString()),
             ),
           ),
           SizedBox(
