@@ -44,10 +44,10 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back,
               color: blackColor,
-              size: 20,
+              size: 20.sp,
             ),
           ),
         ),
@@ -93,20 +93,20 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
                                 fi.showSnackbar(
                                     context,
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: EdgeInsets.all(8.0.sp),
                                       child: Container(
                                         decoration: const BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                           color: primaryColor,
                                         ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(8.0.sp),
                                           child: Text(
                                             'The is successfully downloaded',
                                             style: TextStyle(
                                               color: whiteColor,
-                                              fontSize: 17,
+                                              fontSize: 17.sp,
                                             ),
                                           ),
                                         ),
@@ -121,7 +121,7 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
 
 Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
   return Padding(
-    padding: const EdgeInsets.all(8.0),
+    padding: EdgeInsets.all(8.0.sp),
     child: Container(
       //padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -134,66 +134,81 @@ Widget DownloadTile(String precent, String teacher, VoidCallback onTap) {
         ],
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Today\'s Attendance',
-            style: TextStyle(
-                fontSize: 14.sp,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.normal,
-                color: whiteColor),
-          ),
-          Text(
-            precent,
-            style: TextStyle(
-                fontSize: 40.sp,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
-                color: whiteColor),
-          ),
-          Text(
-            'Taken By:-',
-            style: TextStyle(
-                fontSize: 14.sp,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.normal,
-                color: whiteColor),
-          ),
-          Text(
-            teacher,
-            style: TextStyle(
-                fontSize: 15.sp,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.bold,
-                color: whiteColor),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          GestureDetector(
-            onTap: onTap,
-            child: Center(
-              child: Container(
-                decoration: const BoxDecoration(
-                    color: navPanecolor,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Download CSV',
-                    style: TextStyle(
-                        fontSize: 15.sp,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                        color: blackColor),
+      child: fi.Padding(
+        padding: EdgeInsets.all(8.0.sp),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            fi.Padding(
+              padding: EdgeInsets.all(8.0.sp),
+              child: Text(
+                'Today\'s Attendance',
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.normal,
+                    color: whiteColor),
+              ),
+            ),
+            fi.Padding(
+              padding: EdgeInsets.all(8.0.sp),
+              child: Text(
+                precent,
+                style: TextStyle(
+                    fontSize: 40.sp,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    color: whiteColor),
+              ),
+            ),
+            fi.Padding(
+              padding: EdgeInsets.all(8.0.sp),
+              child: Text(
+                'Taken By:-',
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.normal,
+                    color: whiteColor),
+              ),
+            ),
+            fi.Padding(
+              padding: EdgeInsets.all(5.0.sp),
+              child: Text(
+                teacher,
+                style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    color: whiteColor),
+              ),
+            ),
+            SizedBox(
+              height: 5.h,
+            ),
+            GestureDetector(
+              onTap: onTap,
+              child: Center(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: navPanecolor,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0.sp),
+                    child: Text(
+                      'Download CSV',
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
+                          color: blackColor),
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     ),
   );

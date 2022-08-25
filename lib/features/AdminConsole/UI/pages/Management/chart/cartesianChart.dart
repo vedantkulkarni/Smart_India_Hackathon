@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
@@ -68,6 +69,8 @@ class _CartesianState extends State<Cartesian> {
         chartData.add(SalesData(monthTemp[i], 0, Colors.red));
       } else {
         chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
+
+        // chartData.add(SalesData(monthTemp[i], 0, Colors.red));
       }
     }
     setState(() {
@@ -98,7 +101,7 @@ class _CartesianState extends State<Cartesian> {
               child: progressIndicator,
             )
           : Container(
-              margin: const EdgeInsets.all(20),
+              margin: EdgeInsets.all(20.sp),
               child: Center(
                   child: SfCartesianChart(
                       primaryXAxis: CategoryAxis(),

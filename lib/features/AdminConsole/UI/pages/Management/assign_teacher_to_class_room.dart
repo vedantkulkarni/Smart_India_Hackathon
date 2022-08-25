@@ -37,15 +37,15 @@ class _AssignTeacherToClassRoomState extends State<AssignTeacherToClassRoom> {
             height: 40.h,
           ),
           Container(
-            margin: const EdgeInsets.all(10),
+            margin: EdgeInsets.all(10.sp),
             child: CustomTextField(
               textEditingController: textEditingController,
               hintText: 'Search',
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              width: 300,
-              prefixIcon: const Icon(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.h),
+              width: 300.w,
+              prefixIcon: Icon(
                 Icons.search,
-                size: 14,
+                size: 14.sp,
               ),
             ),
           ),

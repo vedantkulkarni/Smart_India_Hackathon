@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
@@ -81,9 +82,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     hintText: hintText,
                     padding:
                         EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       fi.FluentIcons.search,
-                      size: 16,
+                      size: 16.sp,
                     ),
                   ),
                 ),
@@ -94,9 +95,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
               showCalender == false
                   ? Container()
                   : IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         fi.FluentIcons.calendar,
-                        size: 22,
+                        size: 22.sp,
                         color: primaryColor,
                       ),
                       onPressed: () async {
@@ -115,7 +116,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     ),
               DropdownButton<AttendanceSearchMode>(
                 icon: null,
-                iconSize: 14,
+                iconSize: 14.sp,
                 alignment: Alignment.center,
                 underline: Container(),
                 borderRadius: BorderRadius.circular(10),
@@ -175,7 +176,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: AttendanceSearchMode.studentName),
 
                   DropdownMenuItem(
@@ -183,7 +184,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: AttendanceSearchMode.className),
                   
                   DropdownMenuItem(
@@ -207,8 +208,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
               ),
               SizedBox(
 
-                  height: 45,
-                  width: 150,
+                  height: 45.h,
+                  width: 150.w,
                   child: TextButton(
                       onPressed: () {
                         if (textEditingController.text.isEmpty) {
@@ -222,25 +223,25 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                       },
                       child: fi.Row(
                         mainAxisAlignment: fi.MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text('Add Filter',
                               style: TextStyle(
                                   color: primaryColor,
                                   fontFamily: 'Poppins',
-                                  fontSize: 14)),
+                                  fontSize: 14.sp)),
                           Icon(
                             Icons.add,
-                            size: 18,
+                            size: 18.sp,
                             color: primaryColor,
                           )
                         ],
                       ))),
-              const SizedBox(
-                width: 20,
+              SizedBox(
+                width: 20.w,
               ),
               SizedBox(
-                  height: 45,
-                  width: 150,
+                  height: 45.h,
+                  width: 150.w,
                   child: CustomTextButton(
                       onPressed: () {
                         if (searchQuery.isEmpty) {
@@ -261,8 +262,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                         }
                       },
                       text: 'Search')),
-              const SizedBox(
-                width: 20,
+              SizedBox(
+                width: 20.w,
 
               )
             ],
@@ -271,8 +272,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
             children: [
               Expanded(
                 child: Container(
-                  margin: const fi.EdgeInsets.all(10),
-                  height: 40,
+                  margin: fi.EdgeInsets.all(10.sp),
+                  height: 40.h,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
@@ -280,9 +281,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                         searchQuery.length,
                         (index) => fi.Container(
                               margin:
-                                  const fi.EdgeInsets.symmetric(horizontal: 5),
-                              width: 150,
-                              height: 30,
+                                  fi.EdgeInsets.symmetric(horizontal: 5.w),
+                              width: 150.w,
+                              height: 30.h,
                               child: CustomTextButton(
                                   icon: const Icon(Icons.close),
                                   onPressed: () {
@@ -296,7 +297,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
               ),
               DropdownButton<AttendanceStatus>(
                 icon: null,
-                iconSize: 14,
+                iconSize: 14.sp,
                 alignment: Alignment.center,
                 underline: Container(),
                 borderRadius: BorderRadius.circular(10),
@@ -320,32 +321,32 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   searchCubit.searchAttendance(searchQuery: newList);
                   // managementCubit.getAllUsers(role: value);
                 },
-                items: const [
+                items: [
                   DropdownMenuItem(
                       child: Text("Present",
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: AttendanceStatus.Present),
                   DropdownMenuItem(
                       child: Text("Absent",
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: AttendanceStatus.Absent),
                   DropdownMenuItem(
                       child: Text("All",
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14)),
+                              fontSize: 14.sp)),
                       value: null),
                 ],
               ),
-              const fi.SizedBox(
-                width: 30,
+              fi.SizedBox(
+                width: 30.w,
               )
             ],
           ),

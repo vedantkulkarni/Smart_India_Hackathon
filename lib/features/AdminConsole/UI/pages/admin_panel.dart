@@ -1,6 +1,7 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
@@ -61,10 +62,10 @@ class _AdminPanelState extends State<AdminPanel> {
                 CustomSideMenu(
                   page: page,
                 ),
-                const VerticalDivider(
+                VerticalDivider(
                   thickness: 0.5,
                   color: greyColor,
-                  width: 0.5,
+                  width: 0.5.w,
                 ),
                 Expanded(
                   child: PageView(controller: page, children: screens),

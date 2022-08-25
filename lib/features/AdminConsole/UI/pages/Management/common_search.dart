@@ -24,7 +24,7 @@ class _CommonSearchState extends State<CommonSearch> {
     final searchCubit = BlocProvider.of<SearchCubit>(context);
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0.sp),
         child: Column(
           children: [
             Row(
@@ -40,7 +40,7 @@ class _CommonSearchState extends State<CommonSearch> {
                 ),
                 DropdownButton<StudentSearchMode>(
                   icon: null,
-                  iconSize: 14,
+                  iconSize: 14.sp,
                   alignment: Alignment.center,
                   underline: Container(),
                   borderRadius: BorderRadius.circular(10),

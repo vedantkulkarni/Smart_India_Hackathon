@@ -43,7 +43,7 @@ class _ManagementState extends State<Management> {
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -55,8 +55,8 @@ class _ManagementState extends State<Management> {
                 fontFamily: 'Poppins',
                 color: Colors.black),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.sp,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

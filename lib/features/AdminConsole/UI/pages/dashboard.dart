@@ -21,16 +21,19 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final adminProvider = BlocProvider.of<AdminCubit>(context);
+
     double _screenWidth = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     // ScreenUtil.init(context, designSize: Size(width, height));
     return Container(
       color: backgroundColor,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Text(
             'Zilha Parishad School,Hinjewadi.',
             style: TextStyle(
@@ -72,18 +75,11 @@ class _DashboardState extends State<Dashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const PieChartWidget();
-                  }));
-                },
-                child: DashboardCard(
-                  user: 'Students',
-                  number: '302',
-                  color: primaryColor,
-                ),
-              ),
+              (DashboardCard(
+                user: 'Students',
+                number: '302',
+                color: primaryColor,
+              )),
               DashboardCard(
                 user: 'Teachers',
                 number: '33',

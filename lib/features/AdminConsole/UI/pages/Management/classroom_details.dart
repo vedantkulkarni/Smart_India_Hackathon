@@ -109,7 +109,7 @@ class AssignedTeacherWidget extends StatelessWidget {
         Container(
           // height: double.maxFinite,
           // color: primaryColor,
-          margin: const EdgeInsets.symmetric(horizontal: 10),
+          margin: EdgeInsets.symmetric(horizontal: 10.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -303,21 +303,21 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          classDetailsCubit.classRoom.currentAttendanceDate==null?Container(height:200,
-          child:const Center(
+          classDetailsCubit.classRoom.currentAttendanceDate==null?Container(height:200.h,
+          child:Center(
                       child: Text(
                           'Attendance has not been marked yet.\nMark attendance to view analytics.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: lightTextColor,
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.normal)))): Row(
             children: [
               Expanded(
                 child: Container(
                   // width: 300,
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10.sp),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                         colors: [primaryColor, secondaryColor],
@@ -483,8 +483,8 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(10),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      width: MediaQuery.of(context).size.width * 0.3.w,
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      width: MediaQuery.of(context).size.width * 0.3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -502,19 +502,19 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   color: whiteColor),
             ),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
           Expanded(
             child: RadialChartWidget(
               classRoom: widget.classRoom,
             ),
           ),
-          const SizedBox(
-            height: 10,
+          SizedBox(
+            height: 10.h,
           ),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.sp),
             child: Column(
               children: [
                 Row(
@@ -522,20 +522,20 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   mainAxisAlignment:MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(3.0),
+                      padding: EdgeInsets.all(3.0.sp),
                       child: Text(
                         ' Male',
                         style: TextStyle(
-                            color: Colors.blue, fontSize: 17, fontWeight: FontWeight.bold),
+                            color: Colors.blue, fontSize: 17.sp, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text('Female',style: TextStyle(color: Colors.white,fontSize: 17)),
+                      padding: EdgeInsets.all(5.0.sp),
+                      child: Text('Female',style: TextStyle(color: Colors.white,fontSize: 17.sp)),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Text('Other',style: TextStyle(color: Colors.black,fontSize: 17)),
+                      padding: EdgeInsets.all(5.0.sp),
+                      child: Text('Other',style: TextStyle(color: Colors.black,fontSize: 17.sp)),
                     ),
                   ],
                 ),
@@ -547,13 +547,13 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: 30,
+                width: MediaQuery.of(context).size.width * 0.3.w,
+                height: 30.h,
                 color: backgroundColor,
                 padding: const EdgeInsets.symmetric(vertical: 7),
                 child: DropdownButton<VerificationStatus>(
                   icon: null,
-                  iconSize: 14,
+                  iconSize: 14.sp,
                   alignment: Alignment.center,
                   underline: Container(),
                   borderRadius: BorderRadius.circular(10),
@@ -575,7 +575,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                     }
                   },
                   isExpanded: true,
-                  items: const [
+                  items: [
                     DropdownMenuItem(
                       child: Center(
                         child: Text(
@@ -583,7 +583,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),
@@ -596,7 +596,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),
@@ -609,7 +609,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),
@@ -622,7 +622,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),
@@ -635,7 +635,7 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'Poppins',
-                            fontSize: 14,
+                            fontSize: 14.sp,
                           ),
                         ),
                       ),
@@ -644,8 +644,8 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
               CustomTextButton(
                 onPressed: () async {
@@ -667,8 +667,8 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
               CustomTextButton(
                 onPressed: () async {
@@ -696,8 +696,8 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
               CustomTextButton(
                 onPressed: () async {
@@ -723,8 +723,8 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 bgColor: whiteColor,
                 textColor: primaryColor,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
               CustomTextButton(
                 onPressed: () async {
@@ -737,13 +737,13 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
                 bgColor: whiteColor,
                 textColor: blackColor,
               ),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 10.h,
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: 20.h,
           ),
         ],
       ),

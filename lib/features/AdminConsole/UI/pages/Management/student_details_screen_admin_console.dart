@@ -351,7 +351,7 @@ class StudentDetailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return Padding(
-      padding: const EdgeInsets.all(25),
+      padding: EdgeInsets.all(25.sp),
       child: Container(
        // height: 700.h,
         width: 400.w,
@@ -383,8 +383,8 @@ class StudentDetailWidget extends StatelessWidget {
           RowWidget('Phone No.', phoneNumber.toString()),
           RowWidget('Class', classname.toString()),
           RowWidget('Teacher', teacherName.toString()),
-          const SizedBox(
-            height: 30,
+          SizedBox(
+            height: 30.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -392,15 +392,15 @@ class StudentDetailWidget extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20.sp),
                   child: Container(
-                    width: 100,
+                    width: 100.w,
                     decoration: BoxDecoration(
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10.sp),
                       child: Center(
                         child: Text(
                           'Edit',
@@ -417,7 +417,7 @@ class StudentDetailWidget extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20.sp),
                   child: Container(
                     width: 100.w,
                     decoration: BoxDecoration(
@@ -425,7 +425,7 @@ class StudentDetailWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10.sp),
                       child: Center(
                         child: Text(
                           'Delete',
@@ -448,7 +448,7 @@ class StudentDetailWidget extends StatelessWidget {
 
   Padding RowWidget(String title, String field) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0.sp),
       child: Row(
         children: [
           Text(

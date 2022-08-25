@@ -2,6 +2,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 
 import '../../../../core/constants.dart';
@@ -20,8 +21,19 @@ class AttendanceSearch extends StatelessWidget {
         if (state is Searching) {
           return progressIndicator;
         } else if (state is SearchInitial) {
-          return const Center(
-            child: Text('Search for Attendance....'),
+          return Column(
+             mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                child: Lottie.asset(
+                  "assets/images/search_loader.json",
+                  animate: true,
+                ),
+                height: 185.h,
+              ),
+              const Text("Search for attendance...",
+                  style: TextStyle(color: lightTextColor))
+            ],
           );
         } else if (state is NoResultFound) {
           return const Center(
@@ -31,12 +43,12 @@ class AttendanceSearch extends StatelessWidget {
         return DataTable2(
             dataRowColor:
                 MaterialStateProperty.all(primaryColor.withOpacity(0.1)),
-            dataTextStyle:  TextStyle(
+            dataTextStyle: TextStyle(
                 fontSize: 14.sp,
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.normal,
                 color: blackColor),
-            headingTextStyle:  TextStyle(
+            headingTextStyle: TextStyle(
                 fontSize: 16.sp,
                 color: blackColor,
                 fontFamily: 'Poppins',
