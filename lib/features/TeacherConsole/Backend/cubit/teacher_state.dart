@@ -8,6 +8,7 @@ abstract class TeacherState extends Equatable {
 }
 
 class TeacherInitial extends TeacherState {}
+class CredentialsNotCorrect extends TeacherState {}
 class FetchingTeacher extends TeacherState {}
 class TeacherDetailsFetched extends TeacherState {}
 class SchoolNotFound extends TeacherState {}

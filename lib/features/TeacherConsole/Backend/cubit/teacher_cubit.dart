@@ -31,7 +31,7 @@ class TeacherCubit extends Cubit<TeacherState> {
       : super(TeacherInitial()) {
     isUserSignedIn();
     signInTeacher(userName, password);
-    getTeacherDetails(userID: userID);
+    // getTeacherDetails(userID: userID);
   }
   bool isSignedIn = false;
   Future<bool> isUserSignedIn() async {
@@ -51,6 +51,7 @@ class TeacherCubit extends Cubit<TeacherState> {
         getTeacherDetails(userID: username);
       }
     } on AuthException catch (e) {
+      emit(CredentialsNotCorrect());
       print(e.message);
     }
   }

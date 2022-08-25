@@ -1,6 +1,9 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
+import 'package:team_dart_knights_sih/features/Auth/UI/pages/login_screen.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/fab.dart';
@@ -37,6 +40,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Center(
                 child: CircularProgressIndicator(),
               )),
+            );
+          }
+
+          if (state is CredentialsNotCorrect) {
+            return Scaffold(
+              body: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Credentials not correct"),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: CustomTextButton(
+                          onPressed: () async {
+                            await Amplify.Auth.signOut();
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                          },
+                          text: 'Try Again',
+                        ),
+                      ),
+                    ],
+                  )),
             );
           }
 

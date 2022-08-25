@@ -41,9 +41,10 @@ class _FaceVerifyWithProfileImageState
             ],
             child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.7,
-                child: FaceVerify(
-                  capturedImage: file,
-                )),
+                // child: FaceVerify(
+                //   capturedImage: file,
+                // )),
+                child: Container(),)
           ),
         );
         await attendanceCubit.cameraService.cameraController!.resumePreview();
