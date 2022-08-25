@@ -66,6 +66,8 @@ abstract class AWSApiClient {
       {required List<SearchQuery> searchQuery, required int limit});
 
   Future<List<ClassAttendance>> searchByMonth({required String searchQuery});
+  Future<List<ClassAttendance>> searchByMonthandClassRoom(
+      {required String month, required String classID});
 
   // Future<List<Student>> searchAttendance(
   //     {required String searchQuery, required StudentSearchMode mode});
@@ -1164,6 +1166,42 @@ query MyQuery {
 
     for (var eachStudent in jsonMap['data']['searchAttendances']['items']) {
       returnList.add(Attendance.fromJson(eachStudent));
+    }
+
+    return returnList;
+  }
+
+  @override
+  Future<List<ClassAttendance>> searchByMonthandClassRoom(
+      {required String month, required String classID}) async {
+    String range = '["2022-$month-01","2022-$month-30"]';
+
+    final body = {
+      'operationName': 'MyQuery',
+      'query': '''
+query MyQuery {
+  searchClassAttendances(filter: {classID: {match: "$classID"}, and: {date: {range: "$month"}}}) {
+    items {
+      date
+      presentPercent
+      time
+      teacherEmail
+      classID
+    }
+  }
+}
+''',
+    };
+
+    final responseString = await uploadJsonBodyRequest(body);
+
+    final jsonMap = json.decode(responseString);
+    print(jsonMap);
+    List<ClassAttendance> returnList = [];
+
+    for (var eachStudent in jsonMap['data']['searchClassAttendances']
+        ['items']) {
+      returnList.add(ClassAttendance.fromJson(eachStudent));
     }
 
     return returnList;

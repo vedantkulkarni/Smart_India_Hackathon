@@ -7,6 +7,7 @@ import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/add_student_to_class_room.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/assign_teacher_to_class_room.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/chart/randomGraph.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/download_attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/student_card.dart';
@@ -34,6 +35,7 @@ class ClassRoomDetails extends StatefulWidget {
 class _ClassRoomDetailsState extends State<ClassRoomDetails> {
   ClassRoom classRoom;
   _ClassRoomDetailsState(this.classRoom);
+
   @override
   Widget build(BuildContext context) {
     final classDetailsCubit = BlocProvider.of<ClassDetailsCubit>(context);
@@ -291,7 +293,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
   _ClassRoomDashBoardWidgetState(this.classRoom);
   @override
   Widget build(BuildContext context) {
-    var classDetailsCubit=BlocProvider.of<ClassDetailsCubit>(context);
+    var classDetailsCubit = BlocProvider.of<ClassDetailsCubit>(context);
     return Container(
         width: double.maxFinite,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
@@ -303,75 +305,85 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          classDetailsCubit.classRoom.currentAttendanceDate==null?Container(height:200.h,
-          child:Center(
-                      child: Text(
-                          'Attendance has not been marked yet.\nMark attendance to view analytics.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: lightTextColor,
-                              fontSize: 14.sp,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.normal)))): Row(
-            children: [
-              Expanded(
-                child: Container(
-                  // width: 300,
-                  padding: EdgeInsets.all(10.sp),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                        colors: [primaryColor, secondaryColor],
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: blendColor, blurRadius: 15, spreadRadius: 10)
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Today'.tr + '\nAttendance'.tr,
+          classDetailsCubit.classRoom.currentAttendanceDate == null
+              ? Expanded(
+                  child: Container(
+                      height: 200.h,
+                      child: Center(
+                          child: Text(
+                              'Attendance has not been marked yet.\nMark attendance to view analytics.',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
+                                  color: lightTextColor,
                                   fontSize: 14.sp,
                                   fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.normal,
-                                  color: whiteColor),
-                            ),
-                            Text(
-                              '48',
-                              style: TextStyle(
-                                  fontSize: 24.sp,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.bold,
-                                  color: whiteColor),
-                            ),
-                            Text(
-                              'present out of 56'.tr,
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.normal,
-                                  color: whiteColor.withOpacity(0.8)),
-                            ),
-                          ],
-                        ),
+                                  fontWeight: FontWeight.normal)))),
+                )
+              : Row(
+                  children: [
+                    Container(
+                      width: 736.w,
+                      height: 200,
+                      padding: EdgeInsets.all(10.sp),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                            colors: [primaryColor, secondaryColor],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight),
+                        boxShadow: const [
+                          BoxShadow(
+                              color: blendColor,
+                              blurRadius: 15,
+                              spreadRadius: 10)
+                        ],
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      const Spacer(),
-                      
-                    ],
-                  ),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Today'.tr + '\nAttendance'.tr,
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.normal,
+                                    color: whiteColor),
+                              ),
+                              Text(
+                                '48',
+                                style: TextStyle(
+                                    fontSize: 24.sp,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.bold,
+                                    color: whiteColor),
+                              ),
+                              Text(
+                                'present out of 56'.tr,
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.normal,
+                                    color: whiteColor.withOpacity(0.8)),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Expanded(
+                              child: RadialChartWidget(
+                            classRoom: classRoom,
+                          ))
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 80.w,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                width: 80.w,
-              ),
-            ],
+          SizedBox(
+            height: 20,
           ),
           Text(
             'Students'.tr,
@@ -389,6 +401,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                   ),
                 )
               : Expanded(
+                  flex: 10,
                   child: Container(
                     padding: const EdgeInsets.all(0),
                     child: AnimationLimiter(
@@ -420,7 +433,8 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                                     value: BlocProvider.of<
                                                             ManagementCubit>(
                                                         context)),
-                                               BlocProvider.value(value: BlocProvider.of<
+                                                BlocProvider.value(
+                                                    value: BlocProvider.of<
                                                             ClassDetailsCubit>(
                                                         context)),
                                                 BlocProvider(
@@ -505,43 +519,53 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
           SizedBox(
             height: 20.h,
           ),
+          // Expanded(
+          //   child: RadialChartWidget(
+          //     classRoom: widget.classRoom,
+          //   ),
+          // ),
           Expanded(
-            child: RadialChartWidget(
-              classRoom: widget.classRoom,
-            ),
-          ),
+              child: CartesianClass(
+            classRoom: widget.classRoom,
+          )),
           SizedBox(
             height: 10.h,
           ),
-          Padding(
-            padding: EdgeInsets.all(8.0.sp),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment:MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(3.0.sp),
-                      child: Text(
-                        ' Male',
-                        style: TextStyle(
-                            color: Colors.blue, fontSize: 17.sp, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5.0.sp),
-                      child: Text('Female',style: TextStyle(color: Colors.white,fontSize: 17.sp)),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(5.0.sp),
-                      child: Text('Other',style: TextStyle(color: Colors.black,fontSize: 17.sp)),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(8.0.sp),
+          //   child: Column(
+          //     children: [
+          //       Row(
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           Padding(
+          //             padding: EdgeInsets.all(3.0.sp),
+          //             child: Text(
+          //               ' Male',
+          //               style: TextStyle(
+          //                   color: Colors.blue,
+          //                   fontSize: 17.sp,
+          //                   fontWeight: FontWeight.bold),
+          //             ),
+          //           ),
+          //           Padding(
+          //             padding: EdgeInsets.all(5.0.sp),
+          //             child: Text('Female',
+          //                 style:
+          //                     TextStyle(color: Colors.white, fontSize: 17.sp)),
+          //           ),
+          //           Padding(
+          //             padding: EdgeInsets.all(5.0.sp),
+          //             child: Text('Other',
+          //                 style:
+          //                     TextStyle(color: Colors.black, fontSize: 17.sp)),
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
           const Spacer(),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

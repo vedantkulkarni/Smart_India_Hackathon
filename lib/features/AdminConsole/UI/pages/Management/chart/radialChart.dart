@@ -14,37 +14,35 @@ class RadialChartWidget extends StatefulWidget {
 }
 
 class _RadialChartWidgetState extends State<RadialChartWidget> {
-  int male = 0, female = 0,middle=0;
+  int male = 0, female = 0, middle = 0;
 
   List<_ChartData> chartData = [
-    _ChartData('Jan', 86, Colors.red),
-    _ChartData('Feb', 70, primaryColor),
+    // _ChartData('Jan', 86, Colors.red),
+    // _ChartData('Feb', 70, primaryColor),
   ];
 
   void getMaleFemaleRatio() {
-    male=0;
-    middle=0;
-    female=0;
+    male = 0;
+    middle = 0;
+    female = 0;
     for (int i = 0; i < widget.classRoom.students!.length; i++) {
-      print('${widget.classRoom.students![i].gender}+${widget.classRoom.students![i].studentName}');
+      print(
+          '${widget.classRoom.students![i].gender}+${widget.classRoom.students![i].studentName}');
 
       if (widget.classRoom.students![i].gender == Gender.Male) {
-
         male++;
       } else if (widget.classRoom.students![i].gender == Gender.Female) {
         female++;
-      }else{
+      } else {
         middle++;
       }
-
-    
-  }
-  print(male);
-  print(female);
-  print('object');
+    }
+    print(male);
+    print(female);
+    print('object');
     chartData.add(_ChartData('Male', male, Colors.blue));
     chartData.add(_ChartData('Female', female, whiteColor));
-    chartData.add(_ChartData('Other',middle, Colors.black));
+    chartData.add(_ChartData('Other', middle, Colors.black));
   }
 
   @override
