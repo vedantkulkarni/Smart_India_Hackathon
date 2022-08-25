@@ -69,40 +69,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   isExpanded: true,
                   items: const [
                     DropdownMenuItem(
-                      child: Center(
-                        child: Text(
-                          'English',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                          ),
+                      child: Text(
+                        'English',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
                         ),
                       ),
                       value: 1,
                     ),
                     DropdownMenuItem(
-                      child: Center(
-                        child: Text(
-                          'Hindi',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                          ),
+                      child: Text(
+                        'Hindi',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
                         ),
                       ),
                       value: 2,
                     ),
                     DropdownMenuItem(
-                      child: Center(
-                        child: Text(
-                          'Marathi',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                          ),
+                      child: Text(
+                        'Marathi',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
                         ),
                       ),
                       value: 3,

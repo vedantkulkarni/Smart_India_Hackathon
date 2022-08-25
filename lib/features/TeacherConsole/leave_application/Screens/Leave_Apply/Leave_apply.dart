@@ -1,21 +1,27 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/date_time_patterns.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/Widgets/AppBar.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/Widgets/BouncingButton.dart';
-
 import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/Widgets/LeaveApply/datepicker.dart';
-
+import 'package:team_dart_knights_sih/injection_container.dart';
+import 'package:team_dart_knights_sih/models/Leave.dart';
+import 'package:team_dart_knights_sih/models/LeaveStatus.dart';
 import '../../../../../core/constants.dart';
 
 class LeaveApply extends StatefulWidget {
+  String studentId;
+  LeaveApply(this.studentId);
   @override
   _LeaveApplyState createState() => _LeaveApplyState();
 }
 
 class _LeaveApplyState extends State<LeaveApply>
     with SingleTickerProviderStateMixin {
+  String startDate = "", endDate = "", body = "";
+
   late Animation animation, delayedAnimation, muchDelayedAnimation, LeftCurve;
   late AnimationController animationController;
   final searchFieldController = TextEditingController();
@@ -34,6 +40,23 @@ class _LeaveApplyState extends State<LeaveApply>
   String _tovalueChanged = '';
   String _tovalueToValidate = '';
   String _tovalueSaved = '';
+
+  Future<void> submit() async {
+    TemporalDate startDate = TemporalDate(DateTime.parse('2022-05-11'));
+    TemporalDate endDate = TemporalDate(DateTime.parse('2022-06-12'));
+
+    body = 'medical';
+    Leave leave = Leave(
+        studentID: widget.studentId,
+        leaveDate: startDate,
+        leaveReason: body,
+        leaveDays: 10,
+        teacherID: '',
+        leaveStatus: LeaveStatus.Pending);
+    print('enter');
+    var apiClient = getIt<AWSApiClient>().createLeave(leave: leave);
+    print('huu');
+  }
 
   @override
   void initState() {
@@ -186,25 +209,7 @@ class _LeaveApplyState extends State<LeaveApply>
                   Transform(
                     transform: Matrix4.translationValues(
                         delayedAnimation.value * width, 0, 0),
-                    // child: DropdownSearch<String>(
-                    //   validator: (v) => v == null ? "required field" : null,
-                    //   hint: "Please Select Leave type",
-                    //   mode: Mode.MENU,
-                    //   showSelectedItem: true,
-                    //   items: const [
-                    //     "Medical",
-                    //     "Family",
-                    //     "Sick",
-                    //     'Function',
-                    //     'Others'
-                    //   ],
-                    //   showClearButton: true,
-                    //   clearButton: const Icon(
-                    //     Icons.close,
-                    //     color: primaryColor,
-                    //   ),
-                    //   onChanged: print,
-                    // ),
+                    child: TextField(),
                   ),
                   SizedBox(
                     height: height * 0.05,
@@ -417,15 +422,7 @@ class _LeaveApplyState extends State<LeaveApply>
                     transform: Matrix4.translationValues(
                         delayedAnimation.value * width, 0, 0),
                     child: Bouncing(
-                      onPress: () async {
-                        // var leave = Leave(
-                        //     studentID: '',
-                        //     leaveDate: _applyleavevalueSaved,
-                        //     leaveReason: leaveReason,
-                        //     leaveDays: leaveDays,
-                        //     teacherID: teacherID,
-                        //     leaveStatus: LeaveStatus.Pending);
-                      },
+                      onPress: submit,
                       key: null,
                       child: Container(
                         //height: 20,
