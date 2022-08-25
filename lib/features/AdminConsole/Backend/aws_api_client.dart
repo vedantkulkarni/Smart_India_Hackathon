@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/errors/exceptions.dart';
@@ -625,11 +626,14 @@ query MyQuery {
   @override
   Future<ClassRoom> updateClassRoom({required ClassRoom classRoom}) async {
     var attendanceMode = classRoom.attendanceMode.name;
+    var currDate = TemporalDate(DateTime.now()).toString();
+    
     VerificationStatus.ManualAttendance.name;
     final body = {
       'operationName': 'MyMutation',
       'query': '''
-    mutation MyMutation {
+   mutation MyMutation {
+  mutation MyMutation {
   updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", userAssignedClassId: "${classRoom.userAssignedClassId}", schoolID: "${classRoom.schoolID}"}) {
     attendanceMode
     classRoomName

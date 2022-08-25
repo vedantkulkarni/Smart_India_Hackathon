@@ -98,8 +98,8 @@ type Student @model @searchable
   email:AWSEmail
   phoneNumber:AWSPhone
   address:String
-  profilePhoto: AWSURL
-  idCardPhoto: AWSURL
+  profilePhoto: ID
+  idCardPhoto: ID
   roll:String
   modelData:[Float]
   gender:Gender
@@ -143,6 +143,7 @@ type Attendance @model @searchable{
   verification: VerificationStatus!
   teacherID: ID!
   teacherName: String!
+  gender: Gender
   date:  AWSDate!
   time:  AWSTime!
   classID:ID! @primaryKey(sortKeyFields:["studentID","date"])

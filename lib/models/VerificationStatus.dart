@@ -22,6 +22,7 @@
 enum VerificationStatus {
   FaceVerifiedWithLiveness,
   FaceVerified,
+  FaceNotVerified,
   FaceDetectedAndVerified,
   ManualAttendance,
   InvolveParent

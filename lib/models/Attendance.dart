@@ -37,6 +37,7 @@ class Attendance extends Model {
   final VerificationStatus? _verification;
   final String? _teacherID;
   final String? _teacherName;
+  final Gender? _gender;
   final TemporalDate? _date;
   final TemporalTime? _time;
   final String? _classID;
@@ -138,6 +139,10 @@ class Attendance extends Model {
     }
   }
   
+  Gender? get gender {
+    return _gender;
+  }
+  
   TemporalDate get date {
     try {
       return _date!;
@@ -198,9 +203,9 @@ class Attendance extends Model {
     return _updatedAt;
   }
   
-  const Attendance._internal({required this.id, required studentID, required studentName, required status, geoLatitude, geoLongitude, required verification, required teacherID, required teacherName, required date, required time, required classID, required className, createdAt, updatedAt}): _studentID = studentID, _studentName = studentName, _status = status, _geoLatitude = geoLatitude, _geoLongitude = geoLongitude, _verification = verification, _teacherID = teacherID, _teacherName = teacherName, _date = date, _time = time, _classID = classID, _className = className, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Attendance._internal({required this.id, required studentID, required studentName, required status, geoLatitude, geoLongitude, required verification, required teacherID, required teacherName, gender, required date, required time, required classID, required className, createdAt, updatedAt}): _studentID = studentID, _studentName = studentName, _status = status, _geoLatitude = geoLatitude, _geoLongitude = geoLongitude, _verification = verification, _teacherID = teacherID, _teacherName = teacherName, _gender = gender, _date = date, _time = time, _classID = classID, _className = className, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Attendance({String? id, required String studentID, required String studentName, required AttendanceStatus status, double? geoLatitude, double? geoLongitude, required VerificationStatus verification, required String teacherID, required String teacherName, required TemporalDate date, required TemporalTime time, required String classID, required String className}) {
+  factory Attendance({String? id, required String studentID, required String studentName, required AttendanceStatus status, double? geoLatitude, double? geoLongitude, required VerificationStatus verification, required String teacherID, required String teacherName, Gender? gender, required TemporalDate date, required TemporalTime time, required String classID, required String className}) {
     return Attendance._internal(
       id: id == null ? UUID.getUUID() : id,
       studentID: studentID,
@@ -211,6 +216,7 @@ class Attendance extends Model {
       verification: verification,
       teacherID: teacherID,
       teacherName: teacherName,
+      gender: gender,
       date: date,
       time: time,
       classID: classID,
@@ -234,6 +240,7 @@ class Attendance extends Model {
       _verification == other._verification &&
       _teacherID == other._teacherID &&
       _teacherName == other._teacherName &&
+      _gender == other._gender &&
       _date == other._date &&
       _time == other._time &&
       _classID == other._classID &&
@@ -257,6 +264,7 @@ class Attendance extends Model {
     buffer.write("verification=" + (_verification != null ? enumToString(_verification)! : "null") + ", ");
     buffer.write("teacherID=" + "$_teacherID" + ", ");
     buffer.write("teacherName=" + "$_teacherName" + ", ");
+    buffer.write("gender=" + (_gender != null ? enumToString(_gender)! : "null") + ", ");
     buffer.write("date=" + (_date != null ? _date!.format() : "null") + ", ");
     buffer.write("time=" + (_time != null ? _time!.format() : "null") + ", ");
     buffer.write("classID=" + "$_classID" + ", ");
@@ -268,7 +276,7 @@ class Attendance extends Model {
     return buffer.toString();
   }
   
-  Attendance copyWith({String? id, String? studentID, String? studentName, AttendanceStatus? status, double? geoLatitude, double? geoLongitude, VerificationStatus? verification, String? teacherID, String? teacherName, TemporalDate? date, TemporalTime? time, String? classID, String? className}) {
+  Attendance copyWith({String? id, String? studentID, String? studentName, AttendanceStatus? status, double? geoLatitude, double? geoLongitude, VerificationStatus? verification, String? teacherID, String? teacherName, Gender? gender, TemporalDate? date, TemporalTime? time, String? classID, String? className}) {
     return Attendance._internal(
       id: id ?? this.id,
       studentID: studentID ?? this.studentID,
@@ -279,6 +287,7 @@ class Attendance extends Model {
       verification: verification ?? this.verification,
       teacherID: teacherID ?? this.teacherID,
       teacherName: teacherName ?? this.teacherName,
+      gender: gender ?? this.gender,
       date: date ?? this.date,
       time: time ?? this.time,
       classID: classID ?? this.classID,
@@ -295,6 +304,7 @@ class Attendance extends Model {
       _verification = enumFromString<VerificationStatus>(json['verification'], VerificationStatus.values),
       _teacherID = json['teacherID'],
       _teacherName = json['teacherName'],
+      _gender = enumFromString<Gender>(json['gender'], Gender.values),
       _date = json['date'] != null ? TemporalDate.fromString(json['date']) : null,
       _time = json['time'] != null ? TemporalTime.fromString(json['time']) : null,
       _classID = json['classID'],
@@ -303,7 +313,7 @@ class Attendance extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'studentID': _studentID, 'studentName': _studentName, 'status': enumToString(_status), 'geoLatitude': _geoLatitude, 'geoLongitude': _geoLongitude, 'verification': enumToString(_verification), 'teacherID': _teacherID, 'teacherName': _teacherName, 'date': _date?.format(), 'time': _time?.format(), 'classID': _classID, 'className': _className, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'studentID': _studentID, 'studentName': _studentName, 'status': enumToString(_status), 'geoLatitude': _geoLatitude, 'geoLongitude': _geoLongitude, 'verification': enumToString(_verification), 'teacherID': _teacherID, 'teacherName': _teacherName, 'gender': enumToString(_gender), 'date': _date?.format(), 'time': _time?.format(), 'classID': _classID, 'className': _className, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "attendance.id");
@@ -315,6 +325,7 @@ class Attendance extends Model {
   static final QueryField VERIFICATION = QueryField(fieldName: "verification");
   static final QueryField TEACHERID = QueryField(fieldName: "teacherID");
   static final QueryField TEACHERNAME = QueryField(fieldName: "teacherName");
+  static final QueryField GENDER = QueryField(fieldName: "gender");
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField TIME = QueryField(fieldName: "time");
   static final QueryField CLASSID = QueryField(fieldName: "classID");
@@ -371,6 +382,12 @@ class Attendance extends Model {
       key: Attendance.TEACHERNAME,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Attendance.GENDER,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
