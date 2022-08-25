@@ -1073,7 +1073,7 @@ query MyQuery {
       'operationName': 'MyQuery',
       'query': '''
 query MyQuery {
-  searchAttendances(filter: {studentID: {match: $studentId}, and: {date: {range: $range}}}) {
+  searchAttendances(filter: {studentID: {match: "$studentId"}, and: {date: {range: $range}}},) {
     items {
       classID
       className
