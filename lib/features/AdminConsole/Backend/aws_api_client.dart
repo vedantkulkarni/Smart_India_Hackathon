@@ -17,7 +17,10 @@ abstract class AWSApiClient {
   Future<User> updateUser({required User updatedUser});
   Future<User> deleteUser({required String email});
   Future<List<User>> getListOfUsers({required Role role});
-
+  Future<void> signOutUser({required String email});
+  Future<void> signUpUser({required String userID, required String password});
+  Future<bool> confirmUser(
+      {required String userID, required String confirmationCode});
   //School
   Future<School> createSchool({required School school});
   Future<School> getSchoolDetails({required String schoolID});
@@ -77,6 +80,11 @@ class AWSApiClientImpl implements AWSApiClient {
   final _endpoint = Uri.parse(
       'https://viwnyvetl5huzp44ma2ejqidju.appsync-api.ap-south-1.amazonaws.com/graphql');
 
+  final userPool = CognitoUserPool(
+    'ap-south-1_TAqXrMNgh',
+    '5r2nk0dcq5gv6813j23289n9m8',
+  );
+
   //Helper
 
   Future<String> uploadJsonBodyRequest(Map<String, dynamic> body) async {
@@ -103,10 +111,6 @@ class AWSApiClientImpl implements AWSApiClient {
   @override
   Future<void> authenticateUser(
       {required String email, required String password}) async {
-    final userPool = CognitoUserPool(
-      'ap-south-1_TAqXrMNgh',
-      '5r2nk0dcq5gv6813j23289n9m8',
-    );
     final cognitoUser = CognitoUser(email, userPool);
     final authDetails = AuthenticationDetails(
       username: email,
@@ -131,6 +135,7 @@ class AWSApiClientImpl implements AWSApiClient {
       // handle User Confirmation Necessary
     } on CognitoClientException {
       // handle Wrong Username and Password and Cognito Client
+      throw CredentialsNotCorrectException();
     } catch (e) {
       print(e);
     }
@@ -148,13 +153,44 @@ class AWSApiClientImpl implements AWSApiClient {
     }
   }
 
+  Future<void> signUpUser(
+      {required String userID, required String password}) async {
+    CognitoUserPoolData data;
+    try {
+      data = await userPool.signUp(
+        userID.toString(),
+        password.toString(),
+        // userAttributes: userAttributes,
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<bool> confirmUser(
+      {required String userID, required String confirmationCode}) async {
+    final cognitoUser = CognitoUser(userID, userPool);
+
+    bool isConfirmed = await cognitoUser.confirmRegistration(confirmationCode);
+
+    return isConfirmed;
+  }
+
+  @override
+  Future<void> signOutUser({required String email}) async {
+    // TODO: implement signOutUser
+    final cognitoUser = CognitoUser(email.toString(), userPool);
+    await cognitoUser.signOut();
+    print("signout done");
+  }
+
   @override
   Future<User> getAdminDetails({required String userID}) async {
-    const body = {
+    var body = {
       'operationName': 'MyQuery',
       'query': '''
 query MyQuery {
-  getUser(email: "vedantk60@gmail.com") {
+  getUser(email: "$userID") {
     address
     age
     assignedClass {
@@ -183,6 +219,7 @@ query MyQuery {
 
     try {
       final responseString = await uploadJsonBodyRequest(body);
+      print(responseString);
       final myJsonMap = json.decode(responseString);
 
       var user = User.fromJson(myJsonMap['data']['getUser']);

@@ -19,6 +19,7 @@ class StudentDetailsCubitCubit extends Cubit<StudentDetailsCubitState> {
     emit(FetchingStudentDetails());
     //code
     studentDeatail = await apiClient.getStudent(studentID: student.studentID);
+    print(studentDeatail);
     emit(StudentDetailsFetched());
   }
 }
