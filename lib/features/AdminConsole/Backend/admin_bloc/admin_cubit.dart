@@ -46,6 +46,13 @@ class AdminCubit extends Cubit<AdminState> {
     emit(AdminDetailsFetched());
   }
 
+  // Future<void> getSchoolName({required String userId})async{
+  //    adminUser = await awsApiClient.getAdminDetails(userID: userID);
+  //   roleChecker.setUser(adminUser);
+  //   String schoolID=adminUser.schoolID;
+  //   getSchoolDetails(schoolID)
+  // }
+
   Future<void> updateAdminDetails({required User user}) async {
     adminUser = await awsApiClient.updateUser(updatedUser: user);
     emit(AdminDetailsUpdated());

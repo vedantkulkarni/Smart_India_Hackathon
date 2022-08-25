@@ -37,8 +37,8 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
       // width: w * 0.5,
       child: Column(
         children: [
-          const SizedBox(
-            height: 80,
+          SizedBox(
+            height: 80.h,
           ),
 
           // Container(
@@ -63,19 +63,19 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                 color: primaryColor,
                 child: Container(
                   // height: 420,
-                  margin: const EdgeInsets.all(30),
+                  margin: EdgeInsets.all(30.sp),
                   // padding: const EdgeInsets.all(20),
-                  width: 340,
+                  width: 340.w,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(20)),
                   child: addList.isEmpty
-                      ? const Center(
+                      ?  Center(
                           child: Text(
 
 
                           'Add Students',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                           ),
@@ -96,14 +96,14 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                                                     .profilePhoto ??
                                                 'https://avatars.githubusercontent.com/u/24658039?v=4'),
                                           ),
-                                          const SizedBox(
-                                            height: 5,
+                                          SizedBox(
+                                            height: 5.h,
                                           ),
                                           FittedBox(
                                             child: Text(
                                               addList[index].studentName,
-                                              style: const TextStyle(
-                                                fontSize: 14,
+                                              style: TextStyle(
+                                                fontSize: 14.sp,
                                                 fontFamily: 'Poppins',
                                                 fontWeight: FontWeight.normal,
                                               ),
@@ -120,9 +120,9 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                                               addList.removeAt(index);
                                               setState(() {});
                                             },
-                                            child: const Icon(
+                                            child: Icon(
                                               Icons.close,
-                                              size: 18,
+                                              size: 18.sp,
                                             ),
                                           ),
                                         ),
@@ -132,8 +132,8 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                         ),
                 )),
           ),
-          const SizedBox(
-            height: 40,
+          SizedBox(
+            height: 40.h,
 
           ),
           Padding(

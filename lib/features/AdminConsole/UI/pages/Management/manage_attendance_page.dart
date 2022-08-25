@@ -62,9 +62,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children: const [
+                children: [
                   Padding(
-                    padding: EdgeInsets.all(15.0),
+                    padding: EdgeInsets.all(15.0.h),
                     child: CircleAvatar(
                       radius: 25,
                       backgroundColor: primaryColor,
@@ -78,7 +78,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   Text(
                     'Harsh',
                     style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
                         color: blackColor),
@@ -89,14 +89,14 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
               Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(3.0),
+                    padding: EdgeInsets.all(3.0.sp),
                     child: Container(
                       width: 100.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: primaryColor),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0.sp),
                         child: Center(
                           child: Text(
                             'Id Card',
@@ -110,14 +110,14 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(3.0),
+                    padding: EdgeInsets.all(3.0.sp),
                     child: Container(
                       width: 100.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: primaryColor),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0.sp),
                         child: Center(
                           child: Text(
                             'CSV',
@@ -131,14 +131,14 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(5.0.sp),
                     child: Container(
                       width: 100.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: primaryColor),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0.sp),
                         child: Center(
                           child: Text(
                             'Assign New Class',
@@ -155,9 +155,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
               )
             ],
           ),
-          const Divider(
+          Divider(
             color: blackColor,
-            height: 10,
+            height: 10.h,
           ),
           Col1Widget()
         ]),
@@ -178,7 +178,7 @@ Container Col1Widget() {
     ),
     child: Column(children: [
       Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10.sp),
         child: Text(
           'Attendance log',
           style: TextStyle(

@@ -255,8 +255,11 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                   width: 200,
                   child: CustomTextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => LeaveApply()));
-                      }, text: 'Apply for Leave')),
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                LeaveApply(widget.student!.studentID)));
+                      },
+                      text: 'Apply for Leave')),
               const SizedBox(
                 height: 40,
               ),

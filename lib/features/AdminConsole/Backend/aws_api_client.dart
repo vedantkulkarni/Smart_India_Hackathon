@@ -1069,9 +1069,31 @@ mutation MyMutation {
   }
 
   @override
-  Future<Leave> getLeave({required String leaveID}) {
-    // TODO: implement getLeave
-    throw UnimplementedError();
+  Future<Leave> getLeave({required String leaveID}) async {
+    final body = {
+      'operationName': 'MyMutation',
+      'query': '''
+query MyQuery {
+  listLeaves {
+    items {
+      createdAt
+      leaveBody
+      leaveDate
+      leaveDays
+      leaveDocLink
+      leaveReason
+      leaveStatus
+      studentID
+      teacherID
+      updatedAt
+    }
+  }
+}
+''',
+    };
+    final responseString = await uploadJsonBodyRequest(body);
+    print(responseString);
+    return Leave.fromJson(json.decode(responseString)['data']['createLeave']);
   }
 
   @override
@@ -1082,15 +1104,18 @@ mutation MyMutation {
 query MyQuery {
   listLeaves(limit: $limit) {
     items {
+      createdAt
+      leaveBody
       leaveDate
       leaveDays
+      leaveDocLink
       leaveReason
       leaveStatus
       studentID
       teacherID
+      updatedAt
     }
   }
->>>>>>> fe0fb71ece4da561fcd939e348646656db231aef
 }
 ''',
     };

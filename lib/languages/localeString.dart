@@ -59,7 +59,9 @@ class LocalString extends Translations {
           'Settings': 'स्थापना',
           'Management': 'प्रबंधन',
           'User': 'उपयोगकर्ता',
+
           'Groups': 'अनुमतियाँ और छुट्टीया',
+
           'ClassRoom': 'कक्षा',
           'Search': 'खोज',
           'Please enter a name': 'कृपया एक नाम दर्ज करें',
