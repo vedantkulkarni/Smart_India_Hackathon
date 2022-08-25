@@ -80,7 +80,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
             }
 
             return Container(
-              padding: const EdgeInsets.all(30),
+              padding: EdgeInsets.all(30.sp),
               color: backgroundColor,
               child: Form(
                 key: _formKey,
@@ -90,7 +90,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.all(15.sp),
                             child: TextFormField(
                               controller: _nameController,
                               validator: ((value) {
@@ -111,7 +111,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.all(15.sp),
                             child: TextFormField(
                               controller: _emailController,
                               validator: ((value) {
@@ -134,7 +134,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.all(15.sp),
                             child: TextFormField(
                               controller: _phoneController,
                               validator: ((value) {
@@ -156,7 +156,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(15),
+                      padding: EdgeInsets.all(15.sp),
                       child: TextFormField(
                         controller: _addressController,
                         validator: ((value) {
@@ -196,7 +196,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                                 });
                               },
                               isExpanded: true,
-                              items: const [
+                              items: [
                                 DropdownMenuItem(
                                   child: Center(
                                     child: Text(
@@ -204,7 +204,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                                       style: TextStyle(
                                         color: primaryColor,
                                         fontFamily: 'Poppins',
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                       ),
                                     ),
                                   ),
@@ -217,7 +217,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                                       style: TextStyle(
                                         color: primaryColor,
                                         fontFamily: 'Poppins',
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                       ),
                                     ),
                                   ),
@@ -230,7 +230,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                                       style: TextStyle(
                                         color: primaryColor,
                                         fontFamily: 'Poppins',
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                       ),
                                     ),
                                   ),
@@ -242,7 +242,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.all(15.sp),
                             child: TextFormField(
                               controller: _ageController,
                               validator: ((value) {
@@ -263,7 +263,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: EdgeInsets.all(15.sp),
                             child: TextFormField(
                               controller: _rollNoController,
                               validator: ((value) {

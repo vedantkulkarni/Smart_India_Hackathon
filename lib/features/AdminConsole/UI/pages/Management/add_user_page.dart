@@ -298,7 +298,7 @@ class _AddUserPageState extends State<AddUserPage> {
                               vertical: 4.h, horizontal: 4.w),
                           decoration: BoxDecoration(
                             color: textFieldFillColor,
-                            border: Border.all(color: greyColor, width: 0.5),
+                            border: Border.all(color: greyColor, width: 0.5.w),
                             borderRadius: BorderRadius.all(
                               Radius.circular(4),
                             ),

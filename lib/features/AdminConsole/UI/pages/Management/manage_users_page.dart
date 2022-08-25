@@ -54,7 +54,7 @@ class _ManageUsersState extends State<ManageUsers> {
                 height: 20.h,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
                 child: Row(
                   children: [
                     Text('Show'.tr,
@@ -68,7 +68,7 @@ class _ManageUsersState extends State<ManageUsers> {
                     
                     DropdownButton<Role>(
                       icon: null,
-                      iconSize: 14,
+                      iconSize: 14.sp,
                       alignment: Alignment.center,
                       underline: Container(),
                       borderRadius: BorderRadius.circular(10),
@@ -130,9 +130,9 @@ class _ManageUsersState extends State<ManageUsers> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 10.w, vertical: 20.h),
                         width: 300.w,
-                        prefixIcon: const Icon(
+                        prefixIcon: Icon(
                           Icons.search,
-                          size: 14,
+                          size: 14.sp,
                         ),
                       ),
                     ),

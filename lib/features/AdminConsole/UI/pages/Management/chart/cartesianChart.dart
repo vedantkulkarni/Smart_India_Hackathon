@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
@@ -16,18 +17,18 @@ class Cartesian extends StatefulWidget {
 
 class _CartesianState extends State<Cartesian> {
   final List<SalesData> chartData = [
-    // SalesData('Jan', 86, Colors.red),
-    // SalesData('Feb', 70, Colors.red),
-    // SalesData('Mar', 34, Colors.green),
-    // SalesData('Apr', 68, Colors.red),
-    // SalesData('May', 100, Colors.red),
-    // SalesData('Jun', 5, Colors.green),
-    // SalesData('Jul', 40, Colors.green),
-    // SalesData('Aug', 77, Colors.red),
-    // SalesData('Sep', 90, Colors.red),
-    // SalesData('Oct', 97, Colors.red),
-    // SalesData('Nov', 84, Colors.red),
-    // SalesData('Dec', 54, Colors.red),
+    SalesData('Jan', 86, Colors.green),
+    SalesData('Feb', 70, Colors.green),
+    SalesData('Mar', 34, Colors.green),
+    SalesData('Apr', 68, Colors.green),
+    SalesData('May', 100, Colors.green),
+    SalesData('Jun', 5, Colors.green),
+    SalesData('Jul', 40, Colors.green),
+    SalesData('Aug', 77, Colors.green),
+    SalesData('Sep', 90, Colors.green),
+    SalesData('Oct', 97, Colors.green),
+    SalesData('Nov', 84, Colors.green),
+    SalesData('Dec', 54, Colors.green),
   ];
   List<double> monthWise = [];
   bool isLoaded = false;
@@ -78,9 +79,9 @@ class _CartesianState extends State<Cartesian> {
     for (int i = 0; i <= 12; i++) {
       print(monthTemp[i] + " " + monthWise[i].toString());
       if (monthWise[i] < 1) {
-        chartData.add(SalesData(monthTemp[i], 0, Colors.red));
+       // chartData.add(SalesData(monthTemp[i], 0, Colors.red));
       } else {
-        chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
+       // chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
       }
     }
     setState(() {
@@ -111,7 +112,7 @@ class _CartesianState extends State<Cartesian> {
               child: progressIndicator,
             )
           : Container(
-              margin: const EdgeInsets.all(20),
+              margin: EdgeInsets.all(20.sp),
               child: Center(
                   child: SfCartesianChart(
                       primaryXAxis: CategoryAxis(),

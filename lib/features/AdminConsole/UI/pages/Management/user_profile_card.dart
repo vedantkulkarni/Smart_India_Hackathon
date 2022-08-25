@@ -67,7 +67,7 @@ class UserProfileCard extends StatelessWidget {
                         bottomRight: Radius.circular(10),
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
                     child: Column(
                       children: [
                         RowTile(
@@ -138,7 +138,7 @@ class RowTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(10.sp),
       child: Row(
         children: [
           Text(
