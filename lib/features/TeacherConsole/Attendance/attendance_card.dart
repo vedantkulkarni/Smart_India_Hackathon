@@ -34,11 +34,12 @@ class AttendanceCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundImage: NetworkImage(
-                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
+                  student.profilePhoto ??
+                      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
                 ),
-                radius: 30,
+                radius: 26,
               ),
               const SizedBox(
                 height: 5,
