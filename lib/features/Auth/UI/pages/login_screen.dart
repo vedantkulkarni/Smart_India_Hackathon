@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-        double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     ScreenUtil.init(context, designSize: Size(width, height));
     return FlutterLogin(
@@ -88,7 +88,9 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white,
           ),
           labelStyle: TextStyle(
-              fontSize: 16.sp, color: primaryColor, fontWeight: FontWeight.normal),
+              fontSize: 16.sp,
+              color: primaryColor,
+              fontWeight: FontWeight.normal),
         ),
       ),
 
@@ -97,24 +99,35 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               // builder: (context) => DashboardScreen(),
               builder: ((ctx) => BlocProvider(
-                    create: (context) =>
-                        AuthCubit(awsApiClient: getIt<AWSApiClient>()),
+                    create: (context) => AuthCubit(
+                        awsApiClient: getIt<AWSApiClient>(),
+                        username: userName,
+                        password: password),
                     child: const AdminConsole(),
                   ))));
         } else {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
               // builder: (context) => DashboardScreen(),
-              builder: ((ctx) => MultiBlocProvider(providers: [
-                    // BlocProvider.value(value: BlocProvider.of<AuthCubit>(context)),
-                    BlocProvider(
-                      create: ((_) => TeacherCubit(
-                            awsApiClient: getIt<AWSApiClient>(),
-                            userName: userName,
-                            password: password,
-                            userID: 'vedantk60@gmail.com',
-                          )),
+              builder: ((ctx) => MultiBlocProvider(
+                    providers: [
+                      // BlocProvider.value(value: BlocProvider.of<AuthCubit>(context)),
+                      BlocProvider(
+                        create: ((_) => TeacherCubit(
+                              awsApiClient: getIt<AWSApiClient>(),
+                              userName: userName,
+                              password: password,
+                              userID: userName,
+                            )),
+                      ),
+                    ],
+                    child: TeacherConsole(
+                      password: password,
+                      userName: userName,
                     ),
-                  ], child: TeacherConsole(password: password,userName: userName,)))));
+                  )),
+            ),
+          );
         }
       },
       onRecoverPassword: _recoverPassword,

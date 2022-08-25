@@ -29,11 +29,31 @@ class TeacherCubit extends Cubit<TeacherState> {
       required this.userName,
       required this.password})
       : super(TeacherInitial()) {
-    // signInTeacher(userName, password);
+    isUserSignedIn();
+    signInTeacher(userName, password);
     getTeacherDetails(userID: userID);
   }
   bool isSignedIn = false;
-  Future<void> signInTeacher(String username, String password) async {}
+  Future<bool> isUserSignedIn() async {
+    final result = await Amplify.Auth.fetchAuthSession();
+    return result.isSignedIn;
+  }
+
+  Future<void> signInTeacher(String username, String password) async {
+    await Amplify.Auth.signOut();
+    try {
+      final result = await Amplify.Auth.signIn(
+        username: username,
+        password: password,
+      );
+      isSignedIn = result.isSignedIn;
+      if (isSignedIn) {
+        getTeacherDetails(userID: username);
+      }
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+  }
 
   Future<void> getTeacherDetails({required String userID}) async {
     teacher = await awsApiClient.getAdminDetails(userID: userID);
@@ -54,7 +74,6 @@ class TeacherCubit extends Cubit<TeacherState> {
       emit(SchoolNotSet());
     }
     school = await awsApiClient.getSchoolDetails(schoolID: schoolID);
-   
 
     print(school);
     emit(SchoolFetched());

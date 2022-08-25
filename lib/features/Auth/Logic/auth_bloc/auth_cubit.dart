@@ -6,7 +6,11 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AWSApiClient awsApiClient;
-  AuthCubit({required this.awsApiClient}) : super(AuthInitial());
+  String username;
+  String password;
+  AuthCubit({required this.awsApiClient, required this.username, required this.password}) : super(AuthInitial()) {
+    authenticateUser(email: username, password: password);
+  }
 
   String authUserEmail = '';
 

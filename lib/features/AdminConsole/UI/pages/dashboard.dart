@@ -32,15 +32,23 @@ class _DashboardState extends State<Dashboard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "hi".tr,
+            'Zilha Parishad School,Hinjewadi.',
             style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 44.sp,
                 fontFamily: 'Poppins',
                 color: primaryColor),
           ),
+          // Text(
+          //   "".tr,
+          //   style: TextStyle(
+          //       fontWeight: FontWeight.normal,
+          //       fontSize: 44.sp,
+          //       fontFamily: 'Poppins',
+          //       color: primaryColor),
+          // ),
           Text(
-            "${adminProvider.admin.name},",
+            "Hi ${adminProvider.admin.name},",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 44.sp,
