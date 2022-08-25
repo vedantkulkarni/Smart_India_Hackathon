@@ -1,5 +1,5 @@
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:dropdown_search/dropdown_search.dart';
+// import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 
 import 'package:team_dart_knights_sih/features/TeacherConsole/leave_application/Widgets/AppBar.dart';
@@ -186,25 +186,25 @@ class _LeaveApplyState extends State<LeaveApply>
                   Transform(
                     transform: Matrix4.translationValues(
                         delayedAnimation.value * width, 0, 0),
-                    child: DropdownSearch<String>(
-                      validator: (v) => v == null ? "required field" : null,
-                      hint: "Please Select Leave type",
-                      mode: Mode.MENU,
-                      showSelectedItem: true,
-                      items: const [
-                        "Medical",
-                        "Family",
-                        "Sick",
-                        'Function',
-                        'Others'
-                      ],
-                      showClearButton: true,
-                      clearButton: const Icon(
-                        Icons.close,
-                        color: primaryColor,
-                      ),
-                      onChanged: print,
-                    ),
+                    // child: DropdownSearch<String>(
+                    //   validator: (v) => v == null ? "required field" : null,
+                    //   hint: "Please Select Leave type",
+                    //   mode: Mode.MENU,
+                    //   showSelectedItem: true,
+                    //   items: const [
+                    //     "Medical",
+                    //     "Family",
+                    //     "Sick",
+                    //     'Function',
+                    //     'Others'
+                    //   ],
+                    //   showClearButton: true,
+                    //   clearButton: const Icon(
+                    //     Icons.close,
+                    //     color: primaryColor,
+                    //   ),
+                    //   onChanged: print,
+                    // ),
                   ),
                   SizedBox(
                     height: height * 0.05,
