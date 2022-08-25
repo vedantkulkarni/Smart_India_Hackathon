@@ -453,13 +453,9 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                                     value: BlocProvider.of<
                                                             ManagementCubit>(
                                                         context)),
-                                                BlocProvider(
-                                                    create: (context) =>
-                                                        ClassDetailsCubit(
-                                                            classRoomId:
-                                                                classRoom.id,
-                                                            awsApiClient: getIt<
-                                                                AWSApiClient>())),
+                                               BlocProvider.value(value: BlocProvider.of<
+                                                            ClassDetailsCubit>(
+                                                        context)),
                                                 BlocProvider(
                                                     create: (_) =>
                                                         StudentDetailsCubitCubit(

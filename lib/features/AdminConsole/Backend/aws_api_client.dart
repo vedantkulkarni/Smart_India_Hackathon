@@ -614,6 +614,7 @@ query MyQuery {
 
   @override
   Future<Student> createStudent({required Student student}) async {
+
     var gender = student.gender == Gender.Male ? "Male" : "Female";
     final body = {
       'operationName': 'MyMutation',

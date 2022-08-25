@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/student_details_cubit_cubit.dart';
 
 import '../../../../../injection_container.dart';
@@ -110,12 +111,13 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
               name: studentDetailsCubit.studentDeatail!.studentName.toString(),
               image: studentDetailsCubit.studentDeatail!.profilePhoto,
               teacherName:
-                  studentDetailsCubit.studentDeatail!.createdAt.toString(),
+                  studentDetailsCubit.studentDeatail!.roll.toString(),
               email: studentDetailsCubit.studentDeatail!.email.toString(),
               phoneNumber:
                   studentDetailsCubit.studentDeatail!.phoneNumber.toString(),
-              classname: studentDetailsCubit.studentDeatail!.classRoomStudentsId
-                  .toString(),
+              classname: BlocProvider.of<ClassDetailsCubit>(context)
+                  .classRoom
+                  .classRoomName.toString(),
             )),
             Expanded(
               child: Column(
