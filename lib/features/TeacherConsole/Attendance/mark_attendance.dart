@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,8 +11,6 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/Attendance/cam_det
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/attendance_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/custom_snackbar.dart';
 import 'package:team_dart_knights_sih/models/AttendanceStatus.dart';
-
-import '../../../models/AttendanceStatus.dart';
 import '../../../injection_container.dart';
 import '../../../models/Student.dart';
 import 'camera_service.dart';
@@ -54,9 +51,6 @@ class _MarkAttendnacePageState extends State<MarkAttendnacePage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    // _cameraService.dispose();
-    // BlocProvider.of<AttendanceCubit>(context).mlService.dispose();
     super.didChangeDependencies();
   }
 
@@ -289,11 +283,15 @@ class _WorkOnImageWidgetState extends State<WorkOnImageWidget> {
                       const SizedBox(
                         height: 30,
                       ),
-                      CustomTextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          text: 'Try Again')
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Try again',
+                          style: TextStyle(color: primaryColor, fontSize: 17),
+                        ),
+                      )
                     ],
                   ),
                 );
