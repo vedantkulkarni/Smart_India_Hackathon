@@ -1,3 +1,4 @@
+import 'package:data_table_2/data_table_2.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 class DownloadAttedance extends StatefulWidget {
   DownloadAttedance({Key? key}) : super(key: key);
@@ -58,6 +60,7 @@ class _DownloadAttedanceState extends State<DownloadAttedance> {
 
             return Container(
                 color: backgroundColor,
+                padding: EdgeInsets.all(20.sp),
                 child: Expanded(
                   child: GridView.count(
                       crossAxisCount: 5,
@@ -211,18 +214,78 @@ class DownloadCsvDialogState extends State<DownloadCsvDialog> {
         if (state is ClassDetailsInitial || state is FetchingAttendanceList) {
           return progressIndicator;
         }
-        return Container(
-            child: Container(
-          child: Center(
-              child: CustomTextButton(
-                  onPressed: () {
-                    save(
-                        attendanceList:
-                            BlocProvider.of<ClassDetailsCubit>(context)
-                                .attendanceList);
-                  },
-                  text: 'Download')),
-        ));
+
+        List<Attendance> attendanceList =
+            BlocProvider.of<ClassDetailsCubit>(context).attendanceList!;
+        return Column(
+          children: [
+            Expanded(
+              child: DataTable2(
+                columns: const [
+                  DataColumn2(
+                    label: Text('Class Name'),
+                  ),
+                  DataColumn2(
+                    label: Text('Date'),
+                  ),
+                  DataColumn2(
+                    label: Text('GeoLatitute'),
+                  ),
+                  DataColumn2(
+                    label: Text('GeoLongitute'),
+                  ),
+                  DataColumn2(
+                    label: Text('Status'),
+                  ),
+                  DataColumn2(
+                    label: Text('Student Name'),
+                  ),
+                  DataColumn2(
+                    label: Text('Teacher Name'),
+                  ),
+                  DataColumn2(
+                    label: Text('Time'),
+                  ),
+                  DataColumn2(
+                    label: Text('Verification mode'),
+                  ),
+                ],
+                rows: List<DataRow>.generate(
+                  BlocProvider.of<ClassDetailsCubit>(context)
+                      .attendanceList!
+                      .length,
+                  (index) => DataRow2.byIndex(
+                    index: index,
+                    selected: true,
+                    color: MaterialStateProperty.all(whiteColor),
+                    cells: [
+                      DataCell(Text(attendanceList[index].className)),
+                      DataCell(Text(attendanceList[index].date.toString())),
+                      DataCell(
+                          Text(attendanceList[index].geoLatitude.toString())),
+                      DataCell(
+                          Text(attendanceList[index].geoLongitude.toString())),
+                      DataCell(Text(attendanceList[index].status.toString())),
+                      DataCell(Text(attendanceList[index].studentName)),
+                      DataCell(Text(attendanceList[index].teacherName)),
+                      DataCell(Text(attendanceList[index].time.toString())),
+                      DataCell(
+                          Text(attendanceList[index].verification.toString())),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            CustomTextButton(
+              onPressed: () {
+                save(
+                  attendanceList: attendanceList,
+                );
+              },
+              text: 'Download',
+            ),
+          ],
+        );
       },
     );
   }
