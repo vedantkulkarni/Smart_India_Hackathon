@@ -169,7 +169,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
   Future<void> uploadAttendance({required ClassRoom classRoom}) async {
     emit(UploadingAttendance());
-
+    print("coming here");
     final position = await determinePosition();
     final double latitude = position.latitude;
     final double longitude = position.longitude;
@@ -183,8 +183,9 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       var sutdentName = studList!
           .firstWhere((element) => element.studentID == studentID.key)
           .studentName;
+      print(attendanceMap);
 
-      var status = attendanceMap[studentID.value];
+      var status = attendanceMap[studentID.key];
       final attendance = getAttendanceObj(
           studentName: sutdentName,
           className: classRoom.classRoomName,

@@ -54,13 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 size: 35,
                 color: primaryColor,
               ),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.info_outline,
-                    size: 35,
-                    color: Colors.black,
+              actions: [
+                GestureDetector(
+                  onTap: () {},
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.info_outline,
+                      size: 35,
+                      color: Colors.black,
+                    ),
                   ),
                 )
               ],
