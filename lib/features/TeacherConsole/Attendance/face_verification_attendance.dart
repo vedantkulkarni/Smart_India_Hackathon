@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_face_api/face_api.dart';
+// import 'package:flutter_face_api/face_api.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,17 +44,17 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
     return inputImage;
   }
 
-  Future<bool> checkLiveness() async {
-    FaceSDK.startLiveness().then((livenessResponse) {
-      var response = LivenessResponse.fromJson(json.decode(livenessResponse));
-      if (response!.liveness == LivenessStatus.PASSED) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return false;
-  }
+  // Future<bool> checkLiveness() async {
+  //   FaceSDK.startLiveness().then((livenessResponse) {
+  //     var response = LivenessResponse.fromJson(json.decode(livenessResponse));
+  //     if (response!.liveness == LivenessStatus.PASSED) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+  //   return false;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -168,10 +168,10 @@ class _FaceVerifyScreenState extends State<FaceVerifyScreen> {
                 width: 170,
                 child: CustomTextButton(
                   onPressed: () async {
-                    if (widget.verificationStatus ==
-                        VerificationStatus.FaceVerifiedWithLiveness) {
-                         var result = await checkLiveness();
-                        }
+                    // if (widget.verificationStatus ==
+                    //     VerificationStatus.FaceVerifiedWithLiveness) {
+                    //      var result = await checkLiveness();
+                    //     }
                     if (attendanceCubit.cameraService.cameraController ==
                         null) {
                       await attendanceCubit.initCamera();

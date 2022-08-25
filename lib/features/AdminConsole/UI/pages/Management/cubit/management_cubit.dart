@@ -61,6 +61,12 @@ class ManagementCubit extends Cubit<ManagementState> {
     emit(UserDeleted());
   }
 
+    Future<void> registerUser({required String username}) async {
+    // emit(RegisteringUser());
+    await awsApiClient.signUpUser(userID: username, password: 'Unowho@23');
+    // emit(UserRegisterd());
+  }
+
   void clearUserList() {
     _userList = [];
   }
@@ -69,6 +75,8 @@ class ManagementCubit extends Cubit<ManagementState> {
   List<User> get usersList {
     return _userList;
   }
+
+  
 
   //Management mode = Students
   Future<void> getAllStudents({required int limit}) async {

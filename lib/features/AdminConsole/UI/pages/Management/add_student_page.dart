@@ -179,10 +179,8 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                         Expanded(
                           child: Container(
                             color: textFieldFillColor,
-                            
-                            padding:  EdgeInsets.symmetric(vertical: 2.h),
+                            padding: EdgeInsets.symmetric(vertical: 2.h),
                             child: DropdownButton<Gender>(
-                              
                               icon: null,
                               iconSize: 24,
                               alignment: Alignment.center,

@@ -33,44 +33,31 @@ class _DashboardState extends State<Dashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            Column(
-              children: [
-                Text(
-                  "Zilha Parishad School,Hinjewadi\n Hi, Namit.".tr,
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 44.sp,
-                      fontFamily: 'Poppins',
-                      color: primaryColor),
-                ),
-                // Text(
-                //   "${adminProvider.admin.name},",
-                //   style: TextStyle(
-                //       fontWeight: FontWeight.bold,
-                //       fontSize: 44.sp,
-                //       fontFamily: 'Poppins',
-                //       color: blackColor),
-                // ),
-              ],
-            ),
-            // Image.assets("assets/images/logo_black-removebg-preview.png"),
 
-            Spacer(),
-            Container(
-              height: 70.h,
-              width: 70.w,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(
-                        "assets/images/logo_black-removebg-preview.png",
-                      ),
-                      fit: BoxFit.cover)),
-            ),
-            SizedBox(
-              width: 50.w,
-            ),
-          ]),
+          Text(
+            'Zilha Parishad School,Hinjewadi.',
+            style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 44.sp,
+                fontFamily: 'Poppins',
+                color: primaryColor),
+          ),
+          // Text(
+          //   "".tr,
+          //   style: TextStyle(
+          //       fontWeight: FontWeight.normal,
+          //       fontSize: 44.sp,
+          //       fontFamily: 'Poppins',
+          //       color: primaryColor),
+          // ),
+          Text(
+            "Hi ${adminProvider.admin.name},",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 44.sp,
+                fontFamily: 'Poppins',
+                color: blackColor),
+          ),
           SizedBox(
             height: 60.h,
           ),

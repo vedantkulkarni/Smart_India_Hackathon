@@ -115,7 +115,7 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                     height: MediaQuery.of(context).padding.top,
                   ),
                   const Text(
-                    'Mark Attendance',
+                    'Manual Attendance',
                     style: TextStyle(
                       color: primaryColor,
                       fontSize: 26,
@@ -192,13 +192,14 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                           onPressed: () async {
                             final res = await showDialog(
                                 context: context,
-                                builder: (context) {
+                                builder: (_) {
                                   return AttendanceDialog(
                                     presentStudents: presentStudents,
                                     totalStudents: totalStudents,
                                   );
                                 });
                             print(res);
+
                             if (res) {
                               await attendanceCubit.uploadAttendance(
                                   classRoom: classCubit.classRoom);

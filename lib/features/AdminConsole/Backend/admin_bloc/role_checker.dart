@@ -2,7 +2,7 @@ import '../../../../models/Role.dart';
 import '../../../../models/User.dart';
 
 class RoleChecker {
-  late final User user;
+  late  User user;
 
   void setUser(User myUser) {
     user = myUser;

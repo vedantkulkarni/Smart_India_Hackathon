@@ -14,28 +14,28 @@ class Management extends StatefulWidget {
 class _ManagementState extends State<Management> {
   final List<List<String>> addList = [
     [
-      'User',
-      'View, manage, update, create and delete users.',
+      'User'.tr,
+      'View user'.tr,
       '$commonPath/user.png'
     ],
     [
       'Students'.tr,
-      'View, manage, update, create and delete students',
+      'student user'.tr,
       '$commonPath/students.png'
     ],
     [
       'Groups'.tr,
-      'View, manage, update, create and delete groups',
+      'Manage permissions and leaves'.tr,
       '$commonPath/box.png'
     ],
     [
       'ClassRoom'.tr,
-      'View, manage, update, create and delete classroom',
+      'classroom user'.tr,
       '$commonPath/myClassRoom.png'
     ],
     [
       'Attendance'.tr,
-      'View, manage, update, download and delete student\'s attendance',
+      'attendance user'.tr,
       '$commonPath/attendance.png'
     ],
   ];

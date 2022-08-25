@@ -1,6 +1,9 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
+import 'package:team_dart_knights_sih/features/Auth/UI/pages/login_screen.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/fab.dart';
@@ -20,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var _langStatus;
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -39,6 +43,35 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
+          if (state is CredentialsNotCorrect) {
+            return Scaffold(
+              body: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Credentials not correct"),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: CustomTextButton(
+                          onPressed: () async {
+                            await Amplify.Auth.signOut();
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                          },
+                          text: 'Try Again',
+                        ),
+                      ),
+                    ],
+                  )),
+            );
+          }
+
           if (state is SchoolNotFound) {
             return const SchoolNotFoundPage();
           }
@@ -49,18 +82,80 @@ class _HomeScreenState extends State<HomeScreen> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: const Icon(
-                Icons.notifications,
-                size: 35,
-                color: primaryColor,
-              ),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.info_outline,
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButton(
+                  icon: const Icon(
+                    Icons.notifications,
                     size: 35,
-                    color: Colors.black,
+                    color: primaryColor,
+                  ),
+                  iconSize: 14,
+                  alignment: Alignment.centerLeft,
+                  underline: Container(),
+                  borderRadius: BorderRadius.circular(10),
+                  value: _langStatus,
+                  onChanged: (val) async {
+                    _langStatus = val;
+                  },
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'English',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: 1,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Hindi',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: 2,
+                    ),
+                    DropdownMenuItem(
+                      child: Center(
+                        child: Text(
+                          'Marathi',
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      value: 3,
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                GestureDetector(
+                  onTap: () {},
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 25,
+                      backgroundColor: primaryColor,
+                      child: CircleAvatar(
+                        radius: 23,
+                        backgroundImage: NetworkImage(
+                            "https://image.shutterstock.com/image-photo/profile-picture-smiling-millennial-asian-260nw-1836020740.jpg"),
+                      ),
+                    ),
                   ),
                 )
               ],

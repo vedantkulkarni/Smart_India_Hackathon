@@ -42,6 +42,11 @@ class LocalString extends Translations {
           'Hindi': 'Hindi',
           'Marathi': 'Marathi',
           'Log Out': 'Log Out',
+          'View user': 'View, manage, update, create and delete users.',
+          'student user': 'View, manage, update, create and delete groups',
+          'Manage permissions and leaves' : 'Manage permissions and leaves',
+          'classroom user' : 'View, manage, update, create and delete classroom',
+          'attendance user' : 'View, manage, update, download and delete student\'s attendance',
         },
         'hi_IN': {
           'hi': 'नमस्ते',
@@ -54,7 +59,9 @@ class LocalString extends Translations {
           'Settings': 'स्थापना',
           'Management': 'प्रबंधन',
           'User': 'उपयोगकर्ता',
-          'Groups': 'अनुमती और छुट्टीया',
+
+          'Groups': 'अनुमतियाँ और छुट्टीया',
+
           'ClassRoom': 'कक्षा',
           'Search': 'खोज',
           'Please enter a name': 'कृपया एक नाम दर्ज करें',
@@ -82,6 +89,13 @@ class LocalString extends Translations {
           'Hindi': 'हिन्दी',
           'Marathi': 'मराठी',
           'Log Out': 'लॉग आउट',
+          'View user':
+              'उपयोगकर्ताओं को देखें, प्रबंधित करें, अपडेट करें, बनाएं और हटाएं।',
+          'student user':
+              'गट पहा, व्यवस्थापित करा, अपडेट करा, तयार करा आणि हटवा',
+          'Manage permissions and leaves' : 'अनुमतियाँ और पत्ते प्रबंधित करें',
+          'classroom user' : 'कक्षा देखें, प्रबंधित करें, अपडेट करें, बनाएं और हटाएं',
+          'attendance user' : 'छात्र की उपस्थिति देखें, प्रबंधित करें, अपडेट करें, डाउनलोड करें और हटाएं',
         },
         'mr_IN': {
           'hi': 'नमस्कार',
@@ -121,7 +135,14 @@ class LocalString extends Translations {
           'English': 'इंग्रजी',
           'Hindi': 'हिंदी',
           'Marathi': 'मराठी',
-          'Log Out': 'बाहेर पडा',  
+          'Log Out': 'बाहेर पडा',
+          'View user':
+              'वापरकर्ते पहा, व्यवस्थापित करा, अपडेट करा, तयार करा आणि हटवा',
+          'student user':
+              'समूह देखें, प्रबंधित करें, अपडेट करें, बनाएं और हटाएं',
+          'Manage permissions and leaves' : 'परवानग्या आणि पाने व्यवस्थापित करा',
+          'classroom user' : 'वर्ग पहा, व्यवस्थापित करा, अपडेट करा, तयार करा आणि हटवा',
+          'attendance user' : 'विद्यार्थ्याची उपस्थिती पहा, व्यवस्थापित करा, अपडेट करा, डाउनलोड करा आणि हटवा',
         }
       };
 }

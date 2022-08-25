@@ -17,18 +17,20 @@ class Cartesian extends StatefulWidget {
 
 class _CartesianState extends State<Cartesian> {
   final List<SalesData> chartData = [
-    SalesData('Jan', 86, Colors.green),
-    SalesData('Feb', 70, Colors.green),
-    SalesData('Mar', 34, Colors.green),
-    SalesData('Apr', 68, Colors.green),
-    SalesData('May', 100, Colors.green),
-    SalesData('Jun', 5, Colors.green),
-    SalesData('Jul', 40, Colors.green),
-    SalesData('Aug', 77, Colors.green),
-    SalesData('Sep', 90, Colors.green),
-    SalesData('Oct', 97, Colors.green),
-    SalesData('Nov', 84, Colors.green),
-    SalesData('Dec', 54, Colors.green),
+
+    SalesData('Jan', 86, primaryColor),
+    SalesData('Feb', 70, primaryColor),
+    SalesData('Mar', 34, primaryColor),
+    SalesData('Apr', 68, primaryColor),
+    SalesData('May', 100, primaryColor),
+    SalesData('Jun', 5, primaryColor),
+    SalesData('Jul', 40, primaryColor),
+    SalesData('Aug', 77, primaryColor),
+    SalesData('Sep', 90, primaryColor),
+    SalesData('Oct', 97, primaryColor),
+    SalesData('Nov', 84, primaryColor),
+    SalesData('Dec', 54, primaryColor),
+
   ];
   List<double> monthWise = [];
   bool isLoaded = false;
@@ -79,9 +81,11 @@ class _CartesianState extends State<Cartesian> {
     for (int i = 0; i <= 12; i++) {
       print(monthTemp[i] + " " + monthWise[i].toString());
       if (monthWise[i] < 1) {
+
        // chartData.add(SalesData(monthTemp[i], 0, Colors.red));
       } else {
        // chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
+
       }
     }
     setState(() {
