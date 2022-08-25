@@ -363,40 +363,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                         ),
                       ),
                       const Spacer(),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                // await Navigator.of(context)
-                                //     .push(MaterialPageRoute(builder: (_) {
-                                //   return MultiBlocProvider(providers: [
-                                //     BlocProvider.value(
-                                //         value: BlocProvider.of<AdminCubit>(
-                                //             context)),
-                                //     BlocProvider(
-                                //         create: (context) => ManagementCubit(
-                                //             awsApiClient: getIt<AWSApiClient>(),
-                                //             managementMode:
-                                //                 ManagementMode.Teachers)),
-                                //   ], child: const AttendanceOfClassroomPage());
-                                // }));
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return CustomDialogBox(
-                                        widget: const Center(
-                                          child: Text('Attendnace Details'),
-                                        ),
-                                      );
-                                    });
-                              },
-                              child: Text('View'.tr),
-                            ),
-                          ],
-                        ),
-                      ),
+                      
                     ],
                   ),
                 ),
