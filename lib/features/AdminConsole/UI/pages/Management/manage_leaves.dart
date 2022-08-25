@@ -1,4 +1,5 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 
 import '../../widgets/custom_textbutton.dart';
+import '../../widgets/custom_textfield.dart';
 import 'cubit/management_cubit.dart';
 
 class ManageLeaves extends StatefulWidget {
@@ -37,25 +39,26 @@ class _ManageLeavesState extends State<ManageLeaves> {
                 children: [
                   Row(
                     children: [
-                      IconButton(
-                        onPressed: () {
+                      GestureDetector(
+                        onTap: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back),
+                        child: const Icon(Icons.arrow_back),
                       ),
-                      // Container(
-                      //   margin: const EdgeInsets.all(10),
-                      //   child: CustomTextField(
-                      //     hintText: 'Search',
-                      //     padding: const EdgeInsets.symmetric(
-                      //         horizontal: 10, vertical: 15),
-                      //     width: 400,
-                      //     prefixIcon: const Icon(
-                      //       FluentIcons.search_12_filled,
-                      //       size: 16,
-                      //     ),
-                      //   ),
-                      // ),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: CustomTextField(
+                          hintText: 'Search',
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          width: 400,
+                          prefixIcon: const Icon(
+                            Icons.arrow_back,
+                            //FluentIcons.search_12_filled,
+                            size: 16,
+                          ),
+                        ),
+                      ),
                       const Spacer(),
                       SizedBox(
                           width: 200.w,

@@ -13,7 +13,10 @@ class ManagementCubit extends Cubit<ManagementState> {
   List<Student> _studentList = [];
   List<ClassRoom> _classroomList = [];
 
-  ManagementCubit({required this.awsApiClient, required this.managementMode, required int limit})
+  ManagementCubit(
+      {required this.awsApiClient,
+      required this.managementMode,
+      required int limit})
       : super(ManagementInitial()) {
     if (managementMode == ManagementMode.Students) {
       getAllStudents(limit: limit);
@@ -150,6 +153,7 @@ class ManagementCubit extends Cubit<ManagementState> {
   //Managemode  = Leaves
   Future<void> getAllLeaves({required int limit}) async {
     emit(FetchingLeaves());
+
     final leaves = await awsApiClient.getListOfLeaves(limit: limit);
     emit(LeavesFetched(leaves: leaves));
   }
