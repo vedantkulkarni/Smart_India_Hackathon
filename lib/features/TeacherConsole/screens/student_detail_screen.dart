@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_cubit.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/amplify_storage_s3_service.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/widgets/future_image.dart';
 import '../../../core/constants.dart';
 import '../../../injection_container.dart';
 import '../../../models/Student.dart';
@@ -99,18 +100,7 @@ class _StudentDetailScreenState extends State<StudentDetailScreen> {
                   child: CircleAvatar(
                     radius: 72,
                     backgroundColor: backgroundColor,
-                    child: CircleAvatar(
-                      // backgroundImage: i.image,
-                      backgroundImage: NetworkImage(
-                        widget.student!.profilePhoto ??
-                            "https://images.pex"
-                                "els.com/photos/220453/pexels-phot"
-                                "o-220453.jpeg?auto=compress&c"
-                                "s=tinysrgb&w=600",
-                      ),
-                      // "https://grandfinaleimages101118-staging.s3.ap-south-1.amazonaws.com/2022-08-13-09-13-45-6893D8C109546D2B"),
-                      radius: 70,
-                    ),
+                    child:  FutureImage(imageKey: widget.student!.profilePhoto??'')
                   ),
                 ),
               ),

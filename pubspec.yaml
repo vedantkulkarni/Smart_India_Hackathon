@@ -89,6 +89,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.2.44
   internet_connection_checker: ^0.0.1+4
   shared_preferences: ^2.0.15
+  cached_network_image: ^3.2.1
 
 
 dev_dependencies:

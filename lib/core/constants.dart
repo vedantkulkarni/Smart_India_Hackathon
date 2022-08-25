@@ -46,7 +46,8 @@ enum AttendanceSearchMode {
   teacherName,
   studentName,
   verification,
-  classID
+  classID,
+  gender
 }
 
 const String commonPath = 'assets/images';

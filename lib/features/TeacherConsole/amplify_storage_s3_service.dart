@@ -4,20 +4,20 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:camera/camera.dart';
 
 Future<String?> uploadImage(XFile pickedFile, String studentID) async {
-  final key = 'students/$studentID';
+  final key = '$studentID';
   final file = File(pickedFile.path);
   try {
   
     final UploadFileResult result = await Amplify.Storage.uploadFile(
       local: file,
-      key: key,
+      key: "students/$key",
       onProgress: (progress) {
         print('Fraction completed: ${progress.getFractionCompleted()}');
       },
     );
     print('Successfully uploaded image: ${result.key}');
-    var dUrl = await getDownloadUrl(result.key);
-    return dUrl;
+    // var dUrl = await getDownloadUrl(result.key);
+    return key;
   } on StorageException catch (e) {
     print('Error uploading image: $e');
     return null;
