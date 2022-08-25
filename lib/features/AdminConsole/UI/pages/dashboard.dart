@@ -21,7 +21,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final adminProvider = BlocProvider.of<AdminCubit>(context);
-    
+
     double _screenWidth = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -33,37 +33,44 @@ class _DashboardState extends State<Dashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children:[
-            Column(children: [
-              Text(
-            "Zilha Parishad School,Hinjewadi\n Hi, Namit.".tr,
-            style: TextStyle(
-                fontWeight: FontWeight.normal,
-                fontSize: 44.sp,
-                fontFamily: 'Poppins',
-                color: primaryColor),
-          ),
-          // Text(
-          //   "${adminProvider.admin.name},",
-          //   style: TextStyle(
-          //       fontWeight: FontWeight.bold,
-          //       fontSize: 44.sp,
-          //       fontFamily: 'Poppins',
-          //       color: blackColor),
-          // ),
-            ],),
-           // Image.assets("assets/images/logo_black-removebg-preview.png"),
-           
-           Spacer(),
-           Container(
-            height:70.h,
-            width:70.w,
-            decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/images/logo_black-removebg-preview.png",
-            ),fit: BoxFit.cover)
-           ),),
-           SizedBox(width: 50.w,),
-         ]),
+          Row(children: [
+            Column(
+              children: [
+                Text(
+                  "Zilha Parishad School,Hinjewadi\n Hi, Namit.".tr,
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 44.sp,
+                      fontFamily: 'Poppins',
+                      color: primaryColor),
+                ),
+                // Text(
+                //   "${adminProvider.admin.name},",
+                //   style: TextStyle(
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: 44.sp,
+                //       fontFamily: 'Poppins',
+                //       color: blackColor),
+                // ),
+              ],
+            ),
+            // Image.assets("assets/images/logo_black-removebg-preview.png"),
+
+            Spacer(),
+            Container(
+              height: 70.h,
+              width: 70.w,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        "assets/images/logo_black-removebg-preview.png",
+                      ),
+                      fit: BoxFit.cover)),
+            ),
+            SizedBox(
+              width: 50.w,
+            ),
+          ]),
           SizedBox(
             height: 60.h,
           ),
@@ -81,18 +88,11 @@ class _DashboardState extends State<Dashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const PieChartWidget();
-                  }));
-                },
-                child: DashboardCard(
-                  user: 'Students',
-                  number: '302',
-                  color: primaryColor,
-                ),
-              ),
+              (DashboardCard(
+                user: 'Students',
+                number: '302',
+                color: primaryColor,
+              )),
               DashboardCard(
                 user: 'Teachers',
                 number: '33',

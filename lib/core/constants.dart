@@ -1,6 +1,7 @@
 //all color schemes and constants in the app.
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 const Color primaryColor = Color(0xff3fc47c);
 // const Color primaryColor = Colors.blue;
@@ -21,11 +22,9 @@ const Color lightTextColor = Color(0xff9aa3b1);
 
 Widget progressIndicator = Container(
   color: backgroundColor,
-  child: const Center(
-      child: CircularProgressIndicator(
-    color: primaryColor,
-  )),
-);
+  child: Center(
+      child: Lottie.asset("assets/images/loader.json",animate: true)
+),);
 
 String sharedPrefKey = 'classAttendancesList';
 
