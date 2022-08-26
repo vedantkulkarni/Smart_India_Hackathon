@@ -22,9 +22,13 @@ const Color lightTextColor = Color(0xff9aa3b1);
 
 Widget progressIndicator = Container(
   color: backgroundColor,
-  child: Center(
-      child: Lottie.asset("assets/images/loader.json",animate: true)
-),);
+  child: SizedBox(
+    height: 50,
+    width: 50,
+    child:
+        Center(child: Lottie.asset("assets/images/loader.json", animate: true)),
+  ),
+);
 
 String sharedPrefKey = 'classAttendancesList';
 

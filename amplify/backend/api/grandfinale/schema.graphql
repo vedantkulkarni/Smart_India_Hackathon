@@ -134,7 +134,7 @@ enum Gender{
 
 
 
-type Attendance @model @searchable{
+type Attendance @model@searchable{
   studentID: ID! 
   studentName: String!
   status: AttendanceStatus!

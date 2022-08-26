@@ -1,10 +1,16 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/Auth/Logic/auth_bloc/auth_cubit.dart';
+import 'package:team_dart_knights_sih/features/Auth/UI/pages/login_screen.dart';
 
 import '../../../../core/constants.dart';
+import '../../../../injection_container.dart';
 
 class CustomSideMenu extends StatefulWidget {
   PageController page;
@@ -53,7 +59,12 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
       SideMenuItem(
         priority: 4,
         title: width > 300 ? 'Log Out' : '',
-        onTap: () {},
+        onTap: () async {
+          await getIt<AWSApiClient>()
+              .signOutUser(email: BlocProvider.of<AuthCubit>(context).email);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+        },
         icon: const Icon(FluentIcons.sign_out),
       ),
     ];
