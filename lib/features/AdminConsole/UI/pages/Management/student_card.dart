@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/class_details_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
@@ -11,6 +12,7 @@ import 'package:team_dart_knights_sih/injection_container.dart';
 
 import '../../../../../core/constants.dart';
 import '../../../../../models/Student.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 
 class StudentCard extends StatelessWidget {
   Student student;
@@ -36,13 +38,7 @@ class StudentCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    student.profilePhoto ??
-                        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
-                  ),
-                  radius: 20,
-                ),
+                FutureImage(imageKey: student.profilePhoto),
                 FittedBox(
                   child: Text(student.studentName.trim().split(' ')[0],
                       style: TextStyle(
