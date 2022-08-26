@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -24,19 +23,24 @@ class _FutureImageState extends State<FutureImage> {
         alignment: Alignment.center,
       );
     }
-    return CachedNetworkImage(
-      imageUrl: widget.imageKey!,
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) => const Icon(FontAwesomeIcons.user),
-      imageBuilder: (context, imageProvider) => Container(
-        // width: 40.0,
-        // height: 40.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-        ),
-      ),
+    // return CachedNetworkImage(
+    //   imageUrl: widget.imageKey!,
+    //   placeholder: (context, url) => const CircularProgressIndicator(),
+    //   errorWidget: (context, url, error) => const Icon(FontAwesomeIcons.user),
+    //   imageBuilder: (context, imageProvider) => Container(
+    //     // width: 40.0,
+    //     // height: 40.0,
+    //     decoration: BoxDecoration(
+    //       shape: BoxShape.circle,
+    //       image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+    //     ),
+    //   ),
+    // );
+
+    return CircleAvatar(
+      backgroundImage: NetworkImage(widget.imageKey!),
     );
+
     // return Image.network(snapshot.data!);
 
     //  else if (snapshot.hasError) {
