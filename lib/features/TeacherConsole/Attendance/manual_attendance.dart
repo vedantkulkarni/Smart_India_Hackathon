@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
@@ -18,6 +21,12 @@ class ManualAttendance extends StatefulWidget {
 
 class _ManualAttendanceState extends State<ManualAttendance> {
   // Map<String, bool> attendanceMap = {};
+
+  Future<List> readJson() async {
+    final String response = await rootBundle.loadString('assets/student.json');
+    final data = await json.decode(response);
+    return data["items"];
+  }
   @override
   Widget build(BuildContext context) {
     final classCubit = BlocProvider.of<TeacherClassCubit>(context);
@@ -277,6 +286,7 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                               await attendanceCubit.uploadAttendance(
                                   classRoom: classCubit.classRoom);
                             }
+
                           },
                           text: 'Submit'),
                     ),

@@ -175,7 +175,7 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                           managementMode:
                                               ManagementMode.Teachers,
                                           limit: limit),
-                                    ), 
+                                    ),
                                   ], child: const AddStudentsPage());
                                 }));
 
@@ -290,29 +290,31 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                               cells: [
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].studentName,
+                                    manageStudentsCubit
+                                        .studentsList[index].studentName,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].phoneNumber ??
+                                    manageStudentsCubit
+                                            .studentsList[index].phoneNumber ??
                                         '-',
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].email ?? '-',
+                                    manageStudentsCubit
+                                            .studentsList[index].email ??
+                                        '-',
                                   ),
                                 ),
                                 DataCell(Container(
-                                  height: 40.h,
-                                  width: 40.w,
-                                  child:FutureImage(imageKey:(state)
+                                    height: 40.h,
+                                    width: 40.w,
+                                    child: FutureImage(
+                                        imageKey: (state)
                                             .studentsList[index]
-                                            .profilePhoto)
-                                )
-                                  
-                                ),
+                                            .profilePhoto))),
                               ]),
                         ),
                       ),
@@ -456,7 +458,7 @@ class _StudentDetailsDialogState extends State<StudentDetailsDialog> {
                   enabled: canEdit,
                   hintText: student.email ?? "Email",
                   value: student.email,
-                  padding:EdgeInsets.all(5.sp),
+                  padding: EdgeInsets.all(5.sp),
                   heading: 'Email',
                 ),
               ),
