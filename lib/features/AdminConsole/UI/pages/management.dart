@@ -13,31 +13,11 @@ class Management extends StatefulWidget {
 
 class _ManagementState extends State<Management> {
   final List<List<String>> addList = [
-    [
-      'User'.tr,
-      'View user'.tr,
-      '$commonPath/user.png'
-    ],
-    [
-      'Students'.tr,
-      'student user'.tr,
-      '$commonPath/students.png'
-    ],
-    [
-      'Groups'.tr,
-      'Manage permissions and leaves'.tr,
-      '$commonPath/box.png'
-    ],
-    [
-      'ClassRoom'.tr,
-      'classroom user'.tr,
-      '$commonPath/myClassRoom.png'
-    ],
-    [
-      'Attendance'.tr,
-      'attendance user'.tr,
-      '$commonPath/attendance.png'
-    ],
+    ['User'.tr, 'View user'.tr, '$commonPath/user.png'],
+    ['Students'.tr, 'student user'.tr, '$commonPath/students.png'],
+    ['Groups'.tr, 'Manage permissions and leaves'.tr, '$commonPath/box.png'],
+    ['ClassRoom'.tr, 'classroom user'.tr, '$commonPath/myClassRoom.png'],
+    ['Attendance'.tr, 'attendance user'.tr, '$commonPath/attendance.png'],
   ];
   @override
   Widget build(BuildContext context) {
@@ -62,7 +42,7 @@ class _ManagementState extends State<Management> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
               2,
-             (index) => ManageMentCard(
+              (index) => ManageMentCard(
                 addText: addList[index][0].tr,
                 content: addList[index][1],
                 imagePath: addList[index][2],
@@ -76,7 +56,7 @@ class _ManagementState extends State<Management> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(
-              3,
+              2,
               (index) => ManageMentCard(
                 addText: addList[index + 2][0],
                 content: addList[index + 2][1],

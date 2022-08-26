@@ -15,6 +15,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:get/get.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/widgets/future_image.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../models/ModelProvider.dart';
 // import '../../../../../models/VerificationStatus.dart';
@@ -361,6 +362,10 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                       child: StudentCard(
                                         student: classRoom.students![index],
                                         onTap: () {
+                                          print(classRoom
+                                              .students![index].studentID
+                                              .toString());
+                                          print('ont');
                                           Navigator.push(context,
                                               MaterialPageRoute(builder: (_) {
                                             return MultiBlocProvider(
@@ -388,8 +393,10 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                               child:
                                                   StudentDetailScreenPartAdmin(
                                                 studentId: classRoom
-                                                    .students![index].studentID
-                                                    .toString(),
+                                                        .students?[index]
+                                                        .studentID
+                                                        .toString() ??
+                                                    'kj',
                                               ),
                                             );
                                           }));
