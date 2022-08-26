@@ -3,7 +3,6 @@ import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
@@ -14,6 +13,7 @@ import 'package:team_dart_knights_sih/models/AttendanceStatus.dart';
 import '../../../../core/cubit/search_cubit.dart';
 import '../widgets/attendance_search.dart';
 import '../widgets/custom_textfield.dart';
+import 'map.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -30,12 +30,20 @@ class _AttendancePageState extends State<AttendancePage> {
   CalendarFormat format = CalendarFormat.month;
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
     return Container(
       child: Row(children: [
-        const Expanded(child: AttendanceWidget()),
-        
+        const Expanded(flex: 3, child: AttendanceWidget()),
+        // Expanded(
+        //   child: Container(
+        //     decoration: const BoxDecoration(
+        //       border: Border(
+        //         left: BorderSide(
+        //             color: Colors.black, width: 1, style: BorderStyle.solid),
+        //       ),
+        //     ),
+        //     // child: const Map(lang: ,long: ,),
+        //   ),
+        // ),
       ]),
     );
   }
@@ -178,7 +186,6 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 14.sp)),
                       value: AttendanceSearchMode.studentName),
-
                   DropdownMenuItem(
                       child: Text('Search by Assigned Class',
                           style: TextStyle(
@@ -186,7 +193,6 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                               fontFamily: 'Poppins',
                               fontSize: 14.sp)),
                       value: AttendanceSearchMode.className),
-                  
                   DropdownMenuItem(
                       child: Text('Search by Teacher Name',
                           style: TextStyle(
@@ -207,7 +213,6 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                 width: 40.w,
               ),
               SizedBox(
-
                   height: 45.h,
                   width: 150.w,
                   child: TextButton(
@@ -264,7 +269,6 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                       text: 'Search')),
               SizedBox(
                 width: 20.w,
-
               )
             ],
           ),
@@ -280,8 +284,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     children: List.generate(
                         searchQuery.length,
                         (index) => fi.Container(
-                              margin:
-                                  fi.EdgeInsets.symmetric(horizontal: 5.w),
+                              margin: fi.EdgeInsets.symmetric(horizontal: 5.w),
                               width: 150.w,
                               height: 30.h,
                               child: CustomTextButton(
