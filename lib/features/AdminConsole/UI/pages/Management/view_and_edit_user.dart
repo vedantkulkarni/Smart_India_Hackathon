@@ -39,7 +39,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
         phoneNumber: phNo,
         address: _addressController.text,
         description: _descriptionController.text,
-        role: changedRole,
+        role: changedRole??user.role,
       );
       print(updatedUser.role);
       _formKey.currentState!.save();
@@ -51,7 +51,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
   _ViewAndEditUserState(
       this.user, this.currentRole); // TODO passing current age
   final _formKey = GlobalKey<FormState>();
-  Role changedRole = Role.Teacher;
+  Role? changedRole;
   final TextEditingController _fnameController = TextEditingController();
   final TextEditingController _lnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -67,7 +67,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
     _phoneController.text = user.phoneNumber;
     _addressController.text = user.address ?? 'Unknown';
     _descriptionController.text = user.description ?? 'Unknown';
-    Role _dropdownRole = currentRole;
+    Role _dropdownRole = user.role;
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -169,6 +169,7 @@ class _ViewAndEditUserState extends State<ViewAndEditUser> {
                     value: _dropdownRole,
                     onChanged: (value) {
                       setState(() {
+                        user = user.copyWith(role: value);
                         _dropdownRole = value!; // TODO bugged
                         changedRole = value;
                       });
