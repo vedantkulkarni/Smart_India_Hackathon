@@ -5,7 +5,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
 import 'package:team_dart_knights_sih/injection_container.dart';
-import 'package:team_dart_knights_sih/models/ClassAttendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
 
 class Cartesian extends StatefulWidget {

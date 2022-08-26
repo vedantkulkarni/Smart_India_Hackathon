@@ -15,39 +15,43 @@ import '../../../../../models/Student.dart';
 class StudentCard extends StatelessWidget {
   Student student;
   VoidCallback onTap;
-  StudentCard({Key? key, required this.student,required this.onTap}) : super(key: key);
+  StudentCard({Key? key, required this.student, required this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final classCubit = BlocProvider.of<ClassDetailsCubit>(context);
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: EdgeInsets.all(10.sp),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: textFieldFillColor,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  student.profilePhoto ??
-                      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.all(10.sp),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: textFieldFillColor,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    student.profilePhoto ??
+                        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
+                  ),
+                  radius: 20,
                 ),
-                radius: 20,
-              ),
-              FittedBox(
-                child: Text(student.studentName.trim().split(' ')[0],
-                    style: TextStyle(
-                        color: primaryColor,
-                        fontFamily: 'Poppins',
-                        fontSize: 14.sp)),
-              )
-            ],
+                FittedBox(
+                  child: Text(student.studentName.trim().split(' ')[0],
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontFamily: 'Poppins',
+                          fontSize: 14.sp)),
+                )
+              ],
+            ),
           ),
         ),
       ),
