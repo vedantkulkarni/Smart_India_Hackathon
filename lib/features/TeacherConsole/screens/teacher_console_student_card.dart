@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/cubit/management_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/TeacherConsole/Backend/cubit/teacher_class_cubit.dart';
+import 'package:team_dart_knights_sih/features/TeacherConsole/widgets/future_image.dart';
 
 import '../../../../../core/constants.dart';
 import '../../../../../models/Student.dart';
@@ -29,13 +30,7 @@ class TeacherConsoleStudentCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                student.profilePhoto ??
-                    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
-              ),
-              radius: 18,
-            ),
+           FutureImage(imageKey: student.imageKey),
             FittedBox(
               child: Text(student.studentName.trim().split(' ')[0],
                   style: const TextStyle(
