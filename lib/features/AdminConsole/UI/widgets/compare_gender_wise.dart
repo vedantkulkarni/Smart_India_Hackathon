@@ -16,12 +16,25 @@ class _CompareGenderWiseState extends State<CompareGenderWise> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(children: [
-        const Text("Class A"),
+      width: double.maxFinite,
+      
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        // const Text("Class A"),
         const SizedBox(
           height: 30,
         ),
-        RadialChartWidget(classRoom: widget.selectedList[0]),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 400,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return RadialChartWidget(classRoom: widget.selectedList[0]);
+            },
+            itemCount: widget.selectedList.length,
+          ),
+        ),
       ]),
     );
   }
