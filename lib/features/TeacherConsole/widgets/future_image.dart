@@ -20,12 +20,15 @@ class _FutureImageState extends State<FutureImage> {
         if (snapshot.connectionState == ConnectionState.done) {
           print(snapshot.data);
           return CircleAvatar(
-            child: CachedNetworkImage(
+            child: widget.imageKey == 'i'
+                ? Icon(FontAwesomeIcons.user)
+                : Container() /*CachedNetworkImage(
               imageUrl: snapshot.data!,
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) =>
                   const Icon(FontAwesomeIcons.user),
-            ),
+            )*/
+            ,
           );
           // return Image.network(snapshot.data!);
         } else if (snapshot.hasError) {

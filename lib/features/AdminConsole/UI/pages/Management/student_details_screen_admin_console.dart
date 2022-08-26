@@ -11,8 +11,8 @@ import '../../../../../injection_container.dart';
 import '../../../../../models/Attendance.dart';
 
 class StudentDetailScreenPartAdmin extends StatefulWidget {
-  final String studentId = "";
-  const StudentDetailScreenPartAdmin({Key? key, required String studentId})
+  final String studentId;
+  StudentDetailScreenPartAdmin({Key? key, required this.studentId})
       : super(key: key);
 
   @override
@@ -56,22 +56,21 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
   ];
   Future<void> getStudentAnalytics(String studentId) async {
     print('start');
+    print(studentId);
     var apiclient = getIt<AWSApiClient>();
     studentAttendanceList =
-        await apiclient.getStudentAnalytics(studentId: '3787c22e-f195-4e0c-a2d3-72c16ab6160e', month: '08');
+        await apiclient.getStudentAnalytics(studentId: studentId, month: '01');
 
-    setState(() {
-
-    });
+    setState(() {});
+    print('object');
     print(studentAttendanceList);
-  
   }
 
   @override
   void initState() {
     // TODO: implement initState
+    getStudentAnalytics(widget.studentId.toString());
     super.initState();
-    getStudentAnalytics(widget.studentId);
   }
 
   @override
@@ -108,16 +107,16 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
           return Row(children: [
             Expanded(
                 child: StudentDetailWidget(
-              name: studentDetailsCubit.studentDeatail!.studentName.toString(),
+              name: studentDetailsCubit.studentDeatail!.toString(),
               image: studentDetailsCubit.studentDeatail!.profilePhoto,
-              teacherName:
-                  studentDetailsCubit.studentDeatail!.roll.toString(),
+              teacherName: studentDetailsCubit.studentDeatail!.roll.toString(),
               email: studentDetailsCubit.studentDeatail!.email.toString(),
               phoneNumber:
                   studentDetailsCubit.studentDeatail!.phoneNumber.toString(),
               classname: BlocProvider.of<ClassDetailsCubit>(context)
                   .classRoom
-                  .classRoomName.toString(),
+                  .classRoomName
+                  .toString(),
             )),
             Expanded(
               child: Column(
@@ -127,11 +126,11 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                     padding: const EdgeInsets.all(15.0),
                     child: Col1Widget(),
                   )),
-                  const Expanded(
-                      child: Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Col2Widget(),
-                  )),
+                  // const Expanded(
+                  //     child: Padding(
+                  //   padding: EdgeInsets.all(15.0),
+                  //   child: Col2Widget(),
+                  // )),
                 ],
               ),
             )
@@ -199,7 +198,7 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                 ),
               ],
               rows: List<DataRow>.generate(
-                  studentAttendanceList.length,
+                  10,
                   (index) => DataRow2.byIndex(
                           selected: true,
                           color: MaterialStateProperty.all(whiteColor),
@@ -207,9 +206,46 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
                           cells: [
                             DataCell(Text(srNo[index].toString())),
                             DataCell(Text(srNo[index].toString())),
-                            DataCell(Text(studentAttendanceList[index].status.name)),
+                            DataCell(
+                                Text(studentAttendanceList[index].status.name)),
                           ]))),
-        )
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              //width: 200.w,
+              height: 50.h,
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Center(
+                        child: Text(
+                          'CSV ',
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15.sp,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.download,
+                      color: Colors.white,
+                      size: 20.sp,
+                    )
+                  ]),
+            ),
+          ),
+        ),
       ]),
     );
   }
@@ -335,7 +371,7 @@ class Col2Widget extends StatelessWidget {
 }
 
 class StudentDetailWidget extends StatelessWidget {
-  final String? name, email, phoneNumber, classname, teacherName,image;
+  final String? name, email, phoneNumber, classname, teacherName, image;
   const StudentDetailWidget({
     Key? key,
     required this.classname,
@@ -349,11 +385,10 @@ class StudentDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Padding(
       padding: EdgeInsets.all(25.sp),
       child: Container(
-       // height: 700.h,
+        // height: 700.h,
         width: 400.w,
         decoration: const BoxDecoration(
           boxShadow: [
