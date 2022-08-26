@@ -954,7 +954,7 @@ query MyQuery {
       'operationName': 'MyQuery',
       'query': '''
      query MyQuery {
-  searchAttendances(filter: $finalSearch, limit: $limit) {
+  searchAttendances(filter: $finalSearch) {
     items {
       classID
       geoLatitude

@@ -281,6 +281,17 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                           text: 'Submit'),
                     ),
                   ),
+                  Center(
+                    child: SizedBox(
+                      height: 40,
+                      width: 170,
+                      child: CustomTextButton(
+                          onPressed: () async {
+                            await attendanceCubit.dummyData();
+                          },
+                          text: 'Submit2'),
+                    ),
+                  ),
                   const SizedBox(
                     height: 20,
                   )

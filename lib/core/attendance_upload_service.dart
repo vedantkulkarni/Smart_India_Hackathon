@@ -133,7 +133,7 @@ class AttendanceUploadService {
   }
 
   Future<bool> checkAlreadyPresent(List<AttendanceUploadModel> getItemsAlreadyPresent,String classID, String date) async {
-     getItemsAlreadyPresent = await prefs.getStringList(sharedPrefKey);
+     List<String> localItems = await prefs.getStringList(sharedPrefKey);
     if (getItemsAlreadyPresent == null) {
       getItemsAlreadyPresent = [];
       return false;

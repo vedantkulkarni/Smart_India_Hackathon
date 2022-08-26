@@ -211,11 +211,12 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                             color: backgroundColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: StaggeredGrid.count(
-                            
+                          child: GridView.count(
+                              
                               crossAxisCount: 4,
                               mainAxisSpacing: 1,
                               crossAxisSpacing: 6,
+                              physics: const BouncingScrollPhysics(),
                               children: List.generate(
                                   BlocProvider.of<TeacherClassCubit>(context)
                                       .classRoom

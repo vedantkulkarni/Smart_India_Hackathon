@@ -1,9 +1,12 @@
 // import 'dar:ffi';
 
+import 'dart:convert';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:team_dart_knights_sih/core/attendance_upload_service.dart';
 import 'package:team_dart_knights_sih/core/location_service.dart';
@@ -167,6 +170,74 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     emit(StudentSelected(student: student));
   }
 
+  Future<List> readJson() async {
+    List<Attendance> attList = [];
+    final String response =
+        await rootBundle.loadString('assets/student_attendance.json');
+    final data = await json.decode(response);
+    return data["items"];
+  }
+
+  String dateHelper(String date) {
+   return date.split(" ")[0];
+  }
+
+  Future<void> dummyData() async {
+    List attendanceList = await readJson();
+    // final List<Attendance> attendance = attendanceList.map((item) => Attendance.fromJson(item)).toList();
+    for (int i = 0; i < attendanceList.length; i++) {
+      String gd = attendanceList[i]["gender"];
+      Gender gender = Gender.Male;
+      switch (gd) {
+        case "Male":
+          gender = Gender.Male;
+          break;
+        case "Female":
+          gender = Gender.Female;
+          break;
+        case "Other":
+          gender = Gender.Other;
+          break;
+      }
+
+      String atdv = attendanceList[i]["verification"];
+      VerificationStatus vfs = VerificationStatus.ManualAttendance;
+      switch (atdv) {
+        case "Manual Attendance":
+          vfs = VerificationStatus.ManualAttendance;
+          break;
+        case "Face Verified":
+          vfs = VerificationStatus.FaceVerified;
+          break;
+        case "Face Detected and Verified":
+          vfs = VerificationStatus.FaceDetectedAndVerified;
+          break;
+        case "Face Verified with Liveness":
+          vfs = VerificationStatus.FaceVerifiedWithLiveness;
+          break;
+      }
+
+      final Attendance attendance = Attendance(
+        classID: attendanceList[i]["ClassID"],
+        studentID: attendanceList[i]["studentId"],
+        status: attendanceList[i]["status"] == "Present"
+            ? AttendanceStatus.Present
+            : AttendanceStatus.Absent,
+        className: attendanceList[i]["ClassName"],
+        date: TemporalDate(DateTime.parse(dateHelper(attendanceList[i]["date"]))),
+        studentName: attendanceList[i]["studentName"],
+        geoLatitude: double.parse(attendanceList[i]["geoLatitude"]),
+        geoLongitude: double.parse(attendanceList[i]["geoLongitude"]),
+        teacherID: attendanceList[i]["teacherId"],
+        teacherName: attendanceList[i]["teacherName"],
+        time: TemporalTime(DateTime.now()),
+        verification: vfs,
+        gender: gender,
+      );
+      await apiClient.createAttendance(attendance: attendance);
+    }
+  }
+
   Future<void> uploadAttendance({required ClassRoom classRoom}) async {
     emit(UploadingAttendance());
     print("coming here");
@@ -180,19 +251,18 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
     List<Attendance> attendanceList = [];
     for (var studentID in attendanceMap.entries) {
-      var studnet = studList!
-          .firstWhere((element) => element.studentID == studentID.key);
+      var studnet =
+          studList!.firstWhere((element) => element.studentID == studentID.key);
       var studentName = studnet.studentName;
       print(attendanceMap);
 
       var status = attendanceMap[studentID.key];
       final attendance = getAttendanceObj(
           studentName: studentName,
-
           className: classRoom.classRoomName,
           mode: mode,
           attendanceStatus: status!,
-          gender:studnet.gender??Gender.Other ,
+          gender: studnet.gender ?? Gender.Other,
           latitude: latitude,
           longitude: longitude,
           classID: classRoom.id,
@@ -369,31 +439,31 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     return null;
   }
 
-  Attendance getAttendanceObj(
-      {required VerificationStatus mode,
-      required AttendanceStatus attendanceStatus,
-      required double latitude,
-      required double longitude,
-      required String classID,
-      required String className,
-      required String studentName,
-      required String studentID,
-      required Gender gender,}) {
+  Attendance getAttendanceObj({
+    required VerificationStatus mode,
+    required AttendanceStatus attendanceStatus,
+    required double latitude,
+    required double longitude,
+    required String classID,
+    required String className,
+    required String studentName,
+    required String studentID,
+    required Gender gender,
+  }) {
     final Attendance attendance = Attendance(
-      geoLatitude: latitude,
-      geoLongitude: longitude,
-      studentName: studentName,
-      className: className,
-      classID: classID,
-      date: TemporalDate(DateTime.now()),
-      status: attendanceStatus,
-      studentID: studentID,
-      teacherID: teacher.email,
-      teacherName: teacher.name,
-      time: TemporalTime(DateTime.now()),
-      verification: mode,
-      gender: gender
-    );
+        geoLatitude: latitude,
+        geoLongitude: longitude,
+        studentName: studentName,
+        className: className,
+        classID: classID,
+        date: TemporalDate(DateTime.now()),
+        status: attendanceStatus,
+        studentID: studentID,
+        teacherID: teacher.email,
+        teacherName: teacher.name,
+        time: TemporalTime(DateTime.now()),
+        verification: mode,
+        gender: gender);
     return attendance;
   }
 }
