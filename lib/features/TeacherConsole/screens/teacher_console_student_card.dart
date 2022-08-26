@@ -30,7 +30,7 @@ class TeacherConsoleStudentCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-           FutureImage(imageKey: student.imageKey),
+           FutureImage(imageKey: student.profilePhoto),
             FittedBox(
               child: Text(student.studentName.trim().split(' ')[0],
                   style: const TextStyle(

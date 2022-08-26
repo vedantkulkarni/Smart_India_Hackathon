@@ -16,8 +16,8 @@ Future<String?> uploadImage(XFile pickedFile, String studentID) async {
       },
     );
     print('Successfully uploaded image: ${result.key}');
-    // var dUrl = await getDownloadUrl(result.key);
-    return "students/$key";
+    var dUrl = await getDownloadUrl(result.key);
+    return dUrl;
   } on StorageException catch (e) {
     print('Error uploading image: $e');
     return null;
