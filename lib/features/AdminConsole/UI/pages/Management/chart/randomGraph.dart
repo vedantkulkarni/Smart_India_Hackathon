@@ -15,12 +15,13 @@ class CartesianClass extends StatefulWidget {
 
 class _CartesianClassState extends State<CartesianClass> {
   final List<SalesData> chartData = [
-    // SalesData(1, 86, Colors.red),
-    // SalesData(2, 70, Colors.red),
-    // SalesData(3, 34, Colors.green),
-    // SalesData(4, 68, Colors.red),
-    // SalesData(5, 100, Colors.red),
-    // SalesData(6, 5, Colors.green),
+
+    SalesData(1, 86, Colors.red),
+    SalesData(2, 70, Colors.red),
+    SalesData(3, 34, Colors.green),
+    SalesData(4, 68, Colors.red),
+    SalesData(5, 100, Colors.red),
+    SalesData(6, 5, Colors.green),
     SalesData(7, 40, Colors.green),
     SalesData(8, 77, Colors.red),
     SalesData(9, 90, Colors.red),
@@ -45,7 +46,7 @@ class _CartesianClassState extends State<CartesianClass> {
     SalesData(28, 87, Colors.red),
     SalesData(29, 91, Colors.red),
     SalesData(30, 81, Colors.red),
-    // SalesData(31, 82, Colors.red),
+    SalesData(31, 82, Colors.red),
   ];
 
   var studentAttendanceList = [];
@@ -54,7 +55,7 @@ class _CartesianClassState extends State<CartesianClass> {
     studentAttendanceList = await apiclient.searchByMonthandClassRoom(
         month: month, classID: classRoom.id);
     for (int i = 0; i < studentAttendanceList.length; i++) {
-      //chartData.add(SalesData(i + 1, studentAttendanceList[i], Colors.red));
+      chartData.add(SalesData(i + 1, studentAttendanceList[i], Colors.red));
     }
   }
 
@@ -69,7 +70,8 @@ class _CartesianClassState extends State<CartesianClass> {
   Widget build(BuildContext context) {
     return Center(
         child: Container(
-            width: 400,
+            //  width: 400,
+            height: 600,
             child: SfCartesianChart(
                 primaryXAxis: CategoryAxis(),
                 title: ChartTitle(text: 'Attenadace by month'),

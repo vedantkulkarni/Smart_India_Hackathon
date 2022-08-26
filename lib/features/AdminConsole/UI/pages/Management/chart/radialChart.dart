@@ -61,7 +61,7 @@ class _RadialChartWidgetState extends State<RadialChartWidget> {
             // trackColor: Colors.grey.shade800,
             dataSource: chartData,
             // gap: '3%',
-            radius: '50',
+            radius: '90',
             xValueMapper: (_ChartData data, _) => data.x,
             yValueMapper: (_ChartData data, _) => data.y,
             //  pointColorMapper: (_ChartData data, _) => data.color,
