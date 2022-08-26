@@ -52,12 +52,18 @@ class _CustomSideMenuState extends State<CustomSideMenu> {
       ),
       SideMenuItem(
         priority: 3,
-        title: width > 300 ? 'Settings'.tr : '',
+        title: width > 300 ? 'Compare Console'.tr : '',
         onTap: () => page.jumpToPage(3),
-        icon: const Icon(FluentIcons.settings),
+        icon: const Icon(FluentIcons.add_group),
       ),
       SideMenuItem(
         priority: 4,
+        title: width > 300 ? 'Settings'.tr : '',
+        onTap: () => page.jumpToPage(4),
+        icon: const Icon(FluentIcons.settings),
+      ),
+      SideMenuItem(
+        priority: 5,
         title: width > 300 ? 'Log Out' : '',
         onTap: () async {
           await getIt<AWSApiClient>()

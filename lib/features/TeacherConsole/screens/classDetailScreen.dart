@@ -212,6 +212,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: StaggeredGrid.count(
+                            
                               crossAxisCount: 4,
                               mainAxisSpacing: 1,
                               crossAxisSpacing: 6,
@@ -268,7 +269,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                       ),
                     ),
               const SizedBox(
-                height: 25,
+                height: 80,
               ),
               classCubit.classRoom.currentAttendanceDate == null ||
                       classCubit.classRoom.currentAttendanceDate !=
@@ -329,8 +330,8 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                 return;
                               }
                               // print(classCubit.classRoom.students);
-                              final mlService =
-                                  MLService(students: [...classCubit.studentList]);
+                              final mlService = MLService(
+                                  students: [...classCubit.studentList]);
                               bool? isMarkSuccessfull;
                               await Navigator.of(context)
                                   .push<bool>(MaterialPageRoute(builder: (_) {
@@ -400,11 +401,14 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
       case VerificationStatus.FaceDetectedAndVerified:
         // return MarkAttendnacePage(mlService: mlService);
         // return const StaticFaceScan();
-        return  FaceVerifyScreen(verificationStatus: VerificationStatus.FaceDetectedAndVerified,);
+        return FaceVerifyScreen(
+          verificationStatus: VerificationStatus.FaceDetectedAndVerified,
+        );
       case VerificationStatus.FaceVerified:
         return const FaceVerifyWithProfileImage();
       case VerificationStatus.FaceVerifiedWithLiveness:
-        return FaceVerifyScreen(verificationStatus: VerificationStatus.FaceVerifiedWithLiveness);
+        return FaceVerifyScreen(
+            verificationStatus: VerificationStatus.FaceVerifiedWithLiveness);
       case VerificationStatus.ManualAttendance:
         return const ManualAttendance();
 

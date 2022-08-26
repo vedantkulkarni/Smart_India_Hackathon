@@ -22,11 +22,13 @@ const Color lightTextColor = Color(0xff9aa3b1);
 
 Widget progressIndicator = Container(
   color: backgroundColor,
-  child: SizedBox(
-    height: 50,
-    width: 50,
-    child:
-        Center(child: Lottie.asset("assets/images/loader.json", animate: true)),
+  child: Center(
+    child: SizedBox(
+      height: 50,
+      width: 50,
+      child:
+          Center(child: Lottie.asset("assets/images/loader.json", animate: true)),
+    ),
   ),
 );
 
@@ -52,5 +54,7 @@ enum AttendanceSearchMode {
   classID,
   gender
 }
+
+enum ClassRoomCompareMode { gender, attendance, overall}
 
 const String commonPath = 'assets/images';
