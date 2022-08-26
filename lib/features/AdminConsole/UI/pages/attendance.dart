@@ -14,6 +14,7 @@ import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 import '../../../../core/cubit/search_cubit.dart';
 import '../widgets/attendance_search.dart';
 import '../widgets/custom_textfield.dart';
+import 'map.dart';
 
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
@@ -30,11 +31,21 @@ class _AttendancePageState extends State<AttendancePage> {
   CalendarFormat format = CalendarFormat.month;
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
-    double w = MediaQuery.of(context).size.width;
     return Container(
       child: Row(children: [
-        const Expanded(child: AttendanceWidget()),
+
+        const Expanded(flex: 3, child: AttendanceWidget()),
+        // Expanded(
+        //   child: Container(
+        //     decoration: const BoxDecoration(
+        //       border: Border(
+        //         left: BorderSide(
+        //             color: Colors.black, width: 1, style: BorderStyle.solid),
+        //       ),
+        //     ),
+        //     // child: const Map(lang: ,long: ,),
+        //   ),
+        // ),
       ]),
     );
   }
@@ -205,8 +216,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                 width: 40.w,
               ),
               SizedBox(
-                  height: 45,
-                  width: 150,
+
+                  height: 45.h,
+                  width: 150.w,
                   child: TextButton(
                       onPressed: () {
                         if (textEditingController.text.isEmpty) {
@@ -259,8 +271,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                         }
                       },
                       text: 'Search')),
-              const SizedBox(
-                width: 20,
+
+              SizedBox(
+                width: 20.w,
               )
             ],
           ),
@@ -276,10 +289,10 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     children: List.generate(
                         searchQuery.length,
                         (index) => fi.Container(
-                              margin:
-                                  const fi.EdgeInsets.symmetric(horizontal: 5),
-                              width: 150,
-                              height: 30,
+
+                              margin: fi.EdgeInsets.symmetric(horizontal: 5.w),
+                              width: 150.w,
+                              height: 30.h,
                               child: CustomTextButton(
                                   icon: const Icon(Icons.close),
                                   onPressed: () {

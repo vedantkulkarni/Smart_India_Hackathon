@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/map.dart';
 
 import '../../../../core/constants.dart';
 import '../../../../models/AttendanceStatus.dart';
@@ -22,7 +24,7 @@ class AttendanceSearch extends StatelessWidget {
           return progressIndicator;
         } else if (state is SearchInitial) {
           return Column(
-             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 child: Lottie.asset(
@@ -106,7 +108,19 @@ class AttendanceSearch extends StatelessWidget {
                       ? MaterialStateProperty.all(Colors.red.withOpacity(0.1))
                       : null,
                   index: index,
-                  onTap: () {},
+                  onTap: () {
+                    print(searchCubit.attendanceList[index].geoLatitude);
+                    print(searchCubit.attendanceList[index].geoLongitude);
+                    showModalSideSheet(
+                        context: context,
+                        body: Map(
+                            lang: double.parse(searchCubit
+                                .attendanceList[index].geoLatitude
+                                .toString()),
+                            long: double.parse(searchCubit
+                                .attendanceList[index].geoLongitude
+                                .toString())));
+                  },
                   cells: [
                     DataCell(
                       Text(
