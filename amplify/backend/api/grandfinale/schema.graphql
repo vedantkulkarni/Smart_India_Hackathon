@@ -85,7 +85,8 @@ type ClassAttendance @model@searchable{
     presentPercent:Float
     teacherEmail:AWSEmail
     time:AWSTime
-    attendance:[Attendance]
+    attendance:[Attendance] @hasMany
+    
     
 
 }
@@ -148,5 +149,4 @@ type Attendance @model@searchable{
   time:  AWSTime!
   classID:ID! @primaryKey(sortKeyFields:["studentID","date"])
   className:String!
-
 } 

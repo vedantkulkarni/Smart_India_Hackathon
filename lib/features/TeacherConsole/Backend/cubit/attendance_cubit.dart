@@ -180,17 +180,19 @@ class AttendanceCubit extends Cubit<AttendanceState> {
 
     List<Attendance> attendanceList = [];
     for (var studentID in attendanceMap.entries) {
-      var sutdentName = studList!
-          .firstWhere((element) => element.studentID == studentID.key)
-          .studentName;
+      var studnet = studList!
+          .firstWhere((element) => element.studentID == studentID.key);
+      var studentName = studnet.studentName;
       print(attendanceMap);
 
       var status = attendanceMap[studentID.key];
       final attendance = getAttendanceObj(
-          studentName: sutdentName,
+          studentName: studentName,
+
           className: classRoom.classRoomName,
           mode: mode,
           attendanceStatus: status!,
+          gender:studnet.gender??Gender.Other ,
           latitude: latitude,
           longitude: longitude,
           classID: classRoom.id,
@@ -375,7 +377,8 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       required String classID,
       required String className,
       required String studentName,
-      required String studentID}) {
+      required String studentID,
+      required Gender gender,}) {
     final Attendance attendance = Attendance(
       geoLatitude: latitude,
       geoLongitude: longitude,
@@ -389,6 +392,7 @@ class AttendanceCubit extends Cubit<AttendanceState> {
       teacherName: teacher.name,
       time: TemporalTime(DateTime.now()),
       verification: mode,
+      gender: gender
     );
     return attendance;
   }

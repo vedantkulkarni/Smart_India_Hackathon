@@ -103,6 +103,76 @@ class _ManualAttendanceState extends State<ManualAttendance> {
             );
           } else if (state is UploadingAttendance) {
             return progressIndicator;
+          } else if (state is AttendanceStoredToLocalStore) {
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const SizedBox(
+                        height: 80,
+                      ),
+                      Text(
+                        DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                        style: const TextStyle(
+                          color: blackColor,
+                          fontSize: 22,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      Text(
+                        DateFormat.Hm().format(DateTime.now()),
+                        style: const TextStyle(
+                          color: blackColor,
+                          fontSize: 22,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  child: FinalAttendanceDetails(
+                      presentStudents: attendanceCubit.presentStudents,
+                      totalStudents: attendanceCubit.attendanceMap.length),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  'Due to lack of internet connection, attendance has been stored locally. Kindly upload once network is available',
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+                const Spacer(),
+                SizedBox(
+                  height: 40,
+                  width: 140,
+                  child: CustomTextButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      text: 'Go back to class'),
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+              ],
+            );
           }
 
           var presentStudents = attendanceCubit.presentStudents;
@@ -140,7 +210,7 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                         )
                       : Expanded(
                           child: Container(
-                            padding: const EdgeInsets.all(0),
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: AnimationLimiter(
                                 child: GridView.count(
                                     crossAxisSpacing: 10,
@@ -183,7 +253,10 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                                     }))),
                           ),
                         ),
-                  const Spacer(),
+                  // const Spacer(),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   Center(
                     child: SizedBox(
                       height: 40,

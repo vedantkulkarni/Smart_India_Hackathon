@@ -1,11 +1,12 @@
-import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/core/cubit/search_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/compare_cubit.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/aws_api_client.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/compare.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/management.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/attendance.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/dashboard.dart';
@@ -29,10 +30,16 @@ class _AdminPanelState extends State<AdminPanel> {
   List<Widget> screens = [
     const Dashboard(),
     BlocProvider(
-      create: (context) => SearchCubit(searchMode: SearchMode.Attendance, apiClient: getIt<AWSApiClient>()),
-      child: const AttendancePage()),
+        create: (context) => SearchCubit(
+            searchMode: SearchMode.Attendance,
+            apiClient: getIt<AWSApiClient>()),
+        child: const AttendancePage()),
     const Management(),
-    SettingsPage()
+     BlocProvider(
+      create: (context) => CompareCubit(awsApiClient: getIt<AWSApiClient>()),
+      child: CompareConsole(),
+    ),
+    SettingsPage(),
   ];
 
   @override

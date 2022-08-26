@@ -35,6 +35,14 @@ class AttendanceUploadModel {
         'updatedClassRoom': updatedClassRoom,
       };
 
+  AttendanceUploadModel.fromJson(Map<String,dynamic> json)
+      : id = json['id'],
+        date = TemporalDate.fromString(json['date']),
+        time = TemporalTime.fromString(json['time']),
+        classAttendance = ClassAttendance.fromJson(json['classAttendance']),
+        attendanceList = attendanceListFromJson(json['attendanceList']),
+        updatedClassRoom = ClassRoom.fromJson(json['updatedClassRoom']);
+
   List<Map<String, dynamic>> attendanceListToJson() {
     List<Map<String, dynamic>> attendanceListJson = [];
     for (var att in attendanceList) {
@@ -43,6 +51,17 @@ class AttendanceUploadModel {
 
     return attendanceListJson;
   }
+
+  static List<Attendance> attendanceListFromJson(List<dynamic> json) {
+    List<Attendance> attendanceList = [];
+    for (var att in json) {
+      attendanceList.add(Attendance.fromJson(att));
+    }
+
+    return attendanceList;
+  }
+
+ 
 }
 
 class AttendanceUploadService {
@@ -86,14 +105,44 @@ class AttendanceUploadService {
 
     List<String> getItemsAlreadyPresent =
         await prefs.getStringList(sharedPrefKey);
+    List<AttendanceUploadModel> attendanceUploadModelList =await stringToModelConverter(getItemsAlreadyPresent);
     if (getItemsAlreadyPresent == null) {
       getItemsAlreadyPresent = [];
     } else {
+      var check = await checkAlreadyPresent(attendanceUploadModelList, attendanceUploadModel.updatedClassRoom.id, attendanceUploadModel.date.toString());
+      if (check == true) {
+        print("already present");
+        return;
+      }
       getItemsAlreadyPresent.add(classAttendanceString);
     }
     // print(classAttendanceJson);
     await prefs.setStringList(sharedPrefKey, getItemsAlreadyPresent);
 
     // var finalJson = _attendanceUploadModel.toJson();
+  }
+
+  Future<List<AttendanceUploadModel>> stringToModelConverter(List<String> stringList) async {
+    List<AttendanceUploadModel> convertedList = [];
+    for (var string in stringList) {
+      var json = jsonDecode(string);
+      var attendanceUploadModel = AttendanceUploadModel.fromJson(json);
+      convertedList.add(attendanceUploadModel);
+    }
+    return convertedList;
+  }
+
+  Future<bool> checkAlreadyPresent(List<AttendanceUploadModel> getItemsAlreadyPresent,String classID, String date) async {
+     getItemsAlreadyPresent = await prefs.getStringList(sharedPrefKey);
+    if (getItemsAlreadyPresent == null) {
+      getItemsAlreadyPresent = [];
+      return false;
+    }
+    for(var item in getItemsAlreadyPresent){
+      if(item.updatedClassRoom.id == classID && item.date.toString() == date){
+        return false;
+      }
+    }
+    return true;
   }
 }
