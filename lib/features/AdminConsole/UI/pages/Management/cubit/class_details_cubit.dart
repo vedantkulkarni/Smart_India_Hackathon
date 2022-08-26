@@ -29,13 +29,16 @@ class ClassDetailsCubit extends Cubit<ClassDetailsState> {
     emit(ClassRoomDetialsFetched());
   }
 
-
   Future<void> getAttendanceListDateWise({required String classRoomID}) async {
     emit(FectingAttendanceByDate());
     classAttendanceListDate =
         await awsApiClient.classAttendanceDateWiseList(classId: classRoomID);
     emit(AttendanceByDateFetched());
   }
+
+  // Future<void> getClassAttendanceMonthWise({required String classRoomID,required int month})async{
+  //   await awsApiClient.searchByMonth(searchQuery: searchQuery)
+  // }
 
   Future<void> getAttendanceListOfDate(
       {required String classRoomID, required String date}) async {
@@ -44,9 +47,8 @@ class ClassDetailsCubit extends Cubit<ClassDetailsState> {
     List<SearchQuery> searchList = [];
     SearchQuery searchQueryClassID = SearchQuery(
         mode: AttendanceSearchMode.classID, searchText: classRoomID);
-    SearchQuery searchQueryDateRange = SearchQuery(
-        mode: AttendanceSearchMode.date,
-        searchText: '${date}');
+    SearchQuery searchQueryDateRange =
+        SearchQuery(mode: AttendanceSearchMode.date, searchText: '${date}');
     searchList.add(searchQueryClassID);
     searchList.add(searchQueryDateRange);
     print(searchList);

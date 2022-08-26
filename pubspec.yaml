@@ -90,6 +90,9 @@ dependencies:
   internet_connection_checker: ^0.0.1+4
   shared_preferences: ^2.0.15
   cached_network_image: ^3.2.1
+  flutter_map: ^2.2.0
+  latlng: ^0.2.0
+  latlong2: ^0.8.1
 
 
 dev_dependencies:

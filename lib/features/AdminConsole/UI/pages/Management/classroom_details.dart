@@ -319,69 +319,11 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                                   fontFamily: 'Poppins',
                                   fontWeight: FontWeight.normal)))),
                 )
-              : Row(
-                  children: [
-                    Container(
-                      width: 736.w,
-                      height: 200,
-                      padding: EdgeInsets.all(10.sp),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                            colors: [primaryColor, secondaryColor],
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: blendColor,
-                              blurRadius: 15,
-                              spreadRadius: 10)
-                        ],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Today'.tr + '\nAttendance'.tr,
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.normal,
-                                    color: whiteColor),
-                              ),
-                              Text(
-                                '48',
-                                style: TextStyle(
-                                    fontSize: 24.sp,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.bold,
-                                    color: whiteColor),
-                              ),
-                              Text(
-                                'present out of 56'.tr,
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.normal,
-                                    color: whiteColor.withOpacity(0.8)),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Expanded(
-                              child: RadialChartWidget(
-                            classRoom: classRoom,
-                          ))
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 80.w,
-                    ),
-                  ],
-                ),
+              : Expanded(
+                  flex: 3,
+                  child: CartesianClass(
+                    classRoom: classRoom,
+                  )),
           SizedBox(
             height: 20,
           ),
@@ -401,7 +343,7 @@ class _ClassRoomDashBoardWidgetState extends State<ClassRoomDashBoardWidget> {
                   ),
                 )
               : Expanded(
-                  flex: 10,
+                  flex: 4,
                   child: Container(
                     padding: const EdgeInsets.all(0),
                     child: AnimationLimiter(
@@ -517,55 +459,56 @@ class _ClassDetailsSideMenuState extends State<ClassDetailsSideMenu> {
             ),
           ),
           SizedBox(
-            height: 20.h,
+            height: 90.h,
+          ),
+          Expanded(
+            child: RadialChartWidget(
+              classRoom: widget.classRoom,
+            ),
           ),
           // Expanded(
-          //   child: RadialChartWidget(
-          //     classRoom: widget.classRoom,
-          //   ),
-          // ),
-          Expanded(
-              child: CartesianClass(
-            classRoom: widget.classRoom,
-          )),
+          //     child: CartesianClass(
+          //   classRoom: widget.classRoom,
+          // )),
           SizedBox(
-            height: 10.h,
+            height: 90.h,
           ),
-          // Padding(
-          //   padding: EdgeInsets.all(8.0.sp),
-          //   child: Column(
-          //     children: [
-          //       Row(
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         children: [
-          //           Padding(
-          //             padding: EdgeInsets.all(3.0.sp),
-          //             child: Text(
-          //               ' Male',
-          //               style: TextStyle(
-          //                   color: Colors.blue,
-          //                   fontSize: 17.sp,
-          //                   fontWeight: FontWeight.bold),
-          //             ),
-          //           ),
-          //           Padding(
-          //             padding: EdgeInsets.all(5.0.sp),
-          //             child: Text('Female',
-          //                 style:
-          //                     TextStyle(color: Colors.white, fontSize: 17.sp)),
-          //           ),
-          //           Padding(
-          //             padding: EdgeInsets.all(5.0.sp),
-          //             child: Text('Other',
-          //                 style:
-          //                     TextStyle(color: Colors.black, fontSize: 17.sp)),
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          Padding(
+            padding: EdgeInsets.all(0.0.sp),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(3.0.sp),
+                      child: Text(
+                        ' Male',
+                        style: TextStyle(
+                            color: Color(0xFFE57373),
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(5.0.sp),
+                      child: Text('Female',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 245, 11, 11),
+                              fontSize: 17.sp)),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(5.0.sp),
+                      child: Text('Other',
+                          style: TextStyle(
+                              color: Color(0xFF1E88E5), fontSize: 17.sp)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
           const Spacer(),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
