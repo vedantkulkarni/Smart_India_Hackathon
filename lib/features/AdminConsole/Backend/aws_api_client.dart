@@ -627,14 +627,14 @@ query MyQuery {
   Future<ClassRoom> updateClassRoom({required ClassRoom classRoom}) async {
     var attendanceMode = classRoom.attendanceMode.name;
     var currDate = TemporalDate(DateTime.now()).toString();
-    
+    print("$attendanceMode $currDate");
+
     VerificationStatus.ManualAttendance.name;
     final body = {
       'operationName': 'MyMutation',
       'query': '''
-   mutation MyMutation {
   mutation MyMutation {
-  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: ${classRoom.currentAttendanceDate}, groupClassRoomsId: "${classRoom.groupClassRoomsId}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", userAssignedClassId: "${classRoom.userAssignedClassId}", schoolID: "${classRoom.schoolID}"}) {
+  updateClassRoom(input: {attendanceMode: ${classRoom.attendanceMode.name}, classRoomName: "${classRoom.classRoomName}", currentAttendanceDate: "${classRoom.currentAttendanceDate}", id: "${classRoom.id}", importantNotice: "${classRoom.importantNotice}", schoolClassRoomsId: "${classRoom.schoolClassRoomsId}", userAssignedClassId: "${classRoom.userAssignedClassId}", schoolID: "${classRoom.schoolID}"}) {
     attendanceMode
     classRoomName
     currentAttendanceDate
@@ -784,10 +784,16 @@ query MyQuery {
 
   @override
   Future<Attendance> createAttendance({required Attendance attendance}) async {
+    String? gender;
+    if (attendance.gender == null || attendance.gender == Gender.Other)
+      gender = "Other";
+    else {
+      gender = attendance.gender == Gender.Male ? "Male" : "Female";
+    }
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createAttendance(input: {date: "${attendance.date}", classID: "${attendance.classID}" , geoLatitude: ${attendance.geoLatitude.toString()}, geoLongitude: ${attendance.geoLongitude}, status: ${attendance.status.name}, studentID: "${attendance.studentID}", className: "${attendance.className}", studentName: "${attendance.studentName}", teacherID: "${attendance.teacherID}", teacherName: "${attendance.teacherName}", time: "${attendance.time}", verification: ${attendance.verification.name}}) {
+  createAttendance(input: {date: "${attendance.date}", classID: "${attendance.classID}" , geoLatitude: ${attendance.geoLatitude.toString()}, geoLongitude: ${attendance.geoLongitude}, status: ${attendance.status.name}, studentID: "${attendance.studentID}", className: "${attendance.className}", studentName: "${attendance.studentName}", teacherID: "${attendance.teacherID}", teacherName: "${attendance.teacherName}", time: "${attendance.time}", gender: $gender,verification: ${attendance.verification.name}}) {
     date
     studentID
     time
