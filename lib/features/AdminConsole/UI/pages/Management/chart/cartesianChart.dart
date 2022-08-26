@@ -15,7 +15,20 @@ class Cartesian extends StatefulWidget {
 }
 
 class _CartesianState extends State<Cartesian> {
-  final List<SalesData> chartData = [];
+  final List<SalesData> chartData = [
+    SalesData('Jan', 12, Colors.green),
+    SalesData('Feb', 23, Colors.green),
+    SalesData('March', 78, Colors.green),
+    SalesData('April', 54, Colors.green),
+    SalesData('May', 34, Colors.green),
+    SalesData('June', 3, Colors.green),
+    SalesData('July', 34, Colors.green),
+    SalesData('Aug', 64, Colors.green),
+    SalesData('Sept', 54, Colors.green),
+    SalesData('Oct', 4, Colors.green),
+    SalesData('Nov', 89, Colors.green),
+    SalesData('Dec', 34, Colors.green),
+  ];
   List<double> monthWise = [];
   bool isLoaded = false;
   Future<void> searchAttendanecByMonth() async {
@@ -65,9 +78,9 @@ class _CartesianState extends State<Cartesian> {
     for (int i = 0; i <= 12; i++) {
       print(monthTemp[i] + " " + monthWise[i].toString());
       if (monthWise[i] < 1) {
-        chartData.add(SalesData(monthTemp[i], 0, Colors.red));
+        //chartData.add(SalesData(monthTemp[i], 0, Colors.red));
       } else {
-        chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
+        //chartData.add(SalesData(monthTemp[i], monthWise[i], Colors.red));
 
         // chartData.add(SalesData(monthTemp[i], 0, Colors.red));
       }

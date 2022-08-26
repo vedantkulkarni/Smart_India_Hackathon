@@ -925,11 +925,15 @@ query MyQuery {
           searchFilter = 'verification';
           searchFiltersList.add(searchFilter);
           break;
+        case AttendanceSearchMode.gender:
+          searchFilter = 'gender';
+          searchFiltersList.add(searchFilter);
+          break;
         default:
       }
     }
     String temp =
-        '{className: {match: "5A"}, and: {verification: {match: "ManualAttendance"}, and: {status: {match: "Absent"}}}}';
+        '{className: {match: "5A"}, and: {verification: {match: "ManualAttendance"}, and: {status: {match: "Absent"}, and: {gender {match: "Male"}}}}}';
 
     String finalSearch = '';
     for (int i = 0; i < searchQuery.length; i++) {
@@ -964,7 +968,7 @@ query MyQuery {
       time
       className
       studentName
-
+      gender
     }
   }
 }

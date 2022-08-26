@@ -21,30 +21,30 @@ class _CartesianClassState extends State<CartesianClass> {
     // SalesData(4, 68, Colors.red),
     // SalesData(5, 100, Colors.red),
     // SalesData(6, 5, Colors.green),
-    SalesData(7, 40, Colors.green),
-    SalesData(8, 77, Colors.red),
-    SalesData(9, 90, Colors.red),
-    SalesData(10, 97, Colors.red),
-    SalesData(11, 84, Colors.red),
-    SalesData(12, 54, Colors.red),
-    SalesData(13, 59, Colors.red),
-    SalesData(14, 98, Colors.red),
-    SalesData(15, 86, Colors.red),
-    SalesData(16, 70, Colors.red),
-    SalesData(17, 72, Colors.red),
-    SalesData(18, 86, Colors.red),
-    SalesData(19, 89, Colors.red),
-    SalesData(20, 95, Colors.red),
-    SalesData(21, 76, Colors.red),
-    SalesData(22, 99, Colors.red),
-    SalesData(23, 66, Colors.red),
-    SalesData(24, 63, Colors.red),
-    SalesData(25, 89, Colors.red),
-    SalesData(26, 72, Colors.red),
-    SalesData(27, 95, Colors.red),
-    SalesData(28, 87, Colors.red),
-    SalesData(29, 91, Colors.red),
-    SalesData(30, 81, Colors.red),
+    // SalesData(7, 140, Colors.green),
+    // SalesData(8, 177, Colors.red),
+    // SalesData(9, 90, Colors.red),
+    // SalesData(10, 197, Colors.red),
+    // SalesData(11, 184, Colors.red),
+    // SalesData(12, 54, Colors.red),
+    // SalesData(13, 59, Colors.red),
+    // SalesData(14, 198, Colors.red),
+    // SalesData(15, 186, Colors.red),
+    // SalesData(16, 170, Colors.red),
+    // SalesData(17, 72, Colors.red),
+    // SalesData(18, 86, Colors.red),
+    // SalesData(19, 89, Colors.red),
+    // SalesData(20, 195, Colors.red),
+    // SalesData(21, 176, Colors.red),
+    // SalesData(22, 199, Colors.red),
+    // SalesData(23, 166, Colors.red),
+    // SalesData(24, 63, Colors.red),
+    // SalesData(25, 89, Colors.red),
+    // SalesData(26, 72, Colors.red),
+    // SalesData(27, 195, Colors.red),
+    // SalesData(28, 187, Colors.red),
+    // SalesData(29, 91, Colors.red),
+    // SalesData(30, 181, Colors.red),
     // SalesData(31, 82, Colors.red),
   ];
 
@@ -54,7 +54,7 @@ class _CartesianClassState extends State<CartesianClass> {
     studentAttendanceList = await apiclient.searchByMonthandClassRoom(
         month: month, classID: classRoom.id);
     for (int i = 0; i < studentAttendanceList.length; i++) {
-      //chartData.add(SalesData(i + 1, studentAttendanceList[i], Colors.red));
+      chartData.add(SalesData(i + 1, studentAttendanceList[i], Colors.red));
     }
   }
 

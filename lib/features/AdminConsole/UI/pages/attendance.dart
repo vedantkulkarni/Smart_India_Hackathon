@@ -3,13 +3,13 @@ import 'package:fluent_ui/fluent_ui.dart' as fi;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_dialog_box.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/custom_textbutton.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/select_date_dialog.dart';
 import 'package:team_dart_knights_sih/models/AttendanceStatus.dart';
+import 'package:team_dart_knights_sih/models/ModelProvider.dart';
 
 import '../../../../core/cubit/search_cubit.dart';
 import '../widgets/attendance_search.dart';
@@ -35,7 +35,6 @@ class _AttendancePageState extends State<AttendancePage> {
     return Container(
       child: Row(children: [
         const Expanded(child: AttendanceWidget()),
-        
       ]),
     );
   }
@@ -56,6 +55,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
   List<SearchQuery> searchQuery = [];
   AttendanceSearchMode currentMode = AttendanceSearchMode.date;
   AttendanceStatus? attendanceStatus;
+  Gender? gender;
   bool showCalender = true;
   String hintText = 'YYYY-MM-DD';
   @override
@@ -82,9 +82,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     hintText: hintText,
                     padding:
                         EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       fi.FluentIcons.search,
-                      size: 16.sp,
+                      size: 16,
                     ),
                   ),
                 ),
@@ -95,9 +95,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
               showCalender == false
                   ? Container()
                   : IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         fi.FluentIcons.calendar,
-                        size: 22.sp,
+                        size: 22,
                         color: primaryColor,
                       ),
                       onPressed: () async {
@@ -116,7 +116,7 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                     ),
               DropdownButton<AttendanceSearchMode>(
                 icon: null,
-                iconSize: 14.sp,
+                iconSize: 14,
                 alignment: Alignment.center,
                 underline: Container(),
                 borderRadius: BorderRadius.circular(10),
@@ -176,17 +176,15 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14.sp)),
+                              fontSize: 14)),
                       value: AttendanceSearchMode.studentName),
-
                   DropdownMenuItem(
                       child: Text('Search by Assigned Class',
                           style: TextStyle(
                               color: primaryColor,
                               fontFamily: 'Poppins',
-                              fontSize: 14.sp)),
+                              fontSize: 14)),
                       value: AttendanceSearchMode.className),
-                  
                   DropdownMenuItem(
                       child: Text('Search by Teacher Name',
                           style: TextStyle(
@@ -207,9 +205,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                 width: 40.w,
               ),
               SizedBox(
-
-                  height: 45.h,
-                  width: 150.w,
+                  height: 45,
+                  width: 150,
                   child: TextButton(
                       onPressed: () {
                         if (textEditingController.text.isEmpty) {
@@ -223,25 +220,25 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                       },
                       child: fi.Row(
                         mainAxisAlignment: fi.MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Text('Add Filter',
                               style: TextStyle(
                                   color: primaryColor,
                                   fontFamily: 'Poppins',
-                                  fontSize: 14.sp)),
+                                  fontSize: 14)),
                           Icon(
                             Icons.add,
-                            size: 18.sp,
+                            size: 18,
                             color: primaryColor,
                           )
                         ],
                       ))),
-              SizedBox(
-                width: 20.w,
+              const SizedBox(
+                width: 20,
               ),
               SizedBox(
-                  height: 45.h,
-                  width: 150.w,
+                  height: 45,
+                  width: 150,
                   child: CustomTextButton(
                       onPressed: () {
                         if (searchQuery.isEmpty) {
@@ -262,9 +259,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                         }
                       },
                       text: 'Search')),
-              SizedBox(
-                width: 20.w,
-
+              const SizedBox(
+                width: 20,
               )
             ],
           ),
@@ -272,8 +268,8 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
             children: [
               Expanded(
                 child: Container(
-                  margin: fi.EdgeInsets.all(10.sp),
-                  height: 40.h,
+                  margin: const fi.EdgeInsets.all(10),
+                  height: 40,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
@@ -281,9 +277,9 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                         searchQuery.length,
                         (index) => fi.Container(
                               margin:
-                                  fi.EdgeInsets.symmetric(horizontal: 5.w),
-                              width: 150.w,
-                              height: 30.h,
+                                  const fi.EdgeInsets.symmetric(horizontal: 5),
+                              width: 150,
+                              height: 30,
                               child: CustomTextButton(
                                   icon: const Icon(Icons.close),
                                   onPressed: () {
@@ -295,58 +291,141 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                   ),
                 ),
               ),
-              DropdownButton<AttendanceStatus>(
-                icon: null,
-                iconSize: 14.sp,
-                alignment: Alignment.center,
-                underline: Container(),
-                borderRadius: BorderRadius.circular(10),
-                value: attendanceStatus,
-                onChanged: (value) async {
-                  if (value == null) {
-                    attendanceStatus = value;
-                    searchQuery.removeWhere(
-                      (element) => element.mode == AttendanceSearchMode.status,
-                    );
-                    setState(() {});
-                    searchCubit.searchAttendance(searchQuery: searchQuery);
-                    return;
-                  }
-                  attendanceStatus = value;
-                  var newList = [...searchQuery];
-                  newList.add(SearchQuery(
-                      mode: AttendanceSearchMode.status,
-                      searchText: attendanceStatus!.name));
-                  setState(() {});
-                  searchCubit.searchAttendance(searchQuery: newList);
-                  // managementCubit.getAllUsers(role: value);
-                },
-                items: [
-                  DropdownMenuItem(
-                      child: Text("Present",
-                          style: TextStyle(
-                              color: primaryColor,
-                              fontFamily: 'Poppins',
-                              fontSize: 14.sp)),
-                      value: AttendanceStatus.Present),
-                  DropdownMenuItem(
-                      child: Text("Absent",
-                          style: TextStyle(
-                              color: primaryColor,
-                              fontFamily: 'Poppins',
-                              fontSize: 14.sp)),
-                      value: AttendanceStatus.Absent),
-                  DropdownMenuItem(
-                      child: Text("All",
-                          style: TextStyle(
-                              color: primaryColor,
-                              fontFamily: 'Poppins',
-                              fontSize: 14.sp)),
-                      value: null),
+              fi.Row(
+                children: [
+                  DropdownButton<Gender>(
+                    icon: null,
+                    iconSize: 14,
+                    alignment: Alignment.center,
+                    underline: Container(),
+                    borderRadius: BorderRadius.circular(10),
+                    value: gender,
+                    onChanged: (value) async {
+                      // List<Attendance> finalList = [];
+                      // searchCubit.attendanceList.forEach((element) {
+                      //   if (element.gender == value) {
+                      //     finalList.add(element);
+                      //   }
+                      // });
+                      // searchCubit.attendanceList = finalList;
+                      // print(searchCubit.attendanceList.length);
+                      // setState(() {
+                      //   gender = value;
+                      // });
+                      // searchCubit.emitSearch();
+
+                      // setState(() {
+                      //   searchCubit.
+                      //   gender = value;
+                      // });
+                      gender = value;
+
+                      if (value == null) {
+                        searchQuery.removeWhere(
+                          (element) =>
+                              element.mode == AttendanceSearchMode.gender,
+                        );
+                        setState(() {});
+                        searchCubit.searchAttendance(searchQuery: searchQuery);
+                        return;
+                      }
+                      var newList = [...searchQuery];
+                      newList.add(SearchQuery(
+                          mode: AttendanceSearchMode.gender,
+                          searchText: gender!.name));
+                      setState(() {});
+                      searchCubit.searchAttendance(searchQuery: newList);
+                      // managementCubit.getAllUsers(role: value);
+                    },
+                    items: const [
+                      DropdownMenuItem(
+                          child: Text("All",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14)),
+                          value: null),
+                      DropdownMenuItem(
+                          child: Text("Male",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14)),
+                          value: Gender.Male),
+                      DropdownMenuItem(
+                          child: Text("Female",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14)),
+                          value: Gender.Female),
+                      DropdownMenuItem(
+                          child: Text("Other",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14)),
+                          value: Gender.Other),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 40.w,
+                  ),
+                  DropdownButton<AttendanceStatus>(
+                    icon: null,
+                    iconSize: 14,
+                    alignment: Alignment.center,
+                    underline: Container(),
+                    borderRadius: BorderRadius.circular(10),
+                    value: attendanceStatus,
+                    onChanged: (value) async {
+                      if (value == null) {
+                        attendanceStatus = value;
+                        searchQuery.removeWhere(
+                          (element) =>
+                              element.mode == AttendanceSearchMode.status,
+                        );
+                        setState(() {});
+                        searchCubit.searchAttendance(searchQuery: searchQuery);
+                        return;
+                      }
+                      attendanceStatus = value;
+                      var newList = [...searchQuery];
+                      newList.add(SearchQuery(
+                          mode: AttendanceSearchMode.status,
+                          searchText: attendanceStatus!.name));
+                      setState(() {});
+                      searchCubit.searchAttendance(searchQuery: newList);
+                      // managementCubit.getAllUsers(role: value);
+                    },
+                    items: const [
+                      DropdownMenuItem(
+                          child: Text("All",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14)),
+                          value: null),
+                      DropdownMenuItem(
+                          child: Text("Present",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14)),
+                          value: AttendanceStatus.Present),
+                      DropdownMenuItem(
+                          child: Text("Absent",
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 14)),
+                          value: AttendanceStatus.Absent),
+                    ],
+                  ),
                 ],
               ),
-              fi.SizedBox(
-                width: 30.w,
+              const fi.SizedBox(
+                width: 30,
               )
             ],
           ),

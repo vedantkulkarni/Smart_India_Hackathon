@@ -20,6 +20,10 @@ class SearchCubit extends Cubit<SearchState> {
   SearchCubit({required this.searchMode, required this.apiClient})
       : super(SearchInitial());
 
+  void emitSearch() {
+    emit(SearchResults());
+  }
+
   Future<void> searchStudent(
       {required String searchQuery, required StudentSearchMode mode}) async {
     emit(Searching());
@@ -35,8 +39,8 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> searchAttendance(
       {required List<SearchQuery> searchQuery}) async {
     emit(Searching());
-    attendanceList = await apiClient.searchAttendance(
-        searchQuery: searchQuery, limit: 25);
+    attendanceList =
+        await apiClient.searchAttendance(searchQuery: searchQuery, limit: 30);
     if (attendanceList.isEmpty) {
       emit(NoResultFound());
       return;
