@@ -39,6 +39,8 @@ class _FutureImageState extends State<FutureImage> {
 
     return CircleAvatar(
       backgroundImage: NetworkImage(widget.imageKey!),
+
+    
     );
 
     // return Image.network(snapshot.data!);

@@ -1149,20 +1149,23 @@ query MyQuery {
   Future<List<Attendance>> getStudentAnalytics(
       {required String studentId, required String month}) async {
     String range = '["2022-$month-01","2022-$month-30"]';
+    print(studentId);
+    print('lklkl');
     final body = {
       'operationName': 'MyQuery',
       'query': '''
 query MyQuery {
-  searchAttendances(filter: {studentID: {match: "$studentId"}, and: {date: {range: $range}}},) {
+  searchAttendances(filter: {studentID: {match: "e35e0f5b-619c-45c8-b063-5e7254af73c5"}}) {
     items {
       classID
       className
       date
+      gender
+      studentName
       geoLatitude
       geoLongitude
       status
       studentID
-      studentName
       teacherID
       teacherName
       time

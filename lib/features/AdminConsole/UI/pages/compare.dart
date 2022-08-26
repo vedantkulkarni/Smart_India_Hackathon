@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/compare_cubit.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/chart/compareByMonthGraph.dart';
+import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/chart/compareByYearGraph.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/UI/widgets/compare_gender_wise.dart';
 import '../../../../core/constants.dart';
 import '../../../../models/ClassRoom.dart';
@@ -24,7 +26,13 @@ class _CompareConsoleState extends State<CompareConsole> {
 
   List<ClassRoom> classRooms = [];
   ClassRoom? selectedClassRoom;
+  int? selectedGraphIndx = 1;
   List<ClassRoom> selectedClassRoomsList = [];
+  List<String> graphList = [
+    "Gender",
+    "Attendance By Month",
+    "Attendance By Year"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +45,7 @@ class _CompareConsoleState extends State<CompareConsole> {
           );
         }
         final classesList = compareCubit.classRoomList;
+        final graphvalueList = [1, 2, 3];
         // selectedClassRoom = classesList[0];
         return Container(
           color: backgroundColor,
@@ -143,9 +152,36 @@ class _CompareConsoleState extends State<CompareConsole> {
                       ),
                     ),
                   ),
+                  Spacer(),
+                  DropdownButton<int>(
+                    icon: null,
+                    iconSize: 14.sp,
+                    alignment: Alignment.center,
+                    underline: Container(),
+                    borderRadius: BorderRadius.circular(10),
+                    value: selectedGraphIndx ?? graphvalueList[0],
+                    onChanged: (value) {
+                      // managementCubit.getAllUsers(role: value);
+                      // if (value != null) {
+                      //   print(value.classRoomName);
+                      //   setState(() {
+                      //     selectedClassRoom = value;
+                      //   });
+                      // }
+                      setState(() {
+                        selectedGraphIndx = value;
+                      });
+                      if (value == 1) {}
+                    },
+                    items: List.generate(
+                        classesList.length,
+                        (index) => DropdownMenuItem(
+                            child: fi.Text(graphList[index]),
+                            value: graphvalueList[index])),
+                  ),
                   fi.SizedBox(
                     width: 30.w,
-                  )
+                  ),
                 ],
               ),
               fi.SizedBox(
@@ -158,9 +194,15 @@ class _CompareConsoleState extends State<CompareConsole> {
                           child:
                               fi.Text('Please select classrooms to compare')),
                     )
-                  : 
-                        CompareGenderWise(selectedList: selectedClassRoomsList),
-                      
+                  : selectedGraphIndx == 1
+                      ? CompareGenderWise(selectedList: selectedClassRoomsList)
+                      : selectedGraphIndx == 2
+                          ? Month(
+                              selectedList: selectedClassRoomsList,
+                            )
+                          : selectedGraphIndx == 3
+                              ? const CartesianYear()
+                              : Container(),
             ],
           ),
         );
