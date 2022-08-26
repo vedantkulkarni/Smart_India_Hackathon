@@ -9,6 +9,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 
 import '../../../../../injection_container.dart';
 import '../../../../../models/Attendance.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 
 class StudentDetailScreenPartAdmin extends StatefulWidget {
   final String studentId = "";
@@ -366,15 +367,7 @@ class StudentDetailWidget extends StatelessWidget {
           SizedBox(
             height: 20.h,
           ),
-          CircleAvatar(
-            radius: 45,
-            backgroundColor: Colors.black,
-            child: CircleAvatar(
-              radius: 43,
-              backgroundColor: Colors.blue,
-              backgroundImage: NetworkImage(image.toString()),
-            ),
-          ),
+          Container(child: FutureImage(imageKey: image),height:80.h,width:80.w,),
           SizedBox(
             height: 50.h,
           ),

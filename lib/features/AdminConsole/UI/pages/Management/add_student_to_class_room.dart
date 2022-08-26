@@ -10,6 +10,7 @@ import 'package:team_dart_knights_sih/models/ClassRoom.dart';
 
 import '../../../../../injection_container.dart';
 import '../../../../../models/Student.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 import '../../../Backend/aws_api_client.dart';
 import '../../widgets/custom_dialog_box.dart';
 import 'common_search.dart';
@@ -27,7 +28,7 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
   final TextEditingController textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-        double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     // ScreenUtil.init(context, designSize: Size(width, height));
     final managementCubit = BlocProvider.of<ManagementCubit>(context);
@@ -69,10 +70,8 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(20)),
                   child: addList.isEmpty
-                      ?  Center(
+                      ? Center(
                           child: Text(
-
-
                           'Add Students',
                           style: TextStyle(
                             fontSize: 14.sp,
@@ -90,12 +89,9 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
                                     children: [
                                       Column(
                                         children: [
-                                          CircleAvatar(
-                                            backgroundImage: NetworkImage(addList[
-                                                        index]
-                                                    .profilePhoto ??
-                                                'https://avatars.githubusercontent.com/u/24658039?v=4'),
-                                          ),
+                                          FutureImage(
+                                              imageKey:
+                                                  addList[index].profilePhoto),
                                           SizedBox(
                                             height: 5.h,
                                           ),
@@ -134,10 +130,9 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
           ),
           SizedBox(
             height: 40.h,
-
           ),
           Padding(
-            padding:  EdgeInsets.only(
+            padding: EdgeInsets.only(
               left: 15.w,
               right: 15.w,
               bottom: 5.h,
@@ -177,8 +172,8 @@ class _AddStudentToClassRoomState extends State<AddStudentToClassRoom> {
             ),
           ),
           Padding(
-            padding:
-                 EdgeInsets.only(left: 15.w, right: 15.w, top: 10.h, bottom: 50.h),
+            padding: EdgeInsets.only(
+                left: 15.w, right: 15.w, top: 10.h, bottom: 50.h),
             child: Center(
               child: CustomTextButton(
                 onPressed: () async {

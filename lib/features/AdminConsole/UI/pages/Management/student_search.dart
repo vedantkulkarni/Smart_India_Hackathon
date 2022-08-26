@@ -6,6 +6,7 @@ import 'package:team_dart_knights_sih/core/constants.dart';
 import 'package:team_dart_knights_sih/models/Student.dart';
 
 import '../../../../../core/cubit/search_cubit.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 
 class StudentSearch extends StatefulWidget {
   const StudentSearch({Key? key}) : super(key: key);
@@ -90,12 +91,13 @@ class _StudentSearchResultState extends State<StudentSearchResult> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const CircleAvatar(
-                backgroundImage: NetworkImage(
-                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
-                ),
-                radius: 18,
-              ),
+              // const CircleAvatar(
+              //   backgroundImage: NetworkImage(
+              //     'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600',
+              //   ),
+              //   radius: 18,
+              // ),
+              FutureImage(imageKey: widget.student.profilePhoto),
               FittedBox(
                 child: Text(widget.student.studentName.trim().split(' ')[0],
                     style:  TextStyle(
