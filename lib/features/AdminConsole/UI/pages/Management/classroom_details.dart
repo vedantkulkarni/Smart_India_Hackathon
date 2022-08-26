@@ -19,6 +19,7 @@ import 'package:team_dart_knights_sih/features/TeacherConsole/widgets/future_ima
 import '../../../../../core/constants.dart';
 import '../../../../../models/ModelProvider.dart';
 // import '../../../../../models/VerificationStatus.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 import 'chart/radialChart.dart';
 import 'cubit/management_cubit.dart';
 import '../../../../../injection_container.dart';
@@ -235,7 +236,7 @@ class AssignedTeacherWidget extends StatelessWidget {
                         onPressed: () async {},
                         child: Row(
                           children: [
-                            FutureImage(imageKey: 'i'),
+                            FutureImage(imageKey: snapshot.data!.photo),
                             SizedBox(
                               width: 10.w,
                             ),
