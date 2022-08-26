@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../../core/constants.dart';
@@ -15,13 +16,46 @@ class CompareGenderWise extends StatefulWidget {
 class _CompareGenderWiseState extends State<CompareGenderWise> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        const Text("Class A"),
+    return SizedBox(
+      width: double.maxFinite,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        // const Text("Class A"),
         const SizedBox(
           height: 30,
         ),
-        RadialChartWidget(classRoom: widget.selectedList[0]),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 400,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Row(
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        "Class ${widget.selectedList[index].classRoomName}",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',
+                            fontSize: 18.sp),
+                      ),
+                      RadialChartWidget(classRoom: widget.selectedList[0]),
+                      const VerticalDivider(
+                        color: primaryColor,
+                        thickness: 0.5,
+                        width: 0.5,
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+            itemCount: widget.selectedList.length,
+          ),
+        ),
       ]),
     );
   }
@@ -83,7 +117,7 @@ class _RadialChartWidgetState extends State<RadialChartWidget> {
             // trackColor: Colors.grey.shade800,
             dataSource: chartData,
             // gap: '3%',
-            radius: '50',
+            radius: '60',
             xValueMapper: (_ChartData data, _) => data.x,
             yValueMapper: (_ChartData data, _) => data.y,
             //  pointColorMapper: (_ChartData data, _) => data.color,

@@ -151,17 +151,16 @@ class _CompareConsoleState extends State<CompareConsole> {
               fi.SizedBox(
                 width: 30.w,
               ),
+              const Divider(),
               selectedClassRoomsList.isEmpty
                   ? fi.Container(
                       child: const fi.Center(
                           child:
                               fi.Text('Please select classrooms to compare')),
                     )
-                  : fi.Row(
-                      children: [
+                  : 
                         CompareGenderWise(selectedList: selectedClassRoomsList),
-                      ],
-                    )
+                      
             ],
           ),
         );

@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import '../../../../../core/cubit/search_cubit.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/Student.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 import '../../../Backend/admin_bloc/admin_cubit.dart';
 import '../../../Backend/aws_api_client.dart';
 import '../../widgets/custom_dialog_box.dart';
@@ -303,17 +304,15 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                                     manageStudentsCubit.studentsList[index].email ?? '-',
                                   ),
                                 ),
-                                DataCell(CircleAvatar(
-                                    backgroundImage: (state)
-                                                .studentsList[index]
-                                                .profilePhoto ==
-                                            null
-                                        ? Image.asset(
-                                                'assets/images/studentManagement.png')
-                                            .image
-                                        : NetworkImage((state)
+                                DataCell(Container(
+                                  height: 40.h,
+                                  width: 40.w,
+                                  child:FutureImage(imageKey:(state)
                                             .studentsList[index]
-                                            .profilePhoto!))),
+                                            .profilePhoto)
+                                )
+                                  
+                                ),
                               ]),
                         ),
                       ),

@@ -7,6 +7,7 @@ import 'package:team_dart_knights_sih/features/AdminConsole/UI/pages/Management/
 
 import '../../../../../models/Role.dart';
 import '../../../../../models/User.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 import 'cubit/management_cubit.dart';
 
 class UserProfileCard extends StatelessWidget {
@@ -104,10 +105,8 @@ class UserProfileCard extends StatelessWidget {
                           offset: const Offset(0, 15))
                     ],
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    image: const DecorationImage(
-                        image: NetworkImage(
-                            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600"),
-                        fit: BoxFit.cover)),
+                    ),
+                    child: FutureImage(imageKey: user.photo)
               ),
             ),
           ],
