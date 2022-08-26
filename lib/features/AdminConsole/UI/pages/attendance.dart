@@ -381,60 +381,60 @@ class _AttendanceWidgetState extends State<AttendanceWidget> {
                           value: Gender.Other),
                     ],
                   ),
-                  SizedBox(
-                    width: 40.w,
-                  ),
-                  DropdownButton<AttendanceStatus>(
-                    icon: null,
-                    iconSize: 14,
-                    alignment: Alignment.center,
-                    underline: Container(),
-                    borderRadius: BorderRadius.circular(10),
-                    value: attendanceStatus,
-                    onChanged: (value) async {
-                      if (value == null) {
-                        attendanceStatus = value;
-                        searchQuery.removeWhere(
-                          (element) =>
-                              element.mode == AttendanceSearchMode.status,
-                        );
-                        setState(() {});
-                        searchCubit.searchAttendance(searchQuery: searchQuery);
-                        return;
-                      }
-                      attendanceStatus = value;
-                      var newList = [...searchQuery];
-                      newList.add(SearchQuery(
-                          mode: AttendanceSearchMode.status,
-                          searchText: attendanceStatus!.name));
-                      setState(() {});
-                      searchCubit.searchAttendance(searchQuery: newList);
-                      // managementCubit.getAllUsers(role: value);
-                    },
-                    items: const [
-                      DropdownMenuItem(
-                          child: Text("All",
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 14)),
-                          value: null),
-                      DropdownMenuItem(
-                          child: Text("Present",
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 14)),
-                          value: AttendanceStatus.Present),
-                      DropdownMenuItem(
-                          child: Text("Absent",
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 14)),
-                          value: AttendanceStatus.Absent),
-                    ],
-                  ),
+                  // SizedBox(
+                  //   width: 40.w,
+                  // ),
+                  // DropdownButton<AttendanceStatus>(
+                  //   icon: null,
+                  //   iconSize: 14,
+                  //   alignment: Alignment.center,
+                  //   underline: Container(),
+                  //   borderRadius: BorderRadius.circular(10),
+                  //   value: attendanceStatus,
+                  //   onChanged: (value) async {
+                  //     if (value == null) {
+                  //       attendanceStatus = value;
+                  //       searchQuery.removeWhere(
+                  //         (element) =>
+                  //             element.mode == AttendanceSearchMode.status,
+                  //       );
+                  //       setState(() {});
+                  //       searchCubit.searchAttendance(searchQuery: searchQuery);
+                  //       return;
+                  //     }
+                  //     attendanceStatus = value;
+                  //     var newList = [...searchQuery];
+                  //     newList.add(SearchQuery(
+                  //         mode: AttendanceSearchMode.status,
+                  //         searchText: attendanceStatus!.name));
+                  //     setState(() {});
+                  //     searchCubit.searchAttendance(searchQuery: newList);
+                  //     // managementCubit.getAllUsers(role: value);
+                  //   },
+                  //   items: const [
+                  //     DropdownMenuItem(
+                  //         child: Text("All",
+                  //             style: TextStyle(
+                  //                 color: primaryColor,
+                  //                 fontFamily: 'Poppins',
+                  //                 fontSize: 14)),
+                  //         value: null),
+                  //     DropdownMenuItem(
+                  //         child: Text("Present",
+                  //             style: TextStyle(
+                  //                 color: primaryColor,
+                  //                 fontFamily: 'Poppins',
+                  //                 fontSize: 14)),
+                  //         value: AttendanceStatus.Present),
+                  //     DropdownMenuItem(
+                  //         child: Text("Absent",
+                  //             style: TextStyle(
+                  //                 color: primaryColor,
+                  //                 fontFamily: 'Poppins',
+                  //                 fontSize: 14)),
+                  //         value: AttendanceStatus.Absent),
+                  //   ],
+                  // ),
                 ],
               ),
               const fi.SizedBox(
