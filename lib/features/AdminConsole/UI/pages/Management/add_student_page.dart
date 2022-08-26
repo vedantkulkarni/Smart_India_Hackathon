@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:team_dart_knights_sih/features/AdminConsole/Backend/admin_bloc/admin_cubit.dart';
@@ -48,6 +51,12 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
       return student;
     }
     return null;
+  }
+
+  Future<List> readJson() async {
+    final String response = await rootBundle.loadString('assets/data.json');
+    final data = await json.decode(response);
+    return data["items"];
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -379,6 +388,46 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                             }
                           },
                           text: 'Submit'),
+                    ),
+                    SizedBox(
+                      width: 150.w,
+                      height: 40.h,
+                      child: CustomTextButton(
+                          onPressed: () async {
+                            List items = await readJson();
+                            for (int i = 0; i < items.length; i++) {
+                              String phNo = '+91${items[i]["phoneNumber"]}';
+                              String gd = items[i]["gender"];
+                              Gender gender = Gender.Male;
+                              switch (gd) {
+                                case "Male":
+                                  gender = Gender.Male;
+                                  break;
+                                case "Female":
+                                  gender = Gender.Female;
+                                  break;
+                                case "Other":
+                                  gender = Gender.Other;
+                                  break;
+                              }
+                              final student = Student(
+                                studentID: items[i]["studentId"],
+                                studentName: items[i]["studentName"],
+                                address: items[i]["address"],
+                                email: items[i]["email"],
+                                phoneNumber: phNo,
+                                roll: items[i]["roll"],
+                                classRoomStudentsId: items[i]
+                                    ["classRoomStudentsId"],
+                                gender: gender,
+                              );
+                              if (student != null) {
+                                await managementCubit.createStudent(
+                                    student: student);
+                              }
+                            }
+                          },
+                          text: 'Submit2'),
                     )
                   ],
                 ),

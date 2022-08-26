@@ -15,6 +15,7 @@ class CartesianClass extends StatefulWidget {
 
 class _CartesianClassState extends State<CartesianClass> {
   final List<SalesData> chartData = [
+
     SalesData(1, 86, Colors.red),
     SalesData(2, 70, Colors.red),
     SalesData(3, 34, Colors.green),
@@ -54,7 +55,7 @@ class _CartesianClassState extends State<CartesianClass> {
     studentAttendanceList = await apiclient.searchByMonthandClassRoom(
         month: month, classID: classRoom.id);
     for (int i = 0; i < studentAttendanceList.length; i++) {
-      //chartData.add(SalesData(i + 1, studentAttendanceList[i], Colors.red));
+      chartData.add(SalesData(i + 1, studentAttendanceList[i], Colors.red));
     }
   }
 

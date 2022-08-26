@@ -1,6 +1,7 @@
 //all color schemes and constants in the app.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 
 const Color primaryColor = Color(0xff3fc47c);
@@ -22,11 +23,13 @@ const Color lightTextColor = Color(0xff9aa3b1);
 
 Widget progressIndicator = Container(
   color: backgroundColor,
-  child: SizedBox(
-    height: 50,
-    width: 50,
-    child:
-        Center(child: Lottie.asset("assets/images/loader.json", animate: true)),
+  child: Center(
+    child: SizedBox(
+      height: 100.h,
+      width: 100.w,
+      child:
+          Center(child: Lottie.asset("assets/images/loader.json", animate: true)),
+    ),
   ),
 );
 
@@ -50,7 +53,7 @@ enum AttendanceSearchMode {
   studentName,
   verification,
   classID,
-  gender
+  gender,
 }
 
 const String commonPath = 'assets/images';

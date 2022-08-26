@@ -58,6 +58,12 @@ class AttendanceSearch extends StatelessWidget {
             columns: const [
               DataColumn2(
                 label: Text(
+                  'Gender',
+                ),
+                size: ColumnSize.S,
+              ),
+              DataColumn2(
+                label: Text(
                   'Name',
                 ),
                 size: ColumnSize.M,
@@ -76,7 +82,7 @@ class AttendanceSearch extends StatelessWidget {
               ),
               DataColumn2(
                 label: Text(
-                  'Status',
+                  'Class',
                 ),
                 size: ColumnSize.S,
               ),
@@ -116,6 +122,12 @@ class AttendanceSearch extends StatelessWidget {
                                 .toString())));
                   },
                   cells: [
+                    DataCell(
+                      Text(
+
+                        searchCubit.attendanceList[index].gender.toString().split(".")[1],
+                      ),
+                    ),
                     DataCell(
                       Text(
                         searchCubit.attendanceList[index].studentName,
