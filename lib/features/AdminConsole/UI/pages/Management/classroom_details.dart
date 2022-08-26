@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import '../../../../../core/constants.dart';
 import '../../../../../models/ModelProvider.dart';
 // import '../../../../../models/VerificationStatus.dart';
+import '../../../../TeacherConsole/widgets/future_image.dart';
 import 'chart/radialChart.dart';
 import 'cubit/management_cubit.dart';
 import '../../../../../injection_container.dart';
@@ -234,11 +235,7 @@ class AssignedTeacherWidget extends StatelessWidget {
                         onPressed: () async {},
                         child: Row(
                           children: [
-                            const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600'),
-                              radius: 20,
-                            ),
+                            FutureImage(imageKey: snapshot.data!.photo),
                             SizedBox(
                               width: 10.w,
                             ),
