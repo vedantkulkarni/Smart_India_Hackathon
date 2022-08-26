@@ -289,18 +289,18 @@ class _ManageStudentsPageState extends State<ManageStudentsPage> {
                               cells: [
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].studentName,
+                                    manageStudentsCubit.studentsList[index].studentName,
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].phoneNumber ??
+                                    manageStudentsCubit.studentsList[index].phoneNumber ??
                                         '-',
                                   ),
                                 ),
                                 DataCell(
                                   Text(
-                                    (state).studentsList[index].email ?? '-',
+                                    manageStudentsCubit.studentsList[index].email ?? '-',
                                   ),
                                 ),
                                 DataCell(CircleAvatar(

@@ -164,7 +164,7 @@ class _StudentDetailScreenPart extends State<StudentDetailScreenPartAdmin> {
         ),
         Expanded(
           child: DataTable2(
-              empty: Container(
+              empty: Container( 
                   child: const Center(
                 child: Text('No Students added yet'),
               )),

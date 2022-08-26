@@ -54,7 +54,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
   }
 
   Future<List> readJson() async {
-    final String response = await rootBundle.loadString('assets/data.json');
+    final String response = await rootBundle.loadString('assets/student.json');
     final data = await json.decode(response);
     return data["items"];
   }
@@ -420,6 +420,7 @@ class _AddStudentsPageState extends State<AddStudentsPage> {
                                 classRoomStudentsId: items[i]
                                     ["classRoomStudentsId"],
                                 gender: gender,
+                              
                               );
                               if (student != null) {
                                 await managementCubit.createStudent(

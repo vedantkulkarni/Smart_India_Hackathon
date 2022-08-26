@@ -661,7 +661,7 @@ query MyQuery {
     final body = {
       'operationName': 'MyMutation',
       'query': '''mutation MyMutation {
-  createStudent(input: {address: "${student.address}", dob: ${student.dob}, email: "${student.email}", gender: $gender, idCardPhoto: ${student.idCardPhoto}, modelData: ${student.modelData}, phoneNumber: "${student.phoneNumber}", profilePhoto: ${student.profilePhoto}, roll: "${student.roll}", studentID: "${student.studentID}", studentName: "${student.studentName}"}) {
+  createStudent(input: {address: "${student.address}", dob: ${student.dob}, email: "${student.email}", gender: $gender, idCardPhoto: ${student.idCardPhoto}, modelData: ${student.modelData}, phoneNumber: "${student.phoneNumber}", profilePhoto: ${student.profilePhoto}, roll: "${student.roll}", studentID: "${student.studentID}", studentName: "${student.studentName}", classRoomStudentsId: "${student.classRoomStudentsId}"}) {
     email
     gender
     studentName
@@ -762,7 +762,9 @@ query MyQuery {
       profilePhoto
       classRoomStudentsId
       modelData
-      
+      phoneNumber
+      email
+      roll
     }
   }
 }

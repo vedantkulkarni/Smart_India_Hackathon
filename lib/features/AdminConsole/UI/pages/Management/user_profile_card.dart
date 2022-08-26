@@ -72,13 +72,6 @@ class UserProfileCard extends StatelessWidget {
                       children: [
                         RowTile(
                             Icon(
-                              Icons.location_city,
-                              size: 15.sp,
-                            ),
-                            'Email',
-                            user.email.toString()),
-                        RowTile(
-                            Icon(
                               Icons.mail,
                               size: 15.sp,
                             ),
@@ -143,7 +136,8 @@ class RowTile extends StatelessWidget {
         children: [
           Text(
             text,
-            style: const TextStyle(color: blackColor, fontFamily: 'Poppins'),
+            style: TextStyle(
+                color: blackColor, fontFamily: 'Poppins', fontSize: 12.sp),
           ),
           const Spacer(),
           Text(
