@@ -67,15 +67,40 @@ Hence requirement of a robust and low-cost system is needed. Addressing this pro
 
 ## Screenshots
 
-|                                                                        |                                                                        |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| <img src="./mockups/Google Pixel 4 XL Screenshot 0.png" height="750"/> | <img src="./mockups/Google Pixel 4 XL Screenshot 1.png" height="750"/> |
+### Mobile 
 
 |                                                                        |                                                                        |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| <img src="./mockups/Google Pixel 4 XL Screenshot 2.png" height="750"/> | <img src="./mockups/Google Pixel 4 XL Screenshot 3.png" height="750"/> |
+| <img src="./assets/screenshots/00.png" height="750"/> | <img src="./assets/screenshots/01.png" height="750"/> |
+
+|                                                                        |                                                                        |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| <img src="./assets/screenshots/03.png" height="750"/> | <img src="./assets/screenshots/03.png" height="750"/> |
+|                                                                        |                                                                        |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| <img src="./assets/screenshots/04.png" height="750"/> | <img src="./assets/screenshots/05.png" height="750"/> |
+
+|                                                                        |                                                                        |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| <img src="./assets/screenshots/06.png" height="750"/> | <img src="./assets/screenshots/07.png" height="750"/> |
+
+|                                                                        |                                                                       
+| ---------------------------------------------------------------------- | 
+| <img src="./assets/screenshots/09.png" height="750"/> |
 
 <br/>
+
+### Desktop
+
+<img src="./assets/screenshots/0.png" width="700"/>
+<img src="./assets/screenshots/1.png" width="700"/>
+<img src="./assets/screenshots/2.png" width="700"/>
+<img src="./assets/screenshots/3.png" width="700"/>
+<img src="./assets/screenshots/4.png" width="700"/>
+<img src="./assets/screenshots/5.png" width="700"/>
+<img src="./assets/screenshots/6.png" width="700"/>
+<img src="./assets/screenshots/7.png" width="700"/>
+<img src="./assets/screenshots/8.png" width="700"/>
 
 ### Features:
 <strong>1. Face Detection and Recognition: </strong>
