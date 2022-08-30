@@ -1,9 +1,14 @@
 <div id="top"><div>
+<div align="center">
+<h1>
+<img src="https://i.ibb.co/89cPn6T/SIH2.webp" alt="SIH2" border="0" width="80" height="80">
+<div align="center">Smart India Hackahton 2022</div>
+
+</h1>
+</div>
 <!-- PROJECT LOGO -->
 <div align="center">
-  <a href="https://summerofcode.withgoogle.com/">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/GSoC-icon.svg/512px-GSoC-icon.svg.png?20190503110706" alt="Logo" width="80" height="80">
-  </a>
+  <a href=""><img src="https://i.ibb.co/wr6n1ZG/photo-2022-08-30-15-26-19.jpg" alt="logo" border="0" width ="80",height="80"></a>
 
   <h2 align="center"><strong>ROLL CALL</strong></h2>
 
@@ -14,49 +19,25 @@
     </a>
     &nbsp &nbsp &nbsp &nbsp
    <strong>·</strong>
-    <a href="https://github.com/vedantkulkarni/GSOC_Organizations_App/issues">Report Bug</a>
+    <a href="https://github.com/vedantkulkarni/grand_finale_sih/issues">Report Bug</a>
     &nbsp &nbsp &nbsp &nbsp
      <strong>·</strong>
-    <a href="https://github.com/vedantkulkarni/GSOC_Organizations_App/issues">Request Feature</a>
+    <a href="https://github.com/vedantkulkarni/grand_finale_sih/issues">Request Feature</a>
   </p>
 </div>
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#some-resources-to-get-you-going">Resources to checkout</a></li>
-  </ol>
-</details>
 
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
 
-This is the project made by the team **Dart Knights** during the grand finale of the **'Smart India Hackathon 2022'**. Problem statement for the project was given by **Government of Maharashtra**.
+This is the project made by the team **Dart Knights** during the grand finale of the <a href="https://www.sih.gov.in/">Smart India Hackathon 2022</a>. Problem statement for the project was given by **Government of Maharashtra**.
 
 ### Team Members:
 <p>1. <a href="https://github.com/vedantkulkarni">Vedant Kulkarni </a>(Team Leader)</p>
 <p>2. <a href="https://github.com/atharv-bhadange">Atharv Bhadange </a></p>
 <p>3. <a href="https://github.com/Harshwardhan431">Harshwardhan Atkare </a></p>
 <p>4. <a href="https://github.com/Koosta02">Namit Surana </a></p>
-<p>5. <a href="">Anshree Bajaj </a></p>
+<p>5. <a href="https://github.com/anushree01bajaj">Anshree Bajaj </a></p>
 <p>6. <a href="https://github.com/suyogkokaje">Suyog Kokaje </a></p>
 
 ### Problem Statement :
@@ -75,32 +56,28 @@ Hence requirement of a robust and low-cost system is needed. Addressing this pro
 
 |                                                                        |                                                                        |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| <img src="./assets/screenshots/03.png" height="750"/> | <img src="./assets/screenshots/03.png" height="750"/> |
+| <img src="./assets/screenshots/03.png" height="750"/> | <img src="./assets/screenshots/04.png" height="750"/> |
 |                                                                        |                                                                        |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| <img src="./assets/screenshots/04.png" height="750"/> | <img src="./assets/screenshots/05.png" height="750"/> |
+| <img src="./assets/screenshots/05.png" height="750"/> | <img src="./assets/screenshots/06.png" height="750"/> |
 
 |                                                                        |                                                                        |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| <img src="./assets/screenshots/06.png" height="750"/> | <img src="./assets/screenshots/07.png" height="750"/> |
-
-|                                                                        |                                                                       
-| ---------------------------------------------------------------------- | 
-| <img src="./assets/screenshots/09.png" height="750"/> |
+| <img src="./assets/screenshots/07.png" height="750"/> | <img src="./assets/screenshots/09.png" height="750"/> |
 
 <br/>
 
 ### Desktop
 
-<img src="./assets/screenshots/0.png" width="700"/>
-<img src="./assets/screenshots/1.png" width="700"/>
-<img src="./assets/screenshots/2.png" width="700"/>
-<img src="./assets/screenshots/3.png" width="700"/>
-<img src="./assets/screenshots/4.png" width="700"/>
-<img src="./assets/screenshots/5.png" width="700"/>
-<img src="./assets/screenshots/6.png" width="700"/>
-<img src="./assets/screenshots/7.png" width="700"/>
-<img src="./assets/screenshots/8.png" width="700"/>
+<img src="./assets/screenshots/0.png"/>
+<img src="./assets/screenshots/1.png"/>
+<img src="./assets/screenshots/2.png"/>
+<img src="./assets/screenshots/3.png"/>
+<img src="./assets/screenshots/4.png"/>
+<img src="./assets/screenshots/5.png"/>
+<img src="./assets/screenshots/6.png"/>
+<img src="./assets/screenshots/7.png"/>
+<img src="./assets/screenshots/8.png"/>
 
 ### Features:
 <strong>1. Face Detection and Recognition: </strong>
