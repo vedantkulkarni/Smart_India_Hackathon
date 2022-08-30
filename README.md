@@ -92,7 +92,7 @@ Hence requirement of a robust and low-cost system is needed. Addressing this pro
 <p> In case if some kind of glitch is introduces while scanning the face, then teacher can take attendance manually just by tapping on the student card. By default all students will be marked present. If any of the students is absent then teacher have to tap on his profile card to mark it as absent.</p>
 <strong>5. Downloadable Attendance Report: </strong>
 <p> Once the attendance is recorded, the report of the attendance can be downloaded in the form of .csv file</p>
-<strong>6. (Write appropriate name for the feature): </strong>
+<strong>6. (Local Attendance Backup in case of network issue: </strong>
 <p> At some places there is the issue of the connectivity. So it is not possible to upload the attendance instantly. This app provides facility to submit the attendance instantly. The attendance is stored locally until the connectivity is recovered.</p>
 
 
@@ -114,7 +114,7 @@ Hence requirement of a robust and low-cost system is needed. Addressing this pro
 2. Clone the repo
 
 ```sh
-git clone https://github.com/vedantkulkarni/GSOC_Organizations_App.git
+git clone https://github.com/vedantkulkarni/grand_finale_sih.git
 ```
 
 3. Install Flutter packages
@@ -149,9 +149,9 @@ If you have a suggestion that would make this better, please fork the repo and c
 **Don't forget to give the project a star!** Thanks again!
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingGSOCFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingGSOCFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingGSOCFeature`)
+2. Create your Feature Branch (`git checkout -b feature/AppFeature`)
+3. Commit your Changes (`git commit -m 'Add some AppFeature'`)
+4. Push to the Branch (`git push origin feature/AppFeature`)
 5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
