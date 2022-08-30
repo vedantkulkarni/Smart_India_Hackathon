@@ -92,7 +92,7 @@ Hence requirement of a robust and low-cost system is needed. Addressing this pro
 <p> In case if some kind of glitch is introduces while scanning the face, then teacher can take attendance manually just by tapping on the student card. By default all students will be marked present. If any of the students is absent then teacher have to tap on his profile card to mark it as absent.</p>
 <strong>5. Downloadable Attendance Report: </strong>
 <p> Once the attendance is recorded, the report of the attendance can be downloaded in the form of .csv file</p>
-<strong>6. (Local Attendance Backup in case of network issue: </strong>
+<strong>6.Local attendance backup in case of network issue: </strong>
 <p> At some places there is the issue of the connectivity. So it is not possible to upload the attendance instantly. This app provides facility to submit the attendance instantly. The attendance is stored locally until the connectivity is recovered.</p>
 
 
